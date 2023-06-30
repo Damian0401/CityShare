@@ -1,0 +1,52 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.API", "CityShare.Backend.API\CityShare.Backend.API.csproj", "{22012074-8170-4DB1-BBDD-8C3FD4F02FFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Application", "CityShare.Backend.Application\CityShare.Backend.Application.csproj", "{61C9F91A-A150-46C6-A15D-213F14E15387}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Domain", "CityShare.Backend.Domain\CityShare.Backend.Domain.csproj", "{CDB4C131-C997-4BFA-90B7-0B799CF07FAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Infrastructure", "CityShare.Backend.Infrastructure\CityShare.Backend.Infrastructure.csproj", "{49912B9C-2E3D-4948-BA51-EEE30343F95D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Persistence", "CityShare.Backend.Persistence\CityShare.Backend.Persistence.csproj", "{B47DB37A-2C5B-4149-A03E-576FA35DD103}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Tests", "CityShare.Backend.Tests\CityShare.Backend.Tests.csproj", "{214858A0-8B51-4623-8B78-52D53D3AE5FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{22012074-8170-4DB1-BBDD-8C3FD4F02FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22012074-8170-4DB1-BBDD-8C3FD4F02FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22012074-8170-4DB1-BBDD-8C3FD4F02FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22012074-8170-4DB1-BBDD-8C3FD4F02FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61C9F91A-A150-46C6-A15D-213F14E15387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61C9F91A-A150-46C6-A15D-213F14E15387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61C9F91A-A150-46C6-A15D-213F14E15387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61C9F91A-A150-46C6-A15D-213F14E15387}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDB4C131-C997-4BFA-90B7-0B799CF07FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDB4C131-C997-4BFA-90B7-0B799CF07FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDB4C131-C997-4BFA-90B7-0B799CF07FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDB4C131-C997-4BFA-90B7-0B799CF07FAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49912B9C-2E3D-4948-BA51-EEE30343F95D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49912B9C-2E3D-4948-BA51-EEE30343F95D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49912B9C-2E3D-4948-BA51-EEE30343F95D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49912B9C-2E3D-4948-BA51-EEE30343F95D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B47DB37A-2C5B-4149-A03E-576FA35DD103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B47DB37A-2C5B-4149-A03E-576FA35DD103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B47DB37A-2C5B-4149-A03E-576FA35DD103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B47DB37A-2C5B-4149-A03E-576FA35DD103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{214858A0-8B51-4623-8B78-52D53D3AE5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{214858A0-8B51-4623-8B78-52D53D3AE5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{214858A0-8B51-4623-8B78-52D53D3AE5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{214858A0-8B51-4623-8B78-52D53D3AE5FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
