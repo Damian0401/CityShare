@@ -6,6 +6,7 @@ import { ToastPositions } from "../common/enums";
 import { ChakraBaseProvider } from "@chakra-ui/react";
 import Routes from "../common/navigation/Routes";
 import theme from "../common/utils/theme";
+import Home from "./home/Home";
 
 function App() {
   const router = createBrowserRouter([
@@ -13,7 +14,7 @@ function App() {
       path: Routes.Index,
       element: <PageWrapper Element={Navbar} />,
       children: [
-        { index: true, element: <div>Home</div> },
+        { index: true, element: <Home /> },
         { path: Routes.Login, element: <div>Login</div> },
         { path: Routes.Register, element: <div>Register</div> },
       ],
