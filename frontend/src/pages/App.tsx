@@ -2,7 +2,10 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import PageWrapper from "../components/page-wrapper/PageWrapper";
 import Navbar from "../components/navbar/Navbar";
-import { Routes, ToastPositions } from "../common/enums";
+import { ToastPositions } from "../common/enums";
+import { ChakraBaseProvider } from "@chakra-ui/react";
+import Routes from "../common/navigation/Routes";
+import theme from "../common/utils/theme";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,8 +22,10 @@ function App() {
 
   return (
     <>
-      <RouterProvider router={router} />
-      <ToastContainer position={ToastPositions.BottomRight} hideProgressBar />
+      <ChakraBaseProvider theme={theme}>
+        <RouterProvider router={router} />
+        <ToastContainer position={ToastPositions.BottomRight} hideProgressBar />
+      </ChakraBaseProvider>
     </>
   );
 }
