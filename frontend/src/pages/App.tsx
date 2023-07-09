@@ -1,34 +1,15 @@
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import PageWrapper from "../components/page-wrapper/PageWrapper";
-import Navbar from "../components/navbar/Navbar";
+import Router from "../common/navigation/Router";
 import { ToastPositions } from "../common/enums";
-import { ChakraBaseProvider } from "@chakra-ui/react";
-import Routes from "../common/navigation/Routes";
-import theme from "../common/utils/theme";
-import Home from "./home/Home";
 
-function App() {
-  const router = createBrowserRouter([
-    {
-      path: Routes.Index,
-      element: <PageWrapper Element={Navbar} />,
-      children: [
-        { index: true, element: <Home /> },
-        { path: Routes.Login, element: <div>Login</div> },
-        { path: Routes.Register, element: <div>Register</div> },
-      ],
-    },
-  ]);
-
+const App = () => {
   return (
     <>
-      <ChakraBaseProvider theme={theme}>
-        <RouterProvider router={router} />
-        <ToastContainer position={ToastPositions.BottomRight} hideProgressBar />
-      </ChakraBaseProvider>
+      <RouterProvider router={Router} />
+      <ToastContainer position={ToastPositions.BottomRight} hideProgressBar />
     </>
   );
-}
+};
 
 export default App;
