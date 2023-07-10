@@ -2,6 +2,7 @@ using CityShare.Backend.API.Extensions;
 using CityShare.Backend.Application;
 using CityShare.Backend.Infrastructure;
 using CityShare.Backend.Persistence;
+using CityShare.Backend.Persistence.Extensions;
 using System.Globalization;
 
 var cultureInfo = new CultureInfo("en-US");
@@ -19,6 +20,8 @@ builder.Services.AddInfrastructure(configuration);
 builder.Services.AddPersistence(configuration);
 
 var app = builder.Build();
+
+await app.Services.SeedDataAsync();
 
 if (app.Environment.IsDevelopment())
 {
