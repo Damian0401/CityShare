@@ -18,7 +18,7 @@ public static class DependencyInjection
         
         services.AddIdentityCore<ApplicationUser>()
             .AddRoles<IdentityRole>()
-            .AddTokenProvider<RefreshTokenProvider<ApplicationUser>>(RefreshToken.TokenProvider)
+            .AddTokenProvider<RefreshTokenProvider<ApplicationUser>>(RefreshToken.Provider)
             .AddEntityFrameworkStores<CityShareDbContext>();
 
         return services;

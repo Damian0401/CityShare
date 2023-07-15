@@ -4,4 +4,5 @@ using MediatR;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Register;
 
-public record RegisterCommand(RegisterRequest Request) : IRequest<Result<RegisterResponse>>;
+public record RegisterCommand(RegisterRequest Request) 
+    : IRequest<Result<RegisterResponse>>;

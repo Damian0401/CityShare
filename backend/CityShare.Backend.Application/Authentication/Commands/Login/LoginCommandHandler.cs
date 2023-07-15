@@ -60,10 +60,10 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         var accessToken = _jwtProvider.GenerateToken(user);
 
         var refreshToken = await _userManager.GenerateUserTokenAsync(
-            user, RefreshToken.TokenProvider, RefreshToken.Purpose);
+            user, RefreshToken.Provider, RefreshToken.Purpose);
 
         await _userManager.SetAuthenticationTokenAsync(
-            user, RefreshToken.TokenProvider, RefreshToken.TokenName, refreshToken);
+            user, RefreshToken.Provider, RefreshToken.Name, refreshToken);
 
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;

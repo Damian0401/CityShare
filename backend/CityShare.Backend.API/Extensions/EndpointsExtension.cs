@@ -1,4 +1,5 @@
 ﻿using CityShare.Backend.Api.Api;
+using CityShare.Backend.Application.Core.Contracts.Authentication.Login;
 
 namespace CityShare.Backend.Api.Extensions;
 
@@ -12,6 +13,9 @@ public static class EndpointsExtension
             .AllowAnonymous();
 
         app.MapPost(Endpoints.V1.Login, Api.V1.Authentication.Login)
+            .AllowAnonymous();
+
+        app.MapPost(Endpoints.V1.Refresh, Api.V1.Authentication.Refresh)
             .AllowAnonymous();
 
         return app;

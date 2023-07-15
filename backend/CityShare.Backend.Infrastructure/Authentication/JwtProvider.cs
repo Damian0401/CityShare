@@ -44,4 +44,14 @@ public class JwtProvider : IJwtProvider
 
         return tokenHandler.WriteToken(token);
     }
+
+    public string? GetEmailFromToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+
+        var jwtSecurityToken = handler.ReadJwtToken(token);
+
+        return jwtSecurityToken.Claims
+            .FirstOrDefault(x => x.Type.Equals(nameof(ClaimTypes.Email), StringComparison.OrdinalIgnoreCase))?.Value;
+    }
 }

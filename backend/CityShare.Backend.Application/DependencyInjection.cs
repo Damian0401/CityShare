@@ -1,5 +1,4 @@
 ﻿using CityShare.Backend.Application.Core.Behaviors;
-using CityShare.Backend.Domain.Shared;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
