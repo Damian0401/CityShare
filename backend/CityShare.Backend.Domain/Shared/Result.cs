@@ -2,24 +2,26 @@
 
 public class Result
 {
-    public Result(bool isSuccess, Error error)
+    public Result(bool isSuccess, IEnumerable<Error>? errors = null)
     {
-        if (isSuccess && error != Error.None)
+        if (isSuccess && errors is not null)
         {
             throw new InvalidOperationException();
         }
 
-        if (!isSuccess && error == Error.None)
+        if (!isSuccess && errors is null)
         {
             throw new InvalidOperationException();
         }
 
         IsSuccess = isSuccess;
-        Error = error;
+        Errors = errors;
     }
-    public bool IsSuccess { get; }
-    public Error Error { get; }
 
-    public static Result Success() => new(true, Error.None);
-    public static Result Failure(Error error) => new(false, error);
+    public bool IsSuccess { get; }
+    public bool IsFailure => !IsSuccess;
+    public IEnumerable<Error>? Errors { get; }
+
+    public static Result Success() => new(true);
+    public static Result Failure(IEnumerable<Error> errors) => new(false, errors);
 }

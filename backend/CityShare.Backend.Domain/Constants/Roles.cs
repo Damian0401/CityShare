@@ -1,6 +1,6 @@
 ﻿namespace CityShare.Backend.Domain.Constants;
 
-public static class Roles
+public class Roles
 {
     public const string User = "User";
     public const string Admin = "Admin";

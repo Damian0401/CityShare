@@ -1,5 +1,6 @@
 ﻿using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
+using CityShare.Backend.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,10 +15,10 @@ public static class DependencyInjection
         var connectionString = configuration.GetConnectionString(ConnectionStrings.CityShareDB);
 
         services.AddDbContext<CityShareDbContext>(options => options.UseSqlServer(connectionString));
-
+        
         services.AddIdentityCore<ApplicationUser>()
-            .AddSignInManager<SignInManager<ApplicationUser>>()
             .AddRoles<IdentityRole>()
+            .AddTokenProvider<RefreshTokenProvider<ApplicationUser>>(RefreshToken.TokenProvider)
             .AddEntityFrameworkStores<CityShareDbContext>();
 
         return services;

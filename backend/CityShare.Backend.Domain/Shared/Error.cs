@@ -1,25 +1,19 @@
-﻿using CityShare.Backend.Domain.Enums;
+﻿using CityShare.Backend.Domain.Constants;
 
 namespace CityShare.Backend.Domain.Shared;
 
 public class Error : IEquatable<Error>
 {
-    public static Error None => new Error(ErrorTypes.None, string.Empty);
+    public static Error None => new Error(string.Empty, string.Empty);
 
-    public Error(ErrorTypes type, string message)
+    public Error(string code, string message)
     {
-        Type = type;
-        Messages = new() { message };
-    }    
-    
-    public Error(ErrorTypes type, List<string> messages)
-    {
-        Type = type;
-        Messages = messages;
+        Code = code;
+        Message = message;
     }
 
-    public ErrorTypes Type { get; }
-    public List<string> Messages { get; }
+    public string Code { get; }
+    public string Message { get; }
 
     public static bool operator ==(Error? a, Error? b)
     {
@@ -33,7 +27,7 @@ public class Error : IEquatable<Error>
             return false;
         }
 
-        return a.Type == b.Type && a.Messages.SequenceEqual(b.Messages);
+        return a.Code == b.Code && a.Message == b.Message;
     }
 
     public static bool operator !=(Error? a, Error? b) => !(a == b);
@@ -57,8 +51,8 @@ public class Error : IEquatable<Error>
     {
         HashCode hashCode = default;
 
-        hashCode.Add(Type);
-        hashCode.Add(Messages);
+        hashCode.Add(Code);
+        hashCode.Add(Message);
 
         return hashCode.ToHashCode();
     }
@@ -70,6 +64,6 @@ public class Error : IEquatable<Error>
             return false;
         }
 
-        return Type == other.Type && Messages.SequenceEqual(other.Messages);
+        return Code == other.Code && Message == other.Message;
     }
 }

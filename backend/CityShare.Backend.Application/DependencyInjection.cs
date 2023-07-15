@@ -12,12 +12,15 @@ public static class DependencyInjection
     {
         var assembly = typeof(DependencyInjection).Assembly;
 
+        services.AddAutoMapper(assembly);
+
         services.AddValidatorsFromAssembly(assembly);
 
         services.AddMediatR(configuration 
             => configuration.RegisterServicesFromAssembly(assembly));
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
+
         return services;
     }
 }

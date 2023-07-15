@@ -1,5 +1,4 @@
-﻿using CityShare.Backend.Domain.Enums;
-using CityShare.Backend.Domain.Shared;
+﻿using CityShare.Backend.Domain.Shared;
 using FluentValidation;
 using MediatR;
 
@@ -28,9 +27,8 @@ public class ValidationPipelineBehaviour<TRequest, TResponse>
             .Select(validator => validator.Validate(request))
             .SelectMany(result => result.Errors)
             .Where(error => error is not null)
-            .Select(error => error.ErrorMessage)
+            .Select(error => new Error(error.ErrorCode, error.ErrorMessage))
             .Distinct()
-            .Order()
             .ToList();
 
         if (errors.Any())
@@ -41,21 +39,19 @@ public class ValidationPipelineBehaviour<TRequest, TResponse>
         return await next();
     }
 
-    private static TResult CreateValidationResult<TResult>(List<string> errors)
+    private static TResult CreateValidationResult<TResult>(List<Error> errors)
         where TResult : Result
     {
-        var error = new Error(ErrorTypes.ValidationFailure, errors);
-
         if (typeof(TResult) == typeof(Result))
         {
-            return (Result.Failure(error) as TResult)!;
+            return (Result.Failure(errors) as TResult)!;
         }
 
         var result = typeof(Result<>)
             .GetGenericTypeDefinition()
             .MakeGenericType(typeof(TResult).GenericTypeArguments.First())
             .GetMethod(nameof(Result.Failure))!
-            .Invoke(null, new object[] { error });
+            .Invoke(null, new object[] { errors });
 
         return (TResult)result!;
     }
