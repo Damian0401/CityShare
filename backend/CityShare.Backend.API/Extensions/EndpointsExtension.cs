@@ -1,5 +1,4 @@
 ﻿using CityShare.Backend.Api.Api;
-using CityShare.Backend.Api.Api.V1;
 
 namespace CityShare.Backend.Api.Extensions;
 
@@ -9,7 +8,10 @@ public static class EndpointsExtension
     {
         app.MapGet("/", () => "Hello World!");
 
-        app.MapPost(Endpoints.V1.Register, Authorization.Register)
+        app.MapPost(Endpoints.V1.Register, Api.V1.Authentication.Register)
+            .AllowAnonymous();
+
+        app.MapPost(Endpoints.V1.Login, Api.V1.Authentication.Login)
             .AllowAnonymous();
 
         return app;

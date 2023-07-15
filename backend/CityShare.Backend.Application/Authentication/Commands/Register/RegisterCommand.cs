@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Core.Contracts.Authentication;
+﻿using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
 using CityShare.Backend.Domain.Shared;
 using MediatR;
 

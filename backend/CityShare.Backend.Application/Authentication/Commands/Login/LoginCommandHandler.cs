@@ -1,27 +1,28 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
+using CityShare.Backend.Application.Core.Contracts.Authentication.Login;
+using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
+using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Domain.Shared;
 using CityShare.Backend.Domain.Settings;
+using CityShare.Backend.Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using CityShare.Backend.Application.Core.Dtos;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
 
-namespace CityShare.Backend.Application.Authentication.Commands.Register;
+namespace CityShare.Backend.Application.Authentication.Commands.Login;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
+public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly JwtSettings _jwtSettings;
     private readonly IJwtProvider _jwtProvider;
     private readonly IMapper _mapper;
-    private readonly JwtSettings _jwtSettings;
 
-    public RegisterCommandHandler(
-        UserManager<ApplicationUser> userManager, 
+    public LoginCommandHandler(
+        UserManager<ApplicationUser> userManager,
         IOptions<JwtSettings> jwtSettings,
         IJwtProvider jwtProvider,
         IMapper mapper)
@@ -32,38 +33,29 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         _mapper = mapper;
     }
 
-    public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         var user = await _userManager
             .FindByEmailAsync(request.Request.Email);
 
-        if (user is not null)
+        if (user is null)
         {
-            return Result<RegisterResponse>.Failure(Errors.EmailTaken);
+            return Result<LoginResponse>.Failure(Errors.InvalidCredentials);
         }
 
-        user = _mapper.Map<ApplicationUser>(request.Request);
+        var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Request.Password);
 
-        var result = await _userManager.CreateAsync(user, request.Request.Password);
-
-        if (!result.Succeeded)
+        if (!isPasswordValid)
         {
-            var errors = result.Errors
-                .Select(x => new Error(x.Code, x.Description))
-                .ToList();
-
-            return Result<RegisterResponse>
-                .Failure(errors);
+            return Result<LoginResponse>.Failure(Errors.InvalidCredentials);
         }
-
-        await _userManager.AddToRoleAsync(user, Roles.User);
 
         var response = await CreateResponseAsync(user);
 
         return response;
     }
 
-    private async Task<RegisterResponse> CreateResponseAsync(ApplicationUser user)
+    private async Task<LoginResponse> CreateResponseAsync(ApplicationUser user)
     {
         var accessToken = _jwtProvider.GenerateToken(user);
 
@@ -82,7 +74,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays),
         };
 
-        return new RegisterResponse
+        return new LoginResponse
         {
             User = userDto,
             RefreshToken = refreshToken,

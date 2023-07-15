@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CityShare.Backend.Application.Core.Contracts.Authentication;
+using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Entities;
 

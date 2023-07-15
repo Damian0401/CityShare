@@ -1,4 +1,4 @@
-﻿namespace CityShare.Backend.Application.Core.Contracts.Authentication;
+﻿namespace CityShare.Backend.Application.Core.Contracts.Authentication.Register;
 
 public class RegisterRequest
 {

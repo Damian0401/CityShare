@@ -1,9 +1,9 @@
 ﻿using CityShare.Backend.Application.Core.Dtos;
 using Microsoft.AspNetCore.Http;
 
-namespace CityShare.Backend.Application.Core.Contracts.Authentication;
+namespace CityShare.Backend.Application.Core.Contracts.Authentication.Login;
 
-public class RegisterResponse
+public class LoginResponse
 {
     public UserDto User { get; set; } = default!;
     public string RefreshToken { get; set; } = default!;

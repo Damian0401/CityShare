@@ -21,11 +21,6 @@ public static class SeedDataExtension
 
     private static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
     {
-        if (roleManager.Roles.Any())
-        {
-            return;
-        }
-
         var roles = typeof(Roles)
             .GetFields()
             .Select(x => x.GetValue(null))
