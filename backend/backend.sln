@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Domain", "CityShare.Backend.Domain\CityShare.Backend.Domain.csproj", "{AFE7CD7B-234F-4309-A4ED-FFFAC295C934}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Domain", "CityShare.Backend.Domain\CityShare.Backend.Domain.csproj", "{AFE7CD7B-234F-4309-A4ED-FFFAC295C934}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Application", "CityShare.Backend.Application\CityShare.Backend.Application.csproj", "{B9FCF922-062B-429A-9C38-CB49D36CBAC3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Application", "CityShare.Backend.Application\CityShare.Backend.Application.csproj", "{B9FCF922-062B-429A-9C38-CB49D36CBAC3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Infrastructure", "CityShare.Backend.Infrastructure\CityShare.Backend.Infrastructure.csproj", "{655BC01E-B59C-4703-B040-B5C136634E6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Infrastructure", "CityShare.Backend.Infrastructure\CityShare.Backend.Infrastructure.csproj", "{655BC01E-B59C-4703-B040-B5C136634E6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Persistence", "CityShare.Backend.Persistence\CityShare.Backend.Persistence.csproj", "{FBF87932-21F7-472A-B311-61504096F7E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Persistence", "CityShare.Backend.Persistence\CityShare.Backend.Persistence.csproj", "{FBF87932-21F7-472A-B311-61504096F7E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.API", "CityShare.Backend.API\CityShare.Backend.API.csproj", "{646D5044-0A23-440C-862F-B8FF8326C793}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Tests", "CityShare.Backend.Tests\CityShare.Backend.Tests.csproj", "{C98B9D38-D180-4247-8F17-49FDEA860BC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Tests", "CityShare.Backend.Tests\CityShare.Backend.Tests.csproj", "{C98B9D38-D180-4247-8F17-49FDEA860BC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Api", "CityShare.Backend.Api\CityShare.Backend.Api.csproj", "{ADBCF72D-F338-4E03-8A70-01869B6166D6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,14 +37,14 @@ Global
 		{FBF87932-21F7-472A-B311-61504096F7E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBF87932-21F7-472A-B311-61504096F7E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBF87932-21F7-472A-B311-61504096F7E1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{646D5044-0A23-440C-862F-B8FF8326C793}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{646D5044-0A23-440C-862F-B8FF8326C793}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{646D5044-0A23-440C-862F-B8FF8326C793}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{646D5044-0A23-440C-862F-B8FF8326C793}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C98B9D38-D180-4247-8F17-49FDEA860BC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C98B9D38-D180-4247-8F17-49FDEA860BC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C98B9D38-D180-4247-8F17-49FDEA860BC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C98B9D38-D180-4247-8F17-49FDEA860BC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADBCF72D-F338-4E03-8A70-01869B6166D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADBCF72D-F338-4E03-8A70-01869B6166D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADBCF72D-F338-4E03-8A70-01869B6166D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADBCF72D-F338-4E03-8A70-01869B6166D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

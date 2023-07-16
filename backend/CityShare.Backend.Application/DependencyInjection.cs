@@ -1,5 +1,4 @@
 ﻿using CityShare.Backend.Application.Core.Behaviors;
-using CityShare.Backend.Domain.Shared;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,12 +11,15 @@ public static class DependencyInjection
     {
         var assembly = typeof(DependencyInjection).Assembly;
 
+        services.AddAutoMapper(assembly);
+
         services.AddValidatorsFromAssembly(assembly);
 
         services.AddMediatR(configuration 
             => configuration.RegisterServicesFromAssembly(assembly));
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
+
         return services;
     }
 }

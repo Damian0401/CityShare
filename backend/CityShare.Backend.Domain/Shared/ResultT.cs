@@ -1,18 +1,38 @@
 ﻿namespace CityShare.Backend.Domain.Shared;
 
-public class Result<TValue> : Result
+public class Result<TValue> 
+    : Result
+    where TValue : class
 {
-    public Result(TValue? value, bool isSuccess, Error error)
-        : base(isSuccess, error)
+    TValue? _value;
+
+    public Result(TValue value, bool isSuccess, IEnumerable<Error>? errors = null)
+        : base(isSuccess, errors)
     {
-        Value = value;
+        _value = value;
     }
+
+    public Result(bool isSuccess, IEnumerable<Error>? errors = null) 
+        : base(isSuccess, errors) { }
     
-    public TValue? Value { get; }
+    public TValue Value
+    {
+        get
+        {
+            if (_value is null || !IsSuccess)
+            {
+                throw new InvalidOperationException();
+            }
 
-    public static implicit operator Result<TValue>(TValue? value) 
-        => new Result<TValue>(value, true, Error.None);
+            return _value;
+        }
+    }
 
-    public static Result<TValue> Success(TValue value) => new(value, true, Error.None);
-    public static new Result<TValue> Failure(Error error) => new(default, false, error);
+    public bool IsEmpty => _value is null;
+
+    public static implicit operator Result<TValue>(TValue value) 
+        => new Result<TValue>(value, true);
+
+    public static Result<TValue> Success(TValue value) => new(value, true);
+    public static new Result<TValue> Failure(IEnumerable<Error> errors) => new(false, errors);
 }
