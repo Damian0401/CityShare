@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Castle.Core.Logging;
 using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Contracts.Authentication.Refresh;
@@ -9,6 +10,7 @@ using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
 using CityShare.Backend.Tests.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
@@ -38,12 +40,15 @@ public class RefreshCommandHandlerTests
             AccessToken = Value.String
         };
 
+        var logger = new Mock<ILogger<RefreshCommandHandler>>().Object;
+
         _refreshCommand = new RefreshCommand(request, Value.String);
 
         _systemUnderTests = new RefreshCommandHandler(
             _userManagerMockHelper.GetMockObject(),
             _jwtProviderMock.Object,
-            mapper);
+            mapper,
+            logger);
     }
 
     [Fact]

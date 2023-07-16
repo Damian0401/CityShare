@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Castle.Core.Logging;
 using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Contracts.Authentication.Login;
@@ -9,6 +10,7 @@ using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
 using CityShare.Backend.Tests.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
@@ -39,13 +41,16 @@ public class LoginCommandHandlerTests
             Password = Value.String,
         };
 
+        var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
+
         _loginCommand = new LoginCommand(request);
 
         _systemUnderTests = new LoginCommandHandler(
             _userManagerMockHelper.GetMockObject(),
             jwtSettings,
             _jwtProviderMock.Object,
-            mapper);
+            mapper,
+            logger);
     }
 
     [Fact]
