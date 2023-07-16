@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Authentication.Commands.Register;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
@@ -9,6 +10,7 @@ using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
 using CityShare.Backend.Tests.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
@@ -40,13 +42,16 @@ public class RegisterCommandHandlerTests
             UserName = Value.String,
         };
 
+        var logger = new Mock<ILogger<RegisterCommandHandler>>().Object;
+
         _registerCommand = new RegisterCommand(request);
 
         _systemUnderTests = new RegisterCommandHandler(
             _userManagerMockHelper.GetMockObject(),
             jwtSettings,
             _jwtProviderMock.Object,
-            mapper);
+            mapper,
+            logger);
     }
 
     [Fact]
