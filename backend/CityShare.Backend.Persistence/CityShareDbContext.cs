@@ -14,7 +14,7 @@ public class CityShareDbContext : IdentityDbContext<ApplicationUser>
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(typeof(ApplicationUserConfigurations).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(CityShareDbContext).Assembly);
 
         base.OnModelCreating(builder);
     }

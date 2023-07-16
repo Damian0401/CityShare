@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
+    <PackageReference Include="Moq" Version="4.18.4" />
     <PackageReference Include="xunit" Version="2.4.2" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -20,6 +21,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CityShare.Backend.Application\CityShare.Backend.Application.csproj" />
+    <ProjectReference Include="..\CityShare.Backend.Infrastructure\CityShare.Backend.Infrastructure.csproj" />
+    <ProjectReference Include="..\CityShare.Backend.Persistence\CityShare.Backend.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
