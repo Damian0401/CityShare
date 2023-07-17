@@ -7,6 +7,7 @@ const Home = () => {
       <BaseContainer type={Containers.Primary}>Primary</BaseContainer>
       <br/>
       <BaseContainer type={Containers.Secondary}>Secondary</BaseContainer>
+      <br/>
     </>
   );
 };
