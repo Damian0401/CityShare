@@ -8,13 +8,13 @@ const ToggleThemeButton = () => {
 
   const isLightMode = colorMode === ColorModes.Light;
 
-  const icon = isLightMode ? <MoonIcon boxSize={6} /> : <SunIcon boxSize={7} />;
+  const icon = isLightMode ? <MoonIcon boxSize={7} /> : <SunIcon boxSize={7} />;
 
   return (
     <IconButton
       variant={ButtonVariants.Ghost}
       aria-label={ThemeButtonLabel}
-      _hover={{}}
+      _hover={{ opacity: "0.5" }}
       _active={{}}
       icon={icon}
       onClick={toggleColorMode}

@@ -1,10 +1,16 @@
 
 :export {
     // --- Light Theme ---
-    primaryLight: #4861cc;
+    primaryLight: #3250d6;
     secondaryLight: #ea3838;
+    textLight: #000000;
+    backgroundLight: #f1f1f5;
+    navbarLight: #fffdfd;
 
     // --- Dark Theme ---
-    primaryDark: #362c2c;
+    primaryDark: #2f306b;
     secondaryDark: #902f2f;
+    textDark: #ffffff;
+    backgroundDark: #201d28;
+    navbarDark: #25273b;
 }
