@@ -1,0 +1,28 @@
+@import "../../assets/styles/general.module.scss";
+
+.container {
+  padding: 1rem;
+  font-size: $mdFontSize;
+  min-width: 25rem;
+
+  .formContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+
+    .buttonContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      .link {
+        font-size: $smFontSize;
+
+        &:hover {
+          opacity: $hoverOpacity;
+        }
+      }
+    }
+  }
+}
