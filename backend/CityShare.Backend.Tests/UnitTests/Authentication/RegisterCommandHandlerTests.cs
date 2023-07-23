@@ -29,8 +29,6 @@ public class RegisterCommandHandlerTests
 
         _jwtProviderMock = new Mock<IJwtProvider>();
 
-        var jwtSettings = Options.Create(new JwtSettings());
-
         var mapper = new MapperConfiguration(
             config => config.AddProfile<AutoMapperProfile>())
             .CreateMapper();
@@ -48,7 +46,6 @@ public class RegisterCommandHandlerTests
 
         _systemUnderTests = new RegisterCommandHandler(
             _userManagerMockHelper.GetMockObject(),
-            jwtSettings,
             _jwtProviderMock.Object,
             mapper,
             logger);
