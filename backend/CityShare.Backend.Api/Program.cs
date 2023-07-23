@@ -37,4 +37,7 @@ app.UseEndpoints();
 
 app.UseCors(CorsSettings.PolicyName);
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 app.Run();
