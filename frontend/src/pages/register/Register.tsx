@@ -4,13 +4,19 @@ import BaseContainer from "../../components/base-container/BaseContainer";
 import styles from "./Register.module.scss";
 import PasswordInput from "../../components/password-input/PasswordInput";
 import { nameof } from "ts-simple-nameof";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import TextInput from "../../components/text-input/TextInput";
 import { IRegisterValues } from "../../common/interfaces/IRegisterValues";
+import { registerSchema } from "./RegisterSchema";
+import { useStore } from "../../common/stores/store";
+import { observer } from "mobx-react-lite";
 
-const Register = () => {
+const Register = observer(() => {
+  const { authStore } = useStore();
+
+  const navigate = useNavigate();
+
   const initialValues: IRegisterValues = {
     email: "",
     userName: "",
@@ -18,29 +24,9 @@ const Register = () => {
     confirmPassword: "",
   };
 
-  const validationSchema = Yup.object({
-    email: Yup.string().required().email(),
-    userName: Yup.string()
-      .required()
-      .matches(
-        /^[a-zA-Z0-9]+$/,
-        "Username must contain only letters and numbers"
-      ),
-    password: Yup.string()
-      .required()
-      .min(6)
-      .matches(/[A-Z]/, "Password must contain at least one uppercase letter")
-      .matches(/[a-z]/, "Password must contain at least one lowercase letter")
-      .matches(/[0-9]/, "Password must contain at least one number")
-      .matches(/[^a-zA-Z0-9]/, "Password must contain at least one symbol"),
-    confirmPassword: Yup.string().oneOf(
-      [Yup.ref(nameof<IRegisterValues>((x) => x.password))],
-      "Passwords must match"
-    ),
-  });
-
-  const handleSubmit = (values: IRegisterValues) => {
-    console.log(values);
+  const handleSubmit = async (values: IRegisterValues) => {
+    await authStore.register(values);
+    navigate("/");
   };
 
   return (
@@ -48,7 +34,7 @@ const Register = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={validationSchema}
+        validationSchema={registerSchema}
       >
         {({ handleSubmit, errors, touched }) => (
           <form onSubmit={handleSubmit} className={styles.formContainer}>
@@ -93,6 +79,6 @@ const Register = () => {
       </Formik>
     </BaseContainer>
   );
-};
+});
 
 export default Register;

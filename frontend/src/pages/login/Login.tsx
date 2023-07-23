@@ -5,24 +5,26 @@ import styles from "./Login.module.scss";
 import PasswordInput from "../../components/password-input/PasswordInput";
 import { ILoginValues } from "../../common/interfaces";
 import { nameof } from "ts-simple-nameof";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
-import * as Yup from "yup";
 import TextInput from "../../components/text-input/TextInput";
+import { loginSchema } from "./LoginSchema";
+import { useStore } from "../../common/stores/store";
+import { observer } from "mobx-react-lite";
 
-const Login = () => {
+const Login = observer(() => {
+  const { authStore } = useStore();
+
+  const navigate = useNavigate();
+
   const initialValues: ILoginValues = {
     email: "",
     password: "",
   };
 
-  const validationSchema = Yup.object({
-    email: Yup.string().required().email(),
-    password: Yup.string().required(),
-  });
-
-  const handleSubmit = (values: ILoginValues) => {
-    console.log(values);
+  const handleSubmit = async (values: ILoginValues) => {
+    await authStore.login(values);
+    navigate("/");
   };
 
   return (
@@ -30,7 +32,7 @@ const Login = () => {
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
-        validationSchema={validationSchema}
+        validationSchema={loginSchema}
       >
         {({ handleSubmit, errors, touched }) => (
           <form onSubmit={handleSubmit} className={styles.formContainer}>
@@ -60,6 +62,6 @@ const Login = () => {
       </Formik>
     </BaseContainer>
   );
-};
+});
 
 export default Login;
