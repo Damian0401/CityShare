@@ -4,33 +4,27 @@ using CityShare.Backend.Application.Core.Contracts.Authentication.Login;
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Domain.Shared;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Login;
 
 public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly JwtSettings _jwtSettings;
     private readonly IJwtProvider _jwtProvider;
     private readonly IMapper _mapper;
     private readonly ILogger<LoginCommandHandler> _logger;
 
     public LoginCommandHandler(
         UserManager<ApplicationUser> userManager,
-        IOptions<JwtSettings> jwtSettings,
         IJwtProvider jwtProvider,
         IMapper mapper,
         ILogger<LoginCommandHandler> logger)
     {
         _userManager = userManager;
-        _jwtSettings = jwtSettings.Value;
         _jwtProvider = jwtProvider;
         _mapper = mapper;
         _logger = logger;
@@ -79,17 +73,10 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
 
-        var options = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays),
-        };
-
         return new LoginResponse
         {
             User = userDto,
             RefreshToken = refreshToken,
-            CookieOptions = options
         };
     }
 }

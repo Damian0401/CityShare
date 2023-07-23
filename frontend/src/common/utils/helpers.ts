@@ -1,5 +1,5 @@
-import { Secrets } from "../enums";
+import { Environments } from "../enums";
 
-export const getSecret = (secret: Secrets) => {
-  return process.env[secret];
+export const getSecret = (environment: Environments) => {
+  return import.meta.env[environment];
 };

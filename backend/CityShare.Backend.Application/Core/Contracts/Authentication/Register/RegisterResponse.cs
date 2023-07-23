@@ -7,12 +7,10 @@ public class RegisterResponse
 {
     public UserDto User { get; set; } = default!;
     public string RefreshToken { get; set; } = default!;
-    public CookieOptions CookieOptions { get; set; } = default!;
 
-    public void Deconstruct(out UserDto user, out string refreshToken, out CookieOptions cookieOptions)
+    public void Deconstruct(out UserDto user, out string refreshToken)
     {
         user = User;
         refreshToken = RefreshToken;
-        cookieOptions = CookieOptions;
     }
 }

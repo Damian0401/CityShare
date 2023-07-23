@@ -5,9 +5,7 @@ using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Shared;
 using CityShare.Backend.Domain.Settings;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Options;
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
 using Microsoft.Extensions.Logging;
@@ -20,17 +18,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
     private readonly IJwtProvider _jwtProvider;
     private readonly IMapper _mapper;
     private readonly ILogger<RegisterCommandHandler> _logger;
-    private readonly JwtSettings _jwtSettings;
 
     public RegisterCommandHandler(
         UserManager<ApplicationUser> userManager, 
-        IOptions<JwtSettings> jwtSettings,
         IJwtProvider jwtProvider,
         IMapper mapper,
         ILogger<RegisterCommandHandler> logger)
     {
         _userManager = userManager;
-        _jwtSettings = jwtSettings.Value;
         _jwtProvider = jwtProvider;
         _mapper = mapper;
         _logger = logger;
@@ -88,17 +83,10 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
 
-        var options = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays),
-        };
-
         return new RegisterResponse
         {
             User = userDto,
             RefreshToken = refreshToken,
-            CookieOptions = options
         };
     }
 }

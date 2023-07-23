@@ -1,5 +1,7 @@
 ﻿using CityShare.Backend.Api.Api;
 using CityShare.Backend.Application.Core.Contracts.Authentication.Login;
+using CityShare.Backend.Domain.Constants;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace CityShare.Backend.Api.Extensions;
 

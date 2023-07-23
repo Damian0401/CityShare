@@ -8,15 +8,16 @@ using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Settings;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using Microsoft.Extensions.Options;
 
 namespace CityShare.Backend.Api.Api.V1;
 
 public class Authentication
 {
     public static async Task<IResult> Register(
-        [FromBody] RegisterRequest request, 
+        [FromBody] RegisterRequest request,
         HttpResponse response, 
+        IOptions<JwtSettings> jwtSettings,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
@@ -27,7 +28,15 @@ public class Authentication
             return Results.BadRequest(result.Errors);
         }
 
-        (var user, var refreshToken, var cookieOptions) = result.Value;
+        (var user, var refreshToken) = result.Value;
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTimeOffset.UtcNow.AddDays(jwtSettings.Value.RefreshTokenExpirationDays),
+            Secure = true,
+            SameSite = SameSiteMode.None
+        };
 
         response.Cookies.Append(RefreshToken.CookieKey, refreshToken, cookieOptions);
 
@@ -36,7 +45,8 @@ public class Authentication
     
     public static async Task<IResult> Login(
         [FromBody] LoginRequest request, 
-        HttpResponse response, 
+        HttpResponse response,
+        IOptions<JwtSettings> jwtSettings,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
@@ -47,7 +57,15 @@ public class Authentication
             return Results.BadRequest(result.Errors);
         }
 
-        (var user, var refreshToken, var cookieOptions) = result.Value;
+        (var user, var refreshToken) = result.Value;
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = true,
+            Expires = DateTimeOffset.UtcNow.AddDays(jwtSettings.Value.RefreshTokenExpirationDays),
+            SameSite = SameSiteMode.None
+        };
 
         response.Cookies.Append(RefreshToken.CookieKey, refreshToken, cookieOptions);
 

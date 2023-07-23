@@ -4,9 +4,14 @@ import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
 import { Containers, Routes } from "../../common/enums";
 import BaseContainer from "../base-container/BaseContainer";
 import NavbarLogo from "../../assets/images/navbar-logo.svg";
-import { Spacer } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
+import { useStore } from "../../common/stores/store";
 
 const Navbar = () => {
+  const {
+    authStore: { user },
+  } = useStore();
+
   return (
     <BaseContainer className={styles.container} type={Containers.Navbar}>
       <div className={styles.tabs}>
@@ -18,6 +23,7 @@ const Navbar = () => {
       <div className={styles.tabs}>
         <Link to={Routes.Login}>Login</Link>
         <Link to={Routes.Register}>Register</Link>
+        <Text>{user?.userName}</Text>
         <ToggleThemeButton />
       </div>
     </BaseContainer>

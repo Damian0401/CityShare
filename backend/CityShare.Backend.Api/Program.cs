@@ -1,5 +1,6 @@
 using CityShare.Backend.Api.Extensions;
 using CityShare.Backend.Application;
+using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure;
 using CityShare.Backend.Persistence;
 using CityShare.Backend.Persistence.Extensions;
@@ -33,5 +34,10 @@ app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 
 app.UseEndpoints();
+
+app.UseCors(CorsSettings.PolicyName);
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.Run();

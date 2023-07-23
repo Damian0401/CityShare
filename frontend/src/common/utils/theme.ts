@@ -9,7 +9,7 @@ import {
   SecondaryContainer,
 } from "./styleConfigs";
 
-const { Button } = chakraTheme.components;
+const { Button, Input, FormError } = chakraTheme.components;
 
 const theme = extendBaseTheme({
   config: {
@@ -28,6 +28,8 @@ const theme = extendBaseTheme({
   },
   components: {
     Button,
+    Input,
+    FormError,
     PrimaryContainer,
     SecondaryContainer,
     NavbarContainer,
