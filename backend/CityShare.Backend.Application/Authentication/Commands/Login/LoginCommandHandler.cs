@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Login;
+using CityShare.Backend.Application.Core.Models.Authentication.Login;
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Login;
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponse>>
+public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponseModel>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtProvider _jwtProvider;
@@ -30,7 +30,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         _logger = logger;
     }
 
-    public async Task<Result<LoginResponse>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<Result<LoginResponseModel>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
 
@@ -39,7 +39,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
         if (user is null)
         {
-            return Result<LoginResponse>.Failure(Errors.InvalidCredentials);
+            _logger.LogError("User with {@Email} not found", request.Request.Email);
+            return Result<LoginResponseModel>.Failure(Errors.InvalidCredentials);
         }
 
         _logger.LogInformation("Checking provided password for {@Email}", user.Email);
@@ -48,7 +49,8 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
         if (!isPasswordValid)
         {
-            return Result<LoginResponse>.Failure(Errors.InvalidCredentials);
+            _logger.LogError("Invalid password for {@Email}", user.Email);
+            return Result<LoginResponseModel>.Failure(Errors.InvalidCredentials);
         }
 
         var response = await CreateResponseAsync(user);
@@ -56,7 +58,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         return response;
     }
 
-    private async Task<LoginResponse> CreateResponseAsync(ApplicationUser user)
+    private async Task<LoginResponseModel> CreateResponseAsync(ApplicationUser user)
     {
         _logger.LogInformation("Generating tokens for {@Emaill}", user.Email);
 
@@ -73,7 +75,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
 
-        return new LoginResponse
+        return new LoginResponseModel
         {
             User = userDto,
             RefreshToken = refreshToken,

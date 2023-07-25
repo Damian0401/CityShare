@@ -1,6 +1,6 @@
-﻿namespace CityShare.Backend.Application.Core.Contracts.Authentication.Register;
+﻿namespace CityShare.Backend.Application.Core.Models.Authentication.Register;
 
-public class RegisterRequest
+public class RegisterRequestModel
 {
     public string Email { get; set; } = default!;
     public string UserName { get; set; } = default!;
