@@ -8,3 +8,4 @@ export * from "./Environments";
 export * from "./Routes";
 export * from "./Cursors";
 export * from "./InputTypes";
+export * from "./MotionPresets";

@@ -6,6 +6,7 @@ export const registerSchema = Yup.object({
   email: Yup.string().required().email(),
   userName: Yup.string()
     .required()
+    .min(6)
     .matches(
       /^[a-zA-Z0-9]+$/,
       "Username must contain only letters and numbers"

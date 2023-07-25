@@ -26,6 +26,10 @@ export default class AuthStore {
     );
   }
 
+  get user() {
+    return this.currentUser;
+  }
+
   login = async (values: ILoginValues) => {
     const user = await agent.Auth.login(values);
     runInAction(() => {
@@ -46,7 +50,10 @@ export default class AuthStore {
     });
   };
 
-  get user() {
-    return this.currentUser;
-  }
+  refresh = async () => {
+    const user = await agent.Auth.refresh();
+    runInAction(() => {
+      this.currentUser = user;
+    });
+  };
 }

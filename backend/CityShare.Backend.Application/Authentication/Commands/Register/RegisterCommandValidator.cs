@@ -13,6 +13,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 
         RuleFor(x => x.Request.UserName)
             .NotEmpty()
+            .MinimumLength(6)
             .Matches("^[a-zA-Z0-9]+$").WithMessage(x => $"'{nameof(x.Request.UserName)}' should contain only letters and digits.")
             .WithName(x => nameof(x.Request.UserName));
 

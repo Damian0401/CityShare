@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { Containers, InputTypes } from "../../common/enums";
+import { Containers, InputTypes, Routes } from "../../common/enums";
 import BaseContainer from "../../components/base-container/BaseContainer";
 import styles from "./Register.module.scss";
 import PasswordInput from "../../components/password-input/PasswordInput";
@@ -11,10 +11,11 @@ import { IRegisterValues } from "../../common/interfaces/IRegisterValues";
 import { registerSchema } from "./RegisterSchema";
 import { useStore } from "../../common/stores/store";
 import { observer } from "mobx-react-lite";
+import { useState } from "react";
 
 const Register = observer(() => {
+  const [isLoading, setIsLoading] = useState(false);
   const { authStore } = useStore();
-
   const navigate = useNavigate();
 
   const initialValues: IRegisterValues = {
@@ -25,8 +26,13 @@ const Register = observer(() => {
   };
 
   const handleSubmit = async (values: IRegisterValues) => {
-    await authStore.register(values);
-    navigate("/");
+    setIsLoading(true);
+    try {
+      await authStore.register(values);
+      navigate(Routes.Index);
+    } catch {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -69,10 +75,12 @@ const Register = observer(() => {
               isRequired
             />
             <div className={styles.buttonContainer}>
-              <Link to="/login" className={styles.link}>
+              <Link to={Routes.Login} className={styles.link}>
                 Already have an account?
               </Link>
-              <Button type="submit">Register</Button>
+              <Button type="submit" isLoading={isLoading}>
+                Register
+              </Button>
             </div>
           </form>
         )}
