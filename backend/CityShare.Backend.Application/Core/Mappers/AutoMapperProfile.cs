@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
+using CityShare.Backend.Application.Core.Models.Authentication.Register;
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Entities;
 
@@ -14,7 +14,7 @@ public class AutoMapperProfile : Profile
 
     private void MapsForUser()
     {
-        CreateMap<RegisterRequest, ApplicationUser>();
+        CreateMap<RegisterRequestModel, ApplicationUser>();
         CreateMap<ApplicationUser, UserDto>();
     }
 }

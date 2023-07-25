@@ -1,9 +1,9 @@
 ﻿using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Authentication.Commands.Register;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Login;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Refresh;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
+using CityShare.Backend.Application.Core.Models.Authentication.Login;
+using CityShare.Backend.Application.Core.Models.Authentication.Refresh;
+using CityShare.Backend.Application.Core.Models.Authentication.Register;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Settings;
 using MediatR;
@@ -15,7 +15,7 @@ namespace CityShare.Backend.Api.Api.V1;
 public class Authentication
 {
     public static async Task<IResult> Register(
-        [FromBody] RegisterRequest request,
+        [FromBody] RegisterRequestModel request,
         HttpResponse response, 
         IOptions<JwtSettings> jwtSettings,
         IMediator mediator,
@@ -44,7 +44,7 @@ public class Authentication
     }
     
     public static async Task<IResult> Login(
-        [FromBody] LoginRequest request, 
+        [FromBody] LoginRequestModel request, 
         HttpResponse response,
         IOptions<JwtSettings> jwtSettings,
         IMediator mediator,
@@ -73,7 +73,7 @@ public class Authentication
     }
 
     public static async Task<IResult> Refresh(
-        [FromBody] RefreshRequest refreshRequest,
+        [FromBody] RefreshRequestModel refreshRequest,
         HttpRequest request, 
         IMediator mediator,
         CancellationToken cancellationToken)

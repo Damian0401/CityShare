@@ -2,7 +2,7 @@
 using Castle.Core.Logging;
 using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Refresh;
+using CityShare.Backend.Application.Core.Models.Authentication.Refresh;
 using CityShare.Backend.Application.Core.Mappers;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
@@ -35,7 +35,7 @@ public class RefreshCommandHandlerTests
             config => config.AddProfile<AutoMapperProfile>())
             .CreateMapper();
 
-        var request = new RefreshRequest
+        var request = new RefreshRequestModel
         {
             AccessToken = Value.String
         };

@@ -7,12 +7,12 @@ using CityShare.Backend.Domain.Settings;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using CityShare.Backend.Application.Core.Dtos;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Register;
+using CityShare.Backend.Application.Core.Models.Authentication.Register;
 using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Register;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponse>>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponseModel>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtProvider _jwtProvider;
@@ -31,7 +31,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         _logger = logger;
     }
 
-    public async Task<Result<RegisterResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RegisterResponseModel>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
 
@@ -40,7 +40,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
         if (user is not null)
         {
-            return Result<RegisterResponse>.Failure(Errors.EmailTaken);
+            _logger.LogError("User with {@Email} not found", user.Email);
+            return Result<RegisterResponseModel>.Failure(Errors.EmailTaken);
         }
 
         user = _mapper.Map<ApplicationUser>(request.Request);
@@ -55,7 +56,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
                 .Select(x => new Error(x.Code, x.Description))
                 .ToList();
 
-            return Result<RegisterResponse>
+            _logger.LogError("Creating user failed with {@Errors}", errors);
+            return Result<RegisterResponseModel>
                 .Failure(errors);
         }
 
@@ -68,7 +70,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         return response;
     }
 
-    private async Task<RegisterResponse> CreateResponseAsync(ApplicationUser user)
+    private async Task<RegisterResponseModel> CreateResponseAsync(ApplicationUser user)
     {
         _logger.LogInformation("Generating tokens for {@Email}", user.Email);
 
@@ -83,7 +85,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
 
-        return new RegisterResponse
+        return new RegisterResponseModel
         {
             User = userDto,
             RefreshToken = refreshToken,

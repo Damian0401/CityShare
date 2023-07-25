@@ -2,7 +2,7 @@
 using Castle.Core.Logging;
 using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
-using CityShare.Backend.Application.Core.Contracts.Authentication.Login;
+using CityShare.Backend.Application.Core.Models.Authentication.Login;
 using CityShare.Backend.Application.Core.Mappers;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
@@ -33,7 +33,7 @@ public class LoginCommandHandlerTests
             config => config.AddProfile<AutoMapperProfile>())
             .CreateMapper();
 
-        var request = new LoginRequest
+        var request = new LoginRequestModel
         {
             Email = Value.String,
             Password = Value.String,
