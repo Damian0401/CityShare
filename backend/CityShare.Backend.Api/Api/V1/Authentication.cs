@@ -17,7 +17,7 @@ public class Authentication
     public static async Task<IResult> Register(
         [FromBody] RegisterRequestModel request,
         HttpResponse response, 
-        IOptions<JwtSettings> jwtSettings,
+        IOptions<AuthSettings> authSettings,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
@@ -33,7 +33,7 @@ public class Authentication
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Expires = DateTimeOffset.UtcNow.AddDays(jwtSettings.Value.RefreshTokenExpirationDays),
+            Expires = DateTimeOffset.UtcNow.AddDays(authSettings.Value.RefreshTokenExpirationDays),
             Secure = true,
             SameSite = SameSiteMode.None
         };
@@ -46,7 +46,7 @@ public class Authentication
     public static async Task<IResult> Login(
         [FromBody] LoginRequestModel request, 
         HttpResponse response,
-        IOptions<JwtSettings> jwtSettings,
+        IOptions<AuthSettings> authSettings,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
@@ -63,7 +63,7 @@ public class Authentication
         {
             HttpOnly = true,
             Secure = true,
-            Expires = DateTimeOffset.UtcNow.AddDays(jwtSettings.Value.RefreshTokenExpirationDays),
+            Expires = DateTimeOffset.UtcNow.AddDays(authSettings.Value.RefreshTokenExpirationDays),
             SameSite = SameSiteMode.None
         };
 

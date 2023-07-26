@@ -22,8 +22,8 @@ public static class SecurityExtension
                     .AllowCredentials());
         });
 
-        var jwtSettings = new JwtSettings();
-        configuration.Bind(JwtSettings.Key, jwtSettings);
+        var jwtSettings = new AuthSettings();
+        configuration.Bind(AuthSettings.Key, jwtSettings);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters

@@ -11,14 +11,14 @@ namespace CityShare.Backend.Infrastructure.Authentication;
 
 public class JwtProvider : IJwtProvider
 {
-    private readonly JwtSettings _jwtSettings;
+    private readonly AuthSettings _jwtSettings;
 
-    public JwtProvider(IOptions<JwtSettings> options)
+    public JwtProvider(IOptions<AuthSettings> options)
     {
         _jwtSettings = options.Value;
     }
 
-    public string GenerateToken(ApplicationUser user)
+    public string GenerateToken(ApplicationUser user, IEnumerable<string> roles)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecurityKey));
 
@@ -26,7 +26,12 @@ public class JwtProvider : IJwtProvider
         {
             new (ClaimTypes.Email, user.Email ?? string.Empty)
         };
-        
+
+        foreach (var role in roles)
+        {
+            claims.Add(new(ClaimTypes.Role, role));
+        }
+
         var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -48,6 +53,11 @@ public class JwtProvider : IJwtProvider
     public string? GetEmailFromToken(string token)
     {
         var handler = new JwtSecurityTokenHandler();
+
+        if (!handler.CanReadToken(token))
+        {
+            return null;
+        };
 
         var jwtSecurityToken = handler.ReadJwtToken(token);
 

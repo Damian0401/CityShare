@@ -4,6 +4,6 @@ namespace CityShare.Backend.Application.Core.Abstractions.Authentication;
 
 public interface IJwtProvider
 {
-    string GenerateToken(ApplicationUser user);
+    string GenerateToken(ApplicationUser user, IEnumerable<string> roles);
     string? GetEmailFromToken(string token);
 }
