@@ -1,5 +1,6 @@
 using CityShare.Backend.Api.Extensions;
 using CityShare.Backend.Application;
+using CityShare.Backend.Application.Core.Middleware;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure;
 using CityShare.Backend.Persistence;
@@ -32,6 +33,8 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseEndpoints();
 
