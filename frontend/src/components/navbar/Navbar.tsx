@@ -7,9 +7,15 @@ import NavbarLogo from "../../assets/images/navbar-logo.svg";
 import { useStore } from "../../common/stores/store";
 import { observer } from "mobx-react-lite";
 import UserMenu from "./components/user-menu/UserMenu";
+import Router from "../../pages/Router";
 
 const Navbar = observer(() => {
   const { authStore } = useStore();
+
+  const handleLogout = async () => {
+    await authStore.logout();
+    Router.navigate(Routes.Login);
+  };
 
   return (
     <div className={styles.container}>
@@ -27,7 +33,7 @@ const Navbar = observer(() => {
         </div>
       </BaseContainer>
       {authStore.user && (
-        <UserMenu user={authStore.user} logout={authStore.logout} />
+        <UserMenu user={authStore.user} logout={handleLogout} />
       )}
     </div>
   );
