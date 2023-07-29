@@ -73,6 +73,7 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
 
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
+        userDto.Roles = roles;
 
         return new RefreshResponseModel(userDto);
     }

@@ -9,3 +9,4 @@ export * from "./Routes";
 export * from "./Cursors";
 export * from "./InputTypes";
 export * from "./MotionPresets";
+export * from "./Roles";

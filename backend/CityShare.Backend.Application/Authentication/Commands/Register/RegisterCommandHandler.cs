@@ -90,6 +90,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
+        userDto.Roles = roles;
 
         return new RegisterResponseModel
         {

@@ -78,6 +78,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
+        userDto.Roles = roles;
 
         return new LoginResponseModel
         {
