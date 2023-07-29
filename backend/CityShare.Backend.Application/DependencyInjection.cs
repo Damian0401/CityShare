@@ -1,5 +1,6 @@
 ﻿using CityShare.Backend.Application.Core.Behaviors;
 using CityShare.Backend.Application.Core.Behaviours;
+using CityShare.Backend.Application.Core.Middleware;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
@@ -21,6 +22,8 @@ public static class DependencyInjection
 
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipeloneBehaviour<,>));
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
+
+        services.AddScoped<ErrorHandlingMiddleware>();
 
         return services;
     }

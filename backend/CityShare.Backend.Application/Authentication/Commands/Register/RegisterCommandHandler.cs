@@ -64,7 +64,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         _logger.LogInformation("Assigning {@Email} to {@User} role", user.Email, Roles.User);
 
         await _userManager.AddToRoleAsync(user, Roles.User);
-
+        
         var response = await CreateResponseAsync(user);
 
         return response;
@@ -72,18 +72,25 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
     private async Task<RegisterResponseModel> CreateResponseAsync(ApplicationUser user)
     {
+        _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
+
+        var roles = await _userManager.GetRolesAsync(user);
+
         _logger.LogInformation("Generating tokens for {@Email}", user.Email);
 
-        var accessToken = _jwtProvider.GenerateToken(user);
+        var accessToken = _jwtProvider.GenerateToken(user, roles);
 
         var refreshToken = await _userManager.GenerateUserTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Purpose);
+
+        _logger.LogInformation("Saving refresh token for {@Email} to database", user.Email);
 
         await _userManager.SetAuthenticationTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Name, refreshToken);
 
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
+        userDto.Roles = roles;
 
         return new RegisterResponseModel
         {

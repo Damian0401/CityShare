@@ -1,7 +1,7 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { IconButton, useColorMode } from "@chakra-ui/react";
 import { ButtonVariants, ColorModes } from "../../common/enums";
-import { ThemeButtonLabel } from "../../common/utils/constants";
+import Constants from "../../common/utils/constants";
 
 const ToggleThemeButton = () => {
   const { colorMode, toggleColorMode } = useColorMode();
@@ -13,7 +13,7 @@ const ToggleThemeButton = () => {
   return (
     <IconButton
       variant={ButtonVariants.Ghost}
-      aria-label={ThemeButtonLabel}
+      aria-label={Constants.ThemeButtonLabel}
       _hover={{ opacity: "0.5" }}
       _active={{}}
       icon={icon}

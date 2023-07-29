@@ -1,0 +1,33 @@
+@import "../../../../assets/styles/general.module.scss";
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+
+  .menuButton {
+    border-radius: 0;
+    border-bottom-left-radius: $borderRadius;
+    box-shadow: $boxShadow -5px inset;
+    cursor: pointer;
+    min-width: 6rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    .userName {
+      column-gap: 0.5rem;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+}
+
+.menuModal {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  height: 100% !important;
+  margin: 0 !important;
+}

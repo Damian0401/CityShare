@@ -1,8 +1,8 @@
 ﻿namespace CityShare.Backend.Domain.Settings;
 
-public class JwtSettings
+public class AuthSettings
 {
-    public const string Key = "Jwt";
+    public const string Key = "Auth";
     public string Issuer { get; set; } = default!;
     public string Audience { get; set; } = default!;
     public string SecurityKey { get; set; } = default!;

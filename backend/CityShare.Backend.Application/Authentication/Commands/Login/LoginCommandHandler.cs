@@ -60,9 +60,13 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
     private async Task<LoginResponseModel> CreateResponseAsync(ApplicationUser user)
     {
+        _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
+
+        var roles = await _userManager.GetRolesAsync(user);
+
         _logger.LogInformation("Generating tokens for {@Emaill}", user.Email);
 
-        var accessToken = _jwtProvider.GenerateToken(user);
+        var accessToken = _jwtProvider.GenerateToken(user, roles);
 
         var refreshToken = await _userManager.GenerateUserTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Purpose);
@@ -74,6 +78,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
 
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
+        userDto.Roles = roles;
 
         return new LoginResponseModel
         {

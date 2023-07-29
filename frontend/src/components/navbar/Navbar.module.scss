@@ -1,42 +1,45 @@
-@import '../../assets/styles/general.module.scss';
+@import "../../assets/styles/general.module.scss";
 
 .container {
-    position: fixed;
-    top: 0;
-    left: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+
+  .navbar {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 100%;
-    
-    &>div {
-        display: flex;
-        flex-direction: row;
-        column-gap: 0.5rem;
+    border-radius: 0;
+
+    & > div {
+      display: flex;
+      flex-direction: row;
+      column-gap: 0.5rem;
     }
 
-    
     .tabs {
-        padding: 0.2rem;
-        display: flex;
-        row-gap: 0.5rem;
-        
-        & a {
-            font-weight: bold;
-            font-size: $lgFontSize;
-            
-            &:hover {
-                opacity: $hoverOpacity;
-            }
-        }
+      padding: 0.2rem;
+      display: flex;
+      row-gap: 0.5rem;
 
-        .logo {
-            display: flex;
-    
-            &Image {
-                width: 2.5rem;
-                height: 2.5rem;
-            }
+      & a {
+        font-weight: bold;
+        font-size: $lgFontSize;
+
+        &:hover {
+          opacity: $hoverOpacity;
         }
+      }
+
+      .logo {
+        display: flex;
+
+        &Image {
+          width: 2.5rem;
+          height: 2.5rem;
+        }
+      }
     }
+  }
 }

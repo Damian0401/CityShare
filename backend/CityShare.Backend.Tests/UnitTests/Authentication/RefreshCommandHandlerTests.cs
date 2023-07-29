@@ -29,8 +29,6 @@ public class RefreshCommandHandlerTests
 
         _jwtProviderMock = new Mock<IJwtProvider>();
 
-        var jwtSettings = Options.Create(new JwtSettings());
-
         var mapper = new MapperConfiguration(
             config => config.AddProfile<AutoMapperProfile>())
             .CreateMapper();

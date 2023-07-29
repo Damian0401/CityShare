@@ -1,18 +1,26 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { getSecret } from "../utils/helpers";
-import { Environments, StatusCodes, StorageKeys } from "../enums";
+import {
+  getAccessToken,
+  getSecret,
+  isAccessTokenPresent,
+  removeAccessToken,
+  setAccessToken,
+} from "../utils/helpers";
+import { Environments, Routes, StatusCodes, StorageKeys } from "../enums";
 import { ILoginValues } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { IUser } from "../interfaces/IUser";
 import { toast } from "react-toastify";
 import Router from "../../pages/Router";
+import { IError } from "../interfaces/IError";
+import Constants from "../utils/constants";
 
 axios.defaults.baseURL = getSecret(Environments.BaseUrl) + "/api/v1";
 
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use((config) => {
-  const accessToken = localStorage.getItem(StorageKeys.AccessToken);
+  const accessToken = getAccessToken();
 
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -30,38 +38,53 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
     return Promise.reject(error);
   }
 
-  const { status } = error.response;
+  const { status, data } = error.response;
 
   switch (status) {
+    case StatusCodes.BadRequest: {
+      const errors = data as IError[];
+      const parsedErrors = errors.map((error) => error.message).join("\n");
+      toast.error(parsedErrors, { style: Constants.MultilineToast });
+      break;
+    }
+
     case StatusCodes.Unauthorized:
       return refreshToken(error);
+
+    case StatusCodes.NotFound:
+      Router.navigate(Routes.NotFound);
+      break;
+
+    case StatusCodes.InternalServerError:
+      Router.navigate(Routes.ServerError);
+      break;
   }
 
   return Promise.reject(error);
 });
 
 const refreshToken = async (error: AxiosError) => {
-  const accessToken = localStorage.getItem(StorageKeys.AccessToken);
+  const isTokenStored = isAccessTokenPresent();
 
-  if (!accessToken || !error.config || error.config.url === "/auth/refresh") {
-    localStorage.removeItem(StorageKeys.AccessToken);
+  if (!isTokenStored || !error.config || error.config.url === "/auth/refresh") {
+    removeAccessToken();
     toast.error("Your session has expired, please login again");
-    Router.navigate("/login");
+    Router.navigate(Routes.Login);
     return Promise.reject(error);
   }
 
   try {
-    const response = await agent.Auth.refresh(accessToken);
-    localStorage.setItem(StorageKeys.AccessToken, response.accessToken);
+    const response = await agent.Auth.refresh();
+    setAccessToken(response.accessToken);
 
     const config = { ...error.config };
     config.headers.Authorization = `Bearer ${response.accessToken}`;
 
     return axios.request(config);
   } catch (error) {
-    localStorage.removeItem(StorageKeys.AccessToken);
+    removeAccessToken();
     toast.error("Your session has expired, please login again");
-    Router.navigate("/login");
+    Router.navigate(Routes.Login);
     return Promise.reject(error);
   }
 };
@@ -81,8 +104,10 @@ const Auth = {
   login: (values: ILoginValues) => requests.post<IUser>("/auth/login", values),
   register: (values: IRegisterValues) =>
     requests.post<IUser>("/auth/register", values),
-  refresh: (accessToken: string) =>
-    requests.post<IUser>("/auth/refresh", { accessToken }),
+  refresh: () => {
+    const accessToken = localStorage.getItem(StorageKeys.AccessToken);
+    return requests.post<IUser>("/auth/refresh", { accessToken });
+  },
 };
 
 const agent = {

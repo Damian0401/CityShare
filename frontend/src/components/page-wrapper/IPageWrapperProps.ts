@@ -1,3 +1,3 @@
 export interface IPageWrapperProps {
-    Element?: React.FC;
+  Element?: React.FC;
 }

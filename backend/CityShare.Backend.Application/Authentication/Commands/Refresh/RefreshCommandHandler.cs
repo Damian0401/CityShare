@@ -63,12 +63,17 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
             return Result<RefreshResponseModel>.Failure(Errors.InvalidCredentials);
         }
 
+        _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
+
+        var roles = await _userManager.GetRolesAsync(user);
+
         _logger.LogInformation("Generating new access token for {@Email}", user.Email);
 
-        var accessToken = _jwtProvider.GenerateToken(user);
+        var accessToken = _jwtProvider.GenerateToken(user, roles);
 
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
+        userDto.Roles = roles;
 
         return new RefreshResponseModel(userDto);
     }
