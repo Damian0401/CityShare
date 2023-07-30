@@ -2,7 +2,6 @@
 using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Models.Authentication.Login;
-using CityShare.Backend.Application.Core.Mappers;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
@@ -26,9 +25,7 @@ public class LoginCommandHandlerTests
 
         _jwtProviderMock = new Mock<IJwtProvider>();
 
-        var mapper = new MapperConfiguration(
-            config => config.AddProfile<AutoMapperProfile>())
-            .CreateMapper();
+        var mapper = MapperHelper.GetMapper();
 
         var request = new LoginRequestModel
         {
