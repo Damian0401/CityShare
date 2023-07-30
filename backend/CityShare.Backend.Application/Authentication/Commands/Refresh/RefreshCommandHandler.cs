@@ -33,7 +33,6 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
     public async Task<Result<RefreshResponseModel>> Handle(RefreshCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Deserializing access token");
-
         var userEmail = _jwtProvider.GetEmailFromToken(request.Request.AccessToken);
 
         if (userEmail is null)
@@ -43,7 +42,6 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
         }
 
         _logger.LogInformation("Searching for user with {@Email}", userEmail);
-
         var user = await _userManager.FindByEmailAsync(userEmail);
 
         if (user is null)
@@ -53,7 +51,6 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
         }
 
         _logger.LogInformation("Checking if access token for {@Email} is valid", user.Email);
-
         var isTokenValid = await _userManager.VerifyUserTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Purpose, request.RefreshToken);
 
@@ -64,11 +61,9 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
         }
 
         _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
-
         var roles = await _userManager.GetRolesAsync(user);
 
         _logger.LogInformation("Generating new access token for {@Email}", user.Email);
-
         var accessToken = _jwtProvider.GenerateToken(user, roles);
 
         var userDto = _mapper.Map<UserDto>(user);

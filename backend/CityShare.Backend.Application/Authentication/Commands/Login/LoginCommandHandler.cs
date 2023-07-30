@@ -33,9 +33,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
     public async Task<Result<LoginResponseModel>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
-
-        var user = await _userManager
-            .FindByEmailAsync(request.Request.Email);
+        var user = await _userManager.FindByEmailAsync(request.Request.Email);
 
         if (user is null)
         {
@@ -44,7 +42,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         }
 
         _logger.LogInformation("Checking provided password for {@Email}", user.Email);
-
         var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Request.Password);
 
         if (!isPasswordValid)
@@ -61,18 +58,14 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
     private async Task<LoginResponseModel> CreateResponseAsync(ApplicationUser user)
     {
         _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
-
         var roles = await _userManager.GetRolesAsync(user);
 
         _logger.LogInformation("Generating tokens for {@Emaill}", user.Email);
-
         var accessToken = _jwtProvider.GenerateToken(user, roles);
-
         var refreshToken = await _userManager.GenerateUserTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Purpose);
 
         _logger.LogInformation("Saving refresh token for {@Email} to database", user.Email);
-
         await _userManager.SetAuthenticationTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Name, refreshToken);
 

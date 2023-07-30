@@ -7,7 +7,7 @@ namespace CityShare.Backend.Api.Extensions;
 
 public static class CommonExtension
 {
-    public static IServiceCollection AddCommon(this IServiceCollection services)
+    public static IServiceCollection SetUpCommon(this IServiceCollection services)
     {
         ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo(CultureInfos.EnUs);
 

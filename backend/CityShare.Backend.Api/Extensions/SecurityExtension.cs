@@ -1,4 +1,5 @@
-﻿using CityShare.Backend.Domain.Settings;
+﻿using CityShare.Backend.Domain.Constants;
+using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -8,14 +9,14 @@ namespace CityShare.Backend.Api.Extensions;
 
 public static class SecurityExtension
 {
-    public static IServiceCollection AddSecurity(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection SetUpSecurity(this IServiceCollection services, IConfiguration configuration)
     {
         var corsSettings = new CorsSettings();
         configuration.Bind(CorsSettings.Key, corsSettings);
 
         services.AddCors(options =>
         {
-            options.AddPolicy(CorsSettings.PolicyName,
+            options.AddPolicy(Cors.PolicyName,
                 policy => policy.WithMethods(corsSettings.ParsedMethods)
                     .WithOrigins(corsSettings.ParsedOrigins)
                     .AllowAnyHeader()

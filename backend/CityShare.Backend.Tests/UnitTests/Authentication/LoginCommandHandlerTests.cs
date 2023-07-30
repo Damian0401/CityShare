@@ -1,17 +1,13 @@
 ﻿using AutoMapper;
-using Castle.Core.Logging;
 using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Models.Authentication.Login;
-using CityShare.Backend.Application.Core.Mappers;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
 using CityShare.Backend.Tests.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Moq;
 
 namespace CityShare.Backend.Tests.UnitTests.Authentication;
@@ -29,9 +25,7 @@ public class LoginCommandHandlerTests
 
         _jwtProviderMock = new Mock<IJwtProvider>();
 
-        var mapper = new MapperConfiguration(
-            config => config.AddProfile<AutoMapperProfile>())
-            .CreateMapper();
+        var mapper = MapperHelper.GetMapper();
 
         var request = new LoginRequestModel
         {
@@ -67,7 +61,7 @@ public class LoginCommandHandlerTests
     }
 
     [Fact]
-    public async Task IncorrectPassword_ShouldReturn_Failure()
+    public async Task InvalidPassword_ShouldReturn_Failure()
     {
         // Arrange
         _userManagerMockHelper.SetupAsync(

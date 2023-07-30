@@ -1,7 +1,6 @@
 ﻿using CityShare.Backend.Api.Api;
-using CityShare.Backend.Application.Core.Models.Authentication.Login;
-using CityShare.Backend.Domain.Constants;
-using Microsoft.AspNetCore.Http.HttpResults;
+using CityShare.Backend.Application.Core.Abstractions.Nominatim;
+using CityShare.Backend.Application.Core.Models.Nominatim.Search;
 
 namespace CityShare.Backend.Api.Extensions;
 
