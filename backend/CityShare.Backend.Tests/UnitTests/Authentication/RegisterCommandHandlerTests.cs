@@ -88,7 +88,7 @@ public class RegisterCommandHandlerTests
             (ApplicationUser?)Value.Null);
 
         _userManagerMockHelper.SetupAsync(
-            x => x.CreateAsync(Any.ApplicationUser, Value.String),
+            x => x.CreateAsync(Any.ApplicationUser, Any.String),
             Value.IdentityResultSecceeded);
 
         // Act

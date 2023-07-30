@@ -61,7 +61,7 @@ public class LoginCommandHandlerTests
     }
 
     [Fact]
-    public async Task IncorrectPassword_ShouldReturn_Failure()
+    public async Task InvalidPassword_ShouldReturn_Failure()
     {
         // Arrange
         _userManagerMockHelper.SetupAsync(

@@ -108,7 +108,7 @@ public class RefreshCommandHandlerTests
             Value.ApplicationUser);
 
         _userManagerMockHelper.SetupAsync(
-            x => x.VerifyUserTokenAsync(Any.ApplicationUser, Any.String, Any.String, Value.String),
+            x => x.VerifyUserTokenAsync(Any.ApplicationUser, Any.String, Any.String, Any.String),
             Value.True);
 
         // Act

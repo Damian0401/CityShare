@@ -50,9 +50,9 @@ public class NominatimService : INominatimService
 
         _logger.LogInformation("Calling httpClient with {@Query}", searchQuery);
         var result = await _httpClient.GetFromJsonAsync<SearchResultModel[]>(
-            searchQuery, cancellationToken);
+            searchQuery, cancellationToken) ?? Array.Empty<SearchResultModel>();
 
-        if (result is null || !result.Any())
+        if (!result.Any())
         {
             _logger.LogWarning("Not found results for {@Query}", searchQuery);
             return null;
