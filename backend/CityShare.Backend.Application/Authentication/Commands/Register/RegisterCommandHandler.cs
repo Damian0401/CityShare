@@ -34,9 +34,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
     public async Task<Result<RegisterResponseModel>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
-
-        var user = await _userManager
-            .FindByEmailAsync(request.Request.Email);
+        var user = await _userManager.FindByEmailAsync(request.Request.Email);
 
         if (user is not null)
         {
@@ -47,7 +45,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         user = _mapper.Map<ApplicationUser>(request.Request);
 
         _logger.LogInformation("Creating new user for {@Email}", request.Request.Email);
-
         var result = await _userManager.CreateAsync(user, request.Request.Password);
 
         if (!result.Succeeded)
@@ -62,7 +59,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         }
 
         _logger.LogInformation("Assigning {@Email} to {@User} role", user.Email, Roles.User);
-
         await _userManager.AddToRoleAsync(user, Roles.User);
         
         var response = await CreateResponseAsync(user);
@@ -73,18 +69,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
     private async Task<RegisterResponseModel> CreateResponseAsync(ApplicationUser user)
     {
         _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
-
         var roles = await _userManager.GetRolesAsync(user);
 
         _logger.LogInformation("Generating tokens for {@Email}", user.Email);
-
         var accessToken = _jwtProvider.GenerateToken(user, roles);
-
         var refreshToken = await _userManager.GenerateUserTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Purpose);
 
         _logger.LogInformation("Saving refresh token for {@Email} to database", user.Email);
-
         await _userManager.SetAuthenticationTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Name, refreshToken);
 
