@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using CityShare.Backend.Domain.Shared;
+﻿using CityShare.Backend.Domain.Shared;
 
 namespace CityShare.Backend.Domain.Constants;
 

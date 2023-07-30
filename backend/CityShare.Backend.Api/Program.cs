@@ -1,7 +1,7 @@
 using CityShare.Backend.Api.Extensions;
 using CityShare.Backend.Application;
 using CityShare.Backend.Application.Core.Middleware;
-using CityShare.Backend.Domain.Settings;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Infrastructure;
 using CityShare.Backend.Persistence;
 using CityShare.Backend.Persistence.Extensions;
@@ -11,11 +11,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-builder.Services.AddCommon();
+builder.Services.SetUpCommon();
+builder.Services.SetUpSecurity(configuration);
+
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(configuration);
 builder.Services.AddPersistence(configuration);
-builder.Services.AddSecurity(configuration);
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
@@ -38,7 +39,7 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 
 app.UseEndpoints();
 
-app.UseCors(CorsSettings.PolicyName);
+app.UseCors(Cors.PolicyName);
 
 app.UseAuthentication();
 app.UseAuthorization();

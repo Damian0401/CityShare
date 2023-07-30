@@ -3,7 +3,6 @@
 public class CorsSettings
 {
     public const string Key = "Cors";
-    public const string PolicyName = "Default";
     public string AllowedOrigins { get; set; } = default!;
     public string AllowedMethods { get; set; } = default!;
 
