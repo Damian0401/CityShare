@@ -1,5 +1,8 @@
 ﻿using CityShare.Backend.Domain.Constants;
+using CityShare.Backend.Domain.Settings;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
 
@@ -7,10 +10,12 @@ namespace CityShare.Backend.Api.Extensions;
 
 public static class CommonExtension
 {
-    public static IServiceCollection SetUpCommon(this IServiceCollection services)
+    public static IServiceCollection SetUpCommon(this IServiceCollection services, IConfiguration configuration)
     {
-        ValidatorOptions.Global.LanguageManager.Culture = new CultureInfo(CultureInfos.EnUs);
-
+        var cultureInfo = new CultureInfo(CultureInfos.EnUs);
+        ValidatorOptions.Global.LanguageManager.Culture = cultureInfo;
+        Thread.CurrentThread.CurrentCulture = cultureInfo;
+        Thread.CurrentThread.CurrentUICulture = cultureInfo;
         services.Configure<RequestLocalizationOptions>(options =>
         {
             options.SetDefaultCulture(CultureInfos.EnUs);
@@ -18,17 +23,24 @@ public static class CommonExtension
 
         services.AddEndpointsApiExplorer();
 
+        var commonSettings = new CommonSettings();
+        configuration.Bind(CommonSettings.Key, commonSettings);
+
         services.AddSwaggerGen(options =>
         {
-            options.SwaggerDoc("v1", new OpenApiInfo { Title = "CityShare API", Version = "v1" });
-            options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            options.SwaggerDoc(commonSettings.ApplicationVersion, new OpenApiInfo 
+            { 
+                Title = commonSettings.ApplicationName, 
+                Version = commonSettings.ApplicationName
+            });
+            options.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
             {
                 In = ParameterLocation.Header,
                 Description = "Please enter a valid token",
                 Name = "Authorization",
                 Type = SecuritySchemeType.Http,
                 BearerFormat = "JWT",
-                Scheme = "Bearer"
+                Scheme = JwtBearerDefaults.AuthenticationScheme
             });
             options.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
@@ -38,7 +50,7 @@ public static class CommonExtension
                         Reference = new OpenApiReference
                         {
                             Type=ReferenceType.SecurityScheme,
-                            Id="Bearer"
+                            Id=JwtBearerDefaults.AuthenticationScheme
                         }
                     },
                     new string[]{}

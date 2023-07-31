@@ -19,11 +19,15 @@ public static class DependencyInjection
 
         services.AddScoped<IJwtProvider, JwtProvider>();
 
+        var commonSettings = new CommonSettings();
+        configuration.Bind(CommonSettings.Key, commonSettings);
+
         services.AddHttpClient<INominatimService, NominatimService>((serviveProvider, httpClient) =>
         {
             var nominatimSettings = serviveProvider.GetRequiredService<IOptions<NominatimSettings>>().Value;
 
-            httpClient.DefaultRequestHeaders.UserAgent.Add(new(UserAgent.Name, UserAgent.Version));
+            httpClient.DefaultRequestHeaders.UserAgent
+                .Add(new(commonSettings.ApplicationName, commonSettings.ApplicationVersion));
 
             httpClient.BaseAddress = new(nominatimSettings.Url);
         });
