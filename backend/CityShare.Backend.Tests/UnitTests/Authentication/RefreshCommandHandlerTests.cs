@@ -26,12 +26,12 @@ public class RefreshCommandHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
+        var logger = new Mock<ILogger<RefreshCommandHandler>>().Object;
+
         var request = new RefreshRequestModel
         {
             AccessToken = Value.String
         };
-
-        var logger = new Mock<ILogger<RefreshCommandHandler>>().Object;
 
         _refreshCommand = new RefreshCommand(request, Value.String);
 

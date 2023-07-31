@@ -7,4 +7,5 @@ public interface INominatimService
 {
     Task<SearchDto?> SearchAsync(SearchParametersModel model, CancellationToken cancellationToken = default);
     Task<SearchDto?> SearchByQueryAsync(string query, CancellationToken cancellationToken = default);
+    Task<ReverseDto?> ReverseAsync(double x, double y, CancellationToken cancellationToken = default);
 }

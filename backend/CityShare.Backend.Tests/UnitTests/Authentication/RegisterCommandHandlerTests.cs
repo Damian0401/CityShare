@@ -26,14 +26,14 @@ public class RegisterCommandHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
+        var logger = new Mock<ILogger<RegisterCommandHandler>>().Object;
+
         var request = new RegisterRequestModel
         {
             Email = Value.String,
             Password = Value.String,
             UserName = Value.String,
         };
-
-        var logger = new Mock<ILogger<RegisterCommandHandler>>().Object;
 
         _registerCommand = new RegisterCommand(request);
 

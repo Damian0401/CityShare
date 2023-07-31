@@ -9,7 +9,6 @@ namespace CityShare.Backend.Tests.UnitTests.Nominatim;
 
 public class NominatimServiceSearchByQueryAsyncTests
 {
-    private readonly ILogger<NominatimService> _logger;
     private readonly MockHttpMessageHandler _mockHttp;
     private readonly NominatimService _systemUnderTests;
 
@@ -21,10 +20,10 @@ public class NominatimServiceSearchByQueryAsyncTests
 
         var mapper = MapperHelper.GetMapper();
 
-        _logger = new Mock<ILogger<NominatimService>>().Object;
+        var logger = new Mock<ILogger<NominatimService>>().Object;
 
         _systemUnderTests = new NominatimService(
-            httpClient, mapper, _logger);
+            httpClient, mapper, logger);
     }
 
     [Fact]
@@ -32,7 +31,7 @@ public class NominatimServiceSearchByQueryAsyncTests
     {
         // Arrange
         var query = Value.String;
-        var parsedQuery = $"search?format=json&q={query}";
+        var parsedQuery = $"search?format=json&addressdetails=1&q={query}";
 
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
             .Respond(Constants.JsonContentType, Value.JsonEmptyArray);

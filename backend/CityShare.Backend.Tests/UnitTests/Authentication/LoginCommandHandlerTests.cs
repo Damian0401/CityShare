@@ -27,13 +27,13 @@ public class LoginCommandHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
+        var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
+
         var request = new LoginRequestModel
         {
             Email = Value.String,
             Password = Value.String,
         };
-
-        var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
 
         _loginCommand = new LoginCommand(request);
 

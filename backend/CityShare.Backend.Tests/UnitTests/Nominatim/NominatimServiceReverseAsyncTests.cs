@@ -1,19 +1,19 @@
-﻿using CityShare.Backend.Application.Core.Models.Nominatim.Search;
-using CityShare.Backend.Infrastructure.Nominatim;
+﻿using CityShare.Backend.Infrastructure.Nominatim;
 using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RichardSzalay.MockHttp;
+using System.Globalization;
 
 namespace CityShare.Backend.Tests.UnitTests.Nominatim;
 
-public class NominatimServiceSearchAsyncTests
+public class NominatimServiceReverseAsyncTests
 {
     private readonly MockHttpMessageHandler _mockHttp;
     private readonly NominatimService _systemUnderTests;
 
-    public NominatimServiceSearchAsyncTests()
+    public NominatimServiceReverseAsyncTests()
     {
         _mockHttp = new MockHttpMessageHandler();
         var httpClient = _mockHttp.ToHttpClient();
@@ -31,18 +31,16 @@ public class NominatimServiceSearchAsyncTests
     public async Task HttpClient_ShouldBeCalled_WithCorrectQuery()
     {
         // Arrange
-        var city = Value.String;
-        var model = new SearchParametersModel
-        {
-            City = city
-        };
-        var parsedQuery = $"search?format=json&addressdetails=1&city={city}";
+        var x = Value.Double;
+        var y = Value.Double;
+        var parsedQuery = $"reverse?format=json&zoom=18" +
+            $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
 
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
-            .Respond(Constants.JsonContentType, Value.JsonEmptyArray);
+            .Respond(Constants.JsonContentType, Value.SerializedNull);
 
         // Act
-        await _systemUnderTests.SearchAsync(model);
+        await _systemUnderTests.ReverseAsync(x, y);
 
         // Assert
         _mockHttp.VerifyNoOutstandingExpectation();
@@ -52,13 +50,14 @@ public class NominatimServiceSearchAsyncTests
     public async Task EmptyResult_ShouldReturn_Null()
     {
         // Arrange
-        var model = new SearchParametersModel();
-        
+        var x = Value.Double;
+        var y = Value.Double;
+
         _mockHttp.Fallback
-            .Respond(Constants.JsonContentType, Value.JsonEmptyArray);
+            .Respond(Constants.JsonContentType, Value.SerializedNull);
 
         // Act
-        var result = await _systemUnderTests.SearchAsync(model);
+        var result = await _systemUnderTests.ReverseAsync(x, y);
 
         // Assert
         Assert.Null(result);
@@ -68,13 +67,14 @@ public class NominatimServiceSearchAsyncTests
     public async Task CorrectQuery_ShouldReturn_Result()
     {
         // Arrange
-        var model = new SearchParametersModel();
+        var x = Value.Double;
+        var y = Value.Double;
 
         _mockHttp.Fallback
-            .Respond(Constants.JsonContentType, Value.SerializedArrayWithSearchResult);
+            .Respond(Constants.JsonContentType, Value.SerializedReverseResult);
 
         // Act
-        var result = await _systemUnderTests.SearchAsync(model);
+        var result = await _systemUnderTests.ReverseAsync(x, y);
 
         // Assert
         Assert.NotNull(result);
