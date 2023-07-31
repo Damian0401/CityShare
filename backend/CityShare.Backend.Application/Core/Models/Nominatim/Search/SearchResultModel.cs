@@ -16,4 +16,6 @@ public class SearchResultModel
     public string _class { get; set; } = default!;
     public string type { get; set; } = default!;
     public double importance { get; set; }
+    public string icon { get; set; } = default!;
+    public Address address { get; set; } = default!;
 }

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
 using CityShare.Backend.Application.Core.Dtos;
+using CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
 using CityShare.Backend.Application.Core.Models.Nominatim.Search;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using System.Net.Http.Json;
 using System.Text;
 
@@ -22,6 +24,27 @@ public class NominatimService : INominatimService
         _httpClient = httpClient;
         _mapper = mapper;
         _logger = logger;
+    }
+
+    public async Task<ReverseDto?> ReverseAsync(double x, double y, CancellationToken cancellationToken = default)
+    {
+        var reverseQuery = $"reverse?format=json&zoom=18" +
+            $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
+
+        _logger.LogInformation("Calling httpClient with {@Query}", reverseQuery);
+        var result = await _httpClient.GetFromJsonAsync<ReverseResultModel>(
+            reverseQuery, cancellationToken);
+
+        if (result is null)
+        {
+            _logger.LogWarning("Not found results for {@Query}", reverseQuery);
+            return null;
+        }
+
+        _logger.LogInformation("Mapping result {@Result}", result);
+        var dto = _mapper.Map<ReverseDto>(result);
+
+        return dto;
     }
 
     public async Task<SearchDto?> SearchAsync(SearchParametersModel model, CancellationToken cancellationToken = default)
@@ -46,7 +69,7 @@ public class NominatimService : INominatimService
 
     public async Task<SearchDto?> SearchByQueryAsync(string query, CancellationToken cancellationToken = default)
     {
-        var searchQuery = $"search?format=json&q={query}";
+        var searchQuery = $"search?format=json&addressdetails=1&q={query}";
 
         _logger.LogInformation("Calling httpClient with {@Query}", searchQuery);
         var result = await _httpClient.GetFromJsonAsync<SearchResultModel[]>(
@@ -71,7 +94,7 @@ public class NominatimService : INominatimService
     {
         _logger.LogInformation("Parsing parameters {@Model}", model);
 
-        var searchQuery = new StringBuilder("search?format=json");
+        var searchQuery = new StringBuilder("search?format=json&addressdetails=1");
 
         var fields = typeof(SearchParametersModel).GetProperties();
 

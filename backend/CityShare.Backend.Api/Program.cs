@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
 
-builder.Services.SetUpCommon();
+builder.Services.SetUpCommon(configuration);
 builder.Services.SetUpSecurity(configuration);
 
 builder.Services.AddApplication();
