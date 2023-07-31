@@ -11,15 +11,8 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        MapsForTypes();
         MapsForUser();
         MapsForSearch();
-    }
-
-    private void MapsForTypes()
-    {
-        CreateMap<string, double>()
-            .ConvertUsing(s => double.Parse(s, CultureInfo.InvariantCulture));
     }
 
     private void MapsForUser()
@@ -32,7 +25,13 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<SearchResultModel, SearchDto>()
             .ForMember(x => x.DisplayName, s => s.MapFrom(d => d.display_name))
-            .ForMember(x => x.X, s => s.MapFrom(l => l.lat))
-            .ForMember(x => x.Y, s => s.MapFrom(l => l.lon));
+            .ForMember(x => x.X, s => s.MapFrom(l => double.Parse(l.lat, CultureInfo.InvariantCulture)))
+            .ForMember(x => x.Y, s => s.MapFrom(l => double.Parse(l.lon, CultureInfo.InvariantCulture)))
+            .ForMember(x => x.BoundingBox, s => s.MapFrom(b => 
+                new BoundingBox(
+                    double.Parse(b.boundingbox[0], CultureInfo.InvariantCulture),
+                    double.Parse(b.boundingbox[1], CultureInfo.InvariantCulture),
+                    double.Parse(b.boundingbox[2], CultureInfo.InvariantCulture), 
+                    double.Parse(b.boundingbox[3], CultureInfo.InvariantCulture))));
     }
 }
