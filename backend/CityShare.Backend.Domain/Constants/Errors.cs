@@ -15,4 +15,9 @@ public static class Errors
     {
         new Error("Invalid.Credentials", "Provided credentials are invalid")
     };
+
+    public static IEnumerable<Error> NotFound => new[]
+    {
+        new Error("NotFound", "Resource not found")
+    };
 }
