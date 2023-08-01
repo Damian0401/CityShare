@@ -52,7 +52,7 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
       return refreshToken(error);
 
     case StatusCodes.NotFound:
-      Router.navigate(Routes.NotFound);
+      toast.warning("Resource not found");
       break;
 
     case StatusCodes.InternalServerError:

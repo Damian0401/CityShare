@@ -4,6 +4,7 @@ import { ColorModes } from "../enums";
 import { mode } from "@chakra-ui/theme-tools";
 import colors from "../../assets/styles/colors.module.scss";
 import {
+  LeafletTheme,
   NavbarContainer,
   PrimaryContainer,
   SecondaryContainer,
@@ -24,11 +25,19 @@ const theme = extendBaseTheme({
           colors.backgroundDark
         )(props),
       },
+      ...LeafletTheme(props),
     }),
   },
   components: {
     Button,
-    Input,
+    Input: {
+      baseStyle: (props: StyleFunctionProps) => ({
+        field: {
+          backgroundColor: mode(colors.inputLight, colors.inputDark)(props),
+        },
+      }),
+      ...Input,
+    },
     FormError,
     Modal,
     PrimaryContainer,
