@@ -5,5 +5,5 @@ export enum Routes {
   NotFound = "/not-found",
   ServerError = "/server-error",
   Wildcard = "*",
-  Test = "/test",
+  Map = "/map",
 }

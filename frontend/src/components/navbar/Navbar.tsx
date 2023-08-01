@@ -27,9 +27,17 @@ const Navbar = observer(() => {
           </Link>
         </div>
         <div className={styles.tabs}>
-          <Link to={Routes.Test}>Test</Link>
-          <Link to={Routes.Login}>Login</Link>
-          <Link to={Routes.Register}>Register</Link>
+          {authStore.user ? (
+            <>
+              <Link to={Routes.Index}>Home</Link>
+              <Link to={Routes.Map}>Map</Link>
+            </>
+          ) : (
+            <>
+              <Link to={Routes.Login}>Login</Link>
+              <Link to={Routes.Register}>Register</Link>
+            </>
+          )}
           <ToggleThemeButton />
         </div>
       </BaseContainer>

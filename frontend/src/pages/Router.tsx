@@ -37,7 +37,7 @@ const Router = createBrowserRouter([
         element: <ServerError />,
       },
       {
-        path: Routes.Test,
+        path: Routes.Map,
         element: (
           <AddressSearchMap initialPoint={{ x: 51.1089776, y: 17.0326689 }} />
         ),

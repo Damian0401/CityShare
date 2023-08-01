@@ -1,6 +1,7 @@
 import { CSSProperties } from "react";
 
 const Constants = {
+  ApiPrefix: "/api/v1",
   ThemeButtonLabel: "toggle theme",
   MultilineToast: { whiteSpace: "pre-line" } as CSSProperties,
   LeafletAttribution:
