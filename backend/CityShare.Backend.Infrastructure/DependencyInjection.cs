@@ -21,7 +21,12 @@ public static class DependencyInjection
         services.Configure<CommonSettings>(configuration.GetSection(CommonSettings.Key));
 
         services.AddScoped<IJwtProvider, JwtProvider>();
-        services.AddScoped(typeof(ICacheService<>), typeof(InMemoryCacheService<>));
+        services.AddScoped<ICacheService, InMemoryCacheService>();
+
+        var cacheSettings = new CacheSettings();
+        configuration.Bind(CacheSettings.Key, cacheSettings);
+
+        services.AddMemoryCache(x => x.SizeLimit = cacheSettings.SizeLimit);
 
         var commonSettings = new CommonSettings();
         configuration.Bind(CommonSettings.Key, commonSettings);

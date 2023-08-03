@@ -1,4 +1,5 @@
-﻿using CityShare.Backend.Domain.Entities;
+﻿using CityShare.Backend.Application.Core.Dtos;
+using CityShare.Backend.Domain.Entities;
 using Moq;
 
 namespace CityShare.Backend.Tests.Common;

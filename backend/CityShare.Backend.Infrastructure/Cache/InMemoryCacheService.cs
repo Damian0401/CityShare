@@ -5,28 +5,28 @@ using Microsoft.Extensions.Options;
 
 namespace CityShare.Backend.Infrastructure.Cache;
 
-public class InMemoryCacheService<T> : ICacheService<T>
+public class InMemoryCacheService : ICacheService
 {
     private readonly IMemoryCache _memoryCache;
     private CacheSettings _cacheSettings;
 
     public InMemoryCacheService(IMemoryCache memoryCache, IOptions<CacheSettings> options)
     {
-        _memoryCache = memoryCache;
         _cacheSettings = options.Value;
+        _memoryCache = memoryCache;
     }
 
-    public bool TryGet(string key, out T? value)
+    public bool TryGet<T>(string key, out T? value)
     {
         return _memoryCache.TryGetValue(key, out value);
     }
 
-    public T? Get(string key)
+    public T? Get<T>(string key)
     {
         return _memoryCache.Get<T>(key);
     }
 
-    public void Set(string key, T value)
+    public void Set<T>(string key, T value, int size = 1)
     {
         var options = new MemoryCacheEntryOptions();
 
@@ -41,6 +41,8 @@ public class InMemoryCacheService<T> : ICacheService<T>
             var seconds = (double)_cacheSettings.SlidingExpirationSeconds;
             options.SlidingExpiration = TimeSpan.FromSeconds(seconds);
         }
+
+        options.Size = size;
 
         _memoryCache.Set<T>(key, value, options);
     }
