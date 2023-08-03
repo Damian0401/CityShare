@@ -22,6 +22,9 @@ public static class EndpointsExtension
         app.MapGet(Endpoints.V1.Map.Search, Api.V1.Map.Search)
             .RequireAuthorization();
 
+        app.MapGet(Endpoints.V1.Map.Reverse, Api.V1.Map.Reverse)
+            .RequireAuthorization();
+
         return app;
     }
 }
