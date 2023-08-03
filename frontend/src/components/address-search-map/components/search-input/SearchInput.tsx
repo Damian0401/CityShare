@@ -7,6 +7,7 @@ import { SearchIcon } from "@chakra-ui/icons";
 import { useRef } from "react";
 import agent from "../../../../common/api/agent";
 import { useMap } from "react-leaflet";
+import Constants from "../../../../common/utils/constants";
 
 const SearchInput: React.FC<ISearchInputProps> = (props) => {
   const { searchInputSize } = props;
@@ -20,7 +21,10 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
 
     const searchResult = await agent.Map.search(searchRef.current.value);
 
-    map.setView([searchResult.x, searchResult.y], 15);
+    map.setView(
+      [searchResult.x, searchResult.y],
+      Constants.Leaflet.Zoom.Search
+    );
   };
 
   return (

@@ -7,7 +7,12 @@ import {
   setAccessToken,
 } from "../utils/helpers";
 import { Environments, Routes, StatusCodes, StorageKeys } from "../enums";
-import { ILoginValues, ISearchResult } from "../interfaces";
+import {
+  ILoginValues,
+  IPoint,
+  IReverseResult,
+  ISearchResult,
+} from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { IUser } from "../interfaces/IUser";
 import { toast } from "react-toastify";
@@ -113,6 +118,8 @@ const Auth = {
 const Map = {
   search: (query: string) =>
     requests.get<ISearchResult>(`/map/search?query=${query}`),
+  reverse: (point: IPoint) =>
+    requests.get<IReverseResult>(`/map/reverse?x=${point.x}&y=${point.y}`),
 };
 
 const agent = {

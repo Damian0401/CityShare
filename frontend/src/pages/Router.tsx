@@ -10,6 +10,7 @@ import ServerError from "./server-error/ServerError";
 import AnonymousRoute from "../components/anonymous-route/AnonymousRoute";
 import PrivateRoute from "../components/private-route/PrivateRoute";
 import AddressSearchMap from "../components/address-search-map/AddressSearchMap";
+import { toast } from "react-toastify";
 
 const Router = createBrowserRouter([
   {
@@ -39,7 +40,10 @@ const Router = createBrowserRouter([
       {
         path: Routes.Map,
         element: (
-          <AddressSearchMap initialPoint={{ x: 51.1089776, y: 17.0326689 }} />
+          <AddressSearchMap
+            initialPoint={{ x: 51.1089776, y: 17.0326689 }}
+            onSelect={(result) => toast.success(result.displayName)}
+          />
         ),
       },
       {

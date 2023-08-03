@@ -4,3 +4,4 @@ export * from "./ILoginValues";
 export * from "./IPoint";
 export * from "./ISearchResult";
 export * from "./IBoundingBox";
+export * from "./IReverseResult";
