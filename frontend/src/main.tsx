@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "react-toastify/dist/ReactToastify.min.css";
+import "leaflet/dist/leaflet.css";
 import { StoreContext, store } from "./common/stores/store.ts";
 import { ChakraBaseProvider } from "@chakra-ui/react";
 import theme from "./common/utils/theme.ts";

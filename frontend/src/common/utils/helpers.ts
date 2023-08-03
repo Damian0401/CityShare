@@ -19,3 +19,7 @@ export const setAccessToken = (accessToken: string) => {
 export const getAccessToken = () => {
   return localStorage.getItem(StorageKeys.AccessToken);
 };
+
+export const importantStyle = (style: string) => {
+  return `${style} !important`;
+};

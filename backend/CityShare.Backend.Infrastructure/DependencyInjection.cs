@@ -1,8 +1,9 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Authentication;
+using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure.Authentication;
+using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Nominatim;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +17,16 @@ public static class DependencyInjection
     {
         services.Configure<AuthSettings>(configuration.GetSection(AuthSettings.Key));
         services.Configure<NominatimSettings>(configuration.GetSection(NominatimSettings.Key));
+        services.Configure<CacheSettings>(configuration.GetSection(CacheSettings.Key));
+        services.Configure<CommonSettings>(configuration.GetSection(CommonSettings.Key));
 
         services.AddScoped<IJwtProvider, JwtProvider>();
+        services.AddScoped<ICacheService, InMemoryCacheService>();
+
+        var cacheSettings = new CacheSettings();
+        configuration.Bind(CacheSettings.Key, cacheSettings);
+
+        services.AddMemoryCache(x => x.SizeLimit = cacheSettings.SizeLimit);
 
         var commonSettings = new CommonSettings();
         configuration.Bind(CommonSettings.Key, commonSettings);

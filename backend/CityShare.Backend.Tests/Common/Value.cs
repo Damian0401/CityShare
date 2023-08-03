@@ -1,4 +1,5 @@
-﻿using CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
+﻿using CityShare.Backend.Application.Core.Dtos;
+using CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
 using CityShare.Backend.Application.Core.Models.Nominatim.Search;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Helpers;
@@ -25,5 +26,6 @@ internal class Value
         new SearchResultModel()
     });
     public static readonly string SerializedReverseResult = JsonSerializer.Serialize(new ReverseResultModel());
-
+    public static SearchDto SearchDto => new SearchDto();
+    public static ReverseDto ReverseDto => new ReverseDto();
 }

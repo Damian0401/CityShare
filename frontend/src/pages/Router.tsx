@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import PageWrapper from "../components/page-wrapper/PageWrapper";
 import Navbar from "../components/navbar/Navbar";
 import Home from "./home/Home";
@@ -9,6 +9,8 @@ import NotFound from "./not-found/NotFound";
 import ServerError from "./server-error/ServerError";
 import AnonymousRoute from "../components/anonymous-route/AnonymousRoute";
 import PrivateRoute from "../components/private-route/PrivateRoute";
+import AddressSearchMap from "../components/address-search-map/AddressSearchMap";
+import { toast } from "react-toastify";
 
 const Router = createBrowserRouter([
   {
@@ -36,8 +38,17 @@ const Router = createBrowserRouter([
         element: <ServerError />,
       },
       {
+        path: Routes.Map,
+        element: (
+          <AddressSearchMap
+            initialPoint={{ x: 51.1089776, y: 17.0326689 }}
+            onSelect={(result) => toast.success(result.displayName)}
+          />
+        ),
+      },
+      {
         path: Routes.Wildcard,
-        element: <NotFound />,
+        element: <Navigate to={Routes.NotFound} />,
       },
     ],
   },

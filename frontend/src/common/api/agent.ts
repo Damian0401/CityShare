@@ -7,7 +7,12 @@ import {
   setAccessToken,
 } from "../utils/helpers";
 import { Environments, Routes, StatusCodes, StorageKeys } from "../enums";
-import { ILoginValues } from "../interfaces";
+import {
+  ILoginValues,
+  IPoint,
+  IReverseResult,
+  ISearchResult,
+} from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { IUser } from "../interfaces/IUser";
 import { toast } from "react-toastify";
@@ -15,7 +20,7 @@ import Router from "../../pages/Router";
 import { IError } from "../interfaces/IError";
 import Constants from "../utils/constants";
 
-axios.defaults.baseURL = getSecret(Environments.BaseUrl) + "/api/v1";
+axios.defaults.baseURL = getSecret(Environments.BaseUrl) + Constants.ApiPrefix;
 
 axios.defaults.withCredentials = true;
 
@@ -52,7 +57,7 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
       return refreshToken(error);
 
     case StatusCodes.NotFound:
-      Router.navigate(Routes.NotFound);
+      toast.warning("Resource not found");
       break;
 
     case StatusCodes.InternalServerError:
@@ -110,8 +115,16 @@ const Auth = {
   },
 };
 
+const Map = {
+  search: (query: string) =>
+    requests.get<ISearchResult>(`/map/search?query=${query}`),
+  reverse: (point: IPoint) =>
+    requests.get<IReverseResult>(`/map/reverse?x=${point.x}&y=${point.y}`),
+};
+
 const agent = {
   Auth,
+  Map,
 };
 
 export default agent;
