@@ -2,11 +2,15 @@
 using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
+using CityShare.Backend.Application.Core.Abstractions.Queue;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure.Authentication;
 using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Emails;
 using CityShare.Backend.Infrastructure.Nominatim;
+using CityShare.Backend.Infrastructure.Queue;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,6 +29,7 @@ public static class DependencyInjection
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<ICacheService, InMemoryCacheService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IQueueService, StorageQueueService>();
 
         var cacheSettings = new CacheSettings();
         configuration.Bind(CacheSettings.Key, cacheSettings);
@@ -43,6 +48,11 @@ public static class DependencyInjection
                 .Add(new(commonSettings.ApplicationName, commonSettings.ApplicationVersion));
 
             httpClient.BaseAddress = new(nominatimSettings.Url);
+        });
+
+        services.AddAzureClients(builder =>
+        {
+            builder.AddQueueServiceClient(configuration.GetConnectionString(ConnectionStrings.StorageAccount));
         });
 
         return services;
