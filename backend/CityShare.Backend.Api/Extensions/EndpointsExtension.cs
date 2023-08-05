@@ -1,6 +1,4 @@
 ﻿using CityShare.Backend.Api.Api;
-using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Models.Nominatim.Search;
 
 namespace CityShare.Backend.Api.Extensions;
 

@@ -1,13 +1,14 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
+using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure.Authentication;
 using CityShare.Backend.Infrastructure.Cache;
+using CityShare.Backend.Infrastructure.Emails;
 using CityShare.Backend.Infrastructure.Nominatim;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace CityShare.Backend.Infrastructure;
 
@@ -19,9 +20,11 @@ public static class DependencyInjection
         services.Configure<NominatimSettings>(configuration.GetSection(NominatimSettings.Key));
         services.Configure<CacheSettings>(configuration.GetSection(CacheSettings.Key));
         services.Configure<CommonSettings>(configuration.GetSection(CommonSettings.Key));
+        services.Configure<EmailSettings>(configuration.GetSection(EmailSettings.Key));
 
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<ICacheService, InMemoryCacheService>();
+        services.AddScoped<IEmailService, EmailService>();
 
         var cacheSettings = new CacheSettings();
         configuration.Bind(CacheSettings.Key, cacheSettings);
@@ -31,10 +34,11 @@ public static class DependencyInjection
         var commonSettings = new CommonSettings();
         configuration.Bind(CommonSettings.Key, commonSettings);
 
+        var nominatimSettings = new NominatimSettings();
+        configuration.Bind(NominatimSettings.Key, nominatimSettings);
+
         services.AddHttpClient<INominatimService, NominatimService>((serviveProvider, httpClient) =>
         {
-            var nominatimSettings = serviveProvider.GetRequiredService<IOptions<NominatimSettings>>().Value;
-
             httpClient.DefaultRequestHeaders.UserAgent
                 .Add(new(commonSettings.ApplicationName, commonSettings.ApplicationVersion));
 
