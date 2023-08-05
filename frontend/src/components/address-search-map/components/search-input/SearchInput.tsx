@@ -10,7 +10,7 @@ import { useMap } from "react-leaflet";
 import Constants from "../../../../common/utils/constants";
 
 const SearchInput: React.FC<ISearchInputProps> = (props) => {
-  const { searchInputSize } = props;
+  const { searchInputSize, additionalQuery } = props;
 
   const map = useMap();
 
@@ -19,7 +19,11 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
   const handleSearch = async () => {
     if (!searchRef.current) return;
 
-    const searchResult = await agent.Map.search(searchRef.current.value);
+    let query = searchRef.current.value;
+
+    if (additionalQuery) query += `, ${additionalQuery}`;
+
+    const searchResult = await agent.Map.search(query);
 
     map.setView(
       [searchResult.x, searchResult.y],
