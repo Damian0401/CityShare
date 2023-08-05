@@ -54,7 +54,7 @@ public class NominatimServiceReverseAsyncTests
         // Arrange
         var x = Value.Double;
         var y = Value.Double;
-        var parsedQuery = $"reverse?format=json&zoom=18" +
+        var parsedQuery = $"reverse?format=json&zoom=18&addressdetails=0" +
             $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
 
         var dto = Value.ReverseDto;

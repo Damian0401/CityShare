@@ -62,7 +62,7 @@ public class NominatimServiceSearchAsyncTests
             City = city
         };
 
-        var parsedQuery = $"search?format=json&addressdetails=1&city={city}";
+        var parsedQuery = $"search?format=json&addressdetails=0&city={city}";
         
         var dto = Value.SearchDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
