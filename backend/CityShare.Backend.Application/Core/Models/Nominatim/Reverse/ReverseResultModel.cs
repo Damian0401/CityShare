@@ -10,7 +10,6 @@ public class ReverseResultModel
     public string lat { get; set; } = default!;
     public string lon { get; set; } = default!;
     public string display_name { get; set; } = default!;
-    public Address address { get; set; } = default!;
     public string[] boundingbox { get; set; } = default!;
 }
 

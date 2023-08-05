@@ -33,7 +33,7 @@ public class NominatimService : INominatimService
     public async Task<ReverseDto?> ReverseAsync(double x, double y, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating query");
-        var reverseQuery = $"reverse?format=json&zoom=18" +
+        var reverseQuery = $"reverse?format=json&zoom=18&addressdetails=0" +
             $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
 
         _logger.LogInformation("Checking for {@Query} in cacheService", reverseQuery);
@@ -98,7 +98,7 @@ public class NominatimService : INominatimService
     public async Task<SearchDto?> SearchByQueryAsync(string query, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating query");
-        var searchQuery = $"search?format=json&addressdetails=1&q={query}";
+        var searchQuery = $"search?format=json&q={query}&addressdetails=0";
 
         _logger.LogInformation("Checking for {@Query} in cacheService", searchQuery);
         if (_cacheService.TryGet<SearchDto>(searchQuery, out var cachedDto))
@@ -133,7 +133,7 @@ public class NominatimService : INominatimService
     {
         _logger.LogInformation("Parsing parameters {@Model}", model);
 
-        var searchQuery = new StringBuilder("search?format=json&addressdetails=1");
+        var searchQuery = new StringBuilder("search?format=json&addressdetails=0");
 
         var fields = typeof(SearchParametersModel).GetProperties();
 

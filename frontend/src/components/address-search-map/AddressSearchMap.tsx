@@ -3,7 +3,7 @@ import { IAddressSearchMapProps } from "./IAddressSearchMapProps";
 import Constants from "../../common/utils/constants";
 import styles from "./AddressSearchMap.module.scss";
 import { LeafletPositions } from "../../common/enums";
-import { ChakraSizes } from "../../common/enums/ChakraSizes";
+import { ChakraSizes } from "../../common/enums";
 import SearchInput from "./components/search-input/SearchInput";
 import SelectMarker from "./components/select-marker/SelectMarker";
 import { IPoint } from "../../common/interfaces";
@@ -11,7 +11,12 @@ import agent from "../../common/api/agent";
 import { useState } from "react";
 
 const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
-  const { initialPoint, searchInputSize = ChakraSizes.Sm, onSelect } = props;
+  const {
+    initialPoint,
+    searchInputSize = ChakraSizes.Sm,
+    additionalQuery,
+    onSelect,
+  } = props;
 
   const [isSelectBlocked, setIsSelectBlocked] = useState<boolean>(false);
 
@@ -41,7 +46,10 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
           onMouseEnter={() => setIsSelectBlocked(true)}
           onMouseLeave={() => setIsSelectBlocked(false)}
         >
-          <SearchInput searchInputSize={searchInputSize} />
+          <SearchInput
+            searchInputSize={searchInputSize}
+            additionalQuery={additionalQuery}
+          />
         </div>
       </MapContainer>
     </div>

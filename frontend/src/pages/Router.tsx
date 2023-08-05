@@ -42,6 +42,7 @@ const Router = createBrowserRouter([
         element: (
           <AddressSearchMap
             initialPoint={{ x: 51.1089776, y: 17.0326689 }}
+            additionalQuery="Wrocław"
             onSelect={(result) => toast.success(result.displayName)}
           />
         ),

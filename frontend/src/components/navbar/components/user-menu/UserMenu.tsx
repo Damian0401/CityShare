@@ -23,8 +23,8 @@ const UserMenu: React.FC<IUserMenuProps> = (props) => {
         <BaseContainer type={Containers.Primary} className={styles.menuButton}>
           <div className={styles.userName} onClick={onOpen}>
             <Text>{user.userName}</Text>
-            <HamburgerIcon />
           </div>
+          <HamburgerIcon />
         </BaseContainer>
       </div>
       <Modal

@@ -64,6 +64,77 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Map",
+			"item": [
+				{
+					"name": "Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{api_prefix}}/map/search?query=address",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{api_prefix}}",
+								"map",
+								"search"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "address"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reverse",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{access_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/{{api_prefix}}/map/reverse?x=0.0&y=0.0",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"{{api_prefix}}",
+								"map",
+								"reverse"
+							],
+							"query": [
+								{
+									"key": "x",
+									"value": "0.0"
+								},
+								{
+									"key": "y",
+									"value": "0.0"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -95,6 +166,11 @@
 		{
 			"key": "api_prefix",
 			"value": "api/v1",
+			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": "{insert-access-token-here}",
 			"type": "string"
 		}
 	]
