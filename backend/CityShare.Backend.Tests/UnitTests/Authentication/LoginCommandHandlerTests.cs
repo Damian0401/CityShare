@@ -29,11 +29,7 @@ public class LoginCommandHandlerTests
 
         var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
 
-        var request = new LoginRequestModel
-        {
-            Email = Value.String,
-            Password = Value.String,
-        };
+        var request = new LoginRequestModel(Value.String, Value.String);
 
         _loginCommand = new LoginCommand(request);
 

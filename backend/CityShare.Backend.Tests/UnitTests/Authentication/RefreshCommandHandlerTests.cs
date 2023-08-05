@@ -28,10 +28,7 @@ public class RefreshCommandHandlerTests
 
         var logger = new Mock<ILogger<RefreshCommandHandler>>().Object;
 
-        var request = new RefreshRequestModel
-        {
-            AccessToken = Value.String
-        };
+        var request = new RefreshRequestModel(Value.String);
 
         _refreshCommand = new RefreshCommand(request, Value.String);
 
