@@ -3,7 +3,7 @@ import { IAddressSearchMapProps } from "./IAddressSearchMapProps";
 import Constants from "../../common/utils/constants";
 import styles from "./AddressSearchMap.module.scss";
 import { LeafletPositions } from "../../common/enums";
-import { ChakraSizes } from "../../common/enums/ChakraSizes";
+import { ChakraSizes } from "../../common/enums";
 import SearchInput from "./components/search-input/SearchInput";
 import SelectMarker from "./components/select-marker/SelectMarker";
 import { IPoint } from "../../common/interfaces";

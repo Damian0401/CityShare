@@ -1,4 +1,4 @@
-import { ChakraSizes } from "../../common/enums/ChakraSizes";
+import { ChakraSizes } from "../../common/enums";
 import { IPoint, IReverseResult } from "../../common/interfaces";
 
 export interface IAddressSearchMapProps {

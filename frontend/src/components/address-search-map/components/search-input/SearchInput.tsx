@@ -31,13 +31,23 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
     );
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    console.log(e.key);
+    if (e.key !== "Enter") return;
+    handleSearch();
+  };
+
   return (
     <BaseContainer type={Containers.Primary} className={styles.container}>
       <InputGroup size={searchInputSize}>
         <InputLeftElement onClick={handleSearch} cursor={Cursors.Pointer}>
           <SearchIcon />
         </InputLeftElement>
-        <Input ref={searchRef} placeholder="Search..." />
+        <Input
+          ref={searchRef}
+          onKeyDown={handleKeyDown}
+          placeholder="Search..."
+        />
       </InputGroup>
     </BaseContainer>
   );
