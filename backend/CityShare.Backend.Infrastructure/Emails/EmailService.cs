@@ -29,7 +29,7 @@ public class EmailService : IEmailService
             Subject = email.Subject,
             Body = email.Body,
         };
-        mailMessage.To.Add(new MailAddress(email.To));
+        mailMessage.To.Add(new MailAddress(email.Receiver));
 
         _logger.LogInformation("Creating smtpClient from {@Settings}", _emailSettings);
         using var smtpClient = new SmtpClient
