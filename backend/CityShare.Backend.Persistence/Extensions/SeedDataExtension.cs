@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Domain.Constants;
+﻿using CityShare.Backend.Persistence.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,28 +14,14 @@ public static class SeedDataExtension
 
         var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
 
-        await SeedRoles(roleManager);
-        
+        var context = services.GetRequiredService<CityShareDbContext>();
+
+        await Roles.SeedAsync(roleManager);
+
+        await Emails.SeedEmailTemplatesAsync(context);
+
+        await Emails.SeedEmailPrioritiesAsync(context);
+
         return serviceProvider;
-    }
-
-    private static async Task SeedRoles(RoleManager<IdentityRole> roleManager)
-    {
-        var roles = typeof(Roles)
-            .GetFields()
-            .Select(x => x.GetValue(null))
-            .Cast<string>();
-
-        foreach (var role in roles)
-        {
-            var roleExists = await roleManager.RoleExistsAsync(role);
-
-            if (roleExists)
-            {
-                continue;
-            }
-
-            await roleManager.CreateAsync(new IdentityRole(role));
-        }
     }
 }
