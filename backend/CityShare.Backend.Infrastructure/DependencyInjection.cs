@@ -4,12 +4,15 @@ using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
 using CityShare.Backend.Application.Core.Abstractions.Queue;
 using CityShare.Backend.Domain.Constants;
+using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure.Authentication;
 using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Emails;
 using CityShare.Backend.Infrastructure.Nominatim;
 using CityShare.Backend.Infrastructure.Queue;
+using CityShare.Backend.Persistence;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +32,13 @@ public static class DependencyInjection
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<ICacheService, InMemoryCacheService>();
         services.AddScoped<IEmailService, EmailService>();
+        services.AddScoped<IEmailRepository, EmailRepository>();
         services.AddScoped<IQueueService, StorageQueueService>();
+
+        services.AddIdentityCore<ApplicationUser>()
+            .AddRoles<IdentityRole>()
+            .AddTokenProvider<RefreshTokenProvider<ApplicationUser>>(RefreshToken.Provider)
+            .AddEntityFrameworkStores<CityShareDbContext>();
 
         var cacheSettings = new CacheSettings();
         configuration.Bind(CacheSettings.Key, cacheSettings);

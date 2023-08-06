@@ -14,6 +14,7 @@ public class AutoMapperProfile : Profile
     {
         MapsForUser();
         MapsForNominatim();
+        MapsForEmails();
     }
 
     private void MapsForUser()
@@ -38,5 +39,11 @@ public class AutoMapperProfile : Profile
             .ForMember(x => x.DisplayName, s => s.MapFrom(d => d.display_name.Replace("\"", "'")))
             .ForMember(x => x.X, s => s.MapFrom(l => double.Parse(l.lat, CultureInfo.InvariantCulture)))
             .ForMember(x => x.Y, s => s.MapFrom(l => double.Parse(l.lon, CultureInfo.InvariantCulture)));
+    }
+
+    private void MapsForEmails()
+    {
+        CreateMap<EmailTemplate, Email>()
+            .ForMember(x => x.Id, s => s.Ignore());
     }
 }
