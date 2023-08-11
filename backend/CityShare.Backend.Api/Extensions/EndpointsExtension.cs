@@ -17,6 +17,9 @@ public static class EndpointsExtension
         app.MapPost(Endpoints.V1.Auth.Refresh, Api.V1.Authentication.Refresh)
             .AllowAnonymous();
 
+        app.MapPost(Endpoints.V1.Auth.ConfirmEmail, Api.V1.Authentication.ConfirmEmail)
+            .AllowAnonymous();
+
         app.MapGet(Endpoints.V1.Map.Search, Api.V1.Map.Search)
             .RequireAuthorization();
 

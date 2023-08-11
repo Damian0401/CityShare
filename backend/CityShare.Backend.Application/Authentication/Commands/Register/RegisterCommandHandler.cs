@@ -13,6 +13,7 @@ using CityShare.Backend.Application.Core.Models.Emails;
 using Microsoft.Extensions.Options;
 using CityShare.Backend.Application.Core.Abstractions.Queue;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
+using System.Web;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Register;
 
@@ -87,6 +88,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
     {
         _logger.LogInformation("Generating email confirmation token");
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var encodedToken = HttpUtility.UrlEncode(token);
 
         _logger.LogInformation("Creating CreateEmailModel");
         var model = new CreateEmailModel(
@@ -96,7 +98,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             new Dictionary<string, string>
             {
                 {EmailPlaceholders.Id, user.Id },
-                {EmailPlaceholders.Code, token },
+                {EmailPlaceholders.Token, encodedToken },
                 {EmailPlaceholders.UserName, request.Request.UserName },
                 {EmailPlaceholders.ClientUrl, _commonSettings.ClientUrl },
             });
@@ -127,10 +129,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         userDto.AccessToken = accessToken;
         userDto.Roles = roles;
 
-        return new RegisterResponseModel
-        {
-            User = userDto,
-            RefreshToken = refreshToken,
-        };
+        return new RegisterResponseModel(userDto, refreshToken);
     }
 }

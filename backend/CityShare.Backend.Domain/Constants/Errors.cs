@@ -8,16 +8,21 @@ public static class Errors
 
     public static IEnumerable<Error> EmailTaken => new[]
     {
-        new Error("Email.Taken", "Email is already taken")
+        new Error("EmailTaken", "Email is already taken")
     };
     
     public static IEnumerable<Error> InvalidCredentials => new[]
     {
-        new Error("Invalid.Credentials", "Provided credentials are invalid")
+        new Error("InvalidCredentials", "Provided credentials are invalid")
     };
 
     public static IEnumerable<Error> NotFound => new[]
     {
         new Error("NotFound", "Resource not found")
+    };
+    
+    public static IEnumerable<Error> InvalidToken => new[]
+    {
+        new Error("InvalidToken", "Provided token is invalid or expired")
     };
 }
