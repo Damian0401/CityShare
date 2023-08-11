@@ -2,5 +2,5 @@
 
 public class EmailTemplates
 {
-    public const string WelcomeAndEmailConfirmCode = "WelcomeAndEmailVerifyCode";
+    public const string WelcomeAndEmailConfirmLink = "WelcomeAndEmailConfirmLink";
 }

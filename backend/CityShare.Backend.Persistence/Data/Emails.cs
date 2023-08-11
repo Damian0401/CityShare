@@ -9,19 +9,19 @@ internal static class Emails
     internal async static Task SeedEmailTemplatesAsync(CityShareDbContext context)
     {
         var existingTemplates = context.EmailTemplates
-    .AsNoTracking()
-    .Select(x => x.Name).ToList();
+            .AsNoTracking()
+            .Select(x => x.Name).ToList();
 
         var emailTemplates = new List<EmailTemplate>
         {
             new EmailTemplate
             {
-                Name = EmailTemplates.WelcomeAndEmailConfirmCode,
+                Name = EmailTemplates.WelcomeAndEmailConfirmLink,
                 Subject = "Welcome to CityShare!",
                 Body = @$"<p>Hi {EmailPlaceholders.UserName},</p>
 <p>Thank you for registering at <a href=""{EmailPlaceholders.ClientUrl}"">CityShare</a>.</p>
-<p>Please verify your email by entering the following code:</p>
-<p><strong>{EmailPlaceholders.Code}</strong></p>
+<p>Please verify your email by clicking the link below.</p>
+<p><a href=""{EmailPlaceholders.ClientUrl}/confirm-email?code={EmailPlaceholders.Code}&id={EmailPlaceholders.Id}"">Verify email</a></p>
 <p>Best regards,</p>
 <p>CityShare team</p>
 <p><small>If you did not register at <a href=""{EmailPlaceholders.ClientUrl}"">CityShare</a>, please ignore this email.</small></p>"
