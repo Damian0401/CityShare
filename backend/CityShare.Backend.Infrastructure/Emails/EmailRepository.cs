@@ -62,7 +62,7 @@ public class EmailRepository : IEmailRepository
         var email = _mapper.Map<Email>(template);
         email.EmailPrirorityId = emailPrirority.Id;
         email.Receiver = model.Receiver;
-        email.Status = EmailStatuses.Pending;
+        email.Status = EmailStatuses.New;
 
         foreach (var (key, value) in model.Parameters)
         {
