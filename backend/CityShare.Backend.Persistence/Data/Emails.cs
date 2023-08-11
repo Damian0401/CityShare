@@ -16,7 +16,7 @@ internal static class Emails
         {
             new EmailTemplate
             {
-                Name = EmailTemplates.WelcomeAndEmailVerifyCode,
+                Name = EmailTemplates.WelcomeAndEmailConfirmCode,
                 Subject = "Welcome to CityShare!",
                 Body = @$"<p>Hi {EmailPlaceholders.UserName},</p>
 <p>Thank you for registering at <a href=""{EmailPlaceholders.ClientUrl}"">CityShare</a>.</p>

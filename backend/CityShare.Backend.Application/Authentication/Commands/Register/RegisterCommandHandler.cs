@@ -91,7 +91,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         _logger.LogInformation("Creating CreateEmailModel");
         var model = new CreateEmailModel(
             request.Request.Email,
-            EmailTemplates.WelcomeAndEmailVerifyCode,
+            EmailTemplates.WelcomeAndEmailConfirmCode,
             EmailPriorities.Medium,
             new Dictionary<string, string>
             {
