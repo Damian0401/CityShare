@@ -23,8 +23,8 @@ public static class SecurityExtension
                     .AllowCredentials());
         });
 
-        var jwtSettings = new AuthSettings();
-        configuration.Bind(AuthSettings.Key, jwtSettings);
+        var authSettings = new AuthSettings();
+        configuration.Bind(AuthSettings.Key, authSettings);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => options.TokenValidationParameters = new TokenValidationParameters
@@ -33,9 +33,9 @@ public static class SecurityExtension
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtSettings.Issuer,
-                ValidAudience = jwtSettings.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecurityKey)),
+                ValidIssuer = authSettings.Issuer,
+                ValidAudience = authSettings.Audience,
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(authSettings.SecurityKey)),
                 ClockSkew = TimeSpan.Zero
             });
 
@@ -43,7 +43,12 @@ public static class SecurityExtension
 
         services.Configure<RefreshTokenProviderOptions>(options =>
         {
-            options.TokenLifespan = TimeSpan.FromDays(jwtSettings.RefreshTokenExpirationDays);
+            options.TokenLifespan = TimeSpan.FromDays(authSettings.RefreshTokenExpirationDays);
+        });
+        
+        services.Configure<EmailConfirmationTokenProviderOptions>(options =>
+        {
+            options.TokenLifespan = TimeSpan.FromDays(authSettings.EmailConfirmationExpirationDays);
         });
 
         return services;

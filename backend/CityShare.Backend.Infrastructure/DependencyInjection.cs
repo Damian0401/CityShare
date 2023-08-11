@@ -38,6 +38,7 @@ public static class DependencyInjection
         services.AddIdentityCore<ApplicationUser>()
             .AddRoles<IdentityRole>()
             .AddTokenProvider<RefreshTokenProvider<ApplicationUser>>(RefreshToken.Provider)
+            .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(EmailConfirmation.Provider)
             .AddEntityFrameworkStores<CityShareDbContext>();
 
         var cacheSettings = new CacheSettings();
