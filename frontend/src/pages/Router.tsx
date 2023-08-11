@@ -11,6 +11,7 @@ import AnonymousRoute from "../components/anonymous-route/AnonymousRoute";
 import PrivateRoute from "../components/private-route/PrivateRoute";
 import AddressSearchMap from "../components/address-search-map/AddressSearchMap";
 import { toast } from "react-toastify";
+import ConfirmEmail from "./confirm-email/ConfirmEmail";
 
 const Router = createBrowserRouter([
   {
@@ -28,6 +29,10 @@ const Router = createBrowserRouter([
       {
         path: Routes.Register,
         element: <AnonymousRoute Component={Register} />,
+      },
+      {
+        path: Routes.ConfirmEmail,
+        element: <ConfirmEmail />,
       },
       {
         path: Routes.NotFound,

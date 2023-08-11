@@ -3,4 +3,5 @@ export interface IUser {
   userName: string;
   accessToken: string;
   roles: string[];
+  emailConfirmed: boolean;
 }

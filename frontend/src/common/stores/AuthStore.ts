@@ -1,10 +1,9 @@
 import { makeAutoObservable, reaction, runInAction } from "mobx";
-import { StorageKeys } from "../enums";
 import { ILoginValues } from "../interfaces";
 import agent from "../api/agent";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { IUser } from "../interfaces/IUser";
-
+import { accessTokenHelper } from "../utils/helpers";
 export default class AuthStore {
   private currentUser: IUser | null = null;
 
@@ -15,12 +14,9 @@ export default class AuthStore {
       () => this.currentUser,
       (currentUser) => {
         if (currentUser) {
-          window.localStorage.setItem(
-            StorageKeys.AccessToken,
-            currentUser.accessToken
-          );
+          accessTokenHelper.setAccessToken(currentUser.accessToken);
         } else {
-          window.localStorage.removeItem(StorageKeys.AccessToken);
+          accessTokenHelper.removeAccessToken();
         }
       }
     );
@@ -54,6 +50,14 @@ export default class AuthStore {
     const user = await agent.Auth.refresh();
     runInAction(() => {
       this.currentUser = user;
+    });
+  };
+
+  confirmEmail = async (id: string, token: string, signal: AbortSignal) => {
+    await agent.Auth.confirmEmail(id, token, signal);
+    runInAction(() => {
+      if (!this.currentUser) return;
+      this.currentUser.emailConfirmed = true;
     });
   };
 }

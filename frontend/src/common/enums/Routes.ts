@@ -4,6 +4,7 @@ export enum Routes {
   Register = "/register",
   NotFound = "/not-found",
   ServerError = "/server-error",
-  Wildcard = "*",
   Map = "/map",
+  ConfirmEmail = "/confirm-email",
+  Wildcard = "*",
 }
