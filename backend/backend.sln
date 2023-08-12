@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Persisten
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Tests", "CityShare.Backend.Tests\CityShare.Backend.Tests.csproj", "{C98B9D38-D180-4247-8F17-49FDEA860BC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Api", "CityShare.Backend.Api\CityShare.Backend.Api.csproj", "{ADBCF72D-F338-4E03-8A70-01869B6166D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Api", "CityShare.Backend.Api\CityShare.Backend.Api.csproj", "{ADBCF72D-F338-4E03-8A70-01869B6166D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityShare.Backend.Triggers", "CityShare.Backend.Triggers\CityShare.Backend.Triggers.csproj", "{AB7EE69C-E3B8-4EC5-AC7D-94BBDE5F838F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{ADBCF72D-F338-4E03-8A70-01869B6166D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ADBCF72D-F338-4E03-8A70-01869B6166D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ADBCF72D-F338-4E03-8A70-01869B6166D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB7EE69C-E3B8-4EC5-AC7D-94BBDE5F838F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB7EE69C-E3B8-4EC5-AC7D-94BBDE5F838F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB7EE69C-E3B8-4EC5-AC7D-94BBDE5F838F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB7EE69C-E3B8-4EC5-AC7D-94BBDE5F838F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

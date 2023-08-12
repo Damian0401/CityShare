@@ -19,7 +19,9 @@ builder.Services.AddInfrastructure(configuration);
 builder.Services.AddPersistence(configuration);
 
 builder.Host.UseSerilog((context, configuration) =>
-    configuration.ReadFrom.Configuration(context.Configuration));
+{
+    configuration.ReadFrom.Configuration(context.Configuration);
+});
 
 var app = builder.Build();
 

@@ -41,16 +41,6 @@ public static class SecurityExtension
 
         services.AddAuthorization();
 
-        services.Configure<RefreshTokenProviderOptions>(options =>
-        {
-            options.TokenLifespan = TimeSpan.FromDays(authSettings.RefreshTokenExpirationDays);
-        });
-        
-        services.Configure<EmailConfirmationTokenProviderOptions>(options =>
-        {
-            options.TokenLifespan = TimeSpan.FromDays(authSettings.EmailConfirmationExpirationDays);
-        });
-
         return services;
     }
 }

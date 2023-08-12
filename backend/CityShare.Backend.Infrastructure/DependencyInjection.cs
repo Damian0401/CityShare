@@ -35,22 +35,35 @@ public static class DependencyInjection
         services.AddScoped<IEmailRepository, EmailRepository>();
         services.AddScoped<IQueueService, StorageQueueService>();
 
+        var authSettings = new AuthSettings();
+        configuration.Bind(AuthSettings.Key, authSettings);
+
+        var nominatimSettings = new NominatimSettings();
+        configuration.Bind(NominatimSettings.Key, nominatimSettings);
+
+        var cacheSettings = new CacheSettings();
+        configuration.Bind(CacheSettings.Key, cacheSettings);
+
+        var commonSettings = new CommonSettings();
+        configuration.Bind(CommonSettings.Key, commonSettings);
+
+        services.AddMemoryCache(x => x.SizeLimit = cacheSettings.SizeLimit);
+
+        services.Configure<RefreshTokenProviderOptions>(options =>
+        {
+            options.TokenLifespan = TimeSpan.FromDays(authSettings.RefreshTokenExpirationDays);
+        });
+
+        services.Configure<EmailConfirmationTokenProviderOptions>(options =>
+        {
+            options.TokenLifespan = TimeSpan.FromDays(authSettings.EmailConfirmationExpirationDays);
+        });
+
         services.AddIdentityCore<ApplicationUser>()
             .AddRoles<IdentityRole>()
             .AddTokenProvider<RefreshTokenProvider<ApplicationUser>>(RefreshToken.Provider)
             .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(EmailConfirmation.Provider)
             .AddEntityFrameworkStores<CityShareDbContext>();
-
-        var cacheSettings = new CacheSettings();
-        configuration.Bind(CacheSettings.Key, cacheSettings);
-
-        services.AddMemoryCache(x => x.SizeLimit = cacheSettings.SizeLimit);
-
-        var commonSettings = new CommonSettings();
-        configuration.Bind(CommonSettings.Key, commonSettings);
-
-        var nominatimSettings = new NominatimSettings();
-        configuration.Bind(NominatimSettings.Key, nominatimSettings);
 
         services.AddHttpClient<INominatimService, NominatimService>((serviveProvider, httpClient) =>
         {
