@@ -12,6 +12,7 @@ import PrivateRoute from "../components/private-route/PrivateRoute";
 import AddressSearchMap from "../components/address-search-map/AddressSearchMap";
 import { toast } from "react-toastify";
 import ConfirmEmail from "./confirm-email/ConfirmEmail";
+import { Marker, Popup } from "react-leaflet";
 
 const Router = createBrowserRouter([
   {
@@ -47,7 +48,20 @@ const Router = createBrowserRouter([
         element: (
           <AddressSearchMap
             initialPoint={{ x: 51.1089776, y: 17.0326689 }}
+            isSearchOnly={true}
             additionalQuery="Wrocław"
+            elements={[
+              <Marker position={[51.1089776, 17.0326689]}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>,
+              <Marker position={[51.1109776, 17.0346689]}>
+                <Popup>
+                  A pretty CSS3 popup. <br /> Easily customizable.
+                </Popup>
+              </Marker>,
+            ]}
             onSelect={(result) => toast.success(result.displayName)}
           />
         ),
