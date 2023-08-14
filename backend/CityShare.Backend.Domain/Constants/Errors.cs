@@ -24,5 +24,25 @@ public static class Errors
     public static IEnumerable<Error> InvalidToken => new[]
     {
         new Error("InvalidToken", "Provided token is invalid or expired")
+    };    
+    
+    public static IEnumerable<Error> ForbiddenState => new[]
+    {
+        new Error("ForbiddenState", "Forbidden state has occurred")
+    };
+
+    public static IEnumerable<Error> OperationFailed => new[]
+    {
+        new Error("OperationFailed", "Unable to perform requested operation")
+    };
+
+    public static IEnumerable<Error> InvalidData => new[]
+    {
+        new Error("InvalidData", "Input data are invalid")
+    };
+
+    public static IEnumerable<Error> EmailAlreadyConfirmed => new[]
+    {
+        new Error("EmailAlreadyConfirmed", "Email is already confirmed")
     };
 }

@@ -34,6 +34,12 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, R
             return Result.Failure(Errors.InvalidToken);
         }
 
+        if (user.EmailConfirmed)
+        {
+            _logger.LogError("Email for user {@User} already confirmed", user);
+            return Result.Failure(Errors.EmailAlreadyConfirmed);
+        }
+
         _logger.LogInformation("Confirming email with token", token);
         var result = await _userManager.ConfirmEmailAsync(user, token);
 

@@ -44,14 +44,35 @@ public class ConfirmEmailCommandHandlerTests
         // Assert
         Assert.True(result.IsFailure);
     }
+    
+    [Fact]
+    public async Task EmailAlreadyConfirmed_ShouldReturn_Failure()
+    {
+        // Arrange
+        var user = Value.ApplicationUser;
+        user.EmailConfirmed = true;
+
+        _userManagerMockHelper.SetupAsync(
+            x => x.FindByIdAsync(Any.String),
+            user);
+
+        // Act
+        var result = await _systemUnderTests.Handle(_confirmEmailCommand, Value.CancelationToken);
+
+        // Assert
+        Assert.True(result.IsFailure);
+    }
 
     [Fact]
     public async Task ConfirmationFailed_ShouldReturn_Failure()
     {
         // Arrange
+        var user = Value.ApplicationUser;
+        user.EmailConfirmed = false;
+
         _userManagerMockHelper.SetupAsync(
             x => x.FindByIdAsync(Any.String),
-            Value.ApplicationUser);
+            user);
 
         _userManagerMockHelper.SetupAsync(
             x => x.ConfirmEmailAsync(Any.ApplicationUser, Any.String),
@@ -68,9 +89,12 @@ public class ConfirmEmailCommandHandlerTests
     public async Task CorrectRequest_ShouldReturn_Success()
     {
         // Arrange
+        var user = Value.ApplicationUser;
+        user.EmailConfirmed = false;
+
         _userManagerMockHelper.SetupAsync(
             x => x.FindByIdAsync(Any.String),
-            Value.ApplicationUser);
+            user);
 
         _userManagerMockHelper.SetupAsync(
             x => x.ConfirmEmailAsync(Any.ApplicationUser, Any.String),
