@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Queues;
 using CityShare.Backend.Application.Core.Abstractions.Queue;
+using System.Text;
 using System.Text.Json;
 
 namespace CityShare.Backend.Infrastructure.Queue;
@@ -13,17 +14,22 @@ public class StorageQueueService : IQueueService
         _queueServiceClient = queueServiceClient;
     }
 
-    public async Task SendAsync<T>(string queueName, T item, bool createIfNotExists = true)
+    public async Task SendAsync<T>(string queueName, T item, bool encodeToBase64 = true, bool createIfNotExists = true, CancellationToken cancellationToken = default)
     {
         var queueClient = _queueServiceClient.GetQueueClient(queueName);
 
         if (createIfNotExists)
         {
-            await queueClient.CreateIfNotExistsAsync();
+            await queueClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken);
         }
 
         var message = JsonSerializer.Serialize(item);
 
-        await queueClient.SendMessageAsync(message);
+        if (encodeToBase64)
+        {
+            message = Convert.ToBase64String(Encoding.UTF8.GetBytes(message));
+        }
+
+        await queueClient.SendMessageAsync(message, cancellationToken);
     }
 }

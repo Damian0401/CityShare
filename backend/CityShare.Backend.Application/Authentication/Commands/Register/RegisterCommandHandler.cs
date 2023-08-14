@@ -76,7 +76,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         await _userManager.AddToRoleAsync(user, Roles.User);
 
         _logger.LogInformation("Sending welcome email to {@Email}", user.Email);
-        await SendWelcomeEmail(request, user);
+        await SendWelcomeEmail(request, user, cancellationToken);
 
         _logger.LogInformation("Creating response");
         var response = await CreateResponseAsync(user);
@@ -84,7 +84,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         return response;
     }
 
-    private async Task SendWelcomeEmail(RegisterCommand request, ApplicationUser user)
+    private async Task SendWelcomeEmail(RegisterCommand request, ApplicationUser user, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Generating email confirmation token");
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -104,10 +104,10 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
             });
 
         _logger.LogInformation("Creating email from model {@Model}", model);
-        var emailId = await _emailRepository.CreateAsync(model);
+        var emailId = await _emailRepository.CreateAsync(model, cancellationToken);
 
         _logger.LogInformation("Sending emailId {@Id} to queue {@Queue}", emailId, QueueNames.EmailsToSend);
-        await _queueService.SendAsync(QueueNames.EmailsToSend, emailId);
+        await _queueService.SendAsync(QueueNames.EmailsToSend, emailId, cancellationToken: cancellationToken);
     }
 
     private async Task<RegisterResponseModel> CreateResponseAsync(ApplicationUser user)
