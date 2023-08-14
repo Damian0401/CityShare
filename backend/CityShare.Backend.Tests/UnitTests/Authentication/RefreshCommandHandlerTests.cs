@@ -94,7 +94,7 @@ public class RefreshCommandHandlerTests
     }
 
     [Fact]
-    public async Task CorrectRequest_ShouldReturn_Failure()
+    public async Task CorrectRequest_ShouldReturn_Success()
     {
         // Arrange
         _jwtProviderMock.Setup(x => x.GetEmailFromToken(Any.String))

@@ -15,6 +15,7 @@ internal class Value
     public static readonly bool True = true;
     public static readonly bool False = false;
     public static readonly object? Null = null;
+    public static readonly Guid Guid = Guid.NewGuid();
     public static readonly ApplicationUser ApplicationUser = new ApplicationUser();
     public static readonly CancellationToken CancelationToken = new CancellationToken();
     public static readonly IdentityResult IdentityResultSecceeded = IdentityResult.Success;
@@ -28,4 +29,5 @@ internal class Value
     public static readonly string SerializedReverseResult = JsonSerializer.Serialize(new ReverseResultModel());
     public static SearchDto SearchDto => new SearchDto();
     public static ReverseDto ReverseDto => new ReverseDto();
+    public static Email Email => new Email();
 }
