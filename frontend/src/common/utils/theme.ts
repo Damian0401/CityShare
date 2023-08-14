@@ -10,7 +10,8 @@ import {
   SecondaryContainer,
 } from "./styleConfigs";
 
-const { Button, Input, FormError, Modal } = chakraTheme.components;
+const { Button, Input, FormError, Modal, Divider, Tooltip } =
+  chakraTheme.components;
 
 const theme = extendBaseTheme({
   config: {
@@ -40,6 +41,8 @@ const theme = extendBaseTheme({
     },
     FormError,
     Modal,
+    Divider,
+    Tooltip,
     PrimaryContainer,
     SecondaryContainer,
     NavbarContainer,

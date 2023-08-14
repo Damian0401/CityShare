@@ -1,4 +1,5 @@
-@import "../../../../assets/styles/general.module.scss";
+@import "../../../../assets/styles/variables.module.scss";
+@import "../../../../assets/styles/colors.module.scss";
 
 .container {
   width: 100%;
@@ -18,7 +19,7 @@
     flex-direction: row;
     align-items: center;
 
-    .userName {
+    .menuText {
       column-gap: 0.5rem;
       width: 100%;
       display: flex;
@@ -35,4 +36,48 @@
   right: 0 !important;
   height: 100% !important;
   margin: 0 !important;
+
+  .header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .userName {
+      font-size: $lgFontSize;
+    }
+
+    .emailNotConfirmed {
+      font-size: $smFontSize;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      column-gap: 0.3rem;
+    }
+
+    .logo {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      font-size: $xlFontSize;
+
+      &Image {
+        width: 5rem;
+        height: 5rem;
+      }
+    }
+  }
+
+  .modalBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    row-gap: 1rem;
+  }
+
+  & button {
+    width: 100%;
+  }
 }

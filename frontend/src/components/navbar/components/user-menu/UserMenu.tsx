@@ -1,28 +1,42 @@
 import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Button,
+  Divider,
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Spacer,
   Text,
+  Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { IUserMenuProps } from "./IUserMenuProps";
 import styles from "./UserMenu.module.scss";
 import BaseContainer from "../../../base-container/BaseContainer";
-import { Containers, MotionPresets } from "../../../../common/enums";
+import { Containers, MotionPresets, Routes } from "../../../../common/enums";
+import { BiLogOutCircle } from "react-icons/bi";
+import { CgProfile } from "react-icons/cg";
+import { IoCreateOutline } from "react-icons/io5";
+import { AiOutlineSearch } from "react-icons/ai";
+import { FiMapPin } from "react-icons/fi";
+import { AiOutlineQuestionCircle } from "react-icons/ai";
+import NavbarLogo from "../../../../assets/images/navbar-logo.svg";
+import { Link } from "react-router-dom";
+import { useRef } from "react";
+import Constants from "../../../../common/utils/constants";
 
 const UserMenu: React.FC<IUserMenuProps> = (props) => {
   const { user, logout } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const initialRef = useRef<HTMLButtonElement | null>(null);
   return (
     <>
       <div className={styles.container}>
         <BaseContainer type={Containers.Primary} className={styles.wrapper}>
           <div onClick={onOpen} className={styles.menuButton}>
-            <div className={styles.userName}>
+            <div className={styles.menuText}>
               <Text>Menu</Text>
             </div>
             <HamburgerIcon />
@@ -32,13 +46,46 @@ const UserMenu: React.FC<IUserMenuProps> = (props) => {
       <Modal
         onClose={onClose}
         isOpen={isOpen}
+        initialFocusRef={initialRef}
         motionPreset={MotionPresets.SlideInRight}
       >
         <ModalOverlay />
         <ModalContent className={styles.menuModal}>
-          <ModalHeader>{user.userName}</ModalHeader>
-          <ModalBody>
-            <Button onClick={logout}>Logout</Button>
+          <ModalHeader className={styles.header}>
+            <Link to={Routes.Index} className={styles.logo}>
+              <img src={NavbarLogo} className={styles.logoImage} />
+              CityShare
+            </Link>
+            <Divider className={styles.divider} />
+            <div className={styles.userName}>{user.userName}</div>
+            {!user.emailConfirmed && (
+              <Tooltip
+                label="Confirm your email by clicking on the link from the email we sent you."
+                aria-label={Constants.AriaLabels.ConfirmEmailTooltip}
+              >
+                <div className={styles.emailNotConfirmed}>
+                  Email not confirmed <AiOutlineQuestionCircle />
+                </div>
+              </Tooltip>
+            )}
+          </ModalHeader>
+          <ModalBody className={styles.modalBody}>
+            <Button leftIcon={<CgProfile />} onClick={onClose} ref={initialRef}>
+              Profile
+            </Button>
+            <Button leftIcon={<IoCreateOutline />} onClick={onClose}>
+              Create
+            </Button>
+            <Button leftIcon={<FiMapPin />} onClick={onClose}>
+              Map
+            </Button>
+            <Button leftIcon={<AiOutlineSearch />} onClick={onClose}>
+              Search
+            </Button>
+            <Spacer />
+            <Button leftIcon={<BiLogOutCircle />} onClick={logout}>
+              Logout
+            </Button>
           </ModalBody>
         </ModalContent>
       </Modal>
