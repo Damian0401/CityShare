@@ -38,7 +38,7 @@ public class EmailRepository : IEmailRepository
             .FirstAsync(x => x.Name.Equals(model.Priority), cancellationToken);
 
         _logger.LogInformation("Creating email from model {@Model}", model);
-        var email = CreateEmail(model, template, emailPrirority);
+        var email = await CreateEmailAsync(model, template, emailPrirority);
 
         _logger.LogInformation("Saving email to database {@Email}", email);
         _context.Emails.Add(email);
@@ -64,12 +64,22 @@ public class EmailRepository : IEmailRepository
         return await _context.SaveChangesAsync(cancellationToken) > 0;
     }
 
-    private Email CreateEmail(CreateEmailModel model, EmailTemplate template, EmailPrirority emailPrirority)
+    public async Task<int> GetStatusIdAsync(string statusName, CancellationToken cancellationToken)
+    {
+        var status = await _context.EmailStatuses
+            .AsNoTracking()
+            .FirstAsync(x => x.Name.Equals(statusName), cancellationToken);
+
+        return status.Id;
+    }
+
+    private async Task<Email> CreateEmailAsync(CreateEmailModel model, EmailTemplate template, EmailPrirority emailPrirority)
     {
         var email = _mapper.Map<Email>(template);
-        email.EmailPrirorityId = emailPrirority.Id;
+        email.PrirorityId = emailPrirority.Id;
         email.Receiver = model.Receiver;
-        email.Status = EmailStatuses.New;
+        email.Status = await _context.EmailStatuses
+            .FirstAsync(x => x.Name.Equals(EmailStatuses.New));
 
         foreach (var (key, value) in model.Parameters)
         {

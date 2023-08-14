@@ -7,9 +7,10 @@ public class Email
     public string Body { get; set; } = default!;
     public string Receiver { get; set; } = default!;
     public int TryCount { get; set; }
-    public string Status { get; set; } = default!;
+    public int StatusId { get; set; }
     public DateTime? SendDate { get; set; }
-    public int EmailPrirorityId { get; set; }
+    public int PrirorityId { get; set; }
 
-    public virtual EmailPrirority EmailPrirority { get; set; } = default!;
+    public virtual EmailPrirority Prirority { get; set; } = default!;
+    public virtual EmailStatus Status { get; set; } = default!;
 }

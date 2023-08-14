@@ -22,6 +22,8 @@ public static class SeedDataExtension
 
         await Emails.SeedEmailPrioritiesAsync(context);
 
+        await Emails.SeedEmailStatusesAsync(context);
+
         return serviceProvider;
     }
 }

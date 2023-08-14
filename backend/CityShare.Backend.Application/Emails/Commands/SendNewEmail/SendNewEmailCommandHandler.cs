@@ -33,14 +33,13 @@ public class SendNewEmailCommandHandler : IRequestHandler<SendNewEmailCommand, R
             return Result.Failure(Errors.NotFound);
         }
 
-        if (!email.Status.Equals(EmailStatuses.New))
+        var newStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.New, cancellationToken);
+
+        if (!email.StatusId.Equals(newStatusId))
         {
-            _logger.LogError("Email {@Email} has wrong status", email);
+            _logger.LogError("Emailwith id {@Id} has wrong StatusId {@StatusId}, expected {@CorrectStatusId}", email.Id, email.StatusId, newStatusId);
             return Result.Failure(Errors.ForbiddenState);
         }
-
-        _logger.LogInformation("Changing email status to {@Status}", EmailStatuses.Pending);
-        email.Status = EmailStatuses.Pending;
 
         try
         {
@@ -49,14 +48,17 @@ public class SendNewEmailCommandHandler : IRequestHandler<SendNewEmailCommand, R
         }
         catch
         {
-            _logger.LogInformation("Unable to send email {@Email}, updating data", email);
+            _logger.LogInformation("Unable to send email with id {@Id}, updating Status and TryCount", email.Id);
+            var pendingStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Pending, cancellationToken);
+            email.StatusId = pendingStatusId;
             email.TryCount++;
             await _emailRepository.UpdateAsync(email);
             return Result.Failure(Errors.OperationFailed);
         }
 
-        _logger.LogInformation("Update email {@Email} data after sending", email);
-        email.Status = EmailStatuses.Send;
+        _logger.LogInformation("Updating email with id {@Id} after sending", email.Id);
+        var sendStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Send, cancellationToken);
+        email.StatusId = sendStatusId;
         email.SendDate = DateTime.UtcNow;
         await _emailRepository.UpdateAsync(email);
         return Result.Success();
