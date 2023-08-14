@@ -1,3 +1,6 @@
+using CityShare.Backend.Application;
+using CityShare.Backend.Infrastructure;
+using CityShare.Backend.Persistence;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Serilog;
@@ -14,6 +17,12 @@ var host = new HostBuilder()
     .UseSerilog((context, configuration) =>
     {
         configuration.ReadFrom.Configuration(context.Configuration);
+    })
+    .ConfigureServices((host, services) =>
+    {
+        services.AddApplication();
+        services.AddInfrastructure(host.Configuration);
+        services.AddPersistence(host.Configuration);
     })
     .Build();
 

@@ -18,21 +18,23 @@
     <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CityShare.Backend.Domain\CityShare.Backend.Domain.csproj" />
+    <ProjectReference Include="..\CityShare.Backend.Application\CityShare.Backend.Application.csproj" />
+    <ProjectReference Include="..\CityShare.Backend.Infrastructure\CityShare.Backend.Infrastructure.csproj" />
+    <ProjectReference Include="..\CityShare.Backend.Persistence\CityShare.Backend.Persistence.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
 	<None Update="serilog.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
 	  <None Update="local.serilog.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
     <None Update="local.settings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>

@@ -1,4 +1,5 @@
-﻿using CityShare.Backend.Application.Core.Abstractions.Authentication;
+﻿using Azure.Storage.Queues;
+using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;

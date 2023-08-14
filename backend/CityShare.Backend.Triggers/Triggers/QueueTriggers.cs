@@ -1,23 +1,36 @@
+using CityShare.Backend.Application.Emails.Commands.SendNewEmail;
 using CityShare.Backend.Domain.Constants;
+using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace CityShare.Backend.Triggers.Triggers
+namespace CityShare.Backend.Triggers.Triggers;
+
+public class QueueTriggers
 {
-    public class QueueTriggers
+    private readonly ILogger<QueueTriggers> _logger;
+    private readonly IMediator _mediator;
+
+    public QueueTriggers(ILogger<QueueTriggers> logger, IMediator mediator)
     {
-        private readonly ILogger _logger;
+        _logger = logger;
+        _mediator = mediator;
+    }
 
-        public QueueTriggers(ILoggerFactory loggerFactory)
+    [Function(nameof(SendNewEmail))]
+    public async Task SendNewEmail(
+        [QueueTrigger(QueueNames.EmailsToSend, Connection = ConnectionStrings.StorageAccount)] Guid emailId, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Executing {@Name} trigger for id {@Id}", nameof(SendNewEmail), emailId);
+
+        var result = await _mediator.Send(new SendNewEmailCommand(emailId), cancellationToken);
+
+        if (result.IsSuccess)
         {
-            _logger = loggerFactory.CreateLogger<QueueTriggers>();
+            _logger.LogInformation("Execution {@Name} trigger completed", nameof(SendNewEmail));
+            return;
         }
 
-        [Function(nameof(ProcessEmails))]
-        public void ProcessEmails(
-            [QueueTrigger(QueueNames.EmailsToSend, Connection = ConnectionStrings.StorageAccount)] Guid emailId)
-        {
-            _logger.LogInformation($"C# Queue trigger function processed: {emailId}");
-        }
+        _logger.LogError("Failed to execute {@Name} trigger with errors {@Errors}", nameof(SendNewEmail), result.Errors);
     }
 }
