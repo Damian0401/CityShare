@@ -11,6 +11,7 @@ namespace CityShare.Backend.Tests.Common;
 internal class Value
 {
     public static string String => Path.GetRandomFileName();
+    public static int Int => Random.Shared.Next();
     public static double Double => Random.Shared.NextDouble();
     public static readonly bool True = true;
     public static readonly bool False = false;

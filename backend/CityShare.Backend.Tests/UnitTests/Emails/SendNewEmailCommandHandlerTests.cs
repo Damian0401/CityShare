@@ -45,18 +45,19 @@ public class SendNewEmailCommandHandlerTests
         Assert.True(result.IsFailure);
     }    
     
-    [Theory]
-    [InlineData(EmailStatuses.Pending)]
-    [InlineData(EmailStatuses.Send)]
-    [InlineData(EmailStatuses.Error)]
-    public async Task EmailStatusNotNew_ShouldReturn_Failure(string status)
+    [Fact]
+    public async Task EmailStatusNotNew_ShouldReturn_Failure()
     {
         // Arrange
+        var newStatusId = Value.Int;
         var email = Value.Email;
-        email.Status = status;
+        email.StatusId = newStatusId + 1;
 
         _emailRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(email);
+
+        _emailRepositoryMock.Setup(x => x.GetStatusIdAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(newStatusId);
 
         // Act
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
@@ -69,11 +70,15 @@ public class SendNewEmailCommandHandlerTests
     public async Task SendThrowError_ShouldReturn_Failure()
     {
         // Arrange
+        var newStatusId = Value.Int;
         var email = Value.Email;
-        email.Status = EmailStatuses.New;
+        email.StatusId = newStatusId;
 
         _emailRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(email);
+
+        _emailRepositoryMock.Setup(x => x.GetStatusIdAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(newStatusId);
 
         _emailServiceMock.Setup(x => x.SendAsync(Any.Email))
             .ThrowsAsync(new Exception());
@@ -89,12 +94,15 @@ public class SendNewEmailCommandHandlerTests
     public async Task CorrectRequest_ShouldReturn_Success()
     {
         // Arrange
+        var newStatusId = Value.Int;
         var email = Value.Email;
-        email.Status = EmailStatuses.New;
+        email.StatusId = newStatusId;
 
         _emailRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(email);
 
+        _emailRepositoryMock.Setup(x => x.GetStatusIdAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(newStatusId);
 
         // Act
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
