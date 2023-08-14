@@ -73,10 +73,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         userDto.AccessToken = accessToken;
         userDto.Roles = roles;
 
-        return new LoginResponseModel
-        {
-            User = userDto,
-            RefreshToken = refreshToken,
-        };
+        return new LoginResponseModel(userDto, refreshToken);
     }
 }

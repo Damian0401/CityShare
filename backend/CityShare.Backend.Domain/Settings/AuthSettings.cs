@@ -8,4 +8,5 @@ public class AuthSettings
     public string SecurityKey { get; set; } = default!;
     public int AccessTokenExpirationMinutes { get; set; }
     public int RefreshTokenExpirationDays { get; set; }
+    public int EmailConfirmationExpirationDays { get; set; }
 }

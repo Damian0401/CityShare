@@ -5,12 +5,15 @@
   display: flex;
   justify-content: flex-end;
 
-  .menuButton {
+  .wrapper {
     border-radius: 0;
     border-bottom-left-radius: $borderRadius;
     box-shadow: $boxShadow -5px inset;
+  }
+
+  .menuButton {
     cursor: pointer;
-    min-width: 10rem;
+    min-width: 6rem;
     display: flex;
     flex-direction: row;
     align-items: center;

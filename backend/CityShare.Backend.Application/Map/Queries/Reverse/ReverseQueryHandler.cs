@@ -17,7 +17,7 @@ public class ReverseQueryHandler : IRequestHandler<ReverseQuery, Result<ReverseD
 
     public async Task<Result<ReverseDto>> Handle(ReverseQuery request, CancellationToken cancellationToken)
     {
-        var result = await _nominatimService.ReverseAsync(request.X, request.Y);
+        var result = await _nominatimService.ReverseAsync(request.X, request.Y, cancellationToken);
 
         if (result is null)
         {

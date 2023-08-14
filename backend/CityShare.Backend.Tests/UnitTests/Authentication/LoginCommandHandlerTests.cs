@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using CityShare.Backend.Application.Authentication.Commands.Login;
+﻿using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Models.Authentication.Login;
 using CityShare.Backend.Domain.Entities;
@@ -29,11 +28,7 @@ public class LoginCommandHandlerTests
 
         var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
 
-        var request = new LoginRequestModel
-        {
-            Email = Value.String,
-            Password = Value.String,
-        };
+        var request = new LoginRequestModel(Value.String, Value.String);
 
         _loginCommand = new LoginCommand(request);
 
@@ -49,7 +44,7 @@ public class LoginCommandHandlerTests
     {
         // Arrange
         _userManagerMockHelper.SetupAsync(
-            x => x.FindByEmailAsync(Value.String),
+            x => x.FindByEmailAsync(Any.String),
             (ApplicationUser?)Value.Null);
 
         // Act

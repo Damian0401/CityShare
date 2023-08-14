@@ -1,6 +1,8 @@
-﻿using CityShare.Backend.Application.Authentication.Commands.Login;
+﻿using CityShare.Backend.Application.Authentication.Commands.ConfirmEmail;
+using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Authentication.Commands.Register;
+using CityShare.Backend.Application.Core.Models.Authentication.ConfirmEmail;
 using CityShare.Backend.Application.Core.Models.Authentication.Login;
 using CityShare.Backend.Application.Core.Models.Authentication.Refresh;
 using CityShare.Backend.Application.Core.Models.Authentication.Register;
@@ -90,5 +92,19 @@ public class Authentication
         return result.IsSuccess
             ? Results.Ok(result.Value.User) 
             : Results.Unauthorized();
+    }
+
+    public static async Task<IResult> ConfirmEmail(
+        [FromBody] EmailConfirmRequestModel request,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new ConfirmEmailCommand(request), 
+            cancellationToken);
+
+        return result.IsSuccess
+            ? Results.NoContent()
+            : Results.BadRequest(result.Errors);
     }
 }

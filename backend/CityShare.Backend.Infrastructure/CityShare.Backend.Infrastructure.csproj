@@ -7,11 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Queues" Version="12.15.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.8" />
+    <PackageReference Include="Microsoft.Extensions.Azure" Version="1.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CityShare.Backend.Application\CityShare.Backend.Application.csproj" />
+    <ProjectReference Include="..\CityShare.Backend.Persistence\CityShare.Backend.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

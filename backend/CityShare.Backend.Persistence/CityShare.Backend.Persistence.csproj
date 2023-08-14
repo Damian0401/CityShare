@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CityShare.Backend.Application\CityShare.Backend.Application.csproj" />
-    <ProjectReference Include="..\CityShare.Backend.Infrastructure\CityShare.Backend.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

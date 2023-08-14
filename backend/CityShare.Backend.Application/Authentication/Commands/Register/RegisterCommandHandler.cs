@@ -9,6 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Application.Core.Models.Authentication.Register;
 using Microsoft.Extensions.Logging;
+using CityShare.Backend.Application.Core.Models.Emails;
+using Microsoft.Extensions.Options;
+using CityShare.Backend.Application.Core.Abstractions.Queue;
+using CityShare.Backend.Application.Core.Abstractions.Emails;
+using System.Web;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Register;
 
@@ -17,17 +22,26 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtProvider _jwtProvider;
     private readonly IMapper _mapper;
+    private readonly IQueueService _queueService;
+    private readonly IEmailRepository _emailRepository;
+    private readonly CommonSettings _commonSettings;
     private readonly ILogger<RegisterCommandHandler> _logger;
 
     public RegisterCommandHandler(
         UserManager<ApplicationUser> userManager, 
         IJwtProvider jwtProvider,
         IMapper mapper,
+        IOptions<CommonSettings> options,
+        IQueueService queueService,
+        IEmailRepository emailRepository,
         ILogger<RegisterCommandHandler> logger)
     {
         _userManager = userManager;
         _jwtProvider = jwtProvider;
         _mapper = mapper;
+        _queueService = queueService;
+        _emailRepository = emailRepository;
+        _commonSettings = options.Value;
         _logger = logger;
     }
 
@@ -38,7 +52,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
         if (user is not null)
         {
-            _logger.LogError("User with {@Email} not found", user.Email);
+            _logger.LogError("User with {@Email} already exists", user.Email);
             return Result<RegisterResponseModel>.Failure(Errors.EmailTaken);
         }
 
@@ -60,10 +74,40 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
         _logger.LogInformation("Assigning {@Email} to {@User} role", user.Email, Roles.User);
         await _userManager.AddToRoleAsync(user, Roles.User);
-        
+
+        _logger.LogInformation("Sending welcome email to {@Email}", user.Email);
+        await SendWelcomeEmail(request, user, cancellationToken);
+
+        _logger.LogInformation("Creating response");
         var response = await CreateResponseAsync(user);
 
         return response;
+    }
+
+    private async Task SendWelcomeEmail(RegisterCommand request, ApplicationUser user, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Generating email confirmation token");
+        var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        var encodedToken = HttpUtility.UrlEncode(token);
+
+        _logger.LogInformation("Creating CreateEmailModel");
+        var model = new CreateEmailModel(
+            request.Request.Email,
+            EmailTemplates.WelcomeAndEmailConfirmLink,
+            EmailPriorities.Medium,
+            new Dictionary<string, string>
+            {
+                {EmailPlaceholders.Id, user.Id },
+                {EmailPlaceholders.Token, encodedToken },
+                {EmailPlaceholders.UserName, request.Request.UserName },
+                {EmailPlaceholders.ClientUrl, _commonSettings.ClientUrl },
+            });
+
+        _logger.LogInformation("Creating email from model {@Model}", model);
+        var emailId = await _emailRepository.CreateAsync(model, cancellationToken);
+
+        _logger.LogInformation("Sending emailId {@Id} to queue {@Queue}", emailId, QueueNames.EmailsToSend);
+        await _queueService.SendAsync(QueueNames.EmailsToSend, emailId, cancellationToken: cancellationToken);
     }
 
     private async Task<RegisterResponseModel> CreateResponseAsync(ApplicationUser user)
@@ -80,14 +124,11 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         await _userManager.SetAuthenticationTokenAsync(
             user, RefreshToken.Provider, RefreshToken.Name, refreshToken);
 
+        _logger.LogInformation("Mapping user {@User} to dto", user);
         var userDto = _mapper.Map<UserDto>(user);
         userDto.AccessToken = accessToken;
         userDto.Roles = roles;
 
-        return new RegisterResponseModel
-        {
-            User = userDto,
-            RefreshToken = refreshToken,
-        };
+        return new RegisterResponseModel(userDto, refreshToken);
     }
 }

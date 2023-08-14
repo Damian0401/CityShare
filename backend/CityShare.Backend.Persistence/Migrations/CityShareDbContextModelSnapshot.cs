@@ -87,6 +87,99 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Email", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<int>("EmailPrirorityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Receiver")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime?>("SendDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("TryCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmailPrirorityId");
+
+                    b.ToTable("Emails");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailPrirority", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("RetryNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailPriorities");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Body")
+                        .IsRequired()
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Subject")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EmailTemplates");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -220,6 +313,17 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Email", b =>
+                {
+                    b.HasOne("CityShare.Backend.Domain.Entities.EmailPrirority", "EmailPrirority")
+                        .WithMany("Emails")
+                        .HasForeignKey("EmailPrirorityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("EmailPrirority");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -269,6 +373,11 @@ namespace CityShare.Backend.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailPrirority", b =>
+                {
+                    b.Navigation("Emails");
                 });
 #pragma warning restore 612, 618
         }

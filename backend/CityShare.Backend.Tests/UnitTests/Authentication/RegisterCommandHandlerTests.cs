@@ -1,12 +1,16 @@
 ﻿using CityShare.Backend.Application.Authentication.Commands.Register;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
+using CityShare.Backend.Application.Core.Abstractions.Emails;
+using CityShare.Backend.Application.Core.Abstractions.Queue;
 using CityShare.Backend.Application.Core.Models.Authentication.Register;
 using CityShare.Backend.Domain.Entities;
+using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
 using CityShare.Backend.Tests.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 
 namespace CityShare.Backend.Tests.UnitTests.Authentication;
@@ -26,14 +30,15 @@ public class RegisterCommandHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
+        var options = Options.Create(new CommonSettings());
+
+        var queueServiceMock = new Mock<IQueueService>();
+
+        var emailRepositoryMock = new Mock<IEmailRepository>();
+
         var logger = new Mock<ILogger<RegisterCommandHandler>>().Object;
 
-        var request = new RegisterRequestModel
-        {
-            Email = Value.String,
-            Password = Value.String,
-            UserName = Value.String,
-        };
+        var request = new RegisterRequestModel(Value.String, Value.String, Value.String);
 
         _registerCommand = new RegisterCommand(request);
 
@@ -41,6 +46,9 @@ public class RegisterCommandHandlerTests
             _userManagerMockHelper.GetMockObject(),
             _jwtProviderMock.Object,
             mapper,
+            options,
+            queueServiceMock.Object,
+            emailRepositoryMock.Object,
             logger);
     }
 

@@ -8,16 +8,41 @@ public static class Errors
 
     public static IEnumerable<Error> EmailTaken => new[]
     {
-        new Error("Email.Taken", "Email is already taken")
+        new Error("EmailTaken", "Email is already taken")
     };
     
     public static IEnumerable<Error> InvalidCredentials => new[]
     {
-        new Error("Invalid.Credentials", "Provided credentials are invalid")
+        new Error("InvalidCredentials", "Provided credentials are invalid")
     };
 
     public static IEnumerable<Error> NotFound => new[]
     {
         new Error("NotFound", "Resource not found")
+    };
+    
+    public static IEnumerable<Error> InvalidToken => new[]
+    {
+        new Error("InvalidToken", "Provided token is invalid or expired")
+    };    
+    
+    public static IEnumerable<Error> ForbiddenState => new[]
+    {
+        new Error("ForbiddenState", "Forbidden state has occurred")
+    };
+
+    public static IEnumerable<Error> OperationFailed => new[]
+    {
+        new Error("OperationFailed", "Unable to perform requested operation")
+    };
+
+    public static IEnumerable<Error> InvalidData => new[]
+    {
+        new Error("InvalidData", "Input data are invalid")
+    };
+
+    public static IEnumerable<Error> EmailAlreadyConfirmed => new[]
+    {
+        new Error("EmailAlreadyConfirmed", "Email is already confirmed")
     };
 }

@@ -17,7 +17,7 @@ public class SearchQueryHandler : IRequestHandler<SearchQuery, Result<SearchDto>
 
     public async Task<Result<SearchDto>> Handle(SearchQuery request, CancellationToken cancellationToken)
     {
-        var result = await _nominatimService.SearchByQueryAsync(request.Query);
+        var result = await _nominatimService.SearchByQueryAsync(request.Query, cancellationToken);
 
         if (result is null)
         {

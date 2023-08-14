@@ -20,11 +20,13 @@ const UserMenu: React.FC<IUserMenuProps> = (props) => {
   return (
     <>
       <div className={styles.container}>
-        <BaseContainer type={Containers.Primary} className={styles.menuButton}>
-          <div className={styles.userName} onClick={onOpen}>
-            <Text>{user.userName}</Text>
+        <BaseContainer type={Containers.Primary} className={styles.wrapper}>
+          <div onClick={onOpen} className={styles.menuButton}>
+            <div className={styles.userName}>
+              <Text>Menu</Text>
+            </div>
+            <HamburgerIcon />
           </div>
-          <HamburgerIcon />
         </BaseContainer>
       </div>
       <Modal
