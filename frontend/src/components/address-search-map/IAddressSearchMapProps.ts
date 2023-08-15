@@ -5,5 +5,7 @@ export interface IAddressSearchMapProps {
   initialPoint: IPoint;
   searchInputSize?: ChakraSizes;
   additionalQuery?: string;
-  onSelect: (result: IReverseResult) => void;
+  isSearchOnly?: boolean;
+  elements?: JSX.Element[];
+  onSelect?: (result: IReverseResult) => void;
 }

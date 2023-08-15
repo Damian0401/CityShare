@@ -15,14 +15,30 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
     initialPoint,
     searchInputSize = ChakraSizes.Sm,
     additionalQuery,
+    isSearchOnly = false,
+    elements,
     onSelect,
   } = props;
 
-  const [isSelectBlocked, setIsSelectBlocked] = useState<boolean>(false);
+  const [isSelectBlocked, setIsSelectBlocked] = useState<boolean>(isSearchOnly);
 
   const handleSelect = async (point: IPoint) => {
+    if (!onSelect) return;
+
     const address = await agent.Map.reverse(point);
     onSelect(address);
+  };
+
+  const handleMouseEnter = () => {
+    if (isSearchOnly) return;
+
+    setIsSelectBlocked(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (isSearchOnly) return;
+
+    setIsSelectBlocked(false);
   };
 
   return (
@@ -41,10 +57,11 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
           isSelectBlocked={isSelectBlocked}
         />
         <ZoomControl position={LeafletPositions.BottomLeft} />
+        {elements && elements.map((marker) => marker)}
         <div
           className={styles.search}
-          onMouseEnter={() => setIsSelectBlocked(true)}
-          onMouseLeave={() => setIsSelectBlocked(false)}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
         >
           <SearchInput
             searchInputSize={searchInputSize}

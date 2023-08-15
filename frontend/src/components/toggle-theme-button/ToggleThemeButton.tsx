@@ -13,7 +13,7 @@ const ToggleThemeButton = () => {
   return (
     <IconButton
       variant={ChakraVariants.Ghost}
-      aria-label={Constants.ThemeButtonLabel}
+      aria-label={Constants.AriaLabels.ToggleThemeButton}
       _hover={{ opacity: "0.5" }}
       _active={{}}
       icon={icon}

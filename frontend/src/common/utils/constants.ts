@@ -2,8 +2,11 @@ import { CSSProperties } from "react";
 
 const Constants = {
   ApiPrefix: "/api/v1",
-  ThemeButtonLabel: "toggle theme",
   MultilineToast: { whiteSpace: "pre-line" } as CSSProperties,
+  AriaLabels: {
+    ToggleThemeButton: "toggle theme",
+    ConfirmEmailTooltip: "confirm email",
+  },
   Leaflet: {
     Attribution:
       "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors",
