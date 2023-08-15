@@ -48,7 +48,6 @@ const Router = createBrowserRouter([
         element: (
           <AddressSearchMap
             initialPoint={{ x: 51.1089776, y: 17.0326689 }}
-            isSearchOnly={true}
             additionalQuery="Wrocław"
             elements={[
               <Marker position={[51.1089776, 17.0326689]}>

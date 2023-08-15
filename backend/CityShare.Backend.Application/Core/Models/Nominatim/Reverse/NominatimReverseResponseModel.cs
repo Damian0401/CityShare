@@ -1,7 +1,7 @@
 ﻿namespace CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
 
 
-public class ReverseResultModel
+public class NominatimReverseResponseModel
 {
     public long place_id { get; set; }
     public string licence { get; set; } = default!;

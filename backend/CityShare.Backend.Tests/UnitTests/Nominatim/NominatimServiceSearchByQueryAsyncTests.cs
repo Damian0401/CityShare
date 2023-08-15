@@ -36,13 +36,13 @@ public class NominatimServiceSearchByQueryAsyncTests
     {
         // Arrange
         var city = Value.String;
-        var model = new SearchParametersModel
+        var model = new NominatimSearchParametersModel
         {
             City = city
         };
         var parsedQuery = Value.String;
 
-        var dto = Value.SearchDto;
+        var dto = Value.MapSearchResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(true);
 
         // Act
@@ -58,7 +58,7 @@ public class NominatimServiceSearchByQueryAsyncTests
         var query = Value.String;
         var parsedQuery = $"search?format=json&addressdetails=0&q={query}";
 
-        var dto = Value.SearchDto;
+        var dto = Value.MapSearchResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
@@ -77,7 +77,7 @@ public class NominatimServiceSearchByQueryAsyncTests
         // Arrange
         var query = Value.String;
 
-        var dto = Value.SearchDto;
+        var dto = Value.MapSearchResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Fallback
@@ -96,7 +96,7 @@ public class NominatimServiceSearchByQueryAsyncTests
         // Arrange
         var query = Value.String;
 
-        var dto = Value.SearchDto;
+        var dto = Value.MapSearchResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Fallback

@@ -26,7 +26,7 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
     const searchResult = await agent.Map.search(query);
 
     map.setView(
-      [searchResult.x, searchResult.y],
+      [searchResult.point.x, searchResult.point.y],
       Constants.Leaflet.Zoom.Search
     );
   };

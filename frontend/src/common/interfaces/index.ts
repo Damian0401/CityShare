@@ -5,3 +5,5 @@ export * from "./IPoint";
 export * from "./ISearchResult";
 export * from "./IBoundingBox";
 export * from "./IReverseResult";
+export * from "./IAddress";
+export * from "./ICity";

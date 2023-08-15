@@ -1,6 +1,6 @@
 ﻿namespace CityShare.Backend.Application.Core.Models.Nominatim.Search;
 
-public class SearchParametersModel
+public class NominatimSearchParametersModel
 {
     public string? Street { get; set; }
     public string? City { get; set; }

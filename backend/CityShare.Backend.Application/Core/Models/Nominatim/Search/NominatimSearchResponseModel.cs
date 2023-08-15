@@ -2,7 +2,7 @@
 
 namespace CityShare.Backend.Application.Core.Models.Nominatim.Search;
 
-public class SearchResultModel
+public class NominatimSearchResponseModel
 {
     public long place_id { get; set; }
     public string licence { get; set; } = default!;

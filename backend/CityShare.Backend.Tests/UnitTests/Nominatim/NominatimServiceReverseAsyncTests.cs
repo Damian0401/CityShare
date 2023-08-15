@@ -33,13 +33,13 @@ public class NominatimServiceReverseAsyncTests
     }
 
     [Fact]
-    public async Task FoundCachedDto_ShouldReturn_CachedDto()
+    public async Task FoundCachedResponse_ShouldReturn_CachedResponse()
     {
         // Arrange
         var x = Value.Double;
         var y = Value.Double;
         
-        var dto = Value.ReverseDto;
+        var dto = Value.MapReverseResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(true);
 
         // Act
@@ -57,7 +57,7 @@ public class NominatimServiceReverseAsyncTests
         var parsedQuery = $"reverse?format=json&zoom=18&addressdetails=0" +
             $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
 
-        var dto = Value.ReverseDto;
+        var dto = Value.MapReverseResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
@@ -77,7 +77,7 @@ public class NominatimServiceReverseAsyncTests
         var x = Value.Double;
         var y = Value.Double;
 
-        var dto = Value.ReverseDto;
+        var dto = Value.MapReverseResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Fallback
@@ -97,7 +97,7 @@ public class NominatimServiceReverseAsyncTests
         var x = Value.Double;
         var y = Value.Double;
 
-        var dto = Value.ReverseDto;
+        var dto = Value.MapReverseResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Fallback

@@ -37,13 +37,13 @@ public class NominatimServiceSearchAsyncTests
     {
         // Arrange
         var city = Value.String;
-        var model = new SearchParametersModel
+        var model = new NominatimSearchParametersModel
         {
             City = city
         };
         var parsedQuery = Value.String;
         
-        var dto = Value.SearchDto;
+        var dto = Value.MapSearchResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(true);
 
         // Act
@@ -57,14 +57,14 @@ public class NominatimServiceSearchAsyncTests
     {
         // Arrange
         var city = Value.String;
-        var model = new SearchParametersModel
+        var model = new NominatimSearchParametersModel
         {
             City = city
         };
 
         var parsedQuery = $"search?format=json&addressdetails=0&city={city}";
         
-        var dto = Value.SearchDto;
+        var dto = Value.MapSearchResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
@@ -81,9 +81,9 @@ public class NominatimServiceSearchAsyncTests
     public async Task EmptyResult_ShouldReturn_Null()
     {
         // Arrange
-        var model = new SearchParametersModel();
+        var model = new NominatimSearchParametersModel();
 
-        var dto = Value.SearchDto;
+        var dto = Value.MapSearchResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Fallback
@@ -100,9 +100,9 @@ public class NominatimServiceSearchAsyncTests
     public async Task CorrectQuery_ShouldReturn_Result()
     {
         // Arrange
-        var model = new SearchParametersModel();
+        var model = new NominatimSearchParametersModel();
 
-        var dto = Value.SearchDto;
+        var dto = Value.MapSearchResponseModel;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out dto)).Returns(false);
 
         _mockHttp.Fallback
