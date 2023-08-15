@@ -45,7 +45,7 @@ internal static class Emails
 
     internal static async Task SeedEmailPrioritiesAsync(CityShareDbContext context)
     {
-        var emailPriorities = new List<EmailPrirority>
+        var emailPriorities = new List<EmailPriority>
         {
             new()
             {

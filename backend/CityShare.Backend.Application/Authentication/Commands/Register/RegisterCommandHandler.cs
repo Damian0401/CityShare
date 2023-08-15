@@ -9,11 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Application.Core.Models.Authentication.Register;
 using Microsoft.Extensions.Logging;
-using CityShare.Backend.Application.Core.Models.Emails;
 using Microsoft.Extensions.Options;
 using CityShare.Backend.Application.Core.Abstractions.Queue;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using System.Web;
+using CityShare.Backend.Application.Core.Models.Emails.Create;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Register;
 

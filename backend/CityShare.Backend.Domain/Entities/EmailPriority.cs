@@ -1,6 +1,6 @@
 ﻿namespace CityShare.Backend.Domain.Entities;
 
-public class EmailPrirority
+public class EmailPriority
 {
     public int Id { get; set; }
     public string Name { get; set; } = default!;

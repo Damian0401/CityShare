@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CityShare.Backend.Persistence.Configurations;
 
-internal class EmailPriorityConfiguration : IEntityTypeConfiguration<EmailPrirority>
+internal class EmailPriorityConfiguration : IEntityTypeConfiguration<EmailPriority>
 {
-    public void Configure(EntityTypeBuilder<EmailPrirority> builder)
+    public void Configure(EntityTypeBuilder<EmailPriority> builder)
     {
         builder.HasKey(x => x.Id);
 

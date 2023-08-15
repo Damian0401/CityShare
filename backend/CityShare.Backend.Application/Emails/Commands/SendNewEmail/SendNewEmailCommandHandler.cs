@@ -57,9 +57,9 @@ public class SendNewEmailCommandHandler : IRequestHandler<SendNewEmailCommand, R
         }
 
         _logger.LogInformation("Updating email with id {@Id} after sending", email.Id);
-        var sendStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Send, cancellationToken);
+        var sendStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Sent, cancellationToken);
         email.StatusId = sendStatusId;
-        email.SendDate = DateTime.UtcNow;
+        email.SentDate = DateTime.UtcNow;
         await _emailRepository.UpdateAsync(email);
         return Result.Success();
     }

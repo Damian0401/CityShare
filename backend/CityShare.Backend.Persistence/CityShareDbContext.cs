@@ -12,7 +12,7 @@ public class CityShareDbContext : IdentityDbContext<ApplicationUser>
     }
 
     public DbSet<Email> Emails { get; set; }
-    public DbSet<EmailPrirority> EmailPriorities { get; set; }
+    public DbSet<EmailPriority> EmailPriorities { get; set; }
     public DbSet<EmailTemplate> EmailTemplates { get; set; }
     public DbSet<EmailStatus> EmailStatuses { get; set; }
 
