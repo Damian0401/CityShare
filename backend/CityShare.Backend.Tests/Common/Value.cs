@@ -29,9 +29,9 @@ internal class Value
     {
         new NominatimSearchResponseModel()
     });
-    public static readonly string SerializedReverseResult = JsonSerializer.Serialize(new Application.Core.Models.Nominatim.Reverse.NominatimReverseResponseModel());
-    public static MapSearchResponseModel MapSearchResponseModel => new MapSearchResponseModel();
-    public static MapReverseResponseModel MapReverseResponseModel => new MapReverseResponseModel();
+    public static readonly string SerializedReverseResponseModel = JsonSerializer.Serialize(new NominatimReverseResponseModel());
+    public static NominatimSearchResponseModel NominatimSearchResponseModel => new NominatimSearchResponseModel();
+    public static NominatimReverseResponseModel NominatimReverseResponseModel => new NominatimReverseResponseModel();
     public static Email Email => new Email();
     public static EmailPriority EmailPriority => new EmailPriority();
 }
