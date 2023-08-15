@@ -21,7 +21,7 @@
     .tabs {
       padding: 0.2rem;
       display: flex;
-      row-gap: 0.5rem;
+      column-gap: 1rem;
 
       & a {
         font-weight: bold;

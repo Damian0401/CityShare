@@ -23,14 +23,22 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FiMapPin } from "react-icons/fi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import NavbarLogo from "../../../../assets/images/navbar-logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import Constants from "../../../../common/utils/constants";
+import { observer } from "mobx-react-lite";
 
-const UserMenu: React.FC<IUserMenuProps> = (props) => {
+const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
   const { user, logout } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef<HTMLButtonElement | null>(null);
+  const navigate = useNavigate();
+  const redirectAndClose = (path: string) => {
+    return () => {
+      navigate(path);
+      onClose();
+    };
+  };
   return (
     <>
       <div className={styles.container}>
@@ -73,13 +81,22 @@ const UserMenu: React.FC<IUserMenuProps> = (props) => {
             <Button leftIcon={<CgProfile />} onClick={onClose} ref={initialRef}>
               Profile
             </Button>
-            <Button leftIcon={<IoCreateOutline />} onClick={onClose}>
+            <Button
+              leftIcon={<IoCreateOutline />}
+              onClick={redirectAndClose(Routes.PostsCreate)}
+            >
               Create
             </Button>
-            <Button leftIcon={<FiMapPin />} onClick={onClose}>
+            <Button
+              leftIcon={<FiMapPin />}
+              onClick={redirectAndClose(Routes.PostsMap)}
+            >
               Map
             </Button>
-            <Button leftIcon={<AiOutlineSearch />} onClick={onClose}>
+            <Button
+              leftIcon={<AiOutlineSearch />}
+              onClick={redirectAndClose(Routes.PostsSearch)}
+            >
               Search
             </Button>
             <Spacer />
@@ -91,6 +108,6 @@ const UserMenu: React.FC<IUserMenuProps> = (props) => {
       </Modal>
     </>
   );
-};
+});
 
 export default UserMenu;

@@ -7,5 +7,6 @@ export interface IAddressSearchMapProps {
   additionalQuery?: string;
   isSearchOnly?: boolean;
   elements?: JSX.Element[];
+  scrollToPoint?: IPoint;
   onSelect?: (result: IReverseResult) => void;
 }

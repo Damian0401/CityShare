@@ -6,9 +6,9 @@ import {
   IPoint,
   IReverseResult,
   ISearchResult,
+  IUser,
 } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
-import { IUser } from "../interfaces/IUser";
 import { toast } from "react-toastify";
 import Router from "../../pages/Router";
 import { IError } from "../interfaces/IError";

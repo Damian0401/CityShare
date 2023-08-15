@@ -1,6 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { Containers, InputTypes, Routes } from "../../common/enums";
-import BaseContainer from "../../components/base-container/BaseContainer";
+import { InputTypes, Routes } from "../../common/enums";
 import styles from "./Register.module.scss";
 import PasswordInput from "../../components/password-input/PasswordInput";
 import { nameof } from "ts-simple-nameof";
@@ -36,7 +35,7 @@ const Register = observer(() => {
   };
 
   return (
-    <BaseContainer type={Containers.Primary} className={styles.container}>
+    <div className={styles.container}>
       <Formik
         initialValues={initialValues}
         onSubmit={handleSubmit}
@@ -85,7 +84,7 @@ const Register = observer(() => {
           </form>
         )}
       </Formik>
-    </BaseContainer>
+    </div>
   );
 });
 

@@ -9,6 +9,7 @@ import SelectMarker from "./components/select-marker/SelectMarker";
 import { IPoint } from "../../common/interfaces";
 import agent from "../../common/api/agent";
 import { useState } from "react";
+import MapController from "./components/map-controller/MapController";
 
 const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
   const {
@@ -17,6 +18,7 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
     additionalQuery,
     isSearchOnly = false,
     elements,
+    scrollToPoint,
     onSelect,
   } = props;
 
@@ -57,6 +59,7 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
           isSelectBlocked={isSelectBlocked}
         />
         <ZoomControl position={LeafletPositions.BottomLeft} />
+        <MapController scrollToPoint={scrollToPoint} />
         {elements && elements.map((marker) => marker)}
         <div
           className={styles.search}

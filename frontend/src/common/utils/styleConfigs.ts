@@ -52,4 +52,14 @@ export const LeafletTheme = (props: StyleFunctionProps) => ({
       importantStyle(colors.textDark)
     )(props),
   },
+  ".leaflet-popup-content-wrapper": {
+    backgroundColor: mode(
+      importantStyle(colors.primaryLight),
+      importantStyle(colors.primaryDark)
+    )(props),
+    color: mode(
+      importantStyle(colors.textLight),
+      importantStyle(colors.textDark)
+    )(props),
+  },
 });

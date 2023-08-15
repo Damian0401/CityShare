@@ -7,3 +7,6 @@ export * from "./IBoundingBox";
 export * from "./IReverseResult";
 export * from "./IAddress";
 export * from "./ICity";
+export * from "./IUser";
+export * from "./ICategory";
+export * from "./IPost";
