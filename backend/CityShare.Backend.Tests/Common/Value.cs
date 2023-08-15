@@ -31,4 +31,5 @@ internal class Value
     public static SearchDto SearchDto => new SearchDto();
     public static ReverseDto ReverseDto => new ReverseDto();
     public static Email Email => new Email();
+    public static EmailPriority EmailPriority => new EmailPriority();
 }
