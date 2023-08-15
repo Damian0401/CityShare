@@ -4,6 +4,7 @@ using CityShare.Backend.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityShare.Backend.Persistence.Migrations
 {
     [DbContext(typeof(CityShareDbContext))]
-    partial class CityShareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230814220225_EmailStatus")]
+    partial class EmailStatus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,7 +109,7 @@ namespace CityShare.Backend.Persistence.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<DateTime?>("SentDate")
+                    b.Property<DateTime?>("SendDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("StatusId")
@@ -131,7 +134,7 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.ToTable("Emails");
                 });
 
-            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailPriority", b =>
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailPrirority", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -333,7 +336,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Email", b =>
                 {
-                    b.HasOne("CityShare.Backend.Domain.Entities.EmailPriority", "Prirority")
+                    b.HasOne("CityShare.Backend.Domain.Entities.EmailPrirority", "Prirority")
                         .WithMany("Emails")
                         .HasForeignKey("PrirorityId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -401,7 +404,7 @@ namespace CityShare.Backend.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailPriority", b =>
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailPrirority", b =>
                 {
                     b.Navigation("Emails");
                 });

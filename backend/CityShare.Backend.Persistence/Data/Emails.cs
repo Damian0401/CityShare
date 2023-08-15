@@ -45,7 +45,7 @@ internal static class Emails
 
     internal static async Task SeedEmailPrioritiesAsync(CityShareDbContext context)
     {
-        var emailPriorities = new List<EmailPrirority>
+        var emailPriorities = new List<EmailPriority>
         {
             new()
             {
@@ -66,7 +66,8 @@ internal static class Emails
 
         var existingEmailPriorities = context.EmailPriorities
             .AsNoTracking()
-            .Select(x => x.Name).ToList();
+            .Select(x => x.Name)
+            .ToList();
 
         foreach (var emailPriority in emailPriorities)
         {
@@ -78,6 +79,38 @@ internal static class Emails
             }
 
             context.EmailPriorities.Add(emailPriority);
+        }
+
+        await context.SaveChangesAsync();
+    }    
+    
+    internal static async Task SeedEmailStatusesAsync(CityShareDbContext context)
+    {
+        var emailStatuses = typeof(EmailStatuses)
+            .GetFields()
+            .Select(x => x.GetValue(null))
+            .Cast<string>();
+
+        var existingEmailStatuses = context.EmailStatuses
+            .AsNoTracking()
+            .Select(x => x.Name)
+            .ToList();
+
+        foreach (var emailStatus in emailStatuses)
+        {
+            var statusExists = existingEmailStatuses.Contains(emailStatus);
+
+            if (statusExists) 
+            { 
+                continue; 
+            }
+
+            var newStatus = new EmailStatus
+            {
+                Name = emailStatus
+            };
+
+            context.EmailStatuses.Add(newStatus);
         }
 
         await context.SaveChangesAsync();

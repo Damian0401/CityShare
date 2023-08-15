@@ -23,14 +23,14 @@ public class QueueTriggers
     {
         _logger.LogInformation("Executing {@Name} trigger for id {@Id}", nameof(SendNewEmail), emailId);
 
-        var result = await _mediator.Send(new SendNewEmailCommand(emailId), cancellationToken);
+        var response = await _mediator.Send(new SendNewEmailCommand(emailId), cancellationToken);
 
-        if (result.IsSuccess)
+        if (response.IsFailure)
         {
-            _logger.LogInformation("Execution {@Name} trigger completed", nameof(SendNewEmail));
+            _logger.LogError("Failed to execute {@Name} trigger with errors {@Errors}", nameof(SendNewEmail), response.Errors);
             return;
         }
 
-        _logger.LogError("Failed to execute {@Name} trigger with errors {@Errors}", nameof(SendNewEmail), result.Errors);
+        _logger.LogInformation("Execution {@Name} trigger completed", nameof(SendNewEmail));
     }
 }

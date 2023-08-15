@@ -4,17 +4,14 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace CityShare.Backend.Persistence.Configurations;
 
-internal class EmailPriorityConfiguration : IEntityTypeConfiguration<EmailPriority>
+public class EmailStatusConfiguration : IEntityTypeConfiguration<EmailStatus>
 {
-    public void Configure(EntityTypeBuilder<EmailPriority> builder)
+    public void Configure(EntityTypeBuilder<EmailStatus> builder)
     {
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Name)
             .IsRequired()
             .HasMaxLength(256);
-
-        builder.Property(x => x.RetryNumber) 
-            .IsRequired();
     }
 }
