@@ -1,5 +1,5 @@
 import AddressSearchMap from "../../../components/address-search-map/AddressSearchMap";
-import styles from "./PostsMap.module.scss";
+import styles from "./PostMap.module.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../common/stores/store";
 import { Checkbox, Select, Text } from "@chakra-ui/react";
@@ -108,7 +108,7 @@ const posts: IPost[] = [
   },
 ];
 
-const PostsMap = observer(() => {
+const PostMap = observer(() => {
   const { commonStore } = useStore();
 
   const navigate = useNavigate();
@@ -222,4 +222,4 @@ const PostsMap = observer(() => {
   );
 });
 
-export default PostsMap;
+export default PostMap;

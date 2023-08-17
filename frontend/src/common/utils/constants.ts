@@ -16,6 +16,7 @@ const Constants = {
       Search: 16,
     },
   },
+  RedirectTimeout: 3000,
 };
 
 export default Constants;

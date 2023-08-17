@@ -11,16 +11,12 @@ import { loginSchema } from "./LoginSchema";
 import { useStore } from "../../common/stores/store";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import { InitialValues } from "../../common/utils/initialValues";
 
 const Login = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const { authStore } = useStore();
   const navigate = useNavigate();
-
-  const initialValues: ILoginValues = {
-    email: "",
-    password: "",
-  };
 
   const handleSubmit = async (values: ILoginValues) => {
     setIsLoading(true);
@@ -35,7 +31,7 @@ const Login = observer(() => {
   return (
     <div className={styles.container}>
       <Formik
-        initialValues={initialValues}
+        initialValues={InitialValues.Login}
         onSubmit={handleSubmit}
         validationSchema={loginSchema}
       >

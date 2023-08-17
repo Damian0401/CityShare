@@ -1,5 +1,5 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import { Containers, Cursors } from "../../../../common/enums";
+import { Containers, Cursors, Keys } from "../../../../common/enums";
 import BaseContainer from "../../../base-container/BaseContainer";
 import { ISearchInputProps } from "./ISearchInputProps";
 import styles from "./SearchInput.module.scss";
@@ -33,7 +33,7 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     console.log(e.key);
-    if (e.key !== "Enter") return;
+    if (e.key !== Keys.ENTER) return;
     handleSearch();
   };
 

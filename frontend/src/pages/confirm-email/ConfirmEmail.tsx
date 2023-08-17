@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 import LoadingSpinner from "../../components/loading-spinner/LoadingSpinner";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import Router from "../Router";
 import { Routes } from "../../common/enums";
 import { useStore } from "../../common/stores/store";
+import Constants from "../../common/utils/constants";
 
 const ConfirmEmail = () => {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const { authStore } = useStore();
 
@@ -16,25 +17,31 @@ const ConfirmEmail = () => {
     const token = searchParams.get("token");
 
     if (!id || !token) {
-      Router.navigate(Routes.NotFound);
+      navigate(Routes.NotFound);
       return;
     }
 
     const controller = new AbortController();
     const confirmEmail = async () => {
-      await authStore.confirmEmail(id, token, controller.signal);
-      toast.success("Email confirmed");
-      Router.navigate(Routes.Index);
+      try {
+        await authStore.confirmEmail(id, token, controller.signal);
+        toast.success("Email confirmed");
+        navigate(Routes.Index);
+      } catch {
+        setTimeout(() => {
+          navigate(Routes.Index);
+        }, Constants.RedirectTimeout);
+      }
     };
 
     try {
       confirmEmail();
     } catch (_) {
-      Router.navigate(Routes.Index);
+      navigate(Routes.Index);
     }
 
     return () => controller.abort();
-  }, [searchParams, authStore]);
+  }, [searchParams, authStore, navigate]);
   return <LoadingSpinner />;
 };
 

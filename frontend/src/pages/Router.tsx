@@ -10,10 +10,10 @@ import ServerError from "./server-error/ServerError";
 import AnonymousRoute from "../components/anonymous-route/AnonymousRoute";
 import PrivateRoute from "../components/private-route/PrivateRoute";
 import ConfirmEmail from "./confirm-email/ConfirmEmail";
-import PostsMap from "./posts/map/PostsMap";
-import PostsDetails from "./posts/details/PostsDetails";
-import PostsCreate from "./posts/create/PostsCreate";
-import PostsSearch from "./posts/search/PostsSearch";
+import PostMap from "./posts/map/PostMap";
+import PostDetails from "./posts/details/PostDetails";
+import PostCreate from "./posts/create/PostCreate";
+import PostSearch from "./posts/search/PostSearch";
 
 const Router = createBrowserRouter([
   {
@@ -37,19 +37,19 @@ const Router = createBrowserRouter([
         children: [
           {
             path: Routes.PostsSearch,
-            element: <PrivateRoute Component={PostsSearch} />,
+            element: <PrivateRoute Component={PostSearch} />,
           },
           {
             path: Routes.PostsCreate,
-            element: <PrivateRoute Component={PostsCreate} />,
+            element: <PrivateRoute Component={PostCreate} />,
           },
           {
             path: Routes.PostsMap,
-            element: <PrivateRoute Component={PostsMap} />,
+            element: <PrivateRoute Component={PostMap} />,
           },
           {
             path: Routes.PostsDetails,
-            element: <PrivateRoute Component={PostsDetails} />,
+            element: <PrivateRoute Component={PostDetails} />,
           },
         ],
       },

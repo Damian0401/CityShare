@@ -1,0 +1,9 @@
+@import "../../../assets/styles/variables.module.scss";
+
+.container {
+  padding: 1rem;
+
+  .title {
+    font-size: $lgFontSize;
+  }
+}

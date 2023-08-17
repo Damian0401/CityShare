@@ -22,6 +22,7 @@ internal static class Emails
 <p>Thank you for registering at <a href=""{EmailPlaceholders.ClientUrl}"">CityShare</a>.</p>
 <p>Please verify your email by clicking the link below.</p>
 <p><a href=""{EmailPlaceholders.ClientUrl}/confirm-email?id={EmailPlaceholders.Id}&token={EmailPlaceholders.Token}"">Verify email</a></p>
+<p><strong>Important:</strong> You need to log in to your account before you can use the link above.</p>
 <p>Best regards,</p>
 <p>CityShare team</p>
 <p><small>If you did not register at <a href=""{EmailPlaceholders.ClientUrl}"">CityShare</a>, please ignore this email.</small></p>"

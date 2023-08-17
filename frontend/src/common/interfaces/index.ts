@@ -10,3 +10,6 @@ export * from "./ICity";
 export * from "./IUser";
 export * from "./ICategory";
 export * from "./IPost";
+export * from "./ICreatePostValues";
+export * from "./IRegisterValues";
+export * from "./IInitialValues";

@@ -6,23 +6,17 @@ import { nameof } from "ts-simple-nameof";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
 import TextInput from "../../components/text-input/TextInput";
-import { IRegisterValues } from "../../common/interfaces/IRegisterValues";
 import { registerSchema } from "./RegisterSchema";
 import { useStore } from "../../common/stores/store";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import { IRegisterValues } from "../../common/interfaces";
+import { InitialValues } from "../../common/utils/initialValues";
 
 const Register = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const { authStore } = useStore();
   const navigate = useNavigate();
-
-  const initialValues: IRegisterValues = {
-    email: "",
-    userName: "",
-    password: "",
-    confirmPassword: "",
-  };
 
   const handleSubmit = async (values: IRegisterValues) => {
     setIsLoading(true);
@@ -37,7 +31,7 @@ const Register = observer(() => {
   return (
     <div className={styles.container}>
       <Formik
-        initialValues={initialValues}
+        initialValues={InitialValues.Register}
         onSubmit={handleSubmit}
         validationSchema={registerSchema}
       >

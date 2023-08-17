@@ -84,6 +84,7 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             <Button
               leftIcon={<IoCreateOutline />}
               onClick={redirectAndClose(Routes.PostsCreate)}
+              disabled={!user.emailConfirmed}
             >
               Create
             </Button>
