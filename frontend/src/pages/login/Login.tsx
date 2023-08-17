@@ -1,7 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { InputTypes, Routes } from "../../common/enums";
 import styles from "./Login.module.scss";
-import PasswordInput from "../../components/password-input/PasswordInput";
 import { ILoginValues } from "../../common/interfaces";
 import { nameof } from "ts-simple-nameof";
 import { Link, useNavigate } from "react-router-dom";
@@ -45,8 +44,9 @@ const Login = observer(() => {
               isRequired
               name={nameof<ILoginValues>((x) => x.email)}
             />
-            <PasswordInput
+            <TextInput
               label="Password"
+              type={InputTypes.Password}
               name={nameof<ILoginValues>((x) => x.password)}
               errors={errors.password}
               touched={touched.password}

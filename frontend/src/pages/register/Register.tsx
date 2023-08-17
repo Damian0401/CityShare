@@ -1,7 +1,6 @@
 import { Button } from "@chakra-ui/react";
 import { InputTypes, Routes } from "../../common/enums";
 import styles from "./Register.module.scss";
-import PasswordInput from "../../components/password-input/PasswordInput";
 import { nameof } from "ts-simple-nameof";
 import { Link, useNavigate } from "react-router-dom";
 import { Formik } from "formik";
@@ -53,15 +52,17 @@ const Register = observer(() => {
               isRequired
               name={nameof<IRegisterValues>((x) => x.userName)}
             />
-            <PasswordInput
+            <TextInput
               label="Password"
+              type={InputTypes.Password}
               name={nameof<IRegisterValues>((x) => x.password)}
               errors={errors.password}
               touched={touched.password}
               isRequired
             />
-            <PasswordInput
+            <TextInput
               label="Confirm Password"
+              type={InputTypes.Password}
               name={nameof<IRegisterValues>((x) => x.confirmPassword)}
               errors={errors.confirmPassword}
               touched={touched.confirmPassword}
