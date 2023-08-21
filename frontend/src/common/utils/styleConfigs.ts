@@ -63,3 +63,12 @@ export const LeafletTheme = (props: StyleFunctionProps) => ({
     )(props),
   },
 });
+
+export const ChakraTheme = (props: StyleFunctionProps) => ({
+  ".chakra-select__icon-wrapper": {
+    color: mode(
+      importantStyle(colors.textLight),
+      importantStyle(colors.textDark)
+    )(props),
+  },
+});

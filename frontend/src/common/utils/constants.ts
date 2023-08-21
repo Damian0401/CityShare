@@ -17,6 +17,10 @@ const Constants = {
     },
   },
   RedirectTimeout: 3000,
+  CSS: {
+    Inherit: "inherit",
+    None: "none",
+  },
 };
 
 export default Constants;

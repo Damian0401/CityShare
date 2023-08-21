@@ -4,6 +4,7 @@ import { ColorModes } from "../enums";
 import { mode } from "@chakra-ui/theme-tools";
 import colors from "../../assets/styles/colors.module.scss";
 import {
+  ChakraTheme,
   LeafletTheme,
   NavbarContainer,
   PrimaryContainer,
@@ -36,6 +37,7 @@ const theme = extendBaseTheme({
         )(props),
       },
       ...LeafletTheme(props),
+      ...ChakraTheme(props),
     }),
   },
   components: {
