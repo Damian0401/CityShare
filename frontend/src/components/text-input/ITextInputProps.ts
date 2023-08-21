@@ -8,4 +8,6 @@ export interface ITextInputProps {
   placeholder?: string;
   isDisabled?: boolean;
   isMultiline?: boolean;
+  isReadOnly?: boolean;
+  onClick?: () => void;
 }

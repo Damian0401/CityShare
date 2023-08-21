@@ -1,8 +1,6 @@
-import { IBoundingBox, IPoint } from ".";
+import { IPoint } from ".";
 
 export interface IAddress {
-  id: number;
   displayName: string;
   point: IPoint;
-  boundingBox: IBoundingBox;
 }

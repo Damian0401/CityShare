@@ -1,7 +1,7 @@
-import { IAddress } from ".";
+import { IAddressDetails } from ".";
 
 export interface ICity {
   id: number;
   name: string;
-  address: IAddress;
+  address: IAddressDetails;
 }

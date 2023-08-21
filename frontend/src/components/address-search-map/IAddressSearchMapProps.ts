@@ -1,5 +1,5 @@
 import { ChakraSizes } from "../../common/enums";
-import { IPoint, IReverseResult } from "../../common/interfaces";
+import { IAddress, IPoint } from "../../common/interfaces";
 
 export interface IAddressSearchMapProps {
   initialPoint: IPoint;
@@ -8,5 +8,5 @@ export interface IAddressSearchMapProps {
   isSearchOnly?: boolean;
   elements?: JSX.Element[];
   scrollToPoint?: IPoint;
-  onSelect?: (result: IReverseResult) => void;
+  onSelect?: (result: IAddress) => void;
 }

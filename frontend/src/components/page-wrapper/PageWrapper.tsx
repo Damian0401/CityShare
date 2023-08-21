@@ -46,9 +46,11 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
         ) : (
           <>
             {Element && <Element />}
-            <BaseContainer type={Containers.Primary}>
-              <Outlet />
-            </BaseContainer>
+            <main>
+              <BaseContainer type={Containers.Primary}>
+                <Outlet />
+              </BaseContainer>
+            </main>
           </>
         )}
       </div>

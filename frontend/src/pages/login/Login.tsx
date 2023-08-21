@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { InputTypes, Routes } from "../../common/enums";
+import { ButtonTypes, InputTypes, Routes } from "../../common/enums";
 import styles from "./Login.module.scss";
 import { ILoginValues } from "../../common/interfaces";
 import { nameof } from "ts-simple-nameof";
@@ -56,7 +56,7 @@ const Login = observer(() => {
               <Link to={Routes.Register} className={styles.link}>
                 No account? Register
               </Link>
-              <Button type="submit" isLoading={isLoading}>
+              <Button type={ButtonTypes.Submit} isLoading={isLoading}>
                 Login
               </Button>
             </div>

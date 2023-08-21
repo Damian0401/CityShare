@@ -1,5 +1,5 @@
 import { Button } from "@chakra-ui/react";
-import { InputTypes, Routes } from "../../common/enums";
+import { ButtonTypes, InputTypes, Routes } from "../../common/enums";
 import styles from "./Register.module.scss";
 import { nameof } from "ts-simple-nameof";
 import { Link, useNavigate } from "react-router-dom";
@@ -72,7 +72,7 @@ const Register = observer(() => {
               <Link to={Routes.Login} className={styles.link}>
                 Already have an account?
               </Link>
-              <Button type="submit" isLoading={isLoading}>
+              <Button type={ButtonTypes.Submit} isLoading={isLoading}>
                 Register
               </Button>
             </div>

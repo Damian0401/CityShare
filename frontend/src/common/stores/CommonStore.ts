@@ -15,7 +15,6 @@ export default class CommonStore {
         id: 1,
         name: "Wrocław",
         address: {
-          id: 1,
           displayName: "Wrocław, Polska",
           point: { x: 51.1089776, y: 17.0326689 },
           boundingBox: {
@@ -30,7 +29,6 @@ export default class CommonStore {
         id: 2,
         name: "Warszawa",
         address: {
-          id: 2,
           displayName: "Warszawa, Polska",
           point: { x: 52.2319581, y: 21.0067249 },
           boundingBox: {

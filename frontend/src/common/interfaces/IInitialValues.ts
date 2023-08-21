@@ -1,8 +1,8 @@
-import { ICreatePostValues, ILoginValues } from ".";
+import { IPostCreateValues, ILoginValues } from ".";
 import { IRegisterValues } from "./IRegisterValues";
 
 export interface IInitialValues {
   Login: ILoginValues;
   Register: IRegisterValues;
-  PostCreate: ICreatePostValues;
+  PostCreate: IPostCreateValues;
 }

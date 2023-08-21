@@ -19,16 +19,11 @@ const posts: IPost[] = [
     categoryIds: [1, 2, 3],
     imageUrl: "",
     address: {
-      id: 1,
       point: { x: 51.1059776, y: 17.0356689 },
       displayName: "Address 1",
-      boundingBox: {
-        maxX: 0,
-        maxY: 0,
-        minX: 0,
-        minY: 0,
-      },
     },
+    startDate: new Date(),
+    endDate: new Date(),
   },
   {
     id: 2,
@@ -38,16 +33,11 @@ const posts: IPost[] = [
     categoryIds: [1, 2, 4],
     imageUrl: "",
     address: {
-      id: 2,
       point: { x: 51.1109776, y: 17.0306689 },
       displayName: "Address 2",
-      boundingBox: {
-        maxX: 0,
-        maxY: 0,
-        minX: 0,
-        minY: 0,
-      },
     },
+    startDate: new Date(),
+    endDate: new Date(),
   },
   {
     id: 3,
@@ -57,16 +47,11 @@ const posts: IPost[] = [
     categoryIds: [3],
     imageUrl: "",
     address: {
-      id: 3,
       point: { x: 51.1089776, y: 17.0326689 },
       displayName: "Address 3",
-      boundingBox: {
-        maxX: 0,
-        maxY: 0,
-        minX: 0,
-        minY: 0,
-      },
     },
+    startDate: new Date(),
+    endDate: new Date(),
   },
   {
     id: 4,
@@ -76,16 +61,11 @@ const posts: IPost[] = [
     categoryIds: [1],
     imageUrl: "",
     address: {
-      id: 4,
       point: { x: 52.2349581, y: 21.0087249 },
       displayName: "Address 4",
-      boundingBox: {
-        maxX: 0,
-        maxY: 0,
-        minX: 0,
-        minY: 0,
-      },
     },
+    startDate: new Date(),
+    endDate: new Date(),
   },
   {
     id: 5,
@@ -95,16 +75,11 @@ const posts: IPost[] = [
     categoryIds: [2, 3],
     imageUrl: "",
     address: {
-      id: 5,
       point: { x: 52.2319581, y: 21.0067249 },
       displayName: "Address 5",
-      boundingBox: {
-        maxX: 0,
-        maxY: 0,
-        minX: 0,
-        minY: 0,
-      },
     },
+    startDate: new Date(),
+    endDate: new Date(),
   },
 ];
 

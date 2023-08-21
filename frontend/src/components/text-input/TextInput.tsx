@@ -23,7 +23,9 @@ const TextInput: React.FC<ITextInputProps> = (props) => {
     type,
     placeholder,
     isDisabled,
-    isMultiline = false,
+    isReadOnly,
+    isMultiline,
+    onClick,
   } = props;
 
   const [show, setShow] = useState(false);
@@ -41,6 +43,8 @@ const TextInput: React.FC<ITextInputProps> = (props) => {
           type={show ? InputTypes.Text : type}
           placeholder={placeholder}
           isDisabled={isDisabled}
+          isReadOnly={isReadOnly}
+          onClick={onClick}
         />
         {type == InputTypes.Password && (
           <InputRightElement

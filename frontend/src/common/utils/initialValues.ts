@@ -14,16 +14,9 @@ export const InitialValues: IInitialValues = {
   PostCreate: {
     title: "",
     description: "",
-    cityId: 0,
+    cityId: -1,
     address: {
-      id: 0,
       displayName: "",
-      boundingBox: {
-        maxX: 0,
-        maxY: 0,
-        minX: 0,
-        minY: 0,
-      },
       point: {
         x: 0,
         y: 0,
@@ -31,5 +24,7 @@ export const InitialValues: IInitialValues = {
     },
     categoryIds: [],
     images: [],
+    startDate: new Date(),
+    endDate: new Date(),
   },
 };

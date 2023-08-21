@@ -6,6 +6,7 @@ const Constants = {
   AriaLabels: {
     ToggleThemeButton: "toggle theme",
     ConfirmEmailTooltip: "confirm email",
+    RemoveImage: "remove image",
   },
   Leaflet: {
     Attribution:
@@ -20,6 +21,9 @@ const Constants = {
   CSS: {
     Inherit: "inherit",
     None: "none",
+  },
+  FileTypes: {
+    Image: "image/*",
   },
 };
 

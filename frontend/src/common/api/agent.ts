@@ -2,11 +2,11 @@ import axios, { AxiosError, AxiosResponse } from "axios";
 import { accessTokenHelper, getSecret } from "../utils/helpers";
 import { Environments, Routes, StatusCodes } from "../enums";
 import {
+  IAddress,
   ILoginValues,
   IPoint,
-  IReverseResult,
-  ISearchResult,
   IUser,
+  IAddressDetails,
 } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { toast } from "react-toastify";
@@ -113,9 +113,9 @@ const Auth = {
 
 const Map = {
   search: (query: string) =>
-    requests.get<ISearchResult>(`/map/search?query=${query}`),
+    requests.get<IAddressDetails>(`/map/search?query=${query}`),
   reverse: (point: IPoint) =>
-    requests.get<IReverseResult>(`/map/reverse?x=${point.x}&y=${point.y}`),
+    requests.get<IAddress>(`/map/reverse?x=${point.x}&y=${point.y}`),
 };
 
 const agent = {

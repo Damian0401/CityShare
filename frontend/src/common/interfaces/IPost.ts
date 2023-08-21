@@ -8,4 +8,6 @@ export interface IPost {
   cityId: number;
   categoryIds: number[];
   imageUrl: string;
+  startDate: Date;
+  endDate: Date;
 }

@@ -2,6 +2,7 @@ export enum Routes {
   Index = "/",
   Login = "/login",
   Register = "/register",
+  Profile = "/profile",
   Posts = "/posts",
   PostsSearch = "/posts",
   PostsCreate = "/posts/create",
