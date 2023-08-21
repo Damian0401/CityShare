@@ -9,3 +9,12 @@ $lgFontSize: 1.75rem;
 $xlFontSize: 2.25rem;
 
 $hoverOpacity: 0.5;
+
+$moreBrightness: brightness(1.2);
+$lessBrightness: brightness(0.8);
+
+:export {
+  hoverOpacity: $hoverOpacity;
+  moreBrightness: $moreBrightness;
+  lessBrightness: $lessBrightness;
+}
