@@ -10,8 +10,9 @@ import { IPoint } from "../../common/interfaces";
 import agent from "../../common/api/agent";
 import { useState } from "react";
 import MapController from "./components/map-controller/MapController";
+import { observer } from "mobx-react-lite";
 
-const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
+const AddressSearchMap: React.FC<IAddressSearchMapProps> = observer((props) => {
   const {
     initialPoint,
     searchInputSize = ChakraSizes.Sm,
@@ -74,6 +75,6 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
       </MapContainer>
     </div>
   );
-};
+});
 
 export default AddressSearchMap;

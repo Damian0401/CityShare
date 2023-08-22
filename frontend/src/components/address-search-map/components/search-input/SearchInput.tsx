@@ -8,8 +8,9 @@ import { useRef } from "react";
 import agent from "../../../../common/api/agent";
 import { useMap } from "react-leaflet";
 import Constants from "../../../../common/utils/constants";
+import { observer } from "mobx-react-lite";
 
-const SearchInput: React.FC<ISearchInputProps> = (props) => {
+const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
   const { searchInputSize, additionalQuery } = props;
 
   const map = useMap();
@@ -51,6 +52,6 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
       </InputGroup>
     </BaseContainer>
   );
-};
+});
 
 export default SearchInput;
