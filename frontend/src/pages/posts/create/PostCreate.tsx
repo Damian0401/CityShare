@@ -15,8 +15,8 @@ import OptionSelect from "../../../components/option-select/OptionSelect";
 import { toast } from "react-toastify";
 import AddressPickerModal from "./components/address-picker-modal/AddressPickerModal";
 import MultiOptionSelect from "../../../components/multi-option-select/MultiOptionSelect";
-import ImagePicker from "../../../components/image-picker/ImagePicker";
 import DateTimePicker from "../../../components/date-time-picker/DateTimePicker";
+import ImagesWithBlurPicker from "./components/images-with-blur-picker/ImagesWithBlurPicker";
 
 const PostCreate = observer(() => {
   const {
@@ -26,7 +26,11 @@ const PostCreate = observer(() => {
 
   const navigate = useNavigate();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isAddressModalOpen,
+    onOpen: onAddressModalOpen,
+    onClose: onAddressModalClose,
+  } = useDisclosure();
 
   useEffect(() => {
     if (!user?.emailConfirmed) {
@@ -41,7 +45,7 @@ const PostCreate = observer(() => {
       return;
     }
 
-    onOpen();
+    onAddressModalOpen();
   };
 
   return (
@@ -127,48 +131,47 @@ const PostCreate = observer(() => {
                 label: category.name,
                 value: category.id,
               }))}
-              onChange={(values) => {
-                setFieldValue(
+              onChange={async (values) => {
+                await setFieldValue(
                   nameof<IPostCreateValues>((x) => x.categoryIds),
                   values
-                ).then(() => {
-                  setFieldTouched(
-                    nameof<IPostCreateValues>((x) => x.categoryIds),
-                    true
-                  );
-                });
+                );
+
+                await setFieldTouched(
+                  nameof<IPostCreateValues>((x) => x.categoryIds),
+                  true
+                );
               }}
             />
-            <ImagePicker
-              name={nameof<IPostCreateValues>((x) => x.images)}
-              label="Images"
+            <ImagesWithBlurPicker
               errors={errors.images as string}
               touched={touched.images as unknown as boolean}
-              isRequired
-              onImagesChange={(images) => {
-                setFieldValue(
+              allImages={values.images}
+              setImages={async (images) => {
+                await setFieldValue(
                   nameof<IPostCreateValues>((x) => x.images),
                   images
-                ).then(() => {
-                  setFieldTouched(
-                    nameof<IPostCreateValues>((x) => x.images),
-                    true
-                  );
-                });
+                );
+              }}
+              setImagesTouched={async (value) => {
+                await setFieldTouched(
+                  nameof<IPostCreateValues>((x) => x.images),
+                  value
+                );
               }}
             />
             <div className={styles.buttonContainer}>
               <Button type={ButtonTypes.Submit}>Create</Button>
             </div>
             <AddressPickerModal
-              isOpen={isOpen}
-              onClose={onClose}
+              isOpen={isAddressModalOpen}
+              onClose={onAddressModalClose}
               onSelect={(address) => {
                 setFieldValue(
                   nameof<IPostCreateValues>((x) => x.address),
                   address
                 );
-                onClose();
+                onAddressModalClose();
               }}
               cityId={values.cityId}
             />

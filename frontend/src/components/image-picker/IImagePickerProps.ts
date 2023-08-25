@@ -4,5 +4,7 @@ export interface IImagePickerProps {
   name: string;
   label: string;
   isRequired?: boolean;
+  highlightedImages?: string[];
+  onImageRemove?: (name: string) => void;
   onImagesChange: (images: File[]) => void;
 }

@@ -13,3 +13,5 @@ export * from "./IRegisterValues";
 export * from "./IInitialValues";
 export * from "./IOption";
 export * from "./IAddressDetails";
+export * from "./IPostSearchQuery";
+export * from "./INewImage";

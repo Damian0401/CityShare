@@ -7,7 +7,10 @@ export interface IPost {
   address: IAddress;
   cityId: number;
   categoryIds: number[];
-  imageUrl: string;
+  imageUrls: string[];
   startDate: Date;
   endDate: Date;
+  createdAt: Date;
+  likes: number;
+  isLiked?: boolean;
 }

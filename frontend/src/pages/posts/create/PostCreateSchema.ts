@@ -1,6 +1,4 @@
 import * as Yup from "yup";
-import { getSecret } from "../../../common/utils/helpers";
-import { Environments } from "../../../common/enums";
 
 export const postCreateSchema = Yup.object({
   title: Yup.string().required(),
@@ -9,13 +7,8 @@ export const postCreateSchema = Yup.object({
   address: Yup.object({
     displayName: Yup.string().required("address is a required field"),
   }).required(),
-  categoryIds: Yup.array()
-    .required()
-    .max(getSecret(Environments.MaxCategoryNumber))
-    .min(getSecret(Environments.MinCategoryNumber)),
-  images: Yup.array()
-    .max(getSecret(Environments.MaxImageNumber))
-    .min(getSecret(Environments.MinImageNumber)),
+  categoryIds: Yup.array().required().max(3).min(1),
+  images: Yup.array().max(5).min(0),
   startDate: Yup.date().required(),
   endDate: Yup.date()
     .required()

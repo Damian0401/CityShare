@@ -16,7 +16,15 @@ import SelectedImage from "./components/selected-image/SelectedImage";
 import styles from "./ImagePicker.module.scss";
 
 const ImagePicker: React.FC<IImagePickerProps> = (props) => {
-  const { errors, touched, label, isRequired, onImagesChange } = props;
+  const {
+    errors,
+    touched,
+    label,
+    isRequired,
+    highlightedImages,
+    onImagesChange,
+    onImageRemove,
+  } = props;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -43,6 +51,11 @@ const ImagePicker: React.FC<IImagePickerProps> = (props) => {
       (image) => image.name !== name
     );
     setSelectedImages(filteredImages);
+    onImagesChange(filteredImages);
+
+    if (onImageRemove) {
+      onImageRemove(name);
+    }
   };
 
   return (
@@ -70,6 +83,7 @@ const ImagePicker: React.FC<IImagePickerProps> = (props) => {
             key={image.name}
             image={image}
             onRemove={handleImageRemove}
+            isHighlighted={highlightedImages?.includes(image.name)}
           />
         ))}
       </div>

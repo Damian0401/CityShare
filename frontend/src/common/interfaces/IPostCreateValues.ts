@@ -1,4 +1,4 @@
-import { IAddress } from ".";
+import { IAddress, INewImage } from ".";
 
 export interface IPostCreateValues {
   title: string;
@@ -6,7 +6,7 @@ export interface IPostCreateValues {
   cityId: number;
   address: IAddress;
   categoryIds: number[];
-  images: File[];
+  images: INewImage[];
   startDate: Date;
   endDate: Date;
 }
