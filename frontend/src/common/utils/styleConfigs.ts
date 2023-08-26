@@ -15,6 +15,12 @@ export const SecondaryContainer = defineStyleConfig({
   }),
 });
 
+export const TertiaryContainer = defineStyleConfig({
+  baseStyle: (props: StyleFunctionProps) => ({
+    backgroundColor: mode(colors.tertiaryLight, colors.tertiaryDark)(props),
+  }),
+});
+
 export const NavbarContainer = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     backgroundColor: mode(colors.navbarLight, colors.navbarDark)(props),
@@ -101,5 +107,18 @@ export const CommonTheme = (props: StyleFunctionProps) => ({
       importantStyle(colors.focusHoverInputLight),
       importantStyle(colors.focusHoverInputDark)
     )(props),
+  },
+  "::-webkit-scrollbar": {
+    width: "0.3rem",
+  },
+  "::-webkit-scrollbar-thumb": {
+    background: mode(
+      importantStyle(colors.scrollBarThumbLight),
+      importantStyle(colors.scrollBarThumbDark)
+    )(props),
+    borderRadius: "1rem",
+  },
+  "::-webkit-scrollbar-track": {
+    background: "transparent",
   },
 });

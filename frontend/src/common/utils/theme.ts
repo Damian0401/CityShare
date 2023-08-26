@@ -8,6 +8,7 @@ import {
   NavbarContainer,
   PrimaryContainer,
   SecondaryContainer,
+  TertiaryContainer,
 } from "./styleConfigs";
 
 const {
@@ -45,6 +46,7 @@ const theme = extendBaseTheme({
     Checkbox,
     PrimaryContainer,
     SecondaryContainer,
+    TertiaryContainer,
     NavbarContainer,
   },
 });

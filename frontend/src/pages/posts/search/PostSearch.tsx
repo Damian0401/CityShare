@@ -51,8 +51,8 @@ const posts: IPost[] = [
     title: "Title 3",
     description: "Description 3",
     createdAt: new Date(),
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date("2023-10-10"),
+    endDate: new Date("2024-10-10"),
     address: {
       displayName: "Address 3",
       point: {
@@ -75,7 +75,7 @@ const PostSearch = observer(() => {
   return (
     <div className={styles.container}>
       <SearchInput onSearch={handleSearch} />
-      <SearchResult posts={[]} />
+      <SearchResult posts={posts} />
     </div>
   );
 });
