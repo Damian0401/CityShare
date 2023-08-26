@@ -12,6 +12,7 @@ import { IMultiOptionSelectProps } from "./IMultiOptionSelect";
 import { observer } from "mobx-react-lite";
 import Constants from "../../common/utils/constants";
 import { IOption } from "../../common/interfaces";
+import { importantStyle } from "../../common/utils/helpers";
 
 const MultiOptionSelect: React.FC<IMultiOptionSelectProps> = observer(
   (props) => {
@@ -26,7 +27,13 @@ const MultiOptionSelect: React.FC<IMultiOptionSelectProps> = observer(
       control: (styles) => ({
         ...styles,
         backgroundColor: isLightMode ? colors.primaryLight : colors.primaryDark,
-        borderColor: Constants.CSS.Inherit,
+        border: isLightMode ? colors.inputBorderLight : colors.inputBorderDark,
+      }),
+      valueContainer: (styles) => ({
+        ...styles,
+        " input:first-of-type": {
+          border: importantStyle(Constants.CSS.None),
+        },
       }),
       option: (styles) => ({
         ...styles,

@@ -72,3 +72,34 @@ export const ChakraTheme = (props: StyleFunctionProps) => ({
     )(props),
   },
 });
+
+export const CommonTheme = (props: StyleFunctionProps) => ({
+  body: {
+    color: mode(colors.textLight, colors.textDark)(props),
+    backgroundColor: mode(colors.backgroundLight, colors.backgroundDark)(props),
+  },
+  "input,textarea,select": {
+    border: mode(
+      importantStyle(colors.inputBorderLight),
+      importantStyle(colors.inputBorderDark)
+    )(props),
+  },
+  "input:focus:hover": {
+    border: mode(
+      importantStyle(colors.focusHoverInputLight),
+      importantStyle(colors.focusHoverInputDark)
+    )(props),
+  },
+  "textarea:focus:hover": {
+    border: mode(
+      importantStyle(colors.focusHoverInputLight),
+      importantStyle(colors.focusHoverInputDark)
+    )(props),
+  },
+  "select:focus:hover": {
+    border: mode(
+      importantStyle(colors.focusHoverInputLight),
+      importantStyle(colors.focusHoverInputDark)
+    )(props),
+  },
+});

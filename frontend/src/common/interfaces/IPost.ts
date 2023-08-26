@@ -11,6 +11,7 @@ export interface IPost {
   startDate: Date;
   endDate: Date;
   createdAt: Date;
-  likes: number;
+  score: number;
+  author: string;
   isLiked?: boolean;
 }

@@ -3,6 +3,7 @@ import { IPost } from "../../../common/interfaces";
 import SearchInput from "./components/search-input/SearchInput";
 import SearchResult from "./components/search-result/SearchResult";
 import { IPostSearchQuery } from "../../../common/interfaces/IPostSearchQuery";
+import { observer } from "mobx-react-lite";
 
 const posts: IPost[] = [
   {
@@ -22,7 +23,8 @@ const posts: IPost[] = [
     categoryIds: [1, 2],
     cityId: 1,
     imageUrls: ["https://picsum.photos/200/300"],
-    likes: 5,
+    score: 5,
+    author: "Author 1",
   },
   {
     id: 2,
@@ -41,7 +43,8 @@ const posts: IPost[] = [
     categoryIds: [1, 2],
     cityId: 1,
     imageUrls: ["https://picsum.photos/200/300"],
-    likes: 5,
+    score: 5,
+    author: "Author 2",
   },
   {
     id: 3,
@@ -60,11 +63,12 @@ const posts: IPost[] = [
     categoryIds: [1, 2],
     cityId: 1,
     imageUrls: ["https://picsum.photos/200/300"],
-    likes: 5,
+    score: 5,
+    author: "Author 3",
   },
 ];
 
-const PostSearch = () => {
+const PostSearch = observer(() => {
   const handleSearch = (query: IPostSearchQuery) => {
     console.log(query);
   };
@@ -74,6 +78,6 @@ const PostSearch = () => {
       <SearchResult posts={[]} />
     </div>
   );
-};
+});
 
 export default PostSearch;

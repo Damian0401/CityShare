@@ -25,7 +25,8 @@ const posts: IPost[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    likes: 5,
+    score: 5,
+    author: "Author 1",
   },
   {
     id: 2,
@@ -41,7 +42,8 @@ const posts: IPost[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    likes: 10,
+    score: 10,
+    author: "Author 2",
   },
   {
     id: 3,
@@ -57,7 +59,8 @@ const posts: IPost[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    likes: 15,
+    score: 15,
+    author: "Author 3",
   },
   {
     id: 4,
@@ -73,7 +76,8 @@ const posts: IPost[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    likes: 20,
+    score: 20,
+    author: "Author 4",
   },
   {
     id: 5,
@@ -89,7 +93,8 @@ const posts: IPost[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    likes: 25,
+    score: 25,
+    author: "Author 5",
   },
 ];
 
@@ -102,9 +107,7 @@ const PostMap = observer(() => {
     commonStore.cities[0]
   );
 
-  const [postsToShow, setPostsToShow] = useState<IPost[]>(
-    posts.filter((post) => post.cityId === selectedCity.id)
-  );
+  const [postsToShow, setPostsToShow] = useState<IPost[]>([]);
 
   const [selectedCategories, setSelectedCategories] = useState<boolean[]>(
     commonStore.categories.map(() => true)
