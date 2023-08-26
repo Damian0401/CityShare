@@ -109,17 +109,27 @@ const PostCreate = observer(() => {
             />
             <DateTimePicker
               label="Start Date"
-              name={nameof<IPostCreateValues>((x) => x.startDate)}
               errors={errors.startDate as string}
               touched={touched.startDate as boolean}
               isRequired
+              onChange={(date) => {
+                setFieldValue(
+                  nameof<IPostCreateValues>((x) => x.startDate),
+                  date
+                );
+              }}
             />
             <DateTimePicker
               label="End Date"
-              name={nameof<IPostCreateValues>((x) => x.endDate)}
               errors={errors.endDate as string}
               touched={touched.endDate as boolean}
               isRequired
+              onChange={(date) =>
+                setFieldValue(
+                  nameof<IPostCreateValues>((x) => x.endDate),
+                  date
+                )
+              }
             />
             <MultiOptionSelect
               errors={errors.categoryIds}

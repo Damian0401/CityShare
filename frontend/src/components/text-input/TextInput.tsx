@@ -12,6 +12,7 @@ import { ITextInputProps } from "./ITextInputProps";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { Cursors, InputTypes } from "../../common/enums";
+import styles from "./TextInput.module.scss";
 
 const TextInput: React.FC<ITextInputProps> = (props) => {
   const {
@@ -25,6 +26,8 @@ const TextInput: React.FC<ITextInputProps> = (props) => {
     isDisabled,
     isReadOnly,
     isMultiline,
+    rightIcon,
+    rightIconOnClick,
     onClick,
   } = props;
 
@@ -33,8 +36,12 @@ const TextInput: React.FC<ITextInputProps> = (props) => {
   const handleClick = () => setShow(!show);
 
   return (
-    <FormControl isInvalid={!!errors && !!touched} isRequired={isRequired}>
-      <FormLabel htmlFor={name}>{label}</FormLabel>
+    <FormControl
+      className={styles.container}
+      isInvalid={!!errors && !!touched}
+      isRequired={isRequired}
+    >
+      {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
       <InputGroup>
         <Field
           as={isMultiline ? Textarea : Input}
@@ -46,12 +53,20 @@ const TextInput: React.FC<ITextInputProps> = (props) => {
           isReadOnly={isReadOnly}
           onClick={onClick}
         />
-        {type == InputTypes.Password && (
+        {rightIcon ? (
           <InputRightElement
-            children={icon}
-            onClick={handleClick}
-            cursor={Cursors.Pointer}
+            children={rightIcon}
+            className={styles.rightIcon}
+            onClick={rightIconOnClick}
           />
+        ) : (
+          type == InputTypes.Password && (
+            <InputRightElement
+              children={icon}
+              onClick={handleClick}
+              cursor={Cursors.Pointer}
+            />
+          )
         )}
       </InputGroup>
       <FormErrorMessage>{errors}</FormErrorMessage>

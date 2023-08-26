@@ -5,11 +5,11 @@ import {
   Input,
 } from "@chakra-ui/react";
 import { IDateTimePickerProps } from "./IDateTimePickerProps";
-import { Field } from "formik";
 import { InputTypes } from "../../common/enums";
+import styles from "./DateTimePicker.module.scss";
 
 const DateTimePicker: React.FC<IDateTimePickerProps> = (props) => {
-  const { name, label, isRequired, errors, touched } = props;
+  const { label, isRequired, errors, touched, onChange } = props;
 
   const handleDateClick = (
     e: React.MouseEvent<HTMLInputElement, MouseEvent>
@@ -18,13 +18,16 @@ const DateTimePicker: React.FC<IDateTimePickerProps> = (props) => {
   };
 
   return (
-    <FormControl isRequired={isRequired} isInvalid={!!touched && !!errors}>
+    <FormControl
+      isRequired={isRequired}
+      isInvalid={!!touched && !!errors}
+      className={styles.container}
+    >
       <FormLabel>{label}</FormLabel>
-      <Field
-        as={Input}
+      <Input
         type={InputTypes.DateTime}
-        name={name}
         onClick={handleDateClick}
+        onChange={(e) => onChange(new Date(e.target.value))}
       />
       <FormErrorMessage>{errors}</FormErrorMessage>
     </FormControl>

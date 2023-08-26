@@ -25,6 +25,9 @@ const Constants = {
   FileTypes: {
     Image: "image/*",
   },
+  Strings: {
+    Empty: "",
+  },
 };
 
 export default Constants;

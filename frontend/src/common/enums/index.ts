@@ -8,7 +8,7 @@ export * from "./Environments";
 export * from "./Routes";
 export * from "./Cursors";
 export * from "./InputTypes";
-export * from "./MotionPresets";
+export * from "./DrawerPlacements";
 export * from "./Roles";
 export * from "./LeafletPositions";
 export * from "./ChakraSizes";

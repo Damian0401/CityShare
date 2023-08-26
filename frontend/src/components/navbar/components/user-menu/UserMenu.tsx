@@ -2,11 +2,11 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Button,
   Divider,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Spacer,
   Text,
   Tooltip,
@@ -15,7 +15,7 @@ import {
 import { IUserMenuProps } from "./IUserMenuProps";
 import styles from "./UserMenu.module.scss";
 import BaseContainer from "../../../base-container/BaseContainer";
-import { Containers, MotionPresets, Routes } from "../../../../common/enums";
+import { Containers, DrawerPlacements, Routes } from "../../../../common/enums";
 import { BiLogOutCircle } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoCreateOutline } from "react-icons/io5";
@@ -51,15 +51,15 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
           </div>
         </BaseContainer>
       </div>
-      <Modal
+      <Drawer
         onClose={onClose}
         isOpen={isOpen}
         initialFocusRef={initialRef}
-        motionPreset={MotionPresets.SlideInRight}
+        placement={DrawerPlacements.Right}
       >
-        <ModalOverlay />
-        <ModalContent className={styles.menuModal}>
-          <ModalHeader className={styles.header}>
+        <DrawerOverlay />
+        <DrawerContent className={styles.menuModal}>
+          <DrawerHeader className={styles.header}>
             <Link to={Routes.Index} className={styles.logo}>
               <img src={NavbarLogo} className={styles.logoImage} />
               CityShare
@@ -76,8 +76,8 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
                 </div>
               </Tooltip>
             )}
-          </ModalHeader>
-          <ModalBody className={styles.modalBody}>
+          </DrawerHeader>
+          <DrawerBody className={styles.modalBody}>
             <Button leftIcon={<CgProfile />} onClick={onClose} ref={initialRef}>
               Profile
             </Button>
@@ -104,9 +104,9 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             <Button leftIcon={<BiLogOutCircle />} onClick={logout}>
               Logout
             </Button>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 });

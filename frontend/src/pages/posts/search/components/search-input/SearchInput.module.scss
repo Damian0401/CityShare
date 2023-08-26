@@ -1,0 +1,56 @@
+@import "../../../../../assets/styles/variables.module.scss";
+
+.container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+  padding: 0rem;
+
+  .formContainer {
+    width: 100%;
+
+    .search {
+      display: flex;
+      flex-direction: row;
+      column-gap: 0.5rem;
+      align-items: center;
+      box-shadow: $lessBoxShadow;
+      width: 100%;
+
+      .icon {
+        font-size: $mdFontSize;
+        cursor: pointer;
+      }
+    }
+
+    .hidden {
+      display: flex;
+      flex-direction: column;
+      row-gap: 0.5rem;
+      justify-content: flex-start;
+      padding: 0.5rem;
+      border-radius: $borderRadius;
+      transition: all 0.3s ease-in-out;
+
+      .categories {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+
+        .checkbox {
+          padding: 0.3rem 0.5rem;
+          border-radius: $borderRadius;
+        }
+      }
+
+      .dates {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+        width: 100%;
+      }
+    }
+  }
+}

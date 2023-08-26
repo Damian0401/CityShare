@@ -27,4 +27,9 @@ export const InitialValues: IInitialValues = {
     startDate: new Date(),
     endDate: new Date(),
   },
+  PostSearch: {
+    skipCategoryIds: [],
+    startDate: new Date(),
+    endDate: null,
+  },
 };
