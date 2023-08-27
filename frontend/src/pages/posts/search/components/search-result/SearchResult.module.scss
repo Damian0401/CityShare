@@ -23,6 +23,7 @@
       "Image Header"
       "Image Body"
       "Image Footer";
+    cursor: pointer;
 
     &:hover > .image > img {
       transform: scale(1.1);

@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { Containers } from "../../../../../common/enums";
+import { Containers, Routes } from "../../../../../common/enums";
 import BaseContainer from "../../../../../components/base-container/BaseContainer";
 import { ISearchResultProps } from "./ISearchResultProps";
 import styles from "./SearchResult.module.scss";
@@ -12,11 +12,16 @@ import {
   AiOutlineMinusSquare,
   AiOutlinePlusSquare,
 } from "react-icons/ai";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { MouseEvent } from "react";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { posts } = props;
 
   const { commonStore } = useStore();
+
+  const navigate = useNavigate();
 
   const getPostStatus = (post: IPost) => {
     const currentDate = new Date();
@@ -31,6 +36,25 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
     return "Not started";
   };
 
+  const handlePostClick = (postId: number) => {
+    navigate(Routes.Posts + "/" + postId);
+  };
+
+  const handleScoreClick = (
+    postId: number,
+    isLiked: boolean,
+    event: MouseEvent<HTMLSpanElement>
+  ) => {
+    event.stopPropagation();
+
+    if (isLiked) {
+      toast.success(`Post ${postId} score increased`);
+      return;
+    }
+
+    toast.error(`Post ${postId} score decreased`);
+  };
+
   return (
     <div className={styles.container}>
       {posts.length === 0 ? (
@@ -41,6 +65,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
             type={Containers.Tertiary}
             className={styles.post}
             key={post.id}
+            onClick={() => handlePostClick(post.id)}
           >
             <div className={styles.image}>
               <img
@@ -62,7 +87,10 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
                 ))}
               </div>
               <div className={styles.score}>
-                <span className={styles.icon}>
+                <span
+                  className={styles.icon}
+                  onClick={(e) => handleScoreClick(post.id, true, e)}
+                >
                   {post.isLiked ? (
                     <AiFillPlusSquare />
                   ) : (
@@ -70,7 +98,10 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
                   )}
                 </span>
                 <span>{post.score}</span>
-                <span className={styles.icon}>
+                <span
+                  className={styles.icon}
+                  onClick={(e) => handleScoreClick(post.id, false, e)}
+                >
                   {post?.isLiked === false ? (
                     <AiFillMinusSquare />
                   ) : (

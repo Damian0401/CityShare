@@ -7,7 +7,6 @@ import { ChakraSizes, Routes } from "../../../common/enums";
 import { useEffect, useState } from "react";
 import { ICity, IPost } from "../../../common/interfaces";
 import { Marker, Popup } from "react-leaflet";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const posts: IPost[] = [
@@ -144,8 +143,7 @@ const PostMap = observer(() => {
   };
 
   const handlePopupClick = (postId: number) => {
-    toast.success(`Post ${postId} clicked!`);
-    navigate(Routes.Index);
+    navigate(Routes.Posts + "/" + postId);
   };
 
   return (
@@ -169,6 +167,7 @@ const PostMap = observer(() => {
                 >
                   <p className={styles.title}>{post.title}</p>
                   <p>{post.description}</p>
+                  <p>Score: {post.score}</p>
                 </div>
               </Popup>
             </Marker>
