@@ -7,5 +7,5 @@ export interface IMultiOptionSelectProps {
   label: string;
   options: IOption[];
   isRequired?: boolean;
-  onChange: (value: number[]) => void;
+  onChange: (value: (number | string)[]) => void;
 }

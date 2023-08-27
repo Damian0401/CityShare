@@ -5,14 +5,30 @@ import { ISearchResultProps } from "./ISearchResultProps";
 import styles from "./SearchResult.module.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../../../common/stores/store";
+import { IPost } from "../../../../../common/interfaces";
+import {
+  AiFillMinusSquare,
+  AiFillPlusSquare,
+  AiOutlineMinusSquare,
+  AiOutlinePlusSquare,
+} from "react-icons/ai";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { posts } = props;
 
   const { commonStore } = useStore();
 
-  const isStarted = (startDate: Date) => {
-    return startDate.getTime() < new Date().getTime();
+  const getPostStatus = (post: IPost) => {
+    const currentDate = new Date();
+    if (post.endDate < currentDate) {
+      return "Finished";
+    }
+
+    if (post.startDate < currentDate) {
+      return "Started";
+    }
+
+    return "Not started";
   };
 
   return (
@@ -27,40 +43,51 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
             key={post.id}
           >
             <div className={styles.image}>
-              <img src={post.imageUrls[0]} alt="post" />
+              <img
+                src={
+                  post.imageUrls.length > 0
+                    ? post.imageUrls[0]
+                    : "https://picsum.photos/200/300"
+                }
+                alt="post"
+              />
             </div>
             <div className={styles.header}>
               <div>
-                {post.title}{" "}
+                <span className={styles.title}>{post.title}</span>{" "}
                 {post.categoryIds.map((id) => (
                   <span key={id} className={styles.category}>
                     {commonStore.categories.find((x) => x.id === id)?.name}
                   </span>
                 ))}
               </div>
-              <div>{format(new Date(post.createdAt), "dd/MM/yyyy HH:mm")}</div>
+              <div className={styles.score}>
+                <span className={styles.icon}>
+                  {post.isLiked ? (
+                    <AiFillPlusSquare />
+                  ) : (
+                    <AiOutlinePlusSquare />
+                  )}
+                </span>
+                <span>{post.score}</span>
+                <span className={styles.icon}>
+                  {post?.isLiked === false ? (
+                    <AiFillMinusSquare />
+                  ) : (
+                    <AiOutlineMinusSquare />
+                  )}
+                </span>
+              </div>
             </div>
             <div className={styles.body}>
-              <div>
-                Status:{" "}
-                {isStarted(new Date(post.startDate))
-                  ? "Started"
-                  : "Not started"}
-              </div>
+              <div>{getPostStatus(post)}</div>
               <div>{post.description}</div>
             </div>
             <div className={styles.footer}>
               <div>
-                {!isStarted(new Date(post.startDate)) ? (
-                  <span>
-                    Start:{" "}
-                    {format(new Date(post.startDate), "dd/MM/yyyy HH:mm")}
-                  </span>
-                ) : (
-                  <span>
-                    End: {format(new Date(post.endDate), "dd/MM/yyyy HH:mm")}
-                  </span>
-                )}
+                <div>
+                  {format(new Date(post.createdAt), "dd/MM/yyyy HH:mm")}
+                </div>
               </div>
               <div>{post.author}</div>
             </div>

@@ -11,8 +11,8 @@ const posts: IPost[] = [
     title: "Title 1",
     description: "Description 1",
     createdAt: new Date(),
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date("2021-10-10"),
+    endDate: new Date("2022-10-10"),
     address: {
       displayName: "Address 1",
       point: {
@@ -25,14 +25,15 @@ const posts: IPost[] = [
     imageUrls: ["https://picsum.photos/200/300"],
     score: 5,
     author: "Author 1",
+    isLiked: true,
   },
   {
     id: 2,
     title: "Title 2",
     description: "Description 2",
     createdAt: new Date(),
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: new Date("2023-06-07"),
+    endDate: new Date("2023-10-10"),
     address: {
       displayName: "Address 2",
       point: {
@@ -45,6 +46,7 @@ const posts: IPost[] = [
     imageUrls: ["https://picsum.photos/200/300"],
     score: 5,
     author: "Author 2",
+    isLiked: false,
   },
   {
     id: 3,

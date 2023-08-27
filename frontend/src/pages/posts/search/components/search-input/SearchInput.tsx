@@ -6,7 +6,7 @@ import { searchInputSchema } from "./SearchInputSchema";
 import TextInput from "../../../../../components/text-input/TextInput";
 import { Containers, InputTypes } from "../../../../../common/enums";
 import { nameof } from "ts-simple-nameof";
-import { IPostSearchQuery } from "../../../../../common/interfaces";
+import { IOption, IPostSearchQuery } from "../../../../../common/interfaces";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
 import { TbFilterMinus, TbFilterPlus } from "react-icons/tb";
@@ -16,6 +16,25 @@ import { useStore } from "../../../../../common/stores/store";
 import { Checkbox } from "@chakra-ui/react";
 import DateTimePicker from "../../../../../components/date-time-picker/DateTimePicker";
 import OptionSelect from "../../../../../components/option-select/OptionSelect";
+
+const sortByOptions: IOption[] = [
+  {
+    value: "createdAtDesc",
+    label: "Newest",
+  },
+  {
+    value: "createdAtAsc",
+    label: "Oldest",
+  },
+  {
+    value: "scoreDesc",
+    label: "Most popular",
+  },
+  {
+    value: "scoreAsc",
+    label: "Least popular",
+  },
+];
 
 const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
   const { onSearch } = props;
@@ -34,6 +53,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
         initialValues={{
           ...InitialValues.PostSearch,
           cityId: commonStore.cities[0].id,
+          sortBy: sortByOptions[0].value as string,
         }}
         onSubmit={onSearch}
         validationSchema={searchInputSchema}
@@ -123,6 +143,13 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                   name={nameof<IPostSearchQuery>((x) => x.cityId)}
                   errors={errors.cityId}
                   touched={touched.cityId}
+                />
+                <OptionSelect
+                  label="Sort By"
+                  options={sortByOptions}
+                  name={nameof<IPostSearchQuery>((x) => x.sortBy)}
+                  errors={errors.sortBy}
+                  touched={touched.sortBy}
                 />
               </div>
             )}

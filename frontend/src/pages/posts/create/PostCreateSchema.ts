@@ -7,7 +7,7 @@ export const postCreateSchema = Yup.object({
   address: Yup.object({
     displayName: Yup.string().required("address is a required field"),
   }).required(),
-  categoryIds: Yup.array().required().max(3).min(1),
+  categoryIds: Yup.array().of(Yup.number()).required().max(3).min(1),
   images: Yup.array().max(5).min(0),
   startDate: Yup.date().required(),
   endDate: Yup.date()

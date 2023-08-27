@@ -21,4 +21,7 @@ export const searchInputSchema = Yup.object({
         return value > new Date();
       },
     }),
+  cityId: Yup.number().required(),
+  skipCategoryIds: Yup.array().of(Yup.number()).notRequired(),
+  sortBy: Yup.string().notRequired(),
 });

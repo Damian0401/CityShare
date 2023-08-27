@@ -4,4 +4,5 @@ export interface IPostSearchQuery {
   skipCategoryIds: number[];
   startDate: Date;
   endDate: Date | null;
+  sortBy?: string;
 }
