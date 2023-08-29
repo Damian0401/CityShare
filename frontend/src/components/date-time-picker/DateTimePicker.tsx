@@ -7,9 +7,10 @@ import {
 import { IDateTimePickerProps } from "./IDateTimePickerProps";
 import { InputTypes } from "../../common/enums";
 import styles from "./DateTimePicker.module.scss";
+import { format } from "date-fns";
 
 const DateTimePicker: React.FC<IDateTimePickerProps> = (props) => {
-  const { label, isRequired, errors, touched, onChange } = props;
+  const { label, isRequired, errors, touched, defaultValue, onChange } = props;
 
   const handleDateClick = (
     e: React.MouseEvent<HTMLInputElement, MouseEvent>
@@ -27,6 +28,9 @@ const DateTimePicker: React.FC<IDateTimePickerProps> = (props) => {
       <Input
         type={InputTypes.DateTime}
         onClick={handleDateClick}
+        defaultValue={
+          defaultValue ? format(defaultValue, "yyyy-MM-dd'T'HH:mm") : ""
+        }
         onChange={(e) => onChange(new Date(e.target.value))}
       />
       <FormErrorMessage>{errors}</FormErrorMessage>

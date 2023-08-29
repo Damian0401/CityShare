@@ -119,6 +119,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                         date
                       );
                     }}
+                    defaultValue={values.startDate}
                   />
                   <DateTimePicker
                     label="End Date"

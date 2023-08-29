@@ -3,5 +3,6 @@ export interface IDateTimePickerProps {
   touched?: boolean;
   label: string;
   isRequired?: boolean;
+  defaultValue?: Date;
   onChange: (date: Date) => void;
 }
