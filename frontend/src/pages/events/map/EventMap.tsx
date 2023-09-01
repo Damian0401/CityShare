@@ -1,19 +1,19 @@
 import AddressSearchMap from "../../../components/address-search-map/AddressSearchMap";
-import styles from "./PostMap.module.scss";
+import styles from "./EventMap.module.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../common/stores/store";
 import { Checkbox, Select, Text } from "@chakra-ui/react";
 import { ChakraSizes, Routes } from "../../../common/enums";
 import { useEffect, useState } from "react";
-import { ICity, IPost } from "../../../common/interfaces";
+import { ICity, IEvent } from "../../../common/interfaces";
 import { Marker, Popup } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
 
-const posts: IPost[] = [
+const events: IEvent[] = [
   {
     id: 1,
-    title: "Post 1",
-    description: "Post 1 description",
+    title: "Event 1",
+    description: "Event 1 description",
     cityId: 1,
     categoryIds: [1, 2, 3],
     imageUrls: [],
@@ -29,8 +29,8 @@ const posts: IPost[] = [
   },
   {
     id: 2,
-    title: "Post 2",
-    description: "Post 2 description",
+    title: "Event 2",
+    description: "Event 2 description",
     cityId: 1,
     categoryIds: [1, 2, 4],
     imageUrls: [],
@@ -46,8 +46,8 @@ const posts: IPost[] = [
   },
   {
     id: 3,
-    title: "Post 3",
-    description: "Post 3 description",
+    title: "Event 3",
+    description: "Event 3 description",
     cityId: 1,
     categoryIds: [3],
     imageUrls: [],
@@ -63,8 +63,8 @@ const posts: IPost[] = [
   },
   {
     id: 4,
-    title: "Post 4",
-    description: "Post 4 description",
+    title: "Event 4",
+    description: "Event 4 description",
     cityId: 2,
     categoryIds: [1],
     imageUrls: [],
@@ -80,8 +80,8 @@ const posts: IPost[] = [
   },
   {
     id: 5,
-    title: "Post 5",
-    description: "Post 5 description",
+    title: "Event 5",
+    description: "Event 5 description",
     cityId: 2,
     categoryIds: [2, 3],
     imageUrls: [],
@@ -97,7 +97,7 @@ const posts: IPost[] = [
   },
 ];
 
-const PostMap = observer(() => {
+const EventMap = observer(() => {
   const { commonStore } = useStore();
 
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ const PostMap = observer(() => {
     commonStore.cities[0]
   );
 
-  const [postsToShow, setPostsToShow] = useState<IPost[]>([]);
+  const [eventsToShow, setEventsToShow] = useState<IEvent[]>([]);
 
   const [selectedCategories, setSelectedCategories] = useState<boolean[]>(
     commonStore.categories.map(() => true)
@@ -119,11 +119,11 @@ const PostMap = observer(() => {
       )
       .filter((index) => index !== -1);
 
-    setPostsToShow(
-      posts.filter(
-        (post) =>
-          post.cityId === selectedCity.id &&
-          post.categoryIds.every((categoryId) =>
+    setEventsToShow(
+      events.filter(
+        (event) =>
+          event.cityId === selectedCity.id &&
+          event.categoryIds.every((categoryId) =>
             selectedCategoriesIds.includes(categoryId)
           )
       )
@@ -142,8 +142,8 @@ const PostMap = observer(() => {
     ]);
   };
 
-  const handlePopupClick = (postId: number) => {
-    navigate(Routes.Posts + "/" + postId);
+  const handlePopupClick = (eventId: number) => {
+    navigate(Routes.Events + "/" + eventId);
   };
 
   return (
@@ -155,19 +155,19 @@ const PostMap = observer(() => {
           additionalQuery={selectedCity.name}
           scrollToPoint={selectedCity.address.point}
           isSearchOnly
-          elements={postsToShow.map((post) => (
+          elements={eventsToShow.map((event) => (
             <Marker
-              key={post.id}
-              position={[post.address.point.x, post.address.point.y]}
+              key={event.id}
+              position={[event.address.point.x, event.address.point.y]}
             >
               <Popup>
                 <div
                   className={styles.popup}
-                  onClick={() => handlePopupClick(post.id)}
+                  onClick={() => handlePopupClick(event.id)}
                 >
-                  <p className={styles.title}>{post.title}</p>
-                  <p>{post.description}</p>
-                  <p>Score: {post.score}</p>
+                  <p className={styles.title}>{event.title}</p>
+                  <p>{event.description}</p>
+                  <p>Score: {event.score}</p>
                 </div>
               </Popup>
             </Marker>
@@ -209,4 +209,4 @@ const PostMap = observer(() => {
   );
 });
 
-export default PostMap;
+export default EventMap;

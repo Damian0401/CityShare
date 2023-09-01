@@ -1,12 +1,12 @@
 import { Button, Divider, useDisclosure } from "@chakra-ui/react";
-import styles from "./PostCreate.module.scss";
+import styles from "./EventCreate.module.scss";
 import { Formik } from "formik";
 import { InitialValues } from "../../../common/utils/initialValues";
-import { postCreateSchema } from "./PostCreateSchema";
+import { EventCreateSchema } from "./EventCreateSchema";
 import TextInput from "../../../components/text-input/TextInput";
 import { ButtonTypes, InputTypes, Routes } from "../../../common/enums";
 import { nameof } from "ts-simple-nameof";
-import { IPostCreateValues } from "../../../common/interfaces";
+import { IEventCreateValues } from "../../../common/interfaces";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../common/stores/store";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,7 @@ import MultiOptionSelect from "../../../components/multi-option-select/MultiOpti
 import DateTimePicker from "../../../components/date-time-picker/DateTimePicker";
 import ImagesWithBlurPicker from "./components/images-with-blur-picker/ImagesWithBlurPicker";
 
-const PostCreate = observer(() => {
+const EventCreate = observer(() => {
   const {
     authStore: { user },
     commonStore,
@@ -53,9 +53,9 @@ const PostCreate = observer(() => {
       <div className={styles.title}>Create a new event to share</div>
       <Divider />
       <Formik
-        initialValues={InitialValues.PostCreate}
+        initialValues={InitialValues.EventCreate}
         onSubmit={console.log}
-        validationSchema={postCreateSchema}
+        validationSchema={EventCreateSchema}
       >
         {({
           handleSubmit,
@@ -72,7 +72,7 @@ const PostCreate = observer(() => {
               errors={errors.title}
               touched={touched.title}
               isRequired
-              name={nameof<IPostCreateValues>((x) => x.title)}
+              name={nameof<IEventCreateValues>((x) => x.title)}
             />
             <TextInput
               label="Description"
@@ -81,7 +81,7 @@ const PostCreate = observer(() => {
               touched={touched.description}
               isRequired
               isMultiline
-              name={nameof<IPostCreateValues>((x) => x.description)}
+              name={nameof<IEventCreateValues>((x) => x.description)}
             />
             <OptionSelect
               label="City"
@@ -92,7 +92,7 @@ const PostCreate = observer(() => {
                   value: city.id,
                 })),
               ]}
-              name={nameof<IPostCreateValues>((x) => x.cityId)}
+              name={nameof<IEventCreateValues>((x) => x.cityId)}
               errors={errors.cityId}
               touched={touched.cityId}
               isRequired
@@ -104,7 +104,7 @@ const PostCreate = observer(() => {
               touched={touched.address?.displayName}
               isRequired
               isReadOnly
-              name={nameof<IPostCreateValues>((x) => x.address.displayName)}
+              name={nameof<IEventCreateValues>((x) => x.address.displayName)}
               onClick={() => handleAddressClick(values.cityId)}
             />
             <DateTimePicker
@@ -114,7 +114,7 @@ const PostCreate = observer(() => {
               isRequired
               onChange={(date) => {
                 setFieldValue(
-                  nameof<IPostCreateValues>((x) => x.startDate),
+                  nameof<IEventCreateValues>((x) => x.startDate),
                   date
                 );
               }}
@@ -126,7 +126,7 @@ const PostCreate = observer(() => {
               isRequired
               onChange={(date) =>
                 setFieldValue(
-                  nameof<IPostCreateValues>((x) => x.endDate),
+                  nameof<IEventCreateValues>((x) => x.endDate),
                   date
                 )
               }
@@ -134,7 +134,7 @@ const PostCreate = observer(() => {
             <MultiOptionSelect
               errors={errors.categoryIds}
               touched={touched.categoryIds}
-              name={nameof<IPostCreateValues>((x) => x.categoryIds)}
+              name={nameof<IEventCreateValues>((x) => x.categoryIds)}
               label="Categories"
               isRequired
               options={commonStore.categories.map((category) => ({
@@ -143,12 +143,12 @@ const PostCreate = observer(() => {
               }))}
               onChange={async (values) => {
                 await setFieldValue(
-                  nameof<IPostCreateValues>((x) => x.categoryIds),
+                  nameof<IEventCreateValues>((x) => x.categoryIds),
                   values
                 );
 
                 await setFieldTouched(
-                  nameof<IPostCreateValues>((x) => x.categoryIds),
+                  nameof<IEventCreateValues>((x) => x.categoryIds),
                   true
                 );
               }}
@@ -159,13 +159,13 @@ const PostCreate = observer(() => {
               allImages={values.images}
               setImages={async (images) => {
                 await setFieldValue(
-                  nameof<IPostCreateValues>((x) => x.images),
+                  nameof<IEventCreateValues>((x) => x.images),
                   images
                 );
               }}
               setImagesTouched={async (value) => {
                 await setFieldTouched(
-                  nameof<IPostCreateValues>((x) => x.images),
+                  nameof<IEventCreateValues>((x) => x.images),
                   value
                 );
               }}
@@ -178,7 +178,7 @@ const PostCreate = observer(() => {
               onClose={onAddressModalClose}
               onSelect={(address) => {
                 setFieldValue(
-                  nameof<IPostCreateValues>((x) => x.address),
+                  nameof<IEventCreateValues>((x) => x.address),
                   address
                 );
                 onAddressModalClose();
@@ -192,4 +192,4 @@ const PostCreate = observer(() => {
   );
 });
 
-export default PostCreate;
+export default EventCreate;

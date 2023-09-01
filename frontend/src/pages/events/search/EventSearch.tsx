@@ -1,11 +1,11 @@
-import styles from "./PostSearch.module.scss";
-import { IPost } from "../../../common/interfaces";
+import styles from "./EventSearch.module.scss";
+import { IEvent } from "../../../common/interfaces";
 import SearchInput from "./components/search-input/SearchInput";
 import SearchResult from "./components/search-result/SearchResult";
-import { IPostSearchQuery } from "../../../common/interfaces/IPostSearchQuery";
+import { IEventSearchQuery } from "../../../common/interfaces/IEventSearchQuery";
 import { observer } from "mobx-react-lite";
 
-const posts: IPost[] = [
+const events: IEvent[] = [
   {
     id: 1,
     title: "Title 1",
@@ -70,16 +70,16 @@ const posts: IPost[] = [
   },
 ];
 
-const PostSearch = observer(() => {
-  const handleSearch = (query: IPostSearchQuery) => {
+const EventSearch = observer(() => {
+  const handleSearch = (query: IEventSearchQuery) => {
     console.log(query);
   };
   return (
     <div className={styles.container}>
       <SearchInput onSearch={handleSearch} />
-      <SearchResult posts={posts} />
+      <SearchResult events={events} />
     </div>
   );
 });
 
-export default PostSearch;
+export default EventSearch;

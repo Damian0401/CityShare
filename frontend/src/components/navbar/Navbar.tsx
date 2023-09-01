@@ -30,8 +30,8 @@ const Navbar = observer(() => {
           {authStore.user ? (
             <>
               <Link to={Routes.Index}>Home</Link>
-              <Link to={Routes.PostsMap}>Map</Link>
-              <Link to={Routes.PostsSearch}>Search</Link>
+              <Link to={Routes.EventsMap}>Map</Link>
+              <Link to={Routes.EventsSearch}>Search</Link>
             </>
           ) : (
             <>

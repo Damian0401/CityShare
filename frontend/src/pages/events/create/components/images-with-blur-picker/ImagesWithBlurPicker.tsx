@@ -1,7 +1,10 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { IImagesWithBlurPickerProps } from "./IImagesWithBlurPickerProps";
 import { useState } from "react";
-import { INewImage, IPostCreateValues } from "../../../../../common/interfaces";
+import {
+  INewImage,
+  IEventCreateValues,
+} from "../../../../../common/interfaces";
 import ImagePicker from "../../../../../components/image-picker/ImagePicker";
 import { nameof } from "ts-simple-nameof";
 import ConfirmDialog from "../../../../../components/confirm-dialog/ConfirmDialog";
@@ -56,7 +59,7 @@ const ImagesWithBlurPicker: React.FC<IImagesWithBlurPickerProps> = (props) => {
   return (
     <>
       <ImagePicker
-        name={nameof<IPostCreateValues>((x) => x.images)}
+        name={nameof<IEventCreateValues>((x) => x.images)}
         label="Images"
         errors={errors}
         touched={touched}

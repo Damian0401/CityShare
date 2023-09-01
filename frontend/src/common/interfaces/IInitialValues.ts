@@ -1,13 +1,13 @@
 import {
-  IPostCreateValues,
+  IEventCreateValues,
   ILoginValues,
   IRegisterValues,
-  IPostSearchQuery,
+  IEventSearchQuery,
 } from ".";
 
 export interface IInitialValues {
   Login: ILoginValues;
   Register: IRegisterValues;
-  PostCreate: IPostCreateValues;
-  PostSearch: IPostSearchQuery;
+  EventCreate: IEventCreateValues;
+  EventSearch: IEventSearchQuery;
 }

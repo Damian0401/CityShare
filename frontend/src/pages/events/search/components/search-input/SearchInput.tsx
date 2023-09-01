@@ -6,7 +6,7 @@ import { searchInputSchema } from "./SearchInputSchema";
 import TextInput from "../../../../../components/text-input/TextInput";
 import { Containers, InputTypes } from "../../../../../common/enums";
 import { nameof } from "ts-simple-nameof";
-import { IOption, IPostSearchQuery } from "../../../../../common/interfaces";
+import { IOption, IEventSearchQuery } from "../../../../../common/interfaces";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useState } from "react";
 import { TbFilterMinus, TbFilterPlus } from "react-icons/tb";
@@ -51,7 +51,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
     <BaseContainer type={Containers.Secondary} className={styles.container}>
       <Formik
         initialValues={{
-          ...InitialValues.PostSearch,
+          ...InitialValues.EventSearch,
           cityId: commonStore.cities[0].id,
           sortBy: sortByOptions[0].value as string,
         }}
@@ -78,7 +78,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                 placeholder="Search..."
                 rightIcon={<AiOutlineSearch />}
                 rightIconOnClick={submitForm}
-                name={nameof<IPostSearchQuery>((x) => x.query)}
+                name={nameof<IEventSearchQuery>((x) => x.query)}
               />
               <div className={styles.icon} onClick={handleFiltersIconClick}>
                 {filtersVisible ? <TbFilterMinus /> : <TbFilterPlus />}
@@ -95,7 +95,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                       defaultChecked
                       onChange={(e) =>
                         setFieldValue(
-                          nameof<IPostSearchQuery>((x) => x.skipCategoryIds),
+                          nameof<IEventSearchQuery>((x) => x.skipCategoryIds),
                           e.target.checked
                             ? values.skipCategoryIds.filter(
                                 (id) => id !== category.id
@@ -115,7 +115,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                     touched={touched.startDate as boolean}
                     onChange={(date) => {
                       setFieldValue(
-                        nameof<IPostSearchQuery>((x) => x.startDate),
+                        nameof<IEventSearchQuery>((x) => x.startDate),
                         date
                       );
                     }}
@@ -127,7 +127,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                     touched={touched.endDate as boolean}
                     onChange={(date) =>
                       setFieldValue(
-                        nameof<IPostSearchQuery>((x) => x.endDate),
+                        nameof<IEventSearchQuery>((x) => x.endDate),
                         date
                       )
                     }
@@ -141,14 +141,14 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                       value: city.id,
                     })),
                   ]}
-                  name={nameof<IPostSearchQuery>((x) => x.cityId)}
+                  name={nameof<IEventSearchQuery>((x) => x.cityId)}
                   errors={errors.cityId}
                   touched={touched.cityId}
                 />
                 <OptionSelect
                   label="Sort By"
                   options={sortByOptions}
-                  name={nameof<IPostSearchQuery>((x) => x.sortBy)}
+                  name={nameof<IEventSearchQuery>((x) => x.sortBy)}
                   errors={errors.sortBy}
                   touched={touched.sortBy}
                 />

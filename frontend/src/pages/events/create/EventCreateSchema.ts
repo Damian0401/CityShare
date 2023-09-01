@@ -1,6 +1,6 @@
 import * as Yup from "yup";
 
-export const postCreateSchema = Yup.object({
+export const EventCreateSchema = Yup.object({
   title: Yup.string().required(),
   description: Yup.string().required().max(1000),
   cityId: Yup.number().required().positive("city is a required field"),

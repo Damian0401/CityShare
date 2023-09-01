@@ -1,4 +1,4 @@
-export interface IPostSearchQuery {
+export interface IEventSearchQuery {
   query?: string;
   cityId?: number;
   skipCategoryIds: number[];

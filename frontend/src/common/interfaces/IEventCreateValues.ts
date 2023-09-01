@@ -1,6 +1,6 @@
 import { IAddress, INewImage } from ".";
 
-export interface IPostCreateValues {
+export interface IEventCreateValues {
   title: string;
   description: string;
   cityId: number;

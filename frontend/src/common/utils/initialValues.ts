@@ -11,7 +11,7 @@ export const InitialValues: IInitialValues = {
     confirmPassword: "",
     userName: "",
   },
-  PostCreate: {
+  EventCreate: {
     title: "",
     description: "",
     cityId: -1,
@@ -27,7 +27,7 @@ export const InitialValues: IInitialValues = {
     startDate: new Date(),
     endDate: new Date(),
   },
-  PostSearch: {
+  EventSearch: {
     skipCategoryIds: [],
     startDate: new Date(),
     endDate: null,

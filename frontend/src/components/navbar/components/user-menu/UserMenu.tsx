@@ -83,19 +83,19 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             </Button>
             <Button
               leftIcon={<AiOutlineSearch />}
-              onClick={redirectAndClose(Routes.PostsSearch)}
+              onClick={redirectAndClose(Routes.EventsSearch)}
             >
               Search
             </Button>
             <Button
               leftIcon={<FiMapPin />}
-              onClick={redirectAndClose(Routes.PostsMap)}
+              onClick={redirectAndClose(Routes.EventsMap)}
             >
               Map
             </Button>
             <Button
               leftIcon={<IoCreateOutline />}
-              onClick={redirectAndClose(Routes.PostsCreate)}
+              onClick={redirectAndClose(Routes.EventsCreate)}
               isDisabled={!user.emailConfirmed}
             >
               Create

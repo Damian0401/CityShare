@@ -1,6 +1,6 @@
 import { IAddress } from ".";
 
-export interface IPost {
+export interface IEvent {
   id: number;
   title: string;
   description: string;

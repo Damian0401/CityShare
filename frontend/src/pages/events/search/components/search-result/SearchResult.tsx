@@ -5,7 +5,7 @@ import { ISearchResultProps } from "./ISearchResultProps";
 import styles from "./SearchResult.module.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../../../common/stores/store";
-import { IPost } from "../../../../../common/interfaces";
+import { IEvent } from "../../../../../common/interfaces";
 import {
   AiFillMinusSquare,
   AiFillPlusSquare,
@@ -17,70 +17,70 @@ import { toast } from "react-toastify";
 import { MouseEvent } from "react";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
-  const { posts } = props;
+  const { events } = props;
 
   const { commonStore } = useStore();
 
   const navigate = useNavigate();
 
-  const getPostStatus = (post: IPost) => {
+  const getEventStatus = (event: IEvent) => {
     const currentDate = new Date();
-    if (post.endDate < currentDate) {
+    if (event.endDate < currentDate) {
       return "Finished";
     }
 
-    if (post.startDate < currentDate) {
+    if (event.startDate < currentDate) {
       return "Started";
     }
 
     return "Not started";
   };
 
-  const handlePostClick = (postId: number) => {
-    navigate(Routes.Posts + "/" + postId);
+  const handleEventClick = (eventId: number) => {
+    navigate(Routes.Events + "/" + eventId);
   };
 
   const handleScoreClick = (
-    postId: number,
+    eventId: number,
     isLiked: boolean,
     event: MouseEvent<HTMLSpanElement>
   ) => {
     event.stopPropagation();
 
     if (isLiked) {
-      toast.success(`Post ${postId} score increased`);
+      toast.success(`Event ${eventId} score increased`);
       return;
     }
 
-    toast.error(`Post ${postId} score decreased`);
+    toast.error(`Event ${eventId} score decreased`);
   };
 
   return (
     <div className={styles.container}>
-      {posts.length === 0 ? (
-        <p>No posts found</p>
+      {events.length === 0 ? (
+        <p>No events found</p>
       ) : (
-        posts.map((post) => (
+        events.map((event) => (
           <BaseContainer
             type={Containers.Tertiary}
-            className={styles.post}
-            key={post.id}
-            onClick={() => handlePostClick(post.id)}
+            className={styles.event}
+            key={event.id}
+            onClick={() => handleEventClick(event.id)}
           >
             <div className={styles.image}>
               <img
                 src={
-                  post.imageUrls.length > 0
-                    ? post.imageUrls[0]
+                  event.imageUrls.length > 0
+                    ? event.imageUrls[0]
                     : "https://picsum.photos/200/300"
                 }
-                alt="post"
+                alt="event"
               />
             </div>
             <div className={styles.header}>
               <div>
-                <span className={styles.title}>{post.title}</span>{" "}
-                {post.categoryIds.map((id) => (
+                <span className={styles.title}>{event.title}</span>{" "}
+                {event.categoryIds.map((id) => (
                   <span key={id} className={styles.category}>
                     {commonStore.categories.find((x) => x.id === id)?.name}
                   </span>
@@ -89,20 +89,20 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
               <div className={styles.score}>
                 <span
                   className={styles.icon}
-                  onClick={(e) => handleScoreClick(post.id, true, e)}
+                  onClick={(e) => handleScoreClick(event.id, true, e)}
                 >
-                  {post.isLiked ? (
+                  {event.isLiked ? (
                     <AiFillPlusSquare />
                   ) : (
                     <AiOutlinePlusSquare />
                   )}
                 </span>
-                <span>{post.score}</span>
+                <span>{event.score}</span>
                 <span
                   className={styles.icon}
-                  onClick={(e) => handleScoreClick(post.id, false, e)}
+                  onClick={(e) => handleScoreClick(event.id, false, e)}
                 >
-                  {post?.isLiked === false ? (
+                  {event?.isLiked === false ? (
                     <AiFillMinusSquare />
                   ) : (
                     <AiOutlineMinusSquare />
@@ -111,16 +111,16 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
               </div>
             </div>
             <div className={styles.body}>
-              <div>{getPostStatus(post)}</div>
-              <div>{post.description}</div>
+              <div>{getEventStatus(event)}</div>
+              <div>{event.description}</div>
             </div>
             <div className={styles.footer}>
               <div>
                 <div>
-                  {format(new Date(post.createdAt), "dd/MM/yyyy HH:mm")}
+                  {format(new Date(event.createdAt), "dd/MM/yyyy HH:mm")}
                 </div>
               </div>
-              <div>{post.author}</div>
+              <div>{event.author}</div>
             </div>
           </BaseContainer>
         ))

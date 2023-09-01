@@ -10,10 +10,10 @@ import ServerError from "./server-error/ServerError";
 import AnonymousRoute from "../components/anonymous-route/AnonymousRoute";
 import PrivateRoute from "../components/private-route/PrivateRoute";
 import ConfirmEmail from "./confirm-email/ConfirmEmail";
-import PostMap from "./posts/map/PostMap";
-import PostDetails from "./posts/details/PostDetails";
-import PostCreate from "./posts/create/PostCreate";
-import PostSearch from "./posts/search/PostSearch";
+import EventMap from "./events/map/EventMap";
+import EventDetails from "./events/details/EventDetails";
+import EventCreate from "./events/create/EventCreate";
+import EventSearch from "./events/search/EventSearch";
 
 const Router = createBrowserRouter([
   {
@@ -33,23 +33,23 @@ const Router = createBrowserRouter([
         element: <AnonymousRoute Component={Register} />,
       },
       {
-        path: Routes.Posts,
+        path: Routes.Events,
         children: [
           {
-            path: Routes.PostsSearch,
-            element: <PrivateRoute Component={PostSearch} />,
+            path: Routes.EventsSearch,
+            element: <PrivateRoute Component={EventSearch} />,
           },
           {
-            path: Routes.PostsCreate,
-            element: <PrivateRoute Component={PostCreate} />,
+            path: Routes.EventsCreate,
+            element: <PrivateRoute Component={EventCreate} />,
           },
           {
-            path: Routes.PostsMap,
-            element: <PrivateRoute Component={PostMap} />,
+            path: Routes.EventsMap,
+            element: <PrivateRoute Component={EventMap} />,
           },
           {
-            path: Routes.PostsDetails,
-            element: <PrivateRoute Component={PostDetails} />,
+            path: Routes.EventsDetails,
+            element: <PrivateRoute Component={EventDetails} />,
           },
         ],
       },
