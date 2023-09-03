@@ -13,7 +13,8 @@ public class ResultResolver
             return Results.Ok(result.Value);
         }
 
-        if (result.Errors is not null && result.Errors.Any(x => x.Code.Equals(Errors.NotFound.First().Code)))
+        if (result.Errors is not null && 
+            result.Errors.Any(x => x.Code.Equals(Errors.NotFound.First().Code)))
         {
             return Results.NotFound();
         }
