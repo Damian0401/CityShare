@@ -6,18 +6,18 @@ using CityShare.Backend.Domain.Shared;
 using CityShare.Backend.Domain.Settings;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using CityShare.Backend.Application.Core.Dtos;
-using CityShare.Backend.Application.Core.Models.Authentication.Register;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using CityShare.Backend.Application.Core.Abstractions.Queue;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using System.Web;
-using CityShare.Backend.Application.Core.Models.Emails.Create;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Register;
+using CityShare.Backend.Application.Core.Dtos.Emails.Create;
+using CityShare.Backend.Application.Core.Dtos.Authentication;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Register;
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponseModel>>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponseDto>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtProvider _jwtProvider;
@@ -45,7 +45,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         _logger = logger;
     }
 
-    public async Task<Result<RegisterResponseModel>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RegisterResponseDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
         var user = await _userManager.FindByEmailAsync(request.Request.Email);
@@ -53,7 +53,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         if (user is not null)
         {
             _logger.LogError("User with {@Email} already exists", user.Email);
-            return Result<RegisterResponseModel>.Failure(Errors.EmailTaken);
+            return Result<RegisterResponseDto>.Failure(Errors.EmailTaken);
         }
 
         user = _mapper.Map<ApplicationUser>(request.Request);
@@ -68,7 +68,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
                 .ToList();
 
             _logger.LogError("Creating user failed with {@Errors}", errors);
-            return Result<RegisterResponseModel>
+            return Result<RegisterResponseDto>
                 .Failure(errors);
         }
 
@@ -90,8 +90,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
         var encodedToken = HttpUtility.UrlEncode(token);
 
-        _logger.LogInformation("Creating CreateEmailModel");
-        var model = new CreateEmailModel(
+        _logger.LogInformation("Creating CreateEmailDto");
+        var dto = new CreateEmailDto(
             request.Request.Email,
             EmailTemplates.WelcomeAndEmailConfirmLink,
             EmailPriorities.Medium,
@@ -103,14 +103,14 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
                 {EmailPlaceholders.ClientUrl, _commonSettings.ClientUrl },
             });
 
-        _logger.LogInformation("Creating email from model {@Model}", model);
-        var emailId = await _emailRepository.CreateAsync(model, cancellationToken);
+        _logger.LogInformation("Creating email from dto {@Dto}", dto);
+        var emailId = await _emailRepository.CreateAsync(dto, cancellationToken);
 
         _logger.LogInformation("Sending emailId {@Id} to queue {@Queue}", emailId, QueueNames.EmailsToSend);
         await _queueService.SendAsync(QueueNames.EmailsToSend, emailId, cancellationToken: cancellationToken);
     }
 
-    private async Task<RegisterResponseModel> CreateResponseAsync(ApplicationUser user)
+    private async Task<RegisterResponseDto> CreateResponseAsync(ApplicationUser user)
     {
         _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
         var roles = await _userManager.GetRolesAsync(user);
@@ -129,6 +129,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         userDto.AccessToken = accessToken;
         userDto.Roles = roles;
 
-        return new RegisterResponseModel(userDto, refreshToken);
+        return new RegisterResponseDto(userDto, refreshToken);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
-using CityShare.Backend.Application.Core.Models.Nominatim.Search;
+using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
+using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Net.Http.Json;
@@ -25,21 +25,21 @@ public class NominatimService : INominatimService
         _logger = logger;
     }
 
-    public async Task<NominatimReverseResponseModel?> ReverseAsync(double x, double y, CancellationToken cancellationToken = default)
+    public async Task<NominatimReverseResponseDto?> ReverseAsync(double x, double y, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating query");
         var reverseQuery = $"reverse?format=json&zoom=18&addressdetails=0" +
             $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
 
         _logger.LogInformation("Checking for {@Query} in cacheService", reverseQuery);
-        if (_cacheService.TryGet<NominatimReverseResponseModel>(reverseQuery, out var cachedDto))
+        if (_cacheService.TryGet<NominatimReverseResponseDto>(reverseQuery, out var cachedDto))
         {
             _logger.LogInformation("Returning cached dto {@Dto}", cachedDto);
             return cachedDto;
         }
 
         _logger.LogInformation("Calling httpClient with {@Query}", reverseQuery);
-        var result = await _httpClient.GetFromJsonAsync<NominatimReverseResponseModel>(
+        var result = await _httpClient.GetFromJsonAsync<NominatimReverseResponseDto>(
             reverseQuery, cancellationToken);
 
         if (result is null)
@@ -54,20 +54,20 @@ public class NominatimService : INominatimService
         return result;
     }
 
-    public async Task<NominatimSearchResponseModel?> SearchAsync(NominatimSearchParametersModel model, CancellationToken cancellationToken = default)
+    public async Task<NominatimSearchResponseDto?> SearchAsync(NominatimSearchRequestDto dto, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating query");
-        var searchQuery = ParseParameters(model);
+        var searchQuery = ParseParameters(dto);
 
         _logger.LogInformation("Checking for {@Query} in cacheService", searchQuery);
-        if (_cacheService.TryGet<NominatimSearchResponseModel>(searchQuery, out var cachedDto))
+        if (_cacheService.TryGet<NominatimSearchResponseDto>(searchQuery, out var cachedDto))
         {
             _logger.LogInformation("Returning cached dto {@Dto}", cachedDto);
             return cachedDto;
         }
 
         _logger.LogInformation("Calling httpClient with {@Query}", searchQuery);
-        var result = await _httpClient.GetFromJsonAsync<NominatimSearchResponseModel[]>(
+        var result = await _httpClient.GetFromJsonAsync<NominatimSearchResponseDto[]>(
             searchQuery, cancellationToken);
 
         if (result is null || !result.Any())
@@ -84,21 +84,21 @@ public class NominatimService : INominatimService
         return bestResult;
     }
 
-    public async Task<NominatimSearchResponseModel?> SearchByQueryAsync(string query, CancellationToken cancellationToken = default)
+    public async Task<NominatimSearchResponseDto?> SearchByQueryAsync(string query, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating query");
         var searchQuery = $"search?format=json&q={query}&addressdetails=0";
 
         _logger.LogInformation("Checking for {@Query} in cacheService", searchQuery);
-        if (_cacheService.TryGet<NominatimSearchResponseModel>(searchQuery, out var cachedDto))
+        if (_cacheService.TryGet<NominatimSearchResponseDto>(searchQuery, out var cachedDto))
         {
             _logger.LogInformation("Returning cached dto {@Dto}", cachedDto);
             return cachedDto;
         }
 
         _logger.LogInformation("Calling httpClient with {@Query}", searchQuery);
-        var result = await _httpClient.GetFromJsonAsync<NominatimSearchResponseModel[]>(
-            searchQuery, cancellationToken) ?? Array.Empty<NominatimSearchResponseModel>();
+        var result = await _httpClient.GetFromJsonAsync<NominatimSearchResponseDto[]>(
+            searchQuery, cancellationToken) ?? Array.Empty<NominatimSearchResponseDto>();
 
         if (!result.Any())
         {
@@ -115,17 +115,17 @@ public class NominatimService : INominatimService
         return bestResult;
     }
 
-    private string ParseParameters(NominatimSearchParametersModel model)
+    private string ParseParameters(NominatimSearchRequestDto dto)
     {
-        _logger.LogInformation("Parsing parameters {@Model}", model);
+        _logger.LogInformation("Parsing parameters {@Dto}", dto);
 
         var searchQuery = new StringBuilder("search?format=json&addressdetails=0");
 
-        var fields = typeof(NominatimSearchParametersModel).GetProperties();
+        var fields = typeof(NominatimSearchRequestDto).GetProperties();
 
         foreach (var field in fields)
         {
-            var value = field.GetValue(model);
+            var value = field.GetValue(dto);
 
             if (value is null)
             {

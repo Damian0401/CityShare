@@ -2,7 +2,7 @@
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Queue;
-using CityShare.Backend.Application.Core.Models.Authentication.Register;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Register;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Tests.Common;
@@ -38,7 +38,7 @@ public class RegisterCommandHandlerTests
 
         var logger = new Mock<ILogger<RegisterCommandHandler>>().Object;
 
-        var request = new RegisterRequestModel(Value.String, Value.String, Value.String);
+        var request = new RegisterRequestDto(Value.String, Value.String, Value.String);
 
         _registerCommand = new RegisterCommand(request);
 

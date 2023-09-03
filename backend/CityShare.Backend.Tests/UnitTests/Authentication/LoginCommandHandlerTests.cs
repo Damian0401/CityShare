@@ -1,6 +1,6 @@
 ﻿using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
-using CityShare.Backend.Application.Core.Models.Authentication.Login;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Login;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
@@ -28,7 +28,7 @@ public class LoginCommandHandlerTests
 
         var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
 
-        var request = new LoginRequestModel(Value.String, Value.String);
+        var request = new LoginRequestDto(Value.String, Value.String);
 
         _loginCommand = new LoginCommand(request);
 

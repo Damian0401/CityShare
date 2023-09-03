@@ -1,5 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Core.Models.Emails.Send;
+using CityShare.Backend.Application.Core.Dtos.Emails.Send;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Shared;
@@ -8,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Emails.Commands.SendPendingEmails;
 
-public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmailsCommand, Result<SendPendingEmailsResponseModel>>
+public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmailsCommand, Result<SendPendingEmailsDto>>
 {
     private readonly IEmailRepository _emailRepository;
     private readonly IEmailService _emailService;
@@ -24,7 +24,7 @@ public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmails
         _logger = logger;
     }
 
-    public async Task<Result<SendPendingEmailsResponseModel>> Handle(SendPendingEmailsCommand request, CancellationToken cancellationToken)
+    public async Task<Result<SendPendingEmailsDto>> Handle(SendPendingEmailsCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for pending emails");
         var pendingEmails = await _emailRepository.GetAllWithStatusAsync(EmailStatuses.Pending, cancellationToken);
@@ -32,7 +32,7 @@ public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmails
         if (!pendingEmails.Any())
         {
             _logger.LogInformation("Not found any pending emails");
-            return new SendPendingEmailsResponseModel(0, 0, 0);
+            return new SendPendingEmailsDto(0, 0, 0);
         }
 
         _logger.LogInformation("Found {@Number} pending emails", pendingEmails.Count());
@@ -41,7 +41,7 @@ public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmails
         return response;
     }
 
-    private async Task<SendPendingEmailsResponseModel> SendPendingEmailsAsync(IEnumerable<Email> pendingEmails, CancellationToken cancellationToken)
+    private async Task<SendPendingEmailsDto> SendPendingEmailsAsync(IEnumerable<Email> pendingEmails, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Fetching email priorities");
         var priorities = await _emailRepository.GetAllPrioritiesAsync(cancellationToken);
@@ -73,7 +73,7 @@ public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmails
         _logger.LogInformation("Updating emails after resending");
         await _emailRepository.UpdateEmailsAsync(pendingEmails);
 
-        return new SendPendingEmailsResponseModel(sentEmails, notSentEmails, errorEmails);
+        return new SendPendingEmailsDto(sentEmails, notSentEmails, errorEmails);
     }
 
     private async Task<(int sentEmails, int notSentEmails, int errorEmails)> SendEmailGroup(IGrouping<int, Email> group, EmailPriority priority, int errorStatusId, int sentStatusId)

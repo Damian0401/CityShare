@@ -37,7 +37,7 @@ public class NominatimServiceReverseAsyncTests
         var x = Value.Double;
         var y = Value.Double;
         
-        var response = Value.NominatimReverseResponseModel;
+        var response = Value.NominatimReverseResponseDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out response)).Returns(true);
 
         // Act
@@ -55,7 +55,7 @@ public class NominatimServiceReverseAsyncTests
         var parsedQuery = $"reverse?format=json&zoom=18&addressdetails=0" +
             $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
 
-        var response = Value.NominatimReverseResponseModel;
+        var response = Value.NominatimReverseResponseDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out response)).Returns(false);
 
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
@@ -75,7 +75,7 @@ public class NominatimServiceReverseAsyncTests
         var x = Value.Double;
         var y = Value.Double;
 
-        var response = Value.NominatimReverseResponseModel;
+        var response = Value.NominatimReverseResponseDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out response)).Returns(false);
 
         _mockHttp.Fallback
@@ -95,11 +95,11 @@ public class NominatimServiceReverseAsyncTests
         var x = Value.Double;
         var y = Value.Double;
 
-        var response = Value.NominatimReverseResponseModel;
+        var response = Value.NominatimReverseResponseDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out response)).Returns(false);
 
         _mockHttp.Fallback
-            .Respond(Constants.JsonContentType, Value.SerializedReverseResponseModel);
+            .Respond(Constants.JsonContentType, Value.SerializedReverseResponseDto);
 
         // Act
         var result = await _systemUnderTests.ReverseAsync(x, y);

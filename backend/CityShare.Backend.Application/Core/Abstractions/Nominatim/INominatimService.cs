@@ -1,20 +1,17 @@
-﻿using CityShare.Backend.Application.Core.Dtos;
-using CityShare.Backend.Application.Core.Models.Map.Reverse;
-using CityShare.Backend.Application.Core.Models.Map.Search;
-using CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
-using CityShare.Backend.Application.Core.Models.Nominatim.Search;
+﻿using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
+using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 
 namespace CityShare.Backend.Application.Core.Abstractions.Nominatim;
 
 public interface INominatimService
 {
-    Task<NominatimSearchResponseModel?> SearchAsync(
-        NominatimSearchParametersModel model, 
+    Task<NominatimSearchResponseDto?> SearchAsync(
+        NominatimSearchRequestDto dto, 
         CancellationToken cancellationToken = default);
-    Task<NominatimSearchResponseModel?> SearchByQueryAsync(
+    Task<NominatimSearchResponseDto?> SearchByQueryAsync(
         string query, 
         CancellationToken cancellationToken = default);
-    Task<NominatimReverseResponseModel?> ReverseAsync(
+    Task<NominatimReverseResponseDto?> ReverseAsync(
         double x,
         double y, 
         CancellationToken cancellationToken = default);

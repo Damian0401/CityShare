@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Core.Models.Authentication.Register;
+﻿using CityShare.Backend.Application.Core.Dtos.Authentication.Register;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Shared;
@@ -50,7 +50,7 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, R
                 .ToList();
 
             _logger.LogError("Email confirmation failed with {@Errors}", errors);
-            return Result<RegisterResponseModel>
+            return Result<RegisterResponseDto>
                 .Failure(errors);
         }
 

@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
-using CityShare.Backend.Application.Core.Models.Authentication.Refresh;
-using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Refresh;
+using CityShare.Backend.Application.Core.Dtos.Authentication;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Refresh;
 
-public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<RefreshResponseModel>>
+public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<RefreshResponseDto>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtProvider _jwtProvider;
@@ -30,7 +30,7 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
         _logger = logger;
     }
 
-    public async Task<Result<RefreshResponseModel>> Handle(RefreshCommand request, CancellationToken cancellationToken)
+    public async Task<Result<RefreshResponseDto>> Handle(RefreshCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Deserializing access token");
         var userEmail = _jwtProvider.GetEmailFromToken(request.Request.AccessToken);
@@ -38,7 +38,7 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
         if (userEmail is null)
         {
             _logger.LogError("UserEmail not found in access token");
-            return Result<RefreshResponseModel>.Failure(Errors.InvalidCredentials);
+            return Result<RefreshResponseDto>.Failure(Errors.InvalidCredentials);
         }
 
         _logger.LogInformation("Searching for user with {@Email}", userEmail);
@@ -47,7 +47,7 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
         if (user is null)
         {
             _logger.LogError("User with {@Email} not found", userEmail);
-            return Result<RefreshResponseModel>.Failure(Errors.InvalidCredentials);
+            return Result<RefreshResponseDto>.Failure(Errors.InvalidCredentials);
         }
 
         _logger.LogInformation("Checking if access token for {@Email} is valid", user.Email);
@@ -57,7 +57,7 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
         if (!isTokenValid)
         {
             _logger.LogError("Provided invalid refresh token for {@Email}", user.Email);
-            return Result<RefreshResponseModel>.Failure(Errors.InvalidCredentials);
+            return Result<RefreshResponseDto>.Failure(Errors.InvalidCredentials);
         }
 
         _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
@@ -70,6 +70,6 @@ public class RefreshCommandHandler : IRequestHandler<RefreshCommand, Result<Refr
         userDto.AccessToken = accessToken;
         userDto.Roles = roles;
 
-        return new RefreshResponseModel(userDto);
+        return new RefreshResponseDto(userDto);
     }
 }

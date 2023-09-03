@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Models.Map.Reverse;
+using CityShare.Backend.Application.Core.Dtos.Map;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Shared;
 using MediatR;
 
 namespace CityShare.Backend.Application.Map.Queries.Reverse;
 
-public class ReverseQueryHandler : IRequestHandler<ReverseQuery, Result<MapReverseResponseModel>>
+public class ReverseQueryHandler : IRequestHandler<ReverseQuery, Result<AddressDto>>
 {
     private readonly INominatimService _nominatimService;
     private readonly IMapper _mapper;
@@ -18,16 +18,16 @@ public class ReverseQueryHandler : IRequestHandler<ReverseQuery, Result<MapRever
         _mapper = mapper;
     }
 
-    public async Task<Result<MapReverseResponseModel>> Handle(ReverseQuery request, CancellationToken cancellationToken)
+    public async Task<Result<AddressDto>> Handle(ReverseQuery request, CancellationToken cancellationToken)
     {
         var result = await _nominatimService.ReverseAsync(request.X, request.Y, cancellationToken);
 
         if (result is null)
         {
-            return Result<MapReverseResponseModel>.Failure(Errors.NotFound);
+            return Result<AddressDto>.Failure(Errors.NotFound);
         }
 
-        var mapperResult = _mapper.Map<MapReverseResponseModel>(result);
+        var mapperResult = _mapper.Map<AddressDto>(result);
 
         return mapperResult;
     }

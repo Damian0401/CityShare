@@ -1,8 +1,7 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
-using CityShare.Backend.Application.Core.Models.Nominatim.Search;
+using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Infrastructure.Nominatim;
 using CityShare.Backend.Tests.Common;
-using CityShare.Backend.Tests.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RichardSzalay.MockHttp;
@@ -34,17 +33,17 @@ public class NominatimServiceSearchByQueryAsyncTests
     {
         // Arrange
         var city = Value.String;
-        var model = new NominatimSearchParametersModel
+        var dto = new NominatimSearchRequestDto
         {
             City = city
         };
         var parsedQuery = Value.String;
 
-        var response = Value.NominatimSearchResponseModel;
+        var response = Value.NominatimSearchResponseDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out response)).Returns(true);
 
         // Act
-        var result = await _systemUnderTests.SearchAsync(model);
+        var result = await _systemUnderTests.SearchAsync(dto);
 
         Assert.NotNull(result);
     }
@@ -56,7 +55,7 @@ public class NominatimServiceSearchByQueryAsyncTests
         var query = Value.String;
         var parsedQuery = $"search?format=json&addressdetails=0&q={query}";
 
-        var response = Value.NominatimSearchResponseModel;
+        var response = Value.NominatimSearchResponseDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out response)).Returns(false);
 
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
@@ -75,7 +74,7 @@ public class NominatimServiceSearchByQueryAsyncTests
         // Arrange
         var query = Value.String;
 
-        var response = Value.NominatimSearchResponseModel;
+        var response = Value.NominatimSearchResponseDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out response)).Returns(false);
 
         _mockHttp.Fallback
@@ -94,7 +93,7 @@ public class NominatimServiceSearchByQueryAsyncTests
         // Arrange
         var query = Value.String;
 
-        var response = Value.NominatimSearchResponseModel;
+        var response = Value.NominatimSearchResponseDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.String, out response)).Returns(false);
 
         _mockHttp.Fallback

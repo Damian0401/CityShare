@@ -1,6 +1,5 @@
 ﻿using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Settings;
-using CityShare.Backend.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;

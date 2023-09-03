@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
-using CityShare.Backend.Application.Core.Models.Authentication.Login;
-using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Shared;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Login;
+using CityShare.Backend.Application.Core.Dtos.Authentication;
 
 namespace CityShare.Backend.Application.Authentication.Commands.Login;
 
-public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponseModel>>
+public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponseDto>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtProvider _jwtProvider;
@@ -30,7 +30,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         _logger = logger;
     }
 
-    public async Task<Result<LoginResponseModel>> Handle(LoginCommand request, CancellationToken cancellationToken)
+    public async Task<Result<LoginResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
         var user = await _userManager.FindByEmailAsync(request.Request.Email);
@@ -38,7 +38,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         if (user is null)
         {
             _logger.LogError("User with {@Email} not found", request.Request.Email);
-            return Result<LoginResponseModel>.Failure(Errors.InvalidCredentials);
+            return Result<LoginResponseDto>.Failure(Errors.InvalidCredentials);
         }
 
         _logger.LogInformation("Checking provided password for {@Email}", user.Email);
@@ -47,7 +47,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         if (!isPasswordValid)
         {
             _logger.LogError("Invalid password for {@Email}", user.Email);
-            return Result<LoginResponseModel>.Failure(Errors.InvalidCredentials);
+            return Result<LoginResponseDto>.Failure(Errors.InvalidCredentials);
         }
 
         var response = await CreateResponseAsync(user);
@@ -55,7 +55,7 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         return response;
     }
 
-    private async Task<LoginResponseModel> CreateResponseAsync(ApplicationUser user)
+    private async Task<LoginResponseDto> CreateResponseAsync(ApplicationUser user)
     {
         _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
         var roles = await _userManager.GetRolesAsync(user);
@@ -73,6 +73,6 @@ public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginRes
         userDto.AccessToken = accessToken;
         userDto.Roles = roles;
 
-        return new LoginResponseModel(userDto, refreshToken);
+        return new LoginResponseDto(userDto, refreshToken);
     }
 }

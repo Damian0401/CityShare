@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Core.Models.Emails.Create;
+using CityShare.Backend.Application.Core.Dtos.Emails.Create;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Persistence;
@@ -25,20 +25,20 @@ public class EmailRepository : IEmailRepository
         _logger = logger;
     }
 
-    public async Task<Guid> CreateAsync(CreateEmailModel model, CancellationToken cancellationToken = default)
+    public async Task<Guid> CreateAsync(CreateEmailDto dto, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Searching for template with name: {@Name}", model.Template);
+        _logger.LogInformation("Searching for template with name: {@Name}", dto.Template);
         var template = await _context.EmailTemplates
             .AsNoTracking()
-            .FirstAsync(x => x.Name.Equals(model.Template), cancellationToken);
+            .FirstAsync(x => x.Name.Equals(dto.Template), cancellationToken);
 
-        _logger.LogInformation("Searching for priority with name: {@Name}", model.Priority);
+        _logger.LogInformation("Searching for priority with name: {@Name}", dto.Priority);
         var emailPriority = await _context.EmailPriorities
             .AsNoTracking()
-            .FirstAsync(x => x.Name.Equals(model.Priority), cancellationToken);
+            .FirstAsync(x => x.Name.Equals(dto.Priority), cancellationToken);
 
-        _logger.LogInformation("Creating email from model {@Model}", model);
-        var email = await CreateEmailAsync(model, template, emailPriority);
+        _logger.LogInformation("Creating email from dto {@Dto}", dto);
+        var email = await CreateEmailAsync(dto, template, emailPriority);
 
         _logger.LogInformation("Saving email to database {@Email}", email);
         _context.Emails.Add(email);
@@ -75,18 +75,18 @@ public class EmailRepository : IEmailRepository
         return status.Id;
     }
 
-    private async Task<Email> CreateEmailAsync(CreateEmailModel model, EmailTemplate template, EmailPriority emailPrirority)
+    private async Task<Email> CreateEmailAsync(CreateEmailDto dto, EmailTemplate template, EmailPriority emailPrirority)
     {
         _logger.LogInformation("Mapping template with id {@Id} to email", template.Id);
         var email = _mapper.Map<Email>(template);
         email.PrirorityId = emailPrirority.Id;
-        email.Receiver = model.Receiver;
+        email.Receiver = dto.Receiver;
         email.StatusId = (await _context.EmailStatuses
             .AsNoTracking()
             .FirstAsync(x => x.Name.Equals(EmailStatuses.New))).Id;
 
-        _logger.LogInformation("Mapping parameters {@Parameters}", model.Parameters);
-        foreach (var (key, value) in model.Parameters)
+        _logger.LogInformation("Mapping parameters {@Parameters}", dto.Parameters);
+        foreach (var (key, value) in dto.Parameters)
         {
             email.Subject = email.Subject.Replace(key, value);
             email.Body = email.Body.Replace(key, value);

@@ -1,6 +1,6 @@
 ﻿using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
-using CityShare.Backend.Application.Core.Models.Authentication.Refresh;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Refresh;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
@@ -28,7 +28,7 @@ public class RefreshCommandHandlerTests
 
         var logger = new Mock<ILogger<RefreshCommandHandler>>().Object;
 
-        var request = new RefreshRequestModel(Value.String);
+        var request = new RefreshRequestDto(Value.String);
 
         _refreshCommand = new RefreshCommand(request, Value.String);
 

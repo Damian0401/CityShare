@@ -2,10 +2,10 @@
 using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Authentication.Commands.Register;
-using CityShare.Backend.Application.Core.Models.Authentication.ConfirmEmail;
-using CityShare.Backend.Application.Core.Models.Authentication.Login;
-using CityShare.Backend.Application.Core.Models.Authentication.Refresh;
-using CityShare.Backend.Application.Core.Models.Authentication.Register;
+using CityShare.Backend.Application.Core.Dtos.Authentication.ConfirmEmail;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Login;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Refresh;
+using CityShare.Backend.Application.Core.Dtos.Authentication.Register;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Settings;
 using MediatR;
@@ -17,7 +17,7 @@ namespace CityShare.Backend.Api.Api.V1;
 public class Authentication
 {
     public static async Task<IResult> Register(
-        [FromBody] RegisterRequestModel request,
+        [FromBody] RegisterRequestDto request,
         HttpResponse response, 
         IOptions<AuthSettings> authSettings,
         IMediator mediator,
@@ -46,7 +46,7 @@ public class Authentication
     }
     
     public static async Task<IResult> Login(
-        [FromBody] LoginRequestModel request, 
+        [FromBody] LoginRequestDto request, 
         HttpResponse response,
         IOptions<AuthSettings> authSettings,
         IMediator mediator,
@@ -75,7 +75,7 @@ public class Authentication
     }
 
     public static async Task<IResult> Refresh(
-        [FromBody] RefreshRequestModel refreshRequest,
+        [FromBody] RefreshRequestDto refreshRequest,
         HttpRequest request, 
         IMediator mediator,
         CancellationToken cancellationToken)
@@ -95,7 +95,7 @@ public class Authentication
     }
 
     public static async Task<IResult> ConfirmEmail(
-        [FromBody] EmailConfirmRequestModel request,
+        [FromBody] EmailConfirmRequestDto request,
         IMediator mediator,
         CancellationToken cancellationToken)
     {

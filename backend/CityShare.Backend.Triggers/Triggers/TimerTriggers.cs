@@ -1,4 +1,4 @@
-using CityShare.Backend.Application.Core.Models.Triggers;
+using CityShare.Backend.Application.Core.Dtos.Triggers;
 using CityShare.Backend.Application.Emails.Commands.SendPendingEmails;
 using CityShare.Backend.Domain.Constants;
 using MediatR;
@@ -19,7 +19,7 @@ namespace CityShare.Backend.Triggers.Triggers
         }
 
         [Function(nameof(SendPendingEmails))]
-        public async Task SendPendingEmails([TimerTrigger(Schedules.OnceEveryHour)] TimerTriggerModel timerTriggerModel)
+        public async Task SendPendingEmails([TimerTrigger(Schedules.OnceEveryHour)] TimerTriggerDto timerTriggerDto)
         {
             _logger.LogInformation("Executing {@Name} trigger at {@Date}", nameof(SendPendingEmails), DateTime.UtcNow);
 
