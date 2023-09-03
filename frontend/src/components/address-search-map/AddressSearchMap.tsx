@@ -17,13 +17,16 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = observer((props) => {
     initialPoint,
     searchInputSize = ChakraSizes.Sm,
     additionalQuery,
-    isSearchOnly = false,
+    disableSelect = false,
     elements,
     scrollToPoint,
+    isSearchVisible = true,
+    initialZoom = Constants.Leaflet.Zoom.Default,
     onSelect,
   } = props;
 
-  const [isSelectBlocked, setIsSelectBlocked] = useState<boolean>(isSearchOnly);
+  const [isSelectBlocked, setIsSelectBlocked] =
+    useState<boolean>(disableSelect);
 
   const handleSelect = async (point: IPoint) => {
     if (!onSelect) return;
@@ -33,13 +36,13 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = observer((props) => {
   };
 
   const handleMouseEnter = () => {
-    if (isSearchOnly) return;
+    if (disableSelect) return;
 
     setIsSelectBlocked(true);
   };
 
   const handleMouseLeave = () => {
-    if (isSearchOnly) return;
+    if (disableSelect) return;
 
     setIsSelectBlocked(false);
   };
@@ -48,7 +51,7 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = observer((props) => {
     <div className={styles.container}>
       <MapContainer
         center={[initialPoint.x, initialPoint.y]}
-        zoom={Constants.Leaflet.Zoom.Default}
+        zoom={initialZoom}
         zoomControl={false}
       >
         <TileLayer
@@ -67,10 +70,12 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = observer((props) => {
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <SearchInput
-            searchInputSize={searchInputSize}
-            additionalQuery={additionalQuery}
-          />
+          {isSearchVisible && (
+            <SearchInput
+              searchInputSize={searchInputSize}
+              additionalQuery={additionalQuery}
+            />
+          )}
         </div>
       </MapContainer>
     </div>

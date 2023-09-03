@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { Environments, StorageKeys } from "../enums";
 
 export const getSecret = (environment: Environments) => {
@@ -24,4 +25,8 @@ export const accessTokenHelper = {
 
 export const importantStyle = (style: string) => {
   return `${style} !important`;
+};
+
+export const getFormattedDate = (date: Date) => {
+  return format(date, "HH:mm dd.MM.yyyy");
 };

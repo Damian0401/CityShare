@@ -58,19 +58,6 @@
         padding: 0.2rem;
         margin: 0.2rem;
       }
-
-      .score {
-        font-size: $mdFontSize;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: flex-start;
-        column-gap: 0.3rem;
-
-        .icon:hover {
-          opacity: $hoverOpacity;
-        }
-      }
     }
     .body {
       grid-area: Body;

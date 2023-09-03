@@ -23,9 +23,10 @@ const events: IEvent[] = [
     categoryIds: [1, 2],
     cityId: 1,
     imageUrls: ["https://picsum.photos/200/300"],
-    score: 5,
+    likes: 5,
     author: "Author 1",
     isLiked: true,
+    comments: 10,
   },
   {
     id: 2,
@@ -44,9 +45,10 @@ const events: IEvent[] = [
     categoryIds: [1, 2],
     cityId: 1,
     imageUrls: ["https://picsum.photos/200/300"],
-    score: 5,
+    likes: 5,
     author: "Author 2",
     isLiked: false,
+    comments: 10,
   },
   {
     id: 3,
@@ -65,8 +67,9 @@ const events: IEvent[] = [
     categoryIds: [1, 2],
     cityId: 1,
     imageUrls: ["https://picsum.photos/200/300"],
-    score: 5,
+    likes: 5,
     author: "Author 3",
+    comments: 10,
   },
 ];
 

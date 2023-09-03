@@ -3,27 +3,39 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Containers, Routes } from "../../../common/enums";
 import styles from "./EventDetails.module.scss";
-import BaseContainer from "../../../components/base-container/BaseContainer";
 import { IEvent } from "../../../common/interfaces";
 import LoadingSpinner from "../../../components/loading-spinner/LoadingSpinner";
+import BaseContainer from "../../../components/base-container/BaseContainer";
+import EventImages from "./components/event-images/EventImages";
+import EventBody from "./components/event-body/EventBody";
+import EventMap from "./components/event-map/EventMap";
 
 const events: IEvent[] = [
   {
     id: 1,
     title: "Event 1",
-    description: "Event 1 description",
+    description:
+      "Event 1 description, a little bit longer, ok maybe a little bit more longer, let's see how it will look like",
     cityId: 1,
     categoryIds: [1, 2, 3],
-    imageUrls: [],
+    imageUrls: [
+      "https://picsum.photos/600/600",
+      "https://picsum.photos/600/650",
+      "https://picsum.photos/650/600",
+      "https://picsum.photos/600/550",
+      "https://picsum.photos/550/600",
+    ],
     address: {
       point: { x: 51.1059776, y: 17.0356689 },
-      displayName: "Address 1",
+      displayName:
+        "Address 1 a little bit longer, ok maybe a little bit more longer",
     },
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    score: 5,
+    likes: 5,
     author: "Author 1",
+    comments: 10,
   },
   {
     id: 2,
@@ -39,8 +51,9 @@ const events: IEvent[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    score: 10,
+    likes: 10,
     author: "Author 2",
+    comments: 10,
   },
 ];
 
@@ -71,10 +84,14 @@ const EventDetails = observer(() => {
 
   return (
     <div className={styles.container}>
-      <BaseContainer type={Containers.Primary} className={styles.event}>
-        Details of event with id: {event.id}
+      <BaseContainer type={Containers.Tertiary} className={styles.event}>
+        <EventImages imageUrls={event.imageUrls} />
+        <EventMap address={event.address} />
+        <EventBody event={event} />
       </BaseContainer>
-      <div className={styles.comments}>Comments</div>
+      <div className={styles.comments}>
+        <BaseContainer type={Containers.Secondary}>Comment</BaseContainer>
+      </div>
     </div>
   );
 });

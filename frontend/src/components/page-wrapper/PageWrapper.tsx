@@ -40,14 +40,17 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
 
   return (
     <>
-      <div className={styles.container}>
+      <div className={styles.wrapper}>
         {isLoading ? (
           <LoadingSpinner />
         ) : (
           <>
             {Element && <Element />}
             <main>
-              <BaseContainer type={Containers.Primary}>
+              <BaseContainer
+                type={Containers.Primary}
+                className={styles.container}
+              >
                 <Outlet />
               </BaseContainer>
             </main>

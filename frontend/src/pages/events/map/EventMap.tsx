@@ -24,8 +24,9 @@ const events: IEvent[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    score: 5,
+    likes: 5,
     author: "Author 1",
+    comments: 10,
   },
   {
     id: 2,
@@ -41,8 +42,9 @@ const events: IEvent[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    score: 10,
+    likes: 10,
     author: "Author 2",
+    comments: 20,
   },
   {
     id: 3,
@@ -58,8 +60,9 @@ const events: IEvent[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    score: 15,
+    likes: 15,
     author: "Author 3",
+    comments: 30,
   },
   {
     id: 4,
@@ -75,8 +78,9 @@ const events: IEvent[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    score: 20,
+    likes: 20,
     author: "Author 4",
+    comments: 40,
   },
   {
     id: 5,
@@ -92,8 +96,9 @@ const events: IEvent[] = [
     startDate: new Date(),
     endDate: new Date(),
     createdAt: new Date(),
-    score: 25,
+    likes: 25,
     author: "Author 5",
+    comments: 50,
   },
 ];
 
@@ -154,7 +159,7 @@ const EventMap = observer(() => {
           initialPoint={selectedCity.address.point}
           additionalQuery={selectedCity.name}
           scrollToPoint={selectedCity.address.point}
-          isSearchOnly
+          disableSelect
           elements={eventsToShow.map((event) => (
             <Marker
               key={event.id}
@@ -167,7 +172,7 @@ const EventMap = observer(() => {
                 >
                   <p className={styles.title}>{event.title}</p>
                   <p>{event.description}</p>
-                  <p>Score: {event.score}</p>
+                  <p>Score: {event.likes}</p>
                 </div>
               </Popup>
             </Marker>

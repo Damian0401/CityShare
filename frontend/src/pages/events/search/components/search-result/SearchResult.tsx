@@ -1,25 +1,17 @@
-import { format } from "date-fns";
 import { Containers, Routes } from "../../../../../common/enums";
 import BaseContainer from "../../../../../components/base-container/BaseContainer";
 import { ISearchResultProps } from "./ISearchResultProps";
 import styles from "./SearchResult.module.scss";
 import { observer } from "mobx-react-lite";
-import { useStore } from "../../../../../common/stores/store";
 import { IEvent } from "../../../../../common/interfaces";
-import {
-  AiFillMinusSquare,
-  AiFillPlusSquare,
-  AiOutlineMinusSquare,
-  AiOutlinePlusSquare,
-} from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { MouseEvent } from "react";
+import Category from "../../../../../components/categories/Categories";
+import { formatDistanceToNow } from "date-fns";
+import LikeButtons from "../../../../../components/like-buttons/LikeButtons";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { events } = props;
-
-  const { commonStore } = useStore();
 
   const navigate = useNavigate();
 
@@ -40,19 +32,13 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
     navigate(Routes.Events + "/" + eventId);
   };
 
-  const handleScoreClick = (
-    eventId: number,
-    isLiked: boolean,
-    event: MouseEvent<HTMLSpanElement>
-  ) => {
-    event.stopPropagation();
-
+  const handleLikeClick = (eventId: number, isLiked: boolean) => {
     if (isLiked) {
-      toast.success(`Event ${eventId} score increased`);
+      toast.success(`Event ${eventId} likes increased`);
       return;
     }
 
-    toast.error(`Event ${eventId} score decreased`);
+    toast.error(`Event ${eventId} likes decreased`);
   };
 
   return (
@@ -79,36 +65,15 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
             </div>
             <div className={styles.header}>
               <div>
-                <span className={styles.title}>{event.title}</span>{" "}
-                {event.categoryIds.map((id) => (
-                  <span key={id} className={styles.category}>
-                    {commonStore.categories.find((x) => x.id === id)?.name}
-                  </span>
-                ))}
+                <span className={styles.title}>{event.title}</span>
+                <Category categoryIds={event.categoryIds} />
               </div>
-              <div className={styles.score}>
-                <span
-                  className={styles.icon}
-                  onClick={(e) => handleScoreClick(event.id, true, e)}
-                >
-                  {event.isLiked ? (
-                    <AiFillPlusSquare />
-                  ) : (
-                    <AiOutlinePlusSquare />
-                  )}
-                </span>
-                <span>{event.score}</span>
-                <span
-                  className={styles.icon}
-                  onClick={(e) => handleScoreClick(event.id, false, e)}
-                >
-                  {event?.isLiked === false ? (
-                    <AiFillMinusSquare />
-                  ) : (
-                    <AiOutlineMinusSquare />
-                  )}
-                </span>
-              </div>
+              <LikeButtons
+                id={event.id}
+                likes={event.likes}
+                isLiked={event.isLiked}
+                onLike={handleLikeClick}
+              />
             </div>
             <div className={styles.body}>
               <div>{getEventStatus(event)}</div>
@@ -116,9 +81,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
             </div>
             <div className={styles.footer}>
               <div>
-                <div>
-                  {format(new Date(event.createdAt), "dd/MM/yyyy HH:mm")}
-                </div>
+                <div>{formatDistanceToNow(event.createdAt)} ago</div>
               </div>
               <div>{event.author}</div>
             </div>

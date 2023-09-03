@@ -1,0 +1,8 @@
+@import "../../../../../assets/styles/variables.module.scss";
+
+.container {
+  grid-area: Map;
+  box-shadow: $boxShadow;
+  border-radius: $borderRadius;
+  overflow: hidden;
+}

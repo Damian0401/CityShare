@@ -1,9 +1,31 @@
+@import "../../../assets/styles/variables.module.scss";
+
 .container {
+  padding: 0;
+
   .event {
-    background-color: #fff;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    width: 55vw;
+    height: 60vh;
+    grid-auto-flow: row;
+    grid-gap: 1rem;
+    padding: 1rem;
+    box-shadow: $lessBoxShadow;
+    grid-template-areas:
+      "Images Map"
+      "Body Body";
+
+    .map {
+      grid-area: Map;
+      box-shadow: $boxShadow;
+      border-radius: $borderRadius;
+      overflow: hidden;
+    }
   }
 
   .comments {
-    background-color: #fff;
+    padding: 1rem 0;
   }
 }

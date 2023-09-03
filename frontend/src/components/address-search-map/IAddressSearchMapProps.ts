@@ -5,8 +5,10 @@ export interface IAddressSearchMapProps {
   initialPoint: IPoint;
   searchInputSize?: ChakraSizes;
   additionalQuery?: string;
-  isSearchOnly?: boolean;
+  disableSelect?: boolean;
   elements?: JSX.Element[];
   scrollToPoint?: IPoint;
+  isSearchVisible?: boolean;
+  initialZoom?: number;
   onSelect?: (result: IAddress) => void;
 }

@@ -11,7 +11,8 @@ export interface IEvent {
   startDate: Date;
   endDate: Date;
   createdAt: Date;
-  score: number;
+  likes: number;
   author: string;
+  comments: number;
   isLiked?: boolean;
 }
