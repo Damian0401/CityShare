@@ -13,7 +13,9 @@ public class Map
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new SearchQuery(query), cancellationToken);
+        var result = await mediator.Send(
+            new SearchQuery(query), 
+            cancellationToken);
 
         return ResultResolver.Resolve(result);
     }
@@ -24,7 +26,9 @@ public class Map
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new ReverseQuery(x, y), cancellationToken);
+        var result = await mediator.Send(
+            new ReverseQuery(x, y), 
+            cancellationToken);
 
         return ResultResolver.Resolve(result);
     }

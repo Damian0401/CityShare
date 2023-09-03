@@ -1,7 +1,9 @@
-﻿using CityShare.Backend.Application.Authentication.Commands.ConfirmEmail;
+﻿using CityShare.Backend.Api.Common;
+using CityShare.Backend.Application.Authentication.Commands.ConfirmEmail;
 using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Authentication.Commands.Register;
+using CityShare.Backend.Application.Core.Dtos.Authentication;
 using CityShare.Backend.Application.Core.Dtos.Authentication.ConfirmEmail;
 using CityShare.Backend.Application.Core.Dtos.Authentication.Login;
 using CityShare.Backend.Application.Core.Dtos.Authentication.Refresh;
@@ -23,28 +25,22 @@ public class Authentication
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new RegisterCommand(request), cancellationToken);
+        var result = await mediator.Send(
+            new RegisterCommand(request), 
+            cancellationToken);
 
         if (result.IsFailure)
         {
             return Results.BadRequest(result.Errors);
         }
 
-        (var user, var refreshToken) = result.Value;
-
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Expires = DateTimeOffset.UtcNow.AddDays(authSettings.Value.RefreshTokenExpirationDays),
-            Secure = true,
-            SameSite = SameSiteMode.None
-        };
-
-        response.Cookies.Append(RefreshToken.CookieKey, refreshToken, cookieOptions);
-
-        return Results.Ok(user);
+        return ReturnResponseAndToken(
+            response, 
+            authSettings, 
+            result.Value.User, 
+            result.Value.RefreshToken);
     }
-    
+
     public static async Task<IResult> Login(
         [FromBody] LoginRequestDto request, 
         HttpResponse response,
@@ -52,26 +48,20 @@ public class Authentication
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new LoginCommand(request), cancellationToken);
+        var result = await mediator.Send(
+            new LoginCommand(request), 
+            cancellationToken);
 
         if (result.IsFailure)
         {
             return Results.BadRequest(result.Errors);
         }
 
-        (var user, var refreshToken) = result.Value;
-
-        var cookieOptions = new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = true,
-            Expires = DateTimeOffset.UtcNow.AddDays(authSettings.Value.RefreshTokenExpirationDays),
-            SameSite = SameSiteMode.None
-        };
-
-        response.Cookies.Append(RefreshToken.CookieKey, refreshToken, cookieOptions);
-
-        return Results.Ok(user);
+        return ReturnResponseAndToken(
+            response,
+            authSettings,
+            result.Value.User,
+            result.Value.RefreshToken);
     }
 
     public static async Task<IResult> Refresh(
@@ -87,7 +77,9 @@ public class Authentication
             return Results.Unauthorized();
         }
 
-        var result = await mediator.Send(new RefreshCommand(refreshRequest, refreshToken), cancellationToken);
+        var result = await mediator.Send(
+            new RefreshCommand(refreshRequest, refreshToken), 
+            cancellationToken);
 
         return result.IsSuccess
             ? Results.Ok(result.Value.User) 
@@ -103,8 +95,29 @@ public class Authentication
             new ConfirmEmailCommand(request), 
             cancellationToken);
 
-        return result.IsSuccess
-            ? Results.NoContent()
-            : Results.BadRequest(result.Errors);
+        return ResultResolver.Resolve(result);
+    }
+
+    private static IResult ReturnResponseAndToken(
+        HttpResponse response, 
+        IOptions<AuthSettings> authSettings, 
+        UserDto user, 
+        string refreshToken)
+    {
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTimeOffset.UtcNow
+                .AddDays(authSettings.Value.RefreshTokenExpirationDays),
+            Secure = true,
+            SameSite = SameSiteMode.None
+        };
+
+        response.Cookies.Append(
+            RefreshToken.CookieKey, 
+            refreshToken, 
+            cookieOptions);
+
+        return Results.Ok(user);
     }
 }
