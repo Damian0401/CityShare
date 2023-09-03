@@ -1,8 +1,6 @@
 import { Button } from "@chakra-ui/react";
-import { Containers, InputTypes, Routes } from "../../common/enums";
-import BaseContainer from "../../components/base-container/BaseContainer";
+import { ButtonTypes, InputTypes, Routes } from "../../common/enums";
 import styles from "./Login.module.scss";
-import PasswordInput from "../../components/password-input/PasswordInput";
 import { ILoginValues } from "../../common/interfaces";
 import { nameof } from "ts-simple-nameof";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,16 +10,12 @@ import { loginSchema } from "./LoginSchema";
 import { useStore } from "../../common/stores/store";
 import { observer } from "mobx-react-lite";
 import { useState } from "react";
+import { InitialValues } from "../../common/utils/initialValues";
 
 const Login = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
   const { authStore } = useStore();
   const navigate = useNavigate();
-
-  const initialValues: ILoginValues = {
-    email: "",
-    password: "",
-  };
 
   const handleSubmit = async (values: ILoginValues) => {
     setIsLoading(true);
@@ -34,9 +28,9 @@ const Login = observer(() => {
   };
 
   return (
-    <BaseContainer type={Containers.Primary} className={styles.container}>
+    <div className={styles.container}>
       <Formik
-        initialValues={initialValues}
+        initialValues={InitialValues.Login}
         onSubmit={handleSubmit}
         validationSchema={loginSchema}
       >
@@ -50,8 +44,9 @@ const Login = observer(() => {
               isRequired
               name={nameof<ILoginValues>((x) => x.email)}
             />
-            <PasswordInput
+            <TextInput
               label="Password"
+              type={InputTypes.Password}
               name={nameof<ILoginValues>((x) => x.password)}
               errors={errors.password}
               touched={touched.password}
@@ -61,14 +56,14 @@ const Login = observer(() => {
               <Link to={Routes.Register} className={styles.link}>
                 No account? Register
               </Link>
-              <Button type="submit" isLoading={isLoading}>
+              <Button type={ButtonTypes.Submit} isLoading={isLoading}>
                 Login
               </Button>
             </div>
           </form>
         )}
       </Formik>
-    </BaseContainer>
+    </div>
   );
 });
 

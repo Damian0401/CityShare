@@ -1,5 +1,5 @@
 import { Input, InputGroup, InputLeftElement } from "@chakra-ui/react";
-import { Containers, Cursors } from "../../../../common/enums";
+import { Containers, Cursors, Keys } from "../../../../common/enums";
 import BaseContainer from "../../../base-container/BaseContainer";
 import { ISearchInputProps } from "./ISearchInputProps";
 import styles from "./SearchInput.module.scss";
@@ -8,8 +8,9 @@ import { useRef } from "react";
 import agent from "../../../../common/api/agent";
 import { useMap } from "react-leaflet";
 import Constants from "../../../../common/utils/constants";
+import { observer } from "mobx-react-lite";
 
-const SearchInput: React.FC<ISearchInputProps> = (props) => {
+const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
   const { searchInputSize, additionalQuery } = props;
 
   const map = useMap();
@@ -26,14 +27,14 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
     const searchResult = await agent.Map.search(query);
 
     map.setView(
-      [searchResult.x, searchResult.y],
+      [searchResult.point.x, searchResult.point.y],
       Constants.Leaflet.Zoom.Search
     );
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     console.log(e.key);
-    if (e.key !== "Enter") return;
+    if (e.key !== Keys.ENTER) return;
     handleSearch();
   };
 
@@ -51,6 +52,6 @@ const SearchInput: React.FC<ISearchInputProps> = (props) => {
       </InputGroup>
     </BaseContainer>
   );
-};
+});
 
 export default SearchInput;

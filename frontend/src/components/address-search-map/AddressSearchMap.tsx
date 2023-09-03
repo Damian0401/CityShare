@@ -9,18 +9,24 @@ import SelectMarker from "./components/select-marker/SelectMarker";
 import { IPoint } from "../../common/interfaces";
 import agent from "../../common/api/agent";
 import { useState } from "react";
+import MapController from "./components/map-controller/MapController";
+import { observer } from "mobx-react-lite";
 
-const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
+const AddressSearchMap: React.FC<IAddressSearchMapProps> = observer((props) => {
   const {
     initialPoint,
     searchInputSize = ChakraSizes.Sm,
     additionalQuery,
-    isSearchOnly = false,
+    disableSelect = false,
     elements,
+    scrollToPoint,
+    isSearchVisible = true,
+    initialZoom = Constants.Leaflet.Zoom.Default,
     onSelect,
   } = props;
 
-  const [isSelectBlocked, setIsSelectBlocked] = useState<boolean>(isSearchOnly);
+  const [isSelectBlocked, setIsSelectBlocked] =
+    useState<boolean>(disableSelect);
 
   const handleSelect = async (point: IPoint) => {
     if (!onSelect) return;
@@ -30,13 +36,13 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
   };
 
   const handleMouseEnter = () => {
-    if (isSearchOnly) return;
+    if (disableSelect) return;
 
     setIsSelectBlocked(true);
   };
 
   const handleMouseLeave = () => {
-    if (isSearchOnly) return;
+    if (disableSelect) return;
 
     setIsSelectBlocked(false);
   };
@@ -45,7 +51,7 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
     <div className={styles.container}>
       <MapContainer
         center={[initialPoint.x, initialPoint.y]}
-        zoom={Constants.Leaflet.Zoom.Default}
+        zoom={initialZoom}
         zoomControl={false}
       >
         <TileLayer
@@ -57,20 +63,23 @@ const AddressSearchMap: React.FC<IAddressSearchMapProps> = (props) => {
           isSelectBlocked={isSelectBlocked}
         />
         <ZoomControl position={LeafletPositions.BottomLeft} />
+        <MapController scrollToPoint={scrollToPoint} />
         {elements && elements.map((marker) => marker)}
         <div
           className={styles.search}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <SearchInput
-            searchInputSize={searchInputSize}
-            additionalQuery={additionalQuery}
-          />
+          {isSearchVisible && (
+            <SearchInput
+              searchInputSize={searchInputSize}
+              additionalQuery={additionalQuery}
+            />
+          )}
         </div>
       </MapContainer>
     </div>
   );
-};
+});
 
 export default AddressSearchMap;

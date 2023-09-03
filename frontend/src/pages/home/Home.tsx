@@ -1,14 +1,10 @@
-import { Containers } from "../../common/enums";
-import BaseContainer from "../../components/base-container/BaseContainer";
+import styles from "./Home.module.scss";
 
 const Home = () => {
   return (
-    <>
-      <BaseContainer type={Containers.Primary}>Primary</BaseContainer>
-      <br/>
-      <BaseContainer type={Containers.Secondary}>Secondary</BaseContainer>
-      <br/>
-    </>
+    <div className={styles.title}>
+      Welcome to CityShare, a platform for sharing your city with others.
+    </div>
   );
 };
 

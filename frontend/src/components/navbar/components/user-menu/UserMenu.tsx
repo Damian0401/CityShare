@@ -2,11 +2,11 @@ import { HamburgerIcon } from "@chakra-ui/icons";
 import {
   Button,
   Divider,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  ModalOverlay,
+  Drawer,
+  DrawerBody,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
   Spacer,
   Text,
   Tooltip,
@@ -15,7 +15,7 @@ import {
 import { IUserMenuProps } from "./IUserMenuProps";
 import styles from "./UserMenu.module.scss";
 import BaseContainer from "../../../base-container/BaseContainer";
-import { Containers, MotionPresets, Routes } from "../../../../common/enums";
+import { Containers, DrawerPlacements, Routes } from "../../../../common/enums";
 import { BiLogOutCircle } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoCreateOutline } from "react-icons/io5";
@@ -23,14 +23,22 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { FiMapPin } from "react-icons/fi";
 import { AiOutlineQuestionCircle } from "react-icons/ai";
 import NavbarLogo from "../../../../assets/images/navbar-logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import Constants from "../../../../common/utils/constants";
+import { observer } from "mobx-react-lite";
 
-const UserMenu: React.FC<IUserMenuProps> = (props) => {
+const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
   const { user, logout } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef<HTMLButtonElement | null>(null);
+  const navigate = useNavigate();
+  const redirectAndClose = (path: string) => {
+    return () => {
+      navigate(path);
+      onClose();
+    };
+  };
   return (
     <>
       <div className={styles.container}>
@@ -43,15 +51,15 @@ const UserMenu: React.FC<IUserMenuProps> = (props) => {
           </div>
         </BaseContainer>
       </div>
-      <Modal
+      <Drawer
         onClose={onClose}
         isOpen={isOpen}
         initialFocusRef={initialRef}
-        motionPreset={MotionPresets.SlideInRight}
+        placement={DrawerPlacements.Right}
       >
-        <ModalOverlay />
-        <ModalContent className={styles.menuModal}>
-          <ModalHeader className={styles.header}>
+        <DrawerOverlay />
+        <DrawerContent className={styles.menuModal}>
+          <DrawerHeader className={styles.header}>
             <Link to={Routes.Index} className={styles.logo}>
               <img src={NavbarLogo} className={styles.logoImage} />
               CityShare
@@ -68,29 +76,39 @@ const UserMenu: React.FC<IUserMenuProps> = (props) => {
                 </div>
               </Tooltip>
             )}
-          </ModalHeader>
-          <ModalBody className={styles.modalBody}>
+          </DrawerHeader>
+          <DrawerBody className={styles.modalBody}>
             <Button leftIcon={<CgProfile />} onClick={onClose} ref={initialRef}>
               Profile
             </Button>
-            <Button leftIcon={<IoCreateOutline />} onClick={onClose}>
-              Create
+            <Button
+              leftIcon={<AiOutlineSearch />}
+              onClick={redirectAndClose(Routes.EventsSearch)}
+            >
+              Search
             </Button>
-            <Button leftIcon={<FiMapPin />} onClick={onClose}>
+            <Button
+              leftIcon={<FiMapPin />}
+              onClick={redirectAndClose(Routes.EventsMap)}
+            >
               Map
             </Button>
-            <Button leftIcon={<AiOutlineSearch />} onClick={onClose}>
-              Search
+            <Button
+              leftIcon={<IoCreateOutline />}
+              onClick={redirectAndClose(Routes.EventsCreate)}
+              isDisabled={!user.emailConfirmed}
+            >
+              Create
             </Button>
             <Spacer />
             <Button leftIcon={<BiLogOutCircle />} onClick={logout}>
               Logout
             </Button>
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
-};
+});
 
 export default UserMenu;

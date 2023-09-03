@@ -1,4 +1,6 @@
 ﻿using CityShare.Backend.Application.Core.Dtos;
+using CityShare.Backend.Application.Core.Models.Map.Reverse;
+using CityShare.Backend.Application.Core.Models.Map.Search;
 using CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
 using CityShare.Backend.Application.Core.Models.Nominatim.Search;
 using CityShare.Backend.Domain.Entities;
@@ -25,11 +27,11 @@ internal class Value
     public static readonly string SerializedNull = JsonSerializer.Serialize((object?)null);
     public static readonly string SerializedArrayWithSearchResult = JsonSerializer.Serialize(new[] 
     {
-        new SearchResultModel()
+        new NominatimSearchResponseModel()
     });
-    public static readonly string SerializedReverseResult = JsonSerializer.Serialize(new ReverseResultModel());
-    public static SearchDto SearchDto => new SearchDto();
-    public static ReverseDto ReverseDto => new ReverseDto();
+    public static readonly string SerializedReverseResponseModel = JsonSerializer.Serialize(new NominatimReverseResponseModel());
+    public static NominatimSearchResponseModel NominatimSearchResponseModel => new NominatimSearchResponseModel();
+    public static NominatimReverseResponseModel NominatimReverseResponseModel => new NominatimReverseResponseModel();
     public static Email Email => new Email();
     public static EmailPriority EmailPriority => new EmailPriority();
 }

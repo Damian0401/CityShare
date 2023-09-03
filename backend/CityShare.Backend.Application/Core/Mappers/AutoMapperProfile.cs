@@ -5,6 +5,8 @@ using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Application.Core.Models.Nominatim.Search;
 using System.Globalization;
 using CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
+using CityShare.Backend.Application.Core.Models.Map.Reverse;
+using CityShare.Backend.Application.Core.Models.Map.Search;
 
 namespace CityShare.Backend.Application.Core.Mappers;
 
@@ -25,20 +27,22 @@ public class AutoMapperProfile : Profile
 
     private void MapsForNominatim()
     {
-        CreateMap<SearchResultModel, SearchDto>()
+        CreateMap<Models.Nominatim.Search.NominatimSearchResponseModel, MapSearchResponseModel>()
             .ForMember(x => x.DisplayName, s => s.MapFrom(d => d.display_name.Replace("\"", "'")))
-            .ForMember(x => x.X, s => s.MapFrom(l => double.Parse(l.lat, CultureInfo.InvariantCulture)))
-            .ForMember(x => x.Y, s => s.MapFrom(l => double.Parse(l.lon, CultureInfo.InvariantCulture)))
+            .ForMember(x => x.Point, s => s.MapFrom(l => new PointDto(
+                double.Parse(l.lat, CultureInfo.InvariantCulture),
+                double.Parse(l.lon, CultureInfo.InvariantCulture))))
             .ForMember(x => x.BoundingBox, s => s.MapFrom(b => 
-                new BoundingBox(
+                new BoundingBoxDto(
                     double.Parse(b.boundingbox[0], CultureInfo.InvariantCulture),
                     double.Parse(b.boundingbox[1], CultureInfo.InvariantCulture),
                     double.Parse(b.boundingbox[2], CultureInfo.InvariantCulture), 
                     double.Parse(b.boundingbox[3], CultureInfo.InvariantCulture))));
-        CreateMap<ReverseResultModel, ReverseDto>()
+        CreateMap<Models.Nominatim.Reverse.NominatimReverseResponseModel, MapReverseResponseModel>()
             .ForMember(x => x.DisplayName, s => s.MapFrom(d => d.display_name.Replace("\"", "'")))
-            .ForMember(x => x.X, s => s.MapFrom(l => double.Parse(l.lat, CultureInfo.InvariantCulture)))
-            .ForMember(x => x.Y, s => s.MapFrom(l => double.Parse(l.lon, CultureInfo.InvariantCulture)));
+            .ForMember(x => x.Point, s => s.MapFrom(l => new PointDto(
+                double.Parse(l.lat, CultureInfo.InvariantCulture),
+                double.Parse(l.lon, CultureInfo.InvariantCulture))));
     }
 
     private void MapsForEmails()

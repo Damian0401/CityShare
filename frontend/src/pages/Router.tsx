@@ -9,10 +9,11 @@ import NotFound from "./not-found/NotFound";
 import ServerError from "./server-error/ServerError";
 import AnonymousRoute from "../components/anonymous-route/AnonymousRoute";
 import PrivateRoute from "../components/private-route/PrivateRoute";
-import AddressSearchMap from "../components/address-search-map/AddressSearchMap";
-import { toast } from "react-toastify";
 import ConfirmEmail from "./confirm-email/ConfirmEmail";
-import { Marker, Popup } from "react-leaflet";
+import EventMap from "./events/map/EventMap";
+import EventDetails from "./events/details/EventDetails";
+import EventCreate from "./events/create/EventCreate";
+import EventSearch from "./events/search/EventSearch";
 
 const Router = createBrowserRouter([
   {
@@ -32,6 +33,27 @@ const Router = createBrowserRouter([
         element: <AnonymousRoute Component={Register} />,
       },
       {
+        path: Routes.Events,
+        children: [
+          {
+            path: Routes.EventsSearch,
+            element: <PrivateRoute Component={EventSearch} />,
+          },
+          {
+            path: Routes.EventsCreate,
+            element: <PrivateRoute Component={EventCreate} />,
+          },
+          {
+            path: Routes.EventsMap,
+            element: <PrivateRoute Component={EventMap} />,
+          },
+          {
+            path: Routes.EventsDetails,
+            element: <PrivateRoute Component={EventDetails} />,
+          },
+        ],
+      },
+      {
         path: Routes.ConfirmEmail,
         element: <ConfirmEmail />,
       },
@@ -42,29 +64,6 @@ const Router = createBrowserRouter([
       {
         path: Routes.ServerError,
         element: <ServerError />,
-      },
-      {
-        path: Routes.Map,
-        element: (
-          <AddressSearchMap
-            initialPoint={{ x: 51.1089776, y: 17.0326689 }}
-            isSearchOnly={true}
-            additionalQuery="Wrocław"
-            elements={[
-              <Marker position={[51.1089776, 17.0326689]}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>,
-              <Marker position={[51.1109776, 17.0346689]}>
-                <Popup>
-                  A pretty CSS3 popup. <br /> Easily customizable.
-                </Popup>
-              </Marker>,
-            ]}
-            onSelect={(result) => toast.success(result.displayName)}
-          />
-        ),
       },
       {
         path: Routes.Wildcard,

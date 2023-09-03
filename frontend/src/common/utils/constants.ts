@@ -6,6 +6,7 @@ const Constants = {
   AriaLabels: {
     ToggleThemeButton: "toggle theme",
     ConfirmEmailTooltip: "confirm email",
+    RemoveImage: "remove image",
   },
   Leaflet: {
     Attribution:
@@ -15,6 +16,18 @@ const Constants = {
       Default: 13,
       Search: 16,
     },
+  },
+  RedirectTimeout: 3000,
+  CSS: {
+    Inherit: "inherit",
+    None: "none",
+  },
+  FileTypes: {
+    Image: "image/*",
+  },
+  Strings: {
+    Empty: "",
+    ImagePlaceholder: "https://picsum.photos/600/600",
   },
 };
 

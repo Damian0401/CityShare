@@ -1,11 +1,14 @@
 import { ChakraSizes } from "../../common/enums";
-import { IPoint, IReverseResult } from "../../common/interfaces";
+import { IAddress, IPoint } from "../../common/interfaces";
 
 export interface IAddressSearchMapProps {
   initialPoint: IPoint;
   searchInputSize?: ChakraSizes;
   additionalQuery?: string;
-  isSearchOnly?: boolean;
+  disableSelect?: boolean;
   elements?: JSX.Element[];
-  onSelect?: (result: IReverseResult) => void;
+  scrollToPoint?: IPoint;
+  isSearchVisible?: boolean;
+  initialZoom?: number;
+  onSelect?: (result: IAddress) => void;
 }

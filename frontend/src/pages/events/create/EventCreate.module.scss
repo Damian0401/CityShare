@@ -1,0 +1,26 @@
+@import "../../../assets/styles/variables.module.scss";
+
+.container {
+  padding: 1rem;
+  width: 40vw;
+
+  .title {
+    font-size: $lgFontSize;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .formContainer {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    justify-content: flex-start;
+    padding: 1rem 0;
+
+    .buttonContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+  }
+}

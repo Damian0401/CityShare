@@ -15,6 +15,12 @@ export const SecondaryContainer = defineStyleConfig({
   }),
 });
 
+export const TertiaryContainer = defineStyleConfig({
+  baseStyle: (props: StyleFunctionProps) => ({
+    backgroundColor: mode(colors.tertiaryLight, colors.tertiaryDark)(props),
+  }),
+});
+
 export const NavbarContainer = defineStyleConfig({
   baseStyle: (props: StyleFunctionProps) => ({
     backgroundColor: mode(colors.navbarLight, colors.navbarDark)(props),
@@ -51,5 +57,71 @@ export const LeafletTheme = (props: StyleFunctionProps) => ({
       importantStyle(colors.textLight),
       importantStyle(colors.textDark)
     )(props),
+  },
+  ".leaflet-popup-content-wrapper": {
+    backgroundColor: mode(
+      importantStyle(colors.primaryLight),
+      importantStyle(colors.primaryDark)
+    )(props),
+    color: mode(
+      importantStyle(colors.textLight),
+      importantStyle(colors.textDark)
+    )(props),
+  },
+  ".leaflet-popup-content": {
+    width: importantStyle("max-content"),
+  },
+});
+
+export const ChakraTheme = (props: StyleFunctionProps) => ({
+  ".chakra-select__icon-wrapper": {
+    color: mode(
+      importantStyle(colors.textLight),
+      importantStyle(colors.textDark)
+    )(props),
+  },
+});
+
+export const CommonTheme = (props: StyleFunctionProps) => ({
+  body: {
+    color: mode(colors.textLight, colors.textDark)(props),
+    backgroundColor: mode(colors.backgroundLight, colors.backgroundDark)(props),
+  },
+  "input,textarea,select": {
+    border: mode(
+      importantStyle(colors.inputBorderLight),
+      importantStyle(colors.inputBorderDark)
+    )(props),
+  },
+  "input:focus:hover": {
+    border: mode(
+      importantStyle(colors.focusHoverInputLight),
+      importantStyle(colors.focusHoverInputDark)
+    )(props),
+  },
+  "textarea:focus:hover": {
+    border: mode(
+      importantStyle(colors.focusHoverInputLight),
+      importantStyle(colors.focusHoverInputDark)
+    )(props),
+  },
+  "select:focus:hover": {
+    border: mode(
+      importantStyle(colors.focusHoverInputLight),
+      importantStyle(colors.focusHoverInputDark)
+    )(props),
+  },
+  "::-webkit-scrollbar": {
+    width: "0.3rem",
+  },
+  "::-webkit-scrollbar-thumb": {
+    background: mode(
+      importantStyle(colors.scrollBarThumbLight),
+      importantStyle(colors.scrollBarThumbDark)
+    )(props),
+    borderRadius: "1rem",
+  },
+  "::-webkit-scrollbar-track": {
+    background: "transparent",
   },
 });

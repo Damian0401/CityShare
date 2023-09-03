@@ -1,0 +1,14 @@
+@import "../../assets/styles/variables.module.scss";
+
+.container {
+  font-size: $mdFontSize;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  column-gap: 0.3rem;
+
+  .icon:hover {
+    opacity: $hoverOpacity;
+  }
+}

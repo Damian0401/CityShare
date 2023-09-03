@@ -1,0 +1,14 @@
+.container {
+  max-height: unset !important;
+  max-width: unset !important;
+  width: min-content !important;
+
+  .header {
+    text-align: center;
+  }
+
+  .mapContainer {
+    height: 70vh;
+    width: 50vw;
+  }
+}

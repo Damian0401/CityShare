@@ -1,0 +1,12 @@
+.imageContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  column-gap: 0.5rem;
+  box-sizing: border-box;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  max-width: 100%;
+  max-height: 20vh;
+}

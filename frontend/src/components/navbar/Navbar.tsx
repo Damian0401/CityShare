@@ -18,7 +18,7 @@ const Navbar = observer(() => {
   };
 
   return (
-    <div className={styles.container}>
+    <nav className={styles.container}>
       <BaseContainer className={styles.navbar} type={Containers.Navbar}>
         <div className={styles.tabs}>
           <Link to={Routes.Index} className={styles.logo}>
@@ -30,7 +30,8 @@ const Navbar = observer(() => {
           {authStore.user ? (
             <>
               <Link to={Routes.Index}>Home</Link>
-              <Link to={Routes.Map}>Map</Link>
+              <Link to={Routes.EventsMap}>Map</Link>
+              <Link to={Routes.EventsSearch}>Search</Link>
             </>
           ) : (
             <>
@@ -44,7 +45,7 @@ const Navbar = observer(() => {
       {authStore.user && (
         <UserMenu user={authStore.user} logout={handleLogout} />
       )}
-    </div>
+    </nav>
   );
 });
 

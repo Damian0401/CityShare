@@ -1,4 +1,4 @@
-import { IUser } from "../../../../common/interfaces/IUser";
+import { IUser } from "../../../../common/interfaces";
 
 export interface IUserMenuProps {
   user: IUser;
