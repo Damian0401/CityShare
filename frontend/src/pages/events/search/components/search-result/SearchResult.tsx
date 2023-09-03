@@ -5,13 +5,12 @@ import styles from "./SearchResult.module.scss";
 import { observer } from "mobx-react-lite";
 import { IEvent } from "../../../../../common/interfaces";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import Category from "../../../../../components/categories/Categories";
 import { formatDistanceToNow } from "date-fns";
 import LikeButtons from "../../../../../components/like-buttons/LikeButtons";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
-  const { events } = props;
+  const { events, onLikeClick } = props;
 
   const navigate = useNavigate();
 
@@ -30,15 +29,6 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
 
   const handleEventClick = (eventId: number) => {
     navigate(Routes.Events + "/" + eventId);
-  };
-
-  const handleLikeClick = (eventId: number, isLiked: boolean) => {
-    if (isLiked) {
-      toast.success(`Event ${eventId} likes increased`);
-      return;
-    }
-
-    toast.error(`Event ${eventId} likes decreased`);
   };
 
   return (
@@ -72,7 +62,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
                 id={event.id}
                 likes={event.likes}
                 isLiked={event.isLiked}
-                onLike={handleLikeClick}
+                onLike={onLikeClick}
               />
             </div>
             <div className={styles.body}>

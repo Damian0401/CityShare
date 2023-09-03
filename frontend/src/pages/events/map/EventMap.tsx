@@ -8,12 +8,15 @@ import { useEffect, useState } from "react";
 import { ICity, IEvent } from "../../../common/interfaces";
 import { Marker, Popup } from "react-leaflet";
 import { useNavigate } from "react-router-dom";
+import LikeButtons from "../../../components/like-buttons/LikeButtons";
+import { updateLikes } from "../../../common/utils/helpers";
 
-const events: IEvent[] = [
+const mockEvents: IEvent[] = [
   {
     id: 1,
     title: "Event 1",
-    description: "Event 1 description",
+    description:
+      "Event 1 description, a little bit longer, ok maybe a little bit more longer, let's see how it will look like",
     cityId: 1,
     categoryIds: [1, 2, 3],
     imageUrls: [],
@@ -107,6 +110,8 @@ const EventMap = observer(() => {
 
   const navigate = useNavigate();
 
+  const [events, setEvents] = useState<IEvent[]>(mockEvents);
+
   const [selectedCity, setSelectedCity] = useState<ICity>(
     commonStore.cities[0]
   );
@@ -133,7 +138,7 @@ const EventMap = observer(() => {
           )
       )
     );
-  }, [commonStore, selectedCity, selectedCategories]);
+  }, [commonStore, events, selectedCity, selectedCategories]);
 
   const handleSelectCity = (index: number) => {
     setSelectedCity(commonStore.cities[index]);
@@ -149,6 +154,16 @@ const EventMap = observer(() => {
 
   const handlePopupClick = (eventId: number) => {
     navigate(Routes.Events + "/" + eventId);
+  };
+
+  const handleLikeClick = (eventId: number, isLiked: boolean) => {
+    const event = events.find((e) => e.id === eventId);
+
+    if (!event) return;
+
+    updateLikes(event, isLiked);
+
+    setEvents([...events]);
   };
 
   return (
@@ -170,9 +185,27 @@ const EventMap = observer(() => {
                   className={styles.popup}
                   onClick={() => handlePopupClick(event.id)}
                 >
-                  <p className={styles.title}>{event.title}</p>
-                  <p>{event.description}</p>
-                  <p>Score: {event.likes}</p>
+                  <img
+                    src={
+                      event.imageUrls.length > 0
+                        ? event.imageUrls[0]
+                        : "https://picsum.photos/600/600"
+                    }
+                    alt="Event"
+                    className={styles.image}
+                  />
+                  <div className={styles.content}>
+                    <div className={styles.title}>{event.title}</div>
+                    <div className={styles.description}>
+                      {event.description}
+                    </div>
+                    <LikeButtons
+                      id={event.id}
+                      likes={event.likes}
+                      isLiked={event.isLiked}
+                      onLike={handleLikeClick}
+                    />
+                  </div>
                 </div>
               </Popup>
             </Marker>

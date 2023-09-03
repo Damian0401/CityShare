@@ -68,6 +68,9 @@ export const LeafletTheme = (props: StyleFunctionProps) => ({
       importantStyle(colors.textDark)
     )(props),
   },
+  ".leaflet-popup-content": {
+    width: importantStyle("max-content"),
+  },
 });
 
 export const ChakraTheme = (props: StyleFunctionProps) => ({

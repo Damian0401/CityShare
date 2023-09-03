@@ -10,6 +10,8 @@ const MapController: React.FC<IMapControllerProps> = observer(
     useEffect(() => {
       if (!scrollToPoint) return;
 
+      map.closePopup();
+
       map.setView(
         [scrollToPoint.x, scrollToPoint.y],
         Constants.Leaflet.Zoom.Default

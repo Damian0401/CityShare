@@ -28,25 +28,18 @@ const EventImages: React.FC<IEventImagesProps> = observer(({ imageUrls }) => {
         }
         alt="event"
       />
-      <div className={styles.preview}>
-        {imageUrls.length > 1 ? (
-          imageUrls.map((url, index) => (
+      {imageUrls.length > 1 && (
+        <div className={styles.preview}>
+          {imageUrls.map((url, index) => (
             <img
               key={index}
               src={url}
               alt="event"
               onClick={() => setSelectedImageIndex(index)}
             />
-          ))
-        ) : (
-          <img
-            key={0}
-            src={"https://picsum.photos/200/300"}
-            alt="event"
-            onClick={() => setSelectedImageIndex(0)}
-          />
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 });

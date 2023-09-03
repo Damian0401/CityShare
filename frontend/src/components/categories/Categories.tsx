@@ -6,7 +6,7 @@ import { useStore } from "../../common/stores/store";
 const Category: React.FC<ICategoryProps> = observer(({ categoryIds }) => {
   const { commonStore } = useStore();
   return categoryIds.map((categoryId) => (
-    <span className={styles.container}>
+    <span className={styles.container} key={categoryId}>
       {commonStore.categories.find((x) => x.id === categoryId)?.name}
     </span>
   ));

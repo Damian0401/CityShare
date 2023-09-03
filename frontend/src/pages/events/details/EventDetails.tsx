@@ -9,6 +9,7 @@ import BaseContainer from "../../../components/base-container/BaseContainer";
 import EventImages from "./components/event-images/EventImages";
 import EventBody from "./components/event-body/EventBody";
 import EventMap from "./components/event-map/EventMap";
+import { updateLikes } from "../../../common/utils/helpers";
 
 const events: IEvent[] = [
   {
@@ -80,6 +81,14 @@ const EventDetails = observer(() => {
     setEvent(event);
   }, [id, navigate]);
 
+  const handleLikeClick = (_: number, isLiked: boolean) => {
+    if (!event) return;
+
+    updateLikes(event, isLiked);
+
+    setEvent({ ...event });
+  };
+
   if (!event) return <LoadingSpinner />;
 
   return (
@@ -87,7 +96,7 @@ const EventDetails = observer(() => {
       <BaseContainer type={Containers.Tertiary} className={styles.event}>
         <EventImages imageUrls={event.imageUrls} />
         <EventMap address={event.address} />
-        <EventBody event={event} />
+        <EventBody event={event} onLikeClick={handleLikeClick} />
       </BaseContainer>
       <div className={styles.comments}>
         <BaseContainer type={Containers.Secondary}>Comment</BaseContainer>

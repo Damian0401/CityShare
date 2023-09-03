@@ -7,7 +7,9 @@ import { getFormattedDate } from "../../../../../common/utils/helpers";
 import { MdOutlineComment } from "react-icons/md";
 import { observer } from "mobx-react-lite";
 
-const EventBody: React.FC<IEventBodyProps> = observer(({ event }) => {
+const EventBody: React.FC<IEventBodyProps> = observer((props) => {
+  const { event, onLikeClick } = props;
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -21,7 +23,7 @@ const EventBody: React.FC<IEventBodyProps> = observer(({ event }) => {
               likes={event.likes}
               isLiked={event.isLiked}
               id={event.id}
-              onLike={() => console.log("liked")}
+              onLike={onLikeClick}
               className={styles.likes}
             />
             <div className={styles.comment}>
