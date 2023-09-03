@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import styles from "./EventImages.module.scss";
 import { IEventImagesProps } from "./IEventImagesProps";
 import { observer } from "mobx-react-lite";
+import Constants from "../../../../../common/utils/constants";
 
 const EventImages: React.FC<IEventImagesProps> = observer(({ imageUrls }) => {
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
@@ -24,7 +25,7 @@ const EventImages: React.FC<IEventImagesProps> = observer(({ imageUrls }) => {
         src={
           imageUrls.length > 0
             ? imageUrls[selectedImageIndex]
-            : "https://picsum.photos/200/300"
+            : Constants.Strings.ImagePlaceholder
         }
         alt="event"
       />

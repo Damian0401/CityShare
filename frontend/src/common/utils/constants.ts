@@ -27,6 +27,7 @@ const Constants = {
   },
   Strings: {
     Empty: "",
+    ImagePlaceholder: "https://picsum.photos/600/600",
   },
 };
 

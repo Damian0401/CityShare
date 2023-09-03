@@ -3,13 +3,11 @@ import styles from "./EventMap.module.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../common/stores/store";
 import { Checkbox, Select, Text } from "@chakra-ui/react";
-import { ChakraSizes, Routes } from "../../../common/enums";
+import { ChakraSizes } from "../../../common/enums";
 import { useEffect, useState } from "react";
 import { ICity, IEvent } from "../../../common/interfaces";
-import { Marker, Popup } from "react-leaflet";
-import { useNavigate } from "react-router-dom";
-import LikeButtons from "../../../components/like-buttons/LikeButtons";
 import { updateLikes } from "../../../common/utils/helpers";
+import MapMarker from "./components/MapMarker/MapMarker";
 
 const mockEvents: IEvent[] = [
   {
@@ -108,8 +106,6 @@ const mockEvents: IEvent[] = [
 const EventMap = observer(() => {
   const { commonStore } = useStore();
 
-  const navigate = useNavigate();
-
   const [events, setEvents] = useState<IEvent[]>(mockEvents);
 
   const [selectedCity, setSelectedCity] = useState<ICity>(
@@ -152,10 +148,6 @@ const EventMap = observer(() => {
     ]);
   };
 
-  const handlePopupClick = (eventId: number) => {
-    navigate(Routes.Events + "/" + eventId);
-  };
-
   const handleLikeClick = (eventId: number, isLiked: boolean) => {
     const event = events.find((e) => e.id === eventId);
 
@@ -176,39 +168,11 @@ const EventMap = observer(() => {
           scrollToPoint={selectedCity.address.point}
           disableSelect
           elements={eventsToShow.map((event) => (
-            <Marker
+            <MapMarker
+              event={event}
               key={event.id}
-              position={[event.address.point.x, event.address.point.y]}
-            >
-              <Popup>
-                <div
-                  className={styles.popup}
-                  onClick={() => handlePopupClick(event.id)}
-                >
-                  <img
-                    src={
-                      event.imageUrls.length > 0
-                        ? event.imageUrls[0]
-                        : "https://picsum.photos/600/600"
-                    }
-                    alt="Event"
-                    className={styles.image}
-                  />
-                  <div className={styles.content}>
-                    <div className={styles.title}>{event.title}</div>
-                    <div className={styles.description}>
-                      {event.description}
-                    </div>
-                    <LikeButtons
-                      id={event.id}
-                      likes={event.likes}
-                      isLiked={event.isLiked}
-                      onLike={handleLikeClick}
-                    />
-                  </div>
-                </div>
-              </Popup>
-            </Marker>
+              onLikeClick={handleLikeClick}
+            />
           ))}
         />
       </div>
