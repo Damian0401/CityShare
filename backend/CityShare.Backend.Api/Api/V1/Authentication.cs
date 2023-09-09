@@ -1,5 +1,4 @@
-﻿using CityShare.Backend.Api.Common;
-using CityShare.Backend.Application.Authentication.Commands.ConfirmEmail;
+﻿using CityShare.Backend.Application.Authentication.Commands.ConfirmEmail;
 using CityShare.Backend.Application.Authentication.Commands.Login;
 using CityShare.Backend.Application.Authentication.Commands.Refresh;
 using CityShare.Backend.Application.Authentication.Commands.Register;
@@ -10,11 +9,12 @@ using CityShare.Backend.Application.Core.Dtos.Authentication.Refresh;
 using CityShare.Backend.Application.Core.Dtos.Authentication.Register;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Settings;
+using CityShare.Services.Api.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
-namespace CityShare.Backend.Api.Api.V1;
+namespace CityShare.Services.Api.Api.V1;
 
 public class Authentication
 {

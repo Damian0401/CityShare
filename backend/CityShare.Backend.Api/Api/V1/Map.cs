@@ -1,10 +1,10 @@
-﻿using CityShare.Backend.Api.Common;
-using CityShare.Backend.Application.Map.Queries.Reverse;
+﻿using CityShare.Backend.Application.Map.Queries.Reverse;
 using CityShare.Backend.Application.Map.Queries.Search;
+using CityShare.Services.Api.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CityShare.Backend.Api.Api.V1;
+namespace CityShare.Services.Api.Api.V1;
 
 public class Map
 {

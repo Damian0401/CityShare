@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace CityShare.Backend.Api.Extensions;
+namespace CityShare.Services.Api.Extensions;
 
 public static class SecurityExtension
 {

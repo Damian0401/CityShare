@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 
-namespace CityShare.Backend.Triggers.Triggers;
+namespace CityShare.Services.Triggers.Triggers;
 
 public class QueueTriggers
 {

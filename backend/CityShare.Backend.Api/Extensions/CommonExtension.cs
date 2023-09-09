@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
 
-namespace CityShare.Backend.Api.Extensions;
+namespace CityShare.Services.Api.Extensions;
 
 public static class CommonExtension
 {

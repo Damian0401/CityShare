@@ -1,6 +1,6 @@
-﻿using CityShare.Backend.Api.Api;
+﻿using CityShare.Services.Api.Api;
 
-namespace CityShare.Backend.Api.Extensions;
+namespace CityShare.Services.Api.Extensions;
 
 public static class EndpointsExtension
 {

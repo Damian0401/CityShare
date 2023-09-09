@@ -1,4 +1,4 @@
-﻿namespace CityShare.Backend.Api.Api;
+﻿namespace CityShare.Services.Api.Api;
 
 public static class Endpoints
 {

@@ -1,7 +1,7 @@
 ﻿using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Shared;
 
-namespace CityShare.Backend.Api.Common;
+namespace CityShare.Services.Api.Common;
 
 public class ResultResolver
 {

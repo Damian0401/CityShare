@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Persisten
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Tests", "CityShare.Backend.Tests\CityShare.Backend.Tests.csproj", "{C98B9D38-D180-4247-8F17-49FDEA860BC2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Api", "CityShare.Backend.Api\CityShare.Backend.Api.csproj", "{ADBCF72D-F338-4E03-8A70-01869B6166D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Services.Api", "CityShare.Backend.Api\CityShare.Services.Api.csproj", "{ADBCF72D-F338-4E03-8A70-01869B6166D6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Backend.Triggers", "CityShare.Backend.Triggers\CityShare.Backend.Triggers.csproj", "{AB7EE69C-E3B8-4EC5-AC7D-94BBDE5F838F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityShare.Services.Triggers", "CityShare.Backend.Triggers\CityShare.Services.Triggers.csproj", "{AB7EE69C-E3B8-4EC5-AC7D-94BBDE5F838F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
