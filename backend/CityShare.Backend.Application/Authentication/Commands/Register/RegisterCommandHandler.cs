@@ -107,7 +107,12 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         var emailId = await _emailRepository.CreateAsync(dto, cancellationToken);
 
         _logger.LogInformation("Sending emailId {@Id} to queue {@Queue}", emailId, QueueNames.EmailsToSend);
-        await _queueService.SendAsync(QueueNames.EmailsToSend, emailId, cancellationToken: cancellationToken);
+        var options = new QueueServiceOptions
+        {
+            CreateIfNotExists = true,
+            EncodeToBase64 = true,
+        };
+        await _queueService.SendAsync(QueueNames.EmailsToSend, emailId, options, cancellationToken);
     }
 
     private async Task<RegisterResponseDto> CreateResponseAsync(ApplicationUser user)

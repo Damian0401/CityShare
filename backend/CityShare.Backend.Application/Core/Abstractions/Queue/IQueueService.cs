@@ -2,5 +2,15 @@
 
 public interface IQueueService
 {
-    Task SendAsync<T>(string queueName, T item, bool encodeToBase64 = true, bool createIfNotExists = true, CancellationToken cancellationToken = default);
+    Task SendAsync<T>(
+        string queueName, 
+        T item,
+        QueueServiceOptions? options = null,
+        CancellationToken cancellationToken = default);
+}
+
+public class QueueServiceOptions
+{
+    public bool? EncodeToBase64 { get; set; }
+    public bool? CreateIfNotExists { get; set; }
 }

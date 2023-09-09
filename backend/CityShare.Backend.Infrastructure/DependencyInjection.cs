@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Queues;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
+using CityShare.Backend.Application.Core.Abstractions.Blob;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
@@ -8,6 +9,7 @@ using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure.Authentication;
+using CityShare.Backend.Infrastructure.Blob;
 using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Emails;
 using CityShare.Backend.Infrastructure.Nominatim;
@@ -35,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IEmailRepository, EmailRepository>();
         services.AddScoped<IQueueService, StorageQueueService>();
+        services.AddScoped<IBlobService, StorageBlobService>();
 
         var authSettings = new AuthSettings();
         configuration.Bind(AuthSettings.Key, authSettings);
@@ -77,6 +80,7 @@ public static class DependencyInjection
         services.AddAzureClients(builder =>
         {
             builder.AddQueueServiceClient(configuration.GetConnectionString(ConnectionStrings.StorageAccount));
+            builder.AddBlobServiceClient(configuration.GetConnectionString(ConnectionStrings.StorageAccount));
         });
 
         return services;

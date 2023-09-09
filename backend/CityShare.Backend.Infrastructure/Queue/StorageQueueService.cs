@@ -14,10 +14,14 @@ public class StorageQueueService : IQueueService
         _queueServiceClient = queueServiceClient;
     }
 
-    public async Task SendAsync<T>(string queueName, T item, bool encodeToBase64 = true, bool createIfNotExists = true, CancellationToken cancellationToken = default)
+    public async Task SendAsync<T>(string queueName, 
+        T item, 
+        QueueServiceOptions? options = null, 
+        CancellationToken cancellationToken = default)
     {
         var queueClient = _queueServiceClient.GetQueueClient(queueName);
 
+        var createIfNotExists = options?.CreateIfNotExists ?? false;
         if (createIfNotExists)
         {
             await queueClient.CreateIfNotExistsAsync(cancellationToken: cancellationToken);
@@ -25,6 +29,7 @@ public class StorageQueueService : IQueueService
 
         var message = JsonSerializer.Serialize(item);
 
+        var encodeToBase64 = options?.EncodeToBase64 ?? false;
         if (encodeToBase64)
         {
             message = Convert.ToBase64String(Encoding.UTF8.GetBytes(message));
