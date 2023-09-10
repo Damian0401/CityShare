@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "CityShare.Backend.Triggers": {
+    "CityShare.Services.Triggers": {
       "commandName": "Project",
       "commandLineArgs": "--port 7225",
       "launchBrowser": false
