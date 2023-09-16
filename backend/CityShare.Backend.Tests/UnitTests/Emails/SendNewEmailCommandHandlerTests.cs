@@ -1,5 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Emails.Commands.SendNewEmail;
+using CityShare.Backend.Application.Emails.Commands;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Common;
@@ -12,8 +12,8 @@ public class SendNewEmailCommandHandlerTests
 {
     private readonly Mock<IEmailRepository> _emailRepositoryMock;
     private readonly Mock<IEmailService> _emailServiceMock;
-    private readonly SendNewEmailCommand _command;
-    private readonly SendNewEmailCommandHandler _systemUnderTests;
+    private readonly SendNewEmail.Command _command;
+    private readonly SendNewEmail.Handler _systemUnderTests;
 
     public SendNewEmailCommandHandlerTests()
     {
@@ -21,11 +21,11 @@ public class SendNewEmailCommandHandlerTests
 
         _emailServiceMock = new Mock<IEmailService>();
 
-        var logger = new Mock<ILogger<SendNewEmailCommandHandler>>().Object;
+        var logger = new Mock<ILogger<SendNewEmail.Handler>>().Object;
 
-        _command = new SendNewEmailCommand(Value.Guid);
+        _command = new SendNewEmail.Command(Value.Guid);
 
-        _systemUnderTests = new SendNewEmailCommandHandler(
+        _systemUnderTests = new SendNewEmail.Handler(
             _emailRepositoryMock.Object,
             _emailServiceMock.Object,
             logger);

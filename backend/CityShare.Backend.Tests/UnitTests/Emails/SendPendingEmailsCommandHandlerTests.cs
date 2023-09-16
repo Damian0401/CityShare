@@ -1,5 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Emails.Commands.SendPendingEmails;
+using CityShare.Backend.Application.Emails.Commands;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Common;
 using Microsoft.Extensions.Logging;
@@ -11,8 +11,8 @@ public class SendPendingEmailsCommandHandlerTests
 {
     private readonly Mock<IEmailRepository> _emailRepositoryMock;
     private readonly Mock<IEmailService> _emailServiceMock;
-    private readonly SendPendingEmailsCommand _command;
-    private readonly SendPendingEmailsCommandHandler _systemUnderTests;
+    private readonly SendPendingEmails.Command _command;
+    private readonly SendPendingEmails.Handler _systemUnderTests;
 
     public SendPendingEmailsCommandHandlerTests()
     {
@@ -20,11 +20,11 @@ public class SendPendingEmailsCommandHandlerTests
 
         _emailServiceMock = new Mock<IEmailService>();
 
-        var logger = new Mock<ILogger<SendPendingEmailsCommandHandler>>().Object;
+        var logger = new Mock<ILogger<SendPendingEmails.Handler>>().Object;
 
-        _command = new SendPendingEmailsCommand();
+        _command = new SendPendingEmails.Command();
 
-        _systemUnderTests = new SendPendingEmailsCommandHandler(
+        _systemUnderTests = new SendPendingEmails.Handler(
             _emailRepositoryMock.Object,
             _emailServiceMock.Object,
             logger);

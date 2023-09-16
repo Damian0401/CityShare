@@ -1,5 +1,4 @@
-﻿using CityShare.Backend.Application.Map.Queries.Reverse;
-using CityShare.Backend.Application.Map.Queries.Search;
+﻿using CityShare.Backend.Application.Map.Queries;
 using CityShare.Services.Api.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +13,7 @@ public class Map
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new SearchQuery(query), 
+            new Search.Query(query), 
             cancellationToken);
 
         return ResultResolver.Resolve(result);
@@ -27,7 +26,7 @@ public class Map
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new ReverseQuery(x, y), 
+            new Reverse.Query(x, y), 
             cancellationToken);
 
         return ResultResolver.Resolve(result);

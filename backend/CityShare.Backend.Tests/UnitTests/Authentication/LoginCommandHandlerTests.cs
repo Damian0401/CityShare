@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Authentication.Commands.Login;
+﻿using CityShare.Backend.Application.Authentication.Commands;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Dtos.Authentication.Login;
 using CityShare.Backend.Domain.Entities;
@@ -15,8 +15,8 @@ public class LoginCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IJwtProvider> _jwtProviderMock;
-    private readonly LoginCommand _loginCommand;
-    private readonly LoginCommandHandler _systemUnderTests;
+    private readonly Login.Command _loginCommand;
+    private readonly Login.Handler _systemUnderTests;
 
     public LoginCommandHandlerTests()
     {
@@ -26,13 +26,13 @@ public class LoginCommandHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
-        var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
+        var logger = new Mock<ILogger<Login.Handler>>().Object;
 
         var request = new LoginRequestDto(Value.String, Value.String);
 
-        _loginCommand = new LoginCommand(request);
+        _loginCommand = new Login.Command(request);
 
-        _systemUnderTests = new LoginCommandHandler(
+        _systemUnderTests = new Login.Handler(
             _userManagerMockHelper.GetMockObject(),
             _jwtProviderMock.Object,
             mapper,

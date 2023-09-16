@@ -1,5 +1,5 @@
 using CityShare.Backend.Application.Core.Dtos.Triggers;
-using CityShare.Backend.Application.Emails.Commands.SendPendingEmails;
+using CityShare.Backend.Application.Emails.Commands;
 using CityShare.Backend.Domain.Constants;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
@@ -23,7 +23,7 @@ namespace CityShare.Services.Triggers.Triggers
         {
             _logger.LogInformation("Executing {@Name} trigger at {@Date}", nameof(SendPendingEmails), DateTime.UtcNow);
 
-            var response = await _mediator.Send(new SendPendingEmailsCommand());
+            var response = await _mediator.Send(new SendPendingEmails.Command());
 
             if (response.IsFailure)
             {

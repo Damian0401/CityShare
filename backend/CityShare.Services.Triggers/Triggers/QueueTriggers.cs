@@ -1,4 +1,4 @@
-using CityShare.Backend.Application.Emails.Commands.SendNewEmail;
+using CityShare.Backend.Application.Emails.Commands;
 using CityShare.Backend.Domain.Constants;
 using MediatR;
 using Microsoft.Azure.Functions.Worker;
@@ -23,7 +23,7 @@ public class QueueTriggers
     {
         _logger.LogInformation("Executing {@Name} trigger for id {@Id}", nameof(SendNewEmail), emailId);
 
-        var response = await _mediator.Send(new SendNewEmailCommand(emailId), cancellationToken);
+        var response = await _mediator.Send(new SendNewEmail.Command(emailId), cancellationToken);
 
         if (response.IsFailure)
         {

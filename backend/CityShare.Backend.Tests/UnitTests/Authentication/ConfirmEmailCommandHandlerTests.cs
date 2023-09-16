@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Authentication.Commands.ConfirmEmail;
+﻿using CityShare.Backend.Application.Authentication.Commands;
 using CityShare.Backend.Application.Core.Dtos.Authentication.ConfirmEmail;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Common;
@@ -13,19 +13,19 @@ namespace CityShare.Backend.Tests.UnitTests.Authentication;
 public class ConfirmEmailCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
-    private readonly ConfirmEmailCommand _confirmEmailCommand;
-    private readonly ConfirmEmailCommandHandler _systemUnderTests;
+    private readonly ConfirmEmail.Command _confirmEmailCommand;
+    private readonly ConfirmEmail.Handler _systemUnderTests;
 
     public ConfirmEmailCommandHandlerTests()
     {
         _userManagerMockHelper = new UserManagerMockHelper<ApplicationUser>();
 
-        var logger = new Mock<ILogger<ConfirmEmailCommandHandler>>().Object;
+        var logger = new Mock<ILogger<ConfirmEmail.Handler>>().Object;
 
-        _confirmEmailCommand = new ConfirmEmailCommand(
+        _confirmEmailCommand = new ConfirmEmail.Command(
             new EmailConfirmRequestDto(Value.String, Value.String));
 
-        _systemUnderTests = new ConfirmEmailCommandHandler(
+        _systemUnderTests = new ConfirmEmail.Handler(
             _userManagerMockHelper.GetMockObject(),
             logger);
     }

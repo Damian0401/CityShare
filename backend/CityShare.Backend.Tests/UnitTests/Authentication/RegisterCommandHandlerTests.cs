@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Authentication.Commands.Register;
+﻿using CityShare.Backend.Application.Authentication.Commands;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Queue;
@@ -19,8 +19,8 @@ public class RegisterCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IJwtProvider> _jwtProviderMock;
-    private readonly RegisterCommand _registerCommand;
-    private readonly RegisterCommandHandler _systemUnderTests;
+    private readonly Register.Command _registerCommand;
+    private readonly Register.Handler _systemUnderTests;
 
     public RegisterCommandHandlerTests()
     {
@@ -36,13 +36,13 @@ public class RegisterCommandHandlerTests
 
         var emailRepositoryMock = new Mock<IEmailRepository>();
 
-        var logger = new Mock<ILogger<RegisterCommandHandler>>().Object;
+        var logger = new Mock<ILogger<Register.Handler>>().Object;
 
         var request = new RegisterRequestDto(Value.String, Value.String, Value.String);
 
-        _registerCommand = new RegisterCommand(request);
+        _registerCommand = new Register.Command(request);
 
-        _systemUnderTests = new RegisterCommandHandler(
+        _systemUnderTests = new Register.Handler(
             _userManagerMockHelper.GetMockObject(),
             _jwtProviderMock.Object,
             mapper,

@@ -1,7 +1,4 @@
-﻿using CityShare.Backend.Application.Authentication.Commands.ConfirmEmail;
-using CityShare.Backend.Application.Authentication.Commands.Login;
-using CityShare.Backend.Application.Authentication.Commands.Refresh;
-using CityShare.Backend.Application.Authentication.Commands.Register;
+﻿using CityShare.Backend.Application.Authentication.Commands;
 using CityShare.Backend.Application.Core.Dtos.Authentication;
 using CityShare.Backend.Application.Core.Dtos.Authentication.ConfirmEmail;
 using CityShare.Backend.Application.Core.Dtos.Authentication.Login;
@@ -26,7 +23,7 @@ public class Authentication
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new RegisterCommand(request), 
+            new Register.Command(request), 
             cancellationToken);
 
         if (result.IsFailure)
@@ -49,7 +46,7 @@ public class Authentication
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new LoginCommand(request), 
+            new Login.Command(request), 
             cancellationToken);
 
         if (result.IsFailure)
@@ -78,7 +75,7 @@ public class Authentication
         }
 
         var result = await mediator.Send(
-            new RefreshCommand(refreshRequest, refreshToken), 
+            new Refresh.Command(refreshRequest, refreshToken), 
             cancellationToken);
 
         return result.IsSuccess
@@ -92,7 +89,7 @@ public class Authentication
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new ConfirmEmailCommand(request), 
+            new ConfirmEmail.Command(request), 
             cancellationToken);
 
         return ResultResolver.Resolve(result);
