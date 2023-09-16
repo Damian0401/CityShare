@@ -21,7 +21,7 @@ public class EmailService : IEmailService
 
     public async Task SendAsync(Email email)
     {
-        _logger.LogInformation("Creating MailMessage from {@Email}", email);
+        _logger.LogInformation("Creating MailMessage from email with id {@Id}", email.Id);
         using var mailMessage = new MailMessage
         {
             From = new MailAddress(_emailSettings.Address),

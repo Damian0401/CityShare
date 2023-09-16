@@ -55,7 +55,7 @@ public class SendNewEmailCommandHandler : IRequestHandler<SendNewEmailCommand, R
 
         try
         {
-            _logger.LogInformation("Trying to send email {@Email}", email);
+            _logger.LogInformation("Trying to send email with id {@Id}", email.Id);
             await _emailService.SendAsync(email);
         }
         catch

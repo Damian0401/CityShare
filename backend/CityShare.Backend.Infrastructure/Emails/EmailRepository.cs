@@ -40,7 +40,7 @@ public class EmailRepository : IEmailRepository
         _logger.LogInformation("Creating email from dto {@Dto}", dto);
         var email = await CreateEmailAsync(dto, template, emailPriority);
 
-        _logger.LogInformation("Saving email to database {@Email}", email);
+        _logger.LogInformation("Saving new email to database");
         _context.Emails.Add(email);
         await _context.SaveChangesAsync(cancellationToken);
 

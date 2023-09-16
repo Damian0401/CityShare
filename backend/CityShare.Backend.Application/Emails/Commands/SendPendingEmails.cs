@@ -88,6 +88,7 @@ public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmails
         {
             if (email.TryCount >= priority.RetryNumber)
             {
+                _logger.LogInformation("Skipping sending email with id {@Id}", email.Id);
                 email.StatusId = errorStatusId;
                 errorEmails++;
                 continue;
@@ -95,6 +96,7 @@ public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmails
 
             try
             {
+                _logger.LogInformation("Sending email with id {@Id}", email.Id);
                 await _emailService.SendAsync(email);
 
                 email.StatusId = sentStatusId;
@@ -103,6 +105,7 @@ public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmails
             }
             catch (Exception)
             {
+                _logger.LogError("Unable to send email with id {@Id}", email.Id);
                 email.TryCount++;
                 notSentEmails++;
             }
