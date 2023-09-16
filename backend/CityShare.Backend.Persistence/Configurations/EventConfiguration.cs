@@ -41,5 +41,8 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
             .WithOne()
             .HasForeignKey<Event>(x => x.AddressId)
             .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder.HasMany(x => x.Categories)
+            .WithMany(x => x.Events);
     }
 }
