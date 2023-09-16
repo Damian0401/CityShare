@@ -23,7 +23,7 @@ namespace CityShare.Services.Triggers.Triggers
         {
             _logger.LogInformation("Executing {@Name} trigger at {@Date}", nameof(SendPendingEmails), DateTime.UtcNow);
 
-            var response = await _mediator.Send(new SendPendingEmails.Command());
+            var response = await _mediator.Send(new SendPendingEmailsCommand());
 
             if (response.IsFailure)
             {

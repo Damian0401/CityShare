@@ -13,7 +13,7 @@ public class Map
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new Search.Query(query), 
+            new SearchQuery(query), 
             cancellationToken);
 
         return ResultResolver.Resolve(result);
@@ -26,7 +26,7 @@ public class Map
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new Reverse.Query(x, y), 
+            new ReverseQuery(x, y), 
             cancellationToken);
 
         return ResultResolver.Resolve(result);

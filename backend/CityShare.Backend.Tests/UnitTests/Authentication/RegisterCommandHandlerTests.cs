@@ -19,8 +19,8 @@ public class RegisterCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IJwtProvider> _jwtProviderMock;
-    private readonly Register.Command _registerCommand;
-    private readonly Register.Handler _systemUnderTests;
+    private readonly RegisterCommand _registerCommand;
+    private readonly RegisterCommandHandler _systemUnderTests;
 
     public RegisterCommandHandlerTests()
     {
@@ -36,13 +36,13 @@ public class RegisterCommandHandlerTests
 
         var emailRepositoryMock = new Mock<IEmailRepository>();
 
-        var logger = new Mock<ILogger<Register.Handler>>().Object;
+        var logger = new Mock<ILogger<RegisterCommandHandler>>().Object;
 
         var request = new RegisterRequestDto(Value.String, Value.String, Value.String);
 
-        _registerCommand = new Register.Command(request);
+        _registerCommand = new RegisterCommand(request);
 
-        _systemUnderTests = new Register.Handler(
+        _systemUnderTests = new RegisterCommandHandler(
             _userManagerMockHelper.GetMockObject(),
             _jwtProviderMock.Object,
             mapper,

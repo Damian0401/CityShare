@@ -12,89 +12,86 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Authentication.Commands;
 
-public class Login
+public record LoginCommand(LoginRequestDto Request)
+    : IRequest<Result<LoginResponseDto>>;
+
+public class LoginCommandValidator : AbstractValidator<LoginCommand>
 {
-    public record Command(LoginRequestDto Request)
-        : IRequest<Result<LoginResponseDto>>;
-
-    public class Validator : AbstractValidator<Command>
+    public LoginCommandValidator()
     {
-        public Validator()
-        {
-            RuleFor(x => x.Request.Email)
-                .NotEmpty()
-                .EmailAddress()
-                .WithName(x => nameof(x.Request.Email));
+        RuleFor(x => x.Request.Email)
+            .NotEmpty()
+            .EmailAddress()
+            .WithName(x => nameof(x.Request.Email));
 
-            RuleFor(x => x.Request.Password)
-                .NotEmpty()
-                .WithName(x => nameof(x.Request.Password));
-        }
+        RuleFor(x => x.Request.Password)
+            .NotEmpty()
+            .WithName(x => nameof(x.Request.Password));
+    }
+}
+
+public class LoginCommandHandler : IRequestHandler<LoginCommand, Result<LoginResponseDto>>
+{
+    private readonly UserManager<ApplicationUser> _userManager;
+    private readonly IJwtProvider _jwtProvider;
+    private readonly IMapper _mapper;
+    private readonly ILogger<LoginCommandHandler> _logger;
+
+    public LoginCommandHandler(
+        UserManager<ApplicationUser> userManager,
+        IJwtProvider jwtProvider,
+        IMapper mapper,
+        ILogger<LoginCommandHandler> logger)
+    {
+        _userManager = userManager;
+        _jwtProvider = jwtProvider;
+        _mapper = mapper;
+        _logger = logger;
     }
 
-    public class Handler : IRequestHandler<Command, Result<LoginResponseDto>>
+    public async Task<Result<LoginResponseDto>> Handle(LoginCommand request, CancellationToken cancellationToken)
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IJwtProvider _jwtProvider;
-        private readonly IMapper _mapper;
-        private readonly ILogger<Handler> _logger;
+        _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
+        var user = await _userManager.FindByEmailAsync(request.Request.Email);
 
-        public Handler(
-            UserManager<ApplicationUser> userManager,
-            IJwtProvider jwtProvider,
-            IMapper mapper,
-            ILogger<Handler> logger)
+        if (user is null)
         {
-            _userManager = userManager;
-            _jwtProvider = jwtProvider;
-            _mapper = mapper;
-            _logger = logger;
+            _logger.LogError("User with {@Email} not found", request.Request.Email);
+            return Result<LoginResponseDto>.Failure(Errors.InvalidCredentials);
         }
 
-        public async Task<Result<LoginResponseDto>> Handle(Command request, CancellationToken cancellationToken)
+        _logger.LogInformation("Checking provided password for {@Email}", user.Email);
+        var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Request.Password);
+
+        if (!isPasswordValid)
         {
-            _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
-            var user = await _userManager.FindByEmailAsync(request.Request.Email);
-
-            if (user is null)
-            {
-                _logger.LogError("User with {@Email} not found", request.Request.Email);
-                return Result<LoginResponseDto>.Failure(Errors.InvalidCredentials);
-            }
-
-            _logger.LogInformation("Checking provided password for {@Email}", user.Email);
-            var isPasswordValid = await _userManager.CheckPasswordAsync(user, request.Request.Password);
-
-            if (!isPasswordValid)
-            {
-                _logger.LogError("Invalid password for {@Email}", user.Email);
-                return Result<LoginResponseDto>.Failure(Errors.InvalidCredentials);
-            }
-
-            var response = await CreateResponseAsync(user);
-
-            return response;
+            _logger.LogError("Invalid password for {@Email}", user.Email);
+            return Result<LoginResponseDto>.Failure(Errors.InvalidCredentials);
         }
 
-        private async Task<LoginResponseDto> CreateResponseAsync(ApplicationUser user)
-        {
-            _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
-            var roles = await _userManager.GetRolesAsync(user);
+        var response = await CreateResponseAsync(user);
 
-            _logger.LogInformation("Generating tokens for {@Emaill}", user.Email);
-            var accessToken = _jwtProvider.GenerateToken(user, roles);
-            var refreshToken = await _userManager.GenerateUserTokenAsync(
-                user, RefreshToken.Provider, RefreshToken.Purpose);
+        return response;
+    }
 
-            _logger.LogInformation("Saving refresh token for {@Email} to database", user.Email);
-            await _userManager.SetAuthenticationTokenAsync(
-                user, RefreshToken.Provider, RefreshToken.Name, refreshToken);
+    private async Task<LoginResponseDto> CreateResponseAsync(ApplicationUser user)
+    {
+        _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
+        var roles = await _userManager.GetRolesAsync(user);
 
-            var userDto = _mapper.Map<UserDto>(user);
-            userDto.AccessToken = accessToken;
-            userDto.Roles = roles;
+        _logger.LogInformation("Generating tokens for {@Emaill}", user.Email);
+        var accessToken = _jwtProvider.GenerateToken(user, roles);
+        var refreshToken = await _userManager.GenerateUserTokenAsync(
+            user, RefreshToken.Provider, RefreshToken.Purpose);
 
-            return new LoginResponseDto(userDto, refreshToken);
-        }
+        _logger.LogInformation("Saving refresh token for {@Email} to database", user.Email);
+        await _userManager.SetAuthenticationTokenAsync(
+            user, RefreshToken.Provider, RefreshToken.Name, refreshToken);
+
+        var userDto = _mapper.Map<UserDto>(user);
+        userDto.AccessToken = accessToken;
+        userDto.Roles = roles;
+
+        return new LoginResponseDto(userDto, refreshToken);
     }
 }

@@ -14,8 +14,8 @@ public class MapReverseHandlerTests
 {
     private readonly Mock<INominatimService> _nominatimServiceMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
-    private readonly Reverse.Query _reverseQuery;
-    private readonly Reverse.Handler _systemUnderTests;
+    private readonly ReverseQuery _reverseQuery;
+    private readonly ReverseQueryHandler _systemUnderTests;
 
     public MapReverseHandlerTests()
     {
@@ -25,11 +25,11 @@ public class MapReverseHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
-        var logger = new Mock<ILogger<Reverse.Handler>>().Object;
+        var logger = new Mock<ILogger<ReverseQueryHandler>>().Object;
 
-        _reverseQuery = new Reverse.Query(Value.Double, Value.Double);
+        _reverseQuery = new ReverseQuery(Value.Double, Value.Double);
 
-        _systemUnderTests = new Reverse.Handler(
+        _systemUnderTests = new ReverseQueryHandler(
             _nominatimServiceMock.Object,
             _cacheServiceMock.Object,
             mapper,

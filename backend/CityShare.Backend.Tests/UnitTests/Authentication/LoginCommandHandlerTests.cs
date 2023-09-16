@@ -15,8 +15,8 @@ public class LoginCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IJwtProvider> _jwtProviderMock;
-    private readonly Login.Command _loginCommand;
-    private readonly Login.Handler _systemUnderTests;
+    private readonly LoginCommand _loginCommand;
+    private readonly LoginCommandHandler _systemUnderTests;
 
     public LoginCommandHandlerTests()
     {
@@ -26,13 +26,13 @@ public class LoginCommandHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
-        var logger = new Mock<ILogger<Login.Handler>>().Object;
+        var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
 
         var request = new LoginRequestDto(Value.String, Value.String);
 
-        _loginCommand = new Login.Command(request);
+        _loginCommand = new LoginCommand(request);
 
-        _systemUnderTests = new Login.Handler(
+        _systemUnderTests = new LoginCommandHandler(
             _userManagerMockHelper.GetMockObject(),
             _jwtProviderMock.Object,
             mapper,

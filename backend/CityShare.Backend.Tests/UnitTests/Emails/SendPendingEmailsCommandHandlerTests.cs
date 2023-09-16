@@ -11,8 +11,8 @@ public class SendPendingEmailsCommandHandlerTests
 {
     private readonly Mock<IEmailRepository> _emailRepositoryMock;
     private readonly Mock<IEmailService> _emailServiceMock;
-    private readonly SendPendingEmails.Command _command;
-    private readonly SendPendingEmails.Handler _systemUnderTests;
+    private readonly SendPendingEmailsCommand _command;
+    private readonly SendPendingEmailsCommandHandler _systemUnderTests;
 
     public SendPendingEmailsCommandHandlerTests()
     {
@@ -20,11 +20,11 @@ public class SendPendingEmailsCommandHandlerTests
 
         _emailServiceMock = new Mock<IEmailService>();
 
-        var logger = new Mock<ILogger<SendPendingEmails.Handler>>().Object;
+        var logger = new Mock<ILogger<SendPendingEmailsCommandHandler>>().Object;
 
-        _command = new SendPendingEmails.Command();
+        _command = new SendPendingEmailsCommand();
 
-        _systemUnderTests = new SendPendingEmails.Handler(
+        _systemUnderTests = new SendPendingEmailsCommandHandler(
             _emailRepositoryMock.Object,
             _emailServiceMock.Object,
             logger);

@@ -23,7 +23,7 @@ public class Authentication
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new Register.Command(request), 
+            new RegisterCommand(request), 
             cancellationToken);
 
         if (result.IsFailure)
@@ -46,7 +46,7 @@ public class Authentication
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new Login.Command(request), 
+            new LoginCommand(request), 
             cancellationToken);
 
         if (result.IsFailure)
@@ -75,7 +75,7 @@ public class Authentication
         }
 
         var result = await mediator.Send(
-            new Refresh.Command(refreshRequest, refreshToken), 
+            new RefreshCommand(refreshRequest, refreshToken), 
             cancellationToken);
 
         return result.IsSuccess
@@ -89,7 +89,7 @@ public class Authentication
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new ConfirmEmail.Command(request), 
+            new ConfirmEmailCommand(request), 
             cancellationToken);
 
         return ResultResolver.Resolve(result);

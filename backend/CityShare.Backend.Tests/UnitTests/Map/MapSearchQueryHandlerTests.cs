@@ -13,8 +13,8 @@ public class MapSearchQueryHandlerTests
 {
     private readonly Mock<INominatimService> _nominatimServiceMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
-    private readonly Search.Query _searchQuery;
-    private readonly Search.Handler _systemUnderTests;
+    private readonly SearchQuery _searchQuery;
+    private readonly SearchQueryHandler _systemUnderTests;
 
     public MapSearchQueryHandlerTests()
     {
@@ -24,11 +24,11 @@ public class MapSearchQueryHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
-        var logger = new Mock<ILogger<Search.Handler>>().Object;
+        var logger = new Mock<ILogger<SearchQueryHandler>>().Object;
 
-        _searchQuery = new Search.Query(Value.String);
+        _searchQuery = new SearchQuery(Value.String);
 
-        _systemUnderTests = new Search.Handler(
+        _systemUnderTests = new SearchQueryHandler(
             _nominatimServiceMock.Object,
             _cacheServiceMock.Object,
             mapper,

@@ -8,109 +8,106 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Emails.Commands;
 
-public class SendPendingEmails
+public record SendPendingEmailsCommand : IRequest<Result<SendPendingEmailsDto>>;
+
+public class SendPendingEmailsCommandHandler : IRequestHandler<SendPendingEmailsCommand, Result<SendPendingEmailsDto>>
 {
-    public record Command : IRequest<Result<SendPendingEmailsDto>>;
+    private readonly IEmailRepository _emailRepository;
+    private readonly IEmailService _emailService;
+    private readonly ILogger<SendPendingEmailsCommandHandler> _logger;
 
-    public class Handler : IRequestHandler<Command, Result<SendPendingEmailsDto>>
+    public SendPendingEmailsCommandHandler(
+        IEmailRepository emailRepository,
+        IEmailService emailService,
+        ILogger<SendPendingEmailsCommandHandler> logger)
     {
-        private readonly IEmailRepository _emailRepository;
-        private readonly IEmailService _emailService;
-        private readonly ILogger<Handler> _logger;
+        _emailRepository = emailRepository;
+        _emailService = emailService;
+        _logger = logger;
+    }
 
-        public Handler(
-            IEmailRepository emailRepository,
-            IEmailService emailService,
-            ILogger<Handler> logger)
+    public async Task<Result<SendPendingEmailsDto>> Handle(SendPendingEmailsCommand request, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Searching for pending emails");
+        var pendingEmails = await _emailRepository.GetAllWithStatusAsync(EmailStatuses.Pending, cancellationToken);
+
+        if (!pendingEmails.Any())
         {
-            _emailRepository = emailRepository;
-            _emailService = emailService;
-            _logger = logger;
+            _logger.LogInformation("Not found any pending emails");
+            return new SendPendingEmailsDto(0, 0, 0);
         }
 
-        public async Task<Result<SendPendingEmailsDto>> Handle(Command request, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation("Searching for pending emails");
-            var pendingEmails = await _emailRepository.GetAllWithStatusAsync(EmailStatuses.Pending, cancellationToken);
+        _logger.LogInformation("Found {@Number} pending emails", pendingEmails.Count());
+        var response = await SendPendingEmailsAsync(pendingEmails, cancellationToken);
 
-            if (!pendingEmails.Any())
+        return response;
+    }
+
+    private async Task<SendPendingEmailsDto> SendPendingEmailsAsync(IEnumerable<Email> pendingEmails, CancellationToken cancellationToken)
+    {
+        _logger.LogInformation("Fetching email priorities");
+        var priorities = await _emailRepository.GetAllPrioritiesAsync(cancellationToken);
+
+        _logger.LogInformation("Grouping emails by priorities");
+        var groupedEmails = pendingEmails
+            .GroupBy(x => x.PrirorityId)
+            .ToList();
+
+        var sentEmails = 0;
+        var notSentEmails = 0;
+        var errorEmails = 0;
+
+        var errorStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Error, cancellationToken);
+        var sentStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Sent, cancellationToken);
+
+        _logger.LogInformation("Trying to resend emails");
+        foreach (var group in groupedEmails)
+        {
+            var priority = priorities.First(x => x.Id.Equals(group.Key));
+
+            (var sent, var notSent, var error) = await SendEmailGroup(group, priority, errorStatusId, sentStatusId);
+
+            sentEmails += sent;
+            notSentEmails += notSent;
+            errorEmails += error;
+        }
+
+        _logger.LogInformation("Updating emails after resending");
+        await _emailRepository.UpdateEmailsAsync(pendingEmails);
+
+        return new SendPendingEmailsDto(sentEmails, notSentEmails, errorEmails);
+    }
+
+    private async Task<(int sentEmails, int notSentEmails, int errorEmails)> SendEmailGroup(IGrouping<int, Email> group, EmailPriority priority, int errorStatusId, int sentStatusId)
+    {
+        int sentEmails = 0;
+        int notSentEmails = 0;
+        int errorEmails = 0;
+
+        foreach (var email in group)
+        {
+            if (email.TryCount >= priority.RetryNumber)
             {
-                _logger.LogInformation("Not found any pending emails");
-                return new SendPendingEmailsDto(0, 0, 0);
+                email.StatusId = errorStatusId;
+                errorEmails++;
+                continue;
             }
 
-            _logger.LogInformation("Found {@Number} pending emails", pendingEmails.Count());
-            var response = await SendPendingEmailsAsync(pendingEmails, cancellationToken);
-
-            return response;
-        }
-
-        private async Task<SendPendingEmailsDto> SendPendingEmailsAsync(IEnumerable<Email> pendingEmails, CancellationToken cancellationToken)
-        {
-            _logger.LogInformation("Fetching email priorities");
-            var priorities = await _emailRepository.GetAllPrioritiesAsync(cancellationToken);
-
-            _logger.LogInformation("Grouping emails by priorities");
-            var groupedEmails = pendingEmails
-                .GroupBy(x => x.PrirorityId)
-                .ToList();
-
-            var sentEmails = 0;
-            var notSentEmails = 0;
-            var errorEmails = 0;
-
-            var errorStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Error, cancellationToken);
-            var sentStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Sent, cancellationToken);
-
-            _logger.LogInformation("Trying to resend emails");
-            foreach (var group in groupedEmails)
+            try
             {
-                var priority = priorities.First(x => x.Id.Equals(group.Key));
+                await _emailService.SendAsync(email);
 
-                (var sent, var notSent, var error) = await SendEmailGroup(group, priority, errorStatusId, sentStatusId);
-
-                sentEmails += sent;
-                notSentEmails += notSent;
-                errorEmails += error;
+                email.StatusId = sentStatusId;
+                email.SentDate = DateTime.UtcNow;
+                sentEmails++;
             }
-
-            _logger.LogInformation("Updating emails after resending");
-            await _emailRepository.UpdateEmailsAsync(pendingEmails);
-
-            return new SendPendingEmailsDto(sentEmails, notSentEmails, errorEmails);
-        }
-
-        private async Task<(int sentEmails, int notSentEmails, int errorEmails)> SendEmailGroup(IGrouping<int, Email> group, EmailPriority priority, int errorStatusId, int sentStatusId)
-        {
-            int sentEmails = 0;
-            int notSentEmails = 0;
-            int errorEmails = 0;
-
-            foreach (var email in group)
+            catch (Exception)
             {
-                if (email.TryCount >= priority.RetryNumber)
-                {
-                    email.StatusId = errorStatusId;
-                    errorEmails++;
-                    continue;
-                }
-
-                try
-                {
-                    await _emailService.SendAsync(email);
-
-                    email.StatusId = sentStatusId;
-                    email.SentDate = DateTime.UtcNow;
-                    sentEmails++;
-                }
-                catch (Exception)
-                {
-                    email.TryCount++;
-                    notSentEmails++;
-                }
+                email.TryCount++;
+                notSentEmails++;
             }
-
-            return (sentEmails, notSentEmails, errorEmails);
         }
+
+        return (sentEmails, notSentEmails, errorEmails);
     }
 }

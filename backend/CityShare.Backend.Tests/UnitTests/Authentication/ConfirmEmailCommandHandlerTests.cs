@@ -13,19 +13,19 @@ namespace CityShare.Backend.Tests.UnitTests.Authentication;
 public class ConfirmEmailCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
-    private readonly ConfirmEmail.Command _confirmEmailCommand;
-    private readonly ConfirmEmail.Handler _systemUnderTests;
+    private readonly ConfirmEmailCommand _confirmEmailCommand;
+    private readonly ConfirmEmailCommandHandler _systemUnderTests;
 
     public ConfirmEmailCommandHandlerTests()
     {
         _userManagerMockHelper = new UserManagerMockHelper<ApplicationUser>();
 
-        var logger = new Mock<ILogger<ConfirmEmail.Handler>>().Object;
+        var logger = new Mock<ILogger<ConfirmEmailCommandHandler>>().Object;
 
-        _confirmEmailCommand = new ConfirmEmail.Command(
+        _confirmEmailCommand = new ConfirmEmailCommand(
             new EmailConfirmRequestDto(Value.String, Value.String));
 
-        _systemUnderTests = new ConfirmEmail.Handler(
+        _systemUnderTests = new ConfirmEmailCommandHandler(
             _userManagerMockHelper.GetMockObject(),
             logger);
     }

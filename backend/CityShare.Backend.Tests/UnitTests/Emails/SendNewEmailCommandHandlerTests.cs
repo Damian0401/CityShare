@@ -11,8 +11,8 @@ public class SendNewEmailCommandHandlerTests
 {
     private readonly Mock<IEmailRepository> _emailRepositoryMock;
     private readonly Mock<IEmailService> _emailServiceMock;
-    private readonly SendNewEmail.Command _command;
-    private readonly SendNewEmail.Handler _systemUnderTests;
+    private readonly SendNewEmailCommand _command;
+    private readonly SendNewEmailCommandHandler _systemUnderTests;
 
     public SendNewEmailCommandHandlerTests()
     {
@@ -20,11 +20,11 @@ public class SendNewEmailCommandHandlerTests
 
         _emailServiceMock = new Mock<IEmailService>();
 
-        var logger = new Mock<ILogger<SendNewEmail.Handler>>().Object;
+        var logger = new Mock<ILogger<SendNewEmailCommandHandler>>().Object;
 
-        _command = new SendNewEmail.Command(Value.Guid);
+        _command = new SendNewEmailCommand(Value.Guid);
 
-        _systemUnderTests = new SendNewEmail.Handler(
+        _systemUnderTests = new SendNewEmailCommandHandler(
             _emailRepositoryMock.Object,
             _emailServiceMock.Object,
             logger);

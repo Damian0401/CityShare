@@ -7,75 +7,72 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Emails.Commands;
 
-public class SendNewEmail
-{
-    public record Command(Guid EmailId) : IRequest<Result>;
+public record SendNewEmailCommand(Guid EmailId) : IRequest<Result>;
 
-    public class Validator : AbstractValidator<Command>
+public class SendNewEmailCommandValidator : AbstractValidator<SendNewEmailCommand>
+{
+    public SendNewEmailCommandValidator()
     {
-        public Validator()
-        {
-            RuleFor(x => x.EmailId)
-                .NotEmpty();
-        }
+        RuleFor(x => x.EmailId)
+            .NotEmpty();
+    }
+}
+
+public class SendNewEmailCommandHandler : IRequestHandler<SendNewEmailCommand, Result>
+{
+    private readonly IEmailRepository _emailRepository;
+    private readonly IEmailService _emailService;
+    private readonly ILogger<SendNewEmailCommandHandler> _logger;
+
+    public SendNewEmailCommandHandler(
+        IEmailRepository emailRepository,
+        IEmailService emailService,
+        ILogger<SendNewEmailCommandHandler> logger)
+    {
+        _emailRepository = emailRepository;
+        _emailService = emailService;
+        _logger = logger;
     }
 
-    public class Handler : IRequestHandler<Command, Result>
+    public async Task<Result> Handle(SendNewEmailCommand request, CancellationToken cancellationToken)
     {
-        private readonly IEmailRepository _emailRepository;
-        private readonly IEmailService _emailService;
-        private readonly ILogger<Handler> _logger;
+        _logger.LogInformation("Searching for email with id {@Id}", request.EmailId);
+        var email = await _emailRepository.GetByIdAsync(request.EmailId, cancellationToken);
 
-        public Handler(
-            IEmailRepository emailRepository,
-            IEmailService emailService,
-            ILogger<Handler> logger)
+        if (email is null)
         {
-            _emailRepository = emailRepository;
-            _emailService = emailService;
-            _logger = logger;
+            _logger.LogError("Email with id {@Id} not found", request.EmailId);
+            return Result.Failure(Errors.NotFound);
         }
 
-        public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
+        var newStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.New, cancellationToken);
+
+        if (!email.StatusId.Equals(newStatusId))
         {
-            _logger.LogInformation("Searching for email with id {@Id}", request.EmailId);
-            var email = await _emailRepository.GetByIdAsync(request.EmailId, cancellationToken);
+            _logger.LogError("Emailwith id {@Id} has wrong StatusId {@StatusId}, expected {@CorrectStatusId}", email.Id, email.StatusId, newStatusId);
+            return Result.Failure(Errors.ForbiddenState);
+        }
 
-            if (email is null)
-            {
-                _logger.LogError("Email with id {@Id} not found", request.EmailId);
-                return Result.Failure(Errors.NotFound);
-            }
-
-            var newStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.New, cancellationToken);
-
-            if (!email.StatusId.Equals(newStatusId))
-            {
-                _logger.LogError("Emailwith id {@Id} has wrong StatusId {@StatusId}, expected {@CorrectStatusId}", email.Id, email.StatusId, newStatusId);
-                return Result.Failure(Errors.ForbiddenState);
-            }
-
-            try
-            {
-                _logger.LogInformation("Trying to send email {@Email}", email);
-                await _emailService.SendAsync(email);
-            }
-            catch
-            {
-                _logger.LogInformation("Unable to send email with id {@Id}, updating Status and TryCount", email.Id);
-                var pendingStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Pending, cancellationToken);
-                email.StatusId = pendingStatusId;
-                email.TryCount++;
-                await _emailRepository.UpdateAsync(email);
-                return Result.Failure(Errors.OperationFailed);
-            }
-
-            _logger.LogInformation("Updating email with id {@Id} after sending", email.Id);
-            var sendStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Sent, cancellationToken);
-            email.StatusId = sendStatusId;
-            email.SentDate = DateTime.UtcNow;
+        try
+        {
+            _logger.LogInformation("Trying to send email {@Email}", email);
+            await _emailService.SendAsync(email);
+        }
+        catch
+        {
+            _logger.LogInformation("Unable to send email with id {@Id}, updating Status and TryCount", email.Id);
+            var pendingStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Pending, cancellationToken);
+            email.StatusId = pendingStatusId;
+            email.TryCount++;
             await _emailRepository.UpdateAsync(email);
-            return Result.Success();
+            return Result.Failure(Errors.OperationFailed);
         }
+
+        _logger.LogInformation("Updating email with id {@Id} after sending", email.Id);
+        var sendStatusId = await _emailRepository.GetStatusIdAsync(EmailStatuses.Sent, cancellationToken);
+        email.StatusId = sendStatusId;
+        email.SentDate = DateTime.UtcNow;
+        await _emailRepository.UpdateAsync(email);
+        return Result.Success();
     }
 }

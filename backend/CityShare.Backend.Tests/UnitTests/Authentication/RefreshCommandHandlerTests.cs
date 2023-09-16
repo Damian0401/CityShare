@@ -15,8 +15,8 @@ public class RefreshCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IJwtProvider> _jwtProviderMock;
-    private readonly Refresh.Command _refreshCommand;
-    private readonly Refresh.Handler _systemUnderTests;
+    private readonly RefreshCommand _refreshCommand;
+    private readonly RefreshCommandHandler _systemUnderTests;
 
     public RefreshCommandHandlerTests()
     {
@@ -26,13 +26,13 @@ public class RefreshCommandHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
-        var logger = new Mock<ILogger<Refresh.Handler>>().Object;
+        var logger = new Mock<ILogger<RefreshCommandHandler>>().Object;
 
         var request = new RefreshRequestDto(Value.String);
 
-        _refreshCommand = new Refresh.Command(request, Value.String);
+        _refreshCommand = new RefreshCommand(request, Value.String);
 
-        _systemUnderTests = new Refresh.Handler(
+        _systemUnderTests = new RefreshCommandHandler(
             _userManagerMockHelper.GetMockObject(),
             _jwtProviderMock.Object,
             mapper,

@@ -11,62 +11,59 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Map.Queries;
 
-public class Reverse
-{
-    public record Query(double X, double Y) : IRequest<Result<AddressDto>>;
+public record ReverseQuery(double X, double Y) : IRequest<Result<AddressDto>>;
 
-    public class Validator : AbstractValidator<Query>
+public class ReverseQueryValidator : AbstractValidator<ReverseQuery>
+{
+    public ReverseQueryValidator()
     {
-        public Validator()
-        {
-            RuleFor(x => x.X).NotEmpty();
-            RuleFor(x => x.Y).NotEmpty();
-        }
+        RuleFor(x => x.X).NotEmpty();
+        RuleFor(x => x.Y).NotEmpty();
+    }
+}
+
+public class ReverseQueryHandler : IRequestHandler<ReverseQuery, Result<AddressDto>>
+{
+    private readonly INominatimService _nominatimService;
+    private readonly IMapper _mapper;
+    private readonly ICacheService _cacheService;
+    private readonly ILogger<ReverseQueryHandler> _logger;
+
+    public ReverseQueryHandler(
+        INominatimService nominatimService,
+        ICacheService cacheService,
+        IMapper mapper,
+        ILogger<ReverseQueryHandler> logger)
+    {
+        _nominatimService = nominatimService;
+        _mapper = mapper;
+        _cacheService = cacheService;
+        _logger = logger;
     }
 
-    public class Handler : IRequestHandler<Query, Result<AddressDto>>
+    public async Task<Result<AddressDto>> Handle(ReverseQuery request, CancellationToken cancellationToken)
     {
-        private readonly INominatimService _nominatimService;
-        private readonly IMapper _mapper;
-        private readonly ICacheService _cacheService;
-        private readonly ILogger<Handler> _logger;
-
-        public Handler(
-            INominatimService nominatimService, 
-            ICacheService cacheService,
-            IMapper mapper, 
-            ILogger<Handler> logger)
+        _logger.LogInformation("Checking for {@Query} in cacheService", request);
+        if (_cacheService.TryGet<AddressDto>(request, out var cachedDto))
         {
-            _nominatimService = nominatimService;
-            _mapper = mapper;
-            _cacheService = cacheService;
-            _logger = logger;
+            _logger.LogInformation("Returning cached dto {@Dto}", cachedDto);
+            return cachedDto ?? throw new InvalidStateException();
         }
 
-        public async Task<Result<AddressDto>> Handle(Query request, CancellationToken cancellationToken)
+        _logger.LogInformation("Getting result from {@Service}", _nominatimService.GetType());
+        var result = await _nominatimService.ReverseAsync(request.X, request.Y, cancellationToken);
+
+        if (result is null)
         {
-            _logger.LogInformation("Checking for {@Query} in cacheService", request);
-            if (_cacheService.TryGet<AddressDto>(request, out var cachedDto))
-            {
-                _logger.LogInformation("Returning cached dto {@Dto}", cachedDto);
-                return cachedDto ?? throw new InvalidStateException();
-            }
-
-            _logger.LogInformation("Getting result from {@Service}", _nominatimService.GetType());
-            var result = await _nominatimService.ReverseAsync(request.X, request.Y, cancellationToken);
-
-            if (result is null)
-            {
-                _logger.LogWarning("Not found results for {@Query}", request);
-                return Result<AddressDto>.Failure(Errors.NotFound);
-            }
-
-            var mapperResult = _mapper.Map<AddressDto>(result);
-
-            _logger.LogInformation("Caching result {@Result}", result);
-            _cacheService.Set(request, mapperResult);
-
-            return mapperResult;
+            _logger.LogWarning("Not found results for {@Query}", request);
+            return Result<AddressDto>.Failure(Errors.NotFound);
         }
+
+        var mapperResult = _mapper.Map<AddressDto>(result);
+
+        _logger.LogInformation("Caching result {@Result}", result);
+        _cacheService.Set(request, mapperResult);
+
+        return mapperResult;
     }
 }
