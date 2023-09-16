@@ -1,6 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Emails.Commands;
-using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Common;
 using Microsoft.Extensions.Logging;

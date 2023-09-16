@@ -16,17 +16,17 @@ public class InMemoryCacheService : ICacheService
         _memoryCache = memoryCache;
     }
 
-    public bool TryGet<T>(string key, out T? value)
+    public bool TryGet<T>(object key, out T? value)
     {
         return _memoryCache.TryGetValue(key, out value);
     }
 
-    public T? Get<T>(string key)
+    public T? Get<T>(object key)
     {
         return _memoryCache.Get<T>(key);
     }
 
-    public void Set<T>(string key, T value, int size = 1)
+    public void Set<T>(object key, T value, int size = 1)
     {
         var options = new MemoryCacheEntryOptions();
 
