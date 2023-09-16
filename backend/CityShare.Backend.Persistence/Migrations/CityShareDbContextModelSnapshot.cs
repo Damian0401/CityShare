@@ -147,7 +147,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BoundingBox");
+                    b.ToTable("BoundingBoxes");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Category", b =>
@@ -165,7 +165,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.City", b =>
@@ -195,7 +195,7 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.HasIndex("BoundingBoxId")
                         .IsUnique();
 
-                    b.ToTable("City");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Comment", b =>
@@ -225,7 +225,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Email", b =>
@@ -384,7 +384,7 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.HasIndex("CityId")
                         .IsUnique();
 
-                    b.ToTable("Event");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Image", b =>
@@ -407,7 +407,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Image");
+                    b.ToTable("Images");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Like", b =>
@@ -431,7 +431,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
                     b.HasIndex("EventId");
 
-                    b.ToTable("Like");
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
