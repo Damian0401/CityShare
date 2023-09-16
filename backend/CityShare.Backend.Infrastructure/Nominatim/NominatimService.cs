@@ -35,7 +35,7 @@ public class NominatimService : INominatimService
         var result = await _httpClient.GetFromJsonAsync<NominatimReverseResponseDto>(
             reverseQuery, cancellationToken);
 
-        if (result is null)
+        if (result is null || result.error is not null)
         {
             _logger.LogWarning("Not found results for {@Query}", reverseQuery);
             return null;
