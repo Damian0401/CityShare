@@ -18,8 +18,4 @@
     <ProjectReference Include="..\CityShare.Backend.Domain\CityShare.Backend.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Core\Abstractions\Cities\" />
-  </ItemGroup>
-
 </Project>

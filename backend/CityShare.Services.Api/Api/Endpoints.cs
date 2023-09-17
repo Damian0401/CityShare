@@ -17,5 +17,10 @@ public static class Endpoints
             public const string Search = "/api/v1/map/search";
             public const string Reverse = "/api/v1/map/reverse";
         }
+
+        public class Cities
+        {
+            public const string GetAll = "/api/v1/cities";
+        }
     }
 }
