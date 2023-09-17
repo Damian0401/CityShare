@@ -34,7 +34,7 @@ public class GetAllCitiesQueryHandler : IRequestHandler<GetAllCitiesQuery, Resul
     public async Task<Result<IEnumerable<CityDto>>> Handle(
         GetAllCitiesQuery request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Checking for cities in cacheService");
+        _logger.LogInformation("Checking for cities in {@Type}", _cacheService.GetType());
         if (_cacheService.TryGet<IEnumerable<CityDto>>(CacheKeys.Cities, out var cachedCities))
         {
             var count = cachedCities?.Count() ?? throw new InvalidStateException();

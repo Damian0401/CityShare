@@ -29,6 +29,9 @@ public static class EndpointsExtension
         app.MapGet(Endpoints.V1.Cities.GetAll, Api.V1.Cities.GetAll)
             .RequireAuthorization();
 
+        app.MapGet(Endpoints.V1.Categories.GetAll, Api.V1.Categories.GetAll)
+            .AllowAnonymous();
+
         return app;
     }
 }

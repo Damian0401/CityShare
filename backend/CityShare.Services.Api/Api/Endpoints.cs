@@ -22,5 +22,10 @@ public static class Endpoints
         {
             public const string GetAll = "/api/v1/cities";
         }
+
+        public class Categories
+        {
+            public const string GetAll = "/api/v1/categories";
+        }
     }
 }

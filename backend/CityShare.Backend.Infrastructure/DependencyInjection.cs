@@ -1,6 +1,7 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Abstractions.Blobs;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
+using CityShare.Backend.Application.Core.Abstractions.Categories;
 using CityShare.Backend.Application.Core.Abstractions.Cities;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
@@ -11,6 +12,7 @@ using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Infrastructure.Authentication;
 using CityShare.Backend.Infrastructure.Blobs;
 using CityShare.Backend.Infrastructure.Cache;
+using CityShare.Backend.Infrastructure.Categories;
 using CityShare.Backend.Infrastructure.Cities;
 using CityShare.Backend.Infrastructure.Emails;
 using CityShare.Backend.Infrastructure.Nominatim;
@@ -40,6 +42,7 @@ public static class DependencyInjection
         services.AddScoped<IBlobService, StorageBlobService>();
         services.AddScoped<IEmailRepository, EmailRepository>();
         services.AddScoped<ICityRepository, CityRepository>();
+        services.AddScoped<ICategoryRepository, CategoryRepository>();
 
         var authSettings = new AuthSettings();
         configuration.Bind(AuthSettings.Key, authSettings);

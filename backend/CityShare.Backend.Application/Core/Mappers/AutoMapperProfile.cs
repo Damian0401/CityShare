@@ -8,6 +8,7 @@ using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Application.Core.Dtos.Map;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
 using CityShare.Backend.Application.Core.Dtos.Cities;
+using CityShare.Backend.Application.Core.Dtos.Categories;
 
 namespace CityShare.Backend.Application.Core.Mappers;
 
@@ -20,6 +21,7 @@ public class AutoMapperProfile : Profile
         MapsForEmails();
         MapsForAddresses();
         MapsForCities();
+        MapsForCategories();
     }
 
     private void MapsForUser()
@@ -68,5 +70,10 @@ public class AutoMapperProfile : Profile
         CreateMap<City, CityDto>()
             .ForPath(x => x.Address, s => s.MapFrom(a => a.Address))
             .ForPath(x => x.Address.BoundingBox, s => s.MapFrom(a => a.BoundingBox));
+    }
+
+    private void MapsForCategories()
+    {
+        CreateMap<Category, CategoryDto>();
     }
 }
