@@ -14,6 +14,7 @@ import { BsCardImage } from "react-icons/bs";
 import { IImagePickerProps } from "./IImagePickerProps";
 import SelectedImage from "./components/selected-image/SelectedImage";
 import styles from "./ImagePicker.module.scss";
+import { toast } from "react-toastify";
 
 const ImagePicker: React.FC<IImagePickerProps> = (props) => {
   const {
@@ -34,6 +35,11 @@ const ImagePicker: React.FC<IImagePickerProps> = (props) => {
     const file = e.target.files?.[0];
 
     if (!file) {
+      return;
+    }
+
+    if (file.size > 5 * Constants.FileSizes.MB) {
+      toast.warning("File size should be less than 5MB");
       return;
     }
 
