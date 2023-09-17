@@ -25,10 +25,6 @@ builder.Host.UseSerilog((context, configuration) =>
 
 var app = builder.Build();
 
-var logger = app.Services.GetService<ILogger<Program>>();
-ArgumentNullException.ThrowIfNull(logger);
-
-logger.LogInformation("Seeding data...");
 await app.Services.SeedDataAsync();
 
 if (app.Environment.IsDevelopment())
@@ -50,5 +46,4 @@ app.UseCors(Cors.PolicyName);
 app.UseAuthentication();
 app.UseAuthorization();
 
-logger.LogInformation("Starting app..");
 app.Run();

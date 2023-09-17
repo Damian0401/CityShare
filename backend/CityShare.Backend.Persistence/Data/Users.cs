@@ -2,9 +2,9 @@
 
 namespace CityShare.Backend.Persistence.Data;
 
-internal static class Roles
+internal static class Users
 {
-    internal static async Task SeedAsync(RoleManager<IdentityRole> roleManager)
+    internal static async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager)
     {
         var roles = typeof(Domain.Constants.Roles)
             .GetFields()
