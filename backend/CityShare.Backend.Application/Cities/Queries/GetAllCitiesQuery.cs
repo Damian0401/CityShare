@@ -43,7 +43,7 @@ public class GetAllCitiesQueryHandler : IRequestHandler<GetAllCitiesQuery, Resul
         }
 
         _logger.LogInformation("Getting cities from {@type}", _cityRepository.GetType());
-        var cities = await _cityRepository.GetAllWithDetailsAsync();
+        var cities = await _cityRepository.GetAllWithDetailsAsync(cancellationToken);
 
         _logger.LogInformation("Mapping cities to DTOs");
         var citiesDto = _mapper.Map<IEnumerable<CityDto>>(cities);

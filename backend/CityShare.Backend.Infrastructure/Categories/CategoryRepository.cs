@@ -20,12 +20,12 @@ public class CategoryRepository : ICategoryRepository
         _logger = logger;
     }
 
-    public async Task<IEnumerable<Category>> GetAllAsync()
+    public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting all categories from database");
         var categories = await _context.Categories
             .AsNoTracking()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return categories;
     }

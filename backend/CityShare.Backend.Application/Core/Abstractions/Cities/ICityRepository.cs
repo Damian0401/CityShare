@@ -4,5 +4,5 @@ namespace CityShare.Backend.Application.Core.Abstractions.Cities;
 
 public interface ICityRepository
 {
-    Task<IEnumerable<City>> GetAllWithDetailsAsync();
+    Task<IEnumerable<City>> GetAllWithDetailsAsync(CancellationToken cancellationToken = default);
 }

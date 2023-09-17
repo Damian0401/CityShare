@@ -1,7 +1,6 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Application.Map.Queries;
 using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
@@ -51,10 +50,24 @@ public class MapReverseHandlerTests
     }
 
     [Fact]
+    public async Task FoundCachedDto_ShouldNot_CallService()
+    {
+        // Arrange
+        var response = Value.AddressDto;
+        _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
+
+        // Act
+        var result = await _systemUnderTests.Handle(_reverseQuery, Value.CancelationToken);
+
+        // Assert
+        _nominatimServiceMock.Verify(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken), Times.Never);
+    }
+
+    [Fact]
     public async Task ResultNotFound_ShouldReturn_Failure()
     {
         // Arrange
-        var response = Value.AddressDetailsDto;
+        var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
         _nominatimServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
@@ -71,7 +84,7 @@ public class MapReverseHandlerTests
     public async Task ResultFound_ShouldReturn_Success()
     {
         // Arrange
-        var response = Value.AddressDetailsDto;
+        var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
         _nominatimServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
@@ -88,7 +101,7 @@ public class MapReverseHandlerTests
     public async Task ResultFound_ShouldBeCached()
     {
         // Arrange
-        var response = Value.AddressDetailsDto;
+        var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
         _nominatimServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
@@ -98,6 +111,6 @@ public class MapReverseHandlerTests
         var result = await _systemUnderTests.Handle(_reverseQuery, Value.CancelationToken);
 
         // Assert
-        _cacheServiceMock.Verify(x => x.Set(Any.Object, Any.AddressDto, Any.Int), Times.Once);
+        _cacheServiceMock.Verify(x => x.Set(Any.Object, Any.AddressDto, Any.CacheServiceOptions), Times.Once);
     }
 }

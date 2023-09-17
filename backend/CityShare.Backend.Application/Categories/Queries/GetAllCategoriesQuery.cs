@@ -45,7 +45,7 @@ public class GetAllCategoriesQueryHandler
         }
 
         _logger.LogInformation("Getting categories from {@type}", _categoryRepository.GetType());
-        var categories = await _categoryRepository.GetAllAsync();
+        var categories = await _categoryRepository.GetAllAsync(cancellationToken);
 
         _logger.LogInformation("Mapping categories to DTOs");
         var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);

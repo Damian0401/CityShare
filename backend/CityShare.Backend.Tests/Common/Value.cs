@@ -1,4 +1,6 @@
-﻿using CityShare.Backend.Application.Core.Dtos.Map;
+﻿using CityShare.Backend.Application.Core.Dtos.Categories;
+using CityShare.Backend.Application.Core.Dtos.Cities;
+using CityShare.Backend.Application.Core.Dtos.Map;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Domain.Entities;
@@ -33,4 +35,8 @@ internal class Value
     public static EmailPriority EmailPriority => new EmailPriority();
     public static NominatimSearchResponseDto NominatimSearchResponseDto => new NominatimSearchResponseDto();
     public static NominatimReverseResponseDto NominatimReverseResponseDto => new NominatimReverseResponseDto();
+    public static IEnumerable<Category> Categories => Enumerable.Empty<Category>();
+    public static IEnumerable<CategoryDto> CategoryDtos => Enumerable.Empty<CategoryDto>();
+    public static IEnumerable<City> Cities => Enumerable.Empty<City>();
+    public static IEnumerable<CityDto> CityDtos => Enumerable.Empty<CityDto>();
 }

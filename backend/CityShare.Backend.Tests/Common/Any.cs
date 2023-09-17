@@ -1,4 +1,7 @@
-﻿using CityShare.Backend.Application.Core.Dtos;
+﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
+using CityShare.Backend.Application.Core.Dtos;
+using CityShare.Backend.Application.Core.Dtos.Categories;
+using CityShare.Backend.Application.Core.Dtos.Cities;
 using CityShare.Backend.Application.Core.Dtos.Map;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Domain.Entities;
@@ -18,5 +21,8 @@ internal class Any
     public static CancellationToken CancellationToken => It.IsAny<CancellationToken>();
     public static NominatimSearchRequestDto NominatimSearchRequestDto => It.IsAny<NominatimSearchRequestDto>();
     public static AddressDetailsDto AddressDetailsDto => It.IsAny<AddressDetailsDto>();
+    public static CacheServiceOptions CacheServiceOptions => It.IsAny<CacheServiceOptions>();
     public static AddressDto AddressDto => It.IsAny<AddressDto>();
+    public static IEnumerable<CategoryDto> CategoryDtos => It.IsAny<IEnumerable<CategoryDto>>();
+    public static IEnumerable<CityDto> CityDtos => It.IsAny<IEnumerable<CityDto>>();
 }

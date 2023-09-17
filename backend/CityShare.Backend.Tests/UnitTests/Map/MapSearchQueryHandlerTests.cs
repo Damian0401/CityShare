@@ -50,10 +50,27 @@ public class MapSearchQueryHandlerTests
     }
 
     [Fact]
-    public async Task ResultNotFound_ShouldReturn_Failure()
+    public async Task ResultFound_ShouldNot_CallService()
     {
         // Arrange
         var response = Value.AddressDetailsDto;
+        _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
+
+        _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(Value.NominatimSearchResponseDto);
+
+        // Act
+        var result = await _systemUnderTests.Handle(_searchQuery, Value.CancelationToken);
+
+        // Assert
+        _nominatimServiceMock.Verify(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken), Times.Never);
+    }
+
+    [Fact]
+    public async Task ResultNotFound_ShouldReturn_Failure()
+    {
+        // Arrange
+        var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
         _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
@@ -70,7 +87,7 @@ public class MapSearchQueryHandlerTests
     public async Task ResultFound_ShouldReturn_Success()
     {
         // Arrange
-        var response = Value.AddressDetailsDto;
+        var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
         _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
@@ -87,7 +104,7 @@ public class MapSearchQueryHandlerTests
     public async Task ResultFound_ShouldBeCached()
     {
         // Arrange
-        var response = Value.AddressDetailsDto;
+        var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
         _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
@@ -96,10 +113,9 @@ public class MapSearchQueryHandlerTests
         // Act
         var result = await _systemUnderTests.Handle(_searchQuery, Value.CancelationToken);
 
-
         // Assert
         _cacheServiceMock.Verify(
-            x => x.Set(Any.Object, Any.AddressDetailsDto, Any.Int),
+            x => x.Set(Any.Object, Any.AddressDetailsDto, Any.CacheServiceOptions),
             Times.Once);
     }
 }

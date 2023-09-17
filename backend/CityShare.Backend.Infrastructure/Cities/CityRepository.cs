@@ -19,14 +19,14 @@ public class CityRepository : ICityRepository
         _logger = logger;
     }
 
-    public async Task<IEnumerable<City>> GetAllWithDetailsAsync()
+    public async Task<IEnumerable<City>> GetAllWithDetailsAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting all cities from database");
         var cities = await _context.Cities
             .Include(x => x.Address)
             .Include(x => x.BoundingBox)
             .AsNoTracking()
-            .ToListAsync();
+            .ToListAsync(cancellationToken);
 
         return cities;
     }
