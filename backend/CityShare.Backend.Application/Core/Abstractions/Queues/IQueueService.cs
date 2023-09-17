@@ -1,4 +1,4 @@
-﻿namespace CityShare.Backend.Application.Core.Abstractions.Queue;
+﻿namespace CityShare.Backend.Application.Core.Abstractions.Queues;
 
 public interface IQueueService
 {

@@ -1,9 +1,9 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
-using CityShare.Backend.Application.Core.Abstractions.Blob;
+using CityShare.Backend.Application.Core.Abstractions.Blobs;
 using Microsoft.AspNetCore.Http;
 
-namespace CityShare.Backend.Infrastructure.Blob;
+namespace CityShare.Backend.Infrastructure.Blobs;
 
 public class StorageBlobService : IBlobService
 {

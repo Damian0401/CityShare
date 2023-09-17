@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Authentication;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Core.Abstractions.Queue;
+using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Application.Core.Dtos.Authentication;
 using CityShare.Backend.Application.Core.Dtos.Authentication.Register;
 using CityShare.Backend.Application.Core.Dtos.Emails.Create;

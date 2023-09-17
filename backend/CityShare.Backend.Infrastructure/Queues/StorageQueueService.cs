@@ -1,9 +1,9 @@
 ﻿using Azure.Storage.Queues;
-using CityShare.Backend.Application.Core.Abstractions.Queue;
+using CityShare.Backend.Application.Core.Abstractions.Queues;
 using System.Text;
 using System.Text.Json;
 
-namespace CityShare.Backend.Infrastructure.Queue;
+namespace CityShare.Backend.Infrastructure.Queues;
 
 public class StorageQueueService : IQueueService
 {

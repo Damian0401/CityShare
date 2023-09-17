@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace CityShare.Backend.Application.Core.Abstractions.Blob;
+namespace CityShare.Backend.Application.Core.Abstractions.Blobs;
 
 public interface IBlobService
 {
