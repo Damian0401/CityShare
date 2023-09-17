@@ -11,7 +11,7 @@ public interface IBlobService
         CancellationToken cancellationToken = default);
 }
 
-public record BlobServiceOptions
+public class BlobServiceOptions
 {
     public string? BlobName { get; set; }
     public bool? Overwrite { get; set; }
