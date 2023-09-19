@@ -22,6 +22,7 @@ public class CityShareDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<BoundingBox> BoundingBoxes { get; set; }
     public DbSet<City> Cities { get; set; }
     public DbSet<Like> Likes { get; set; }
+    public DbSet<EventCategory> EventCategories { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
