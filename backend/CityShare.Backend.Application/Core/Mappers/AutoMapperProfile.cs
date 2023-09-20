@@ -2,8 +2,8 @@
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Entities;
 using System.Globalization;
-using CityShare.Backend.Application.Core.Dtos.Authentication.Register;
-using CityShare.Backend.Application.Core.Dtos.Authentication;
+using CityShare.Backend.Application.Core.Dtos.Auth.Register;
+using CityShare.Backend.Application.Core.Dtos.Auth;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Application.Core.Dtos.Map;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;

@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Core.Abstractions.Authentication;
+﻿using CityShare.Backend.Application.Core.Abstractions.Auth;
 using CityShare.Backend.Application.Core.Abstractions.Blobs;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Categories;
@@ -9,7 +9,7 @@ using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
-using CityShare.Backend.Infrastructure.Authentication;
+using CityShare.Backend.Infrastructure.Auth;
 using CityShare.Backend.Infrastructure.Blobs;
 using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Categories;
