@@ -1,6 +1,10 @@
 ﻿using CityShare.Backend.Domain.Constants;
+using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
+using CityShare.Backend.Infrastructure.Auth;
+using CityShare.Backend.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -10,6 +14,12 @@ public static class Security
 {
     public static IServiceCollection SetUpSecurity(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddIdentityCore<ApplicationUser>()
+            .AddRoles<IdentityRole>()
+            .AddTokenProvider<RefreshTokenProvider<ApplicationUser>>(RefreshToken.Provider)
+            .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(EmailConfirmation.Provider)
+            .AddEntityFrameworkStores<CityShareDbContext>();
+
         var corsSettings = new CorsSettings();
         configuration.Bind(CorsSettings.Key, corsSettings);
 

@@ -1,9 +1,8 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Persistence;
 using Microsoft.Extensions.Logging;
 
-namespace CityShare.Backend.Infrastructure.Events;
+namespace CityShare.Backend.Persistence.Repositories;
 
 public class EventRepository : IEventRepository
 {

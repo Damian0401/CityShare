@@ -1,10 +1,9 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Cities;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace CityShare.Backend.Infrastructure.Cities;
+namespace CityShare.Backend.Persistence.Repositories;
 
 public class CityRepository : ICityRepository
 {

@@ -56,7 +56,7 @@ public class CreateEventCommandValidator : AbstractValidator<CreateEventCommand>
         RuleFor(x => x.Request.CategoryIds)
             .NotEmpty()
             .Must(x => x.Count() > 0).WithMessage(x => $"{nameof(x.Request.CategoryIds)} must contains any ids")
-            .Must(x => x.Count() <= 3).WithMessage(x => $"{nameof(x.Request.CategoryIds)} must has less than 3 ids")
+            .Must(x => x.Count() <= 3).WithMessage(x => $"{nameof(x.Request.CategoryIds)} must have less than 3 ids")
             .WithName(x => nameof(x.Request.CategoryIds));
 
         RuleFor(x => x.Request.StartDate)

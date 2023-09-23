@@ -3,11 +3,10 @@ using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Dtos.Emails.Create;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
-namespace CityShare.Backend.Infrastructure.Emails;
+namespace CityShare.Backend.Persistence.Repositories;
 
 public class EmailRepository : IEmailRepository
 {
