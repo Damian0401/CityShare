@@ -28,8 +28,5 @@ internal class UserManagerMockHelper<TUser>
         _userManagerMock.Setup(expression).ReturnsAsync(result);
     }
 
-    public UserManager<TUser> GetMockObject()
-    {
-        return _userManagerMock.Object;
-    }
+    public UserManager<TUser> Object => _userManagerMock.Object;
 }

@@ -26,7 +26,7 @@ public class ConfirmEmailCommandHandlerTests
             new EmailConfirmRequestDto(Value.String, Value.String));
 
         _systemUnderTests = new ConfirmEmailCommandHandler(
-            _userManagerMockHelper.GetMockObject(),
+            _userManagerMockHelper.Object,
             logger);
     }
 

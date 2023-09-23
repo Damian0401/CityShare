@@ -43,7 +43,7 @@ public class RegisterCommandHandlerTests
         _registerCommand = new RegisterCommand(request);
 
         _systemUnderTests = new RegisterCommandHandler(
-            _userManagerMockHelper.GetMockObject(),
+            _userManagerMockHelper.Object,
             _jwtProviderMock.Object,
             mapper,
             options,

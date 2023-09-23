@@ -33,7 +33,7 @@ public class LoginCommandHandlerTests
         _loginCommand = new LoginCommand(request);
 
         _systemUnderTests = new LoginCommandHandler(
-            _userManagerMockHelper.GetMockObject(),
+            _userManagerMockHelper.Object,
             _jwtProviderMock.Object,
             mapper,
             logger);

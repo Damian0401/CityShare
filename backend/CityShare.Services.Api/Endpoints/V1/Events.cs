@@ -10,10 +10,10 @@ namespace CityShare.Services.Api.Endpoints.V1;
 public class Events
 {
     public static async Task<IResult> Create(
-    CreateEventDto createEventDto,
-    ClaimsPrincipal claimsPrincipal,
-    IMediator mediator,
-    CancellationToken cancellationToken)
+        CreateEventDto createEventDto,
+        ClaimsPrincipal claimsPrincipal,
+        IMediator mediator,
+        CancellationToken cancellationToken)
     {
         var command = new CreateEventCommand(createEventDto, claimsPrincipal.GetUserId());
 

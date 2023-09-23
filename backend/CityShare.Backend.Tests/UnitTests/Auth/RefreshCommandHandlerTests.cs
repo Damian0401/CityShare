@@ -33,7 +33,7 @@ public class RefreshCommandHandlerTests
         _refreshCommand = new RefreshCommand(request, Value.String);
 
         _systemUnderTests = new RefreshCommandHandler(
-            _userManagerMockHelper.GetMockObject(),
+            _userManagerMockHelper.Object,
             _jwtProviderMock.Object,
             mapper,
             logger);

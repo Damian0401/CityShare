@@ -1,7 +1,5 @@
-﻿using CityShare.Backend.Application.Categories.Queries;
-using CityShare.Backend.Application.Cities.Queries;
+﻿using CityShare.Backend.Application.Cities.Queries;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
-using CityShare.Backend.Application.Core.Abstractions.Categories;
 using CityShare.Backend.Application.Core.Abstractions.Cities;
 using CityShare.Backend.Tests.Common;
 using CityShare.Backend.Tests.Helpers;
