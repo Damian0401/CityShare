@@ -19,6 +19,14 @@ public class CityRepository : ICityRepository
         _logger = logger;
     }
 
+    public async Task<bool> ExistsAsync(int cityId, CancellationToken cancellationToken = default)
+    {
+        var cityExists = await _context.Cities
+            .AnyAsync(x => x.Id.Equals(cityId), cancellationToken);
+
+        return cityExists;
+    }
+
     public async Task<IEnumerable<City>> GetAllWithDetailsAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting all cities from database");

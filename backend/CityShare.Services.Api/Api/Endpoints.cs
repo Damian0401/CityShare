@@ -6,6 +6,7 @@ public static class Endpoints
     {
         public class Auth
         {
+            public const string Index = "/api/v1/auth";
             public const string Register = "/api/v1/auth/register";
             public const string Login = "/api/v1/auth/login";
             public const string Refresh = "/api/v1/auth/refresh";
@@ -14,18 +15,24 @@ public static class Endpoints
 
         public class Map
         {
+            public const string Index = "/api/v1/map";
             public const string Search = "/api/v1/map/search";
             public const string Reverse = "/api/v1/map/reverse";
         }
 
         public class Cities
         {
-            public const string GetAll = "/api/v1/cities";
+            public const string Index = "/api/v1/cities";
         }
 
         public class Categories
         {
-            public const string GetAll = "/api/v1/categories";
+            public const string Index = "/api/v1/categories";
+        }
+
+        public class Events
+        {
+            public const string Index = "/api/v1/events";
         }
     }
 }

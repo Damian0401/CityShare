@@ -20,6 +20,16 @@ public class CategoryRepository : ICategoryRepository
         _logger = logger;
     }
 
+    public async Task<IEnumerable<int>> GetAllIdsAsync(CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Getting all category ids from database");
+        var categiryIds = await _context.Categories
+            .Select(x => x.Id)
+            .ToListAsync();
+
+        return categiryIds;
+    }
+
     public async Task<IEnumerable<Category>> GetAllAsync(CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting all categories from database");

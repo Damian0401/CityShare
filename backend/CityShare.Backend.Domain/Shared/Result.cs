@@ -27,7 +27,6 @@ public class Result
 }
 
 public class Result<TValue> : Result
-    where TValue : class
 {
     TValue? _value;
 

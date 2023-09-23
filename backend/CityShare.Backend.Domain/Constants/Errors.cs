@@ -40,4 +40,19 @@ public static class Errors
     {
         new Error("EmailAlreadyConfirmed", "Email is already confirmed")
     };
+
+    public static IEnumerable<Error> CityNotExists(int cityId) => new[]
+    {
+        new Error("CityNotExists", $"City with id {cityId} does not exists")
+    };
+
+    public static IEnumerable<Error> CategoryNotExists(int categoryId) => new[]
+    {
+        new Error("CategoryNotExists", $"Category with id {categoryId} does not exists")
+    };
+
+    public static IEnumerable<Error> Unauthorized => new[]
+    {
+        new Error("Unauthorized", "User in unauthorized to perform this operation")
+    };
 }

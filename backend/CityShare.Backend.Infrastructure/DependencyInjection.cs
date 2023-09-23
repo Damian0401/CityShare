@@ -4,8 +4,10 @@ using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Categories;
 using CityShare.Backend.Application.Core.Abstractions.Cities;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
+using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
+using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
@@ -15,8 +17,10 @@ using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Categories;
 using CityShare.Backend.Infrastructure.Cities;
 using CityShare.Backend.Infrastructure.Emails;
+using CityShare.Backend.Infrastructure.Events;
 using CityShare.Backend.Infrastructure.Nominatim;
 using CityShare.Backend.Infrastructure.Queues;
+using CityShare.Backend.Infrastructure.Utils;
 using CityShare.Backend.Persistence;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Azure;
@@ -43,6 +47,9 @@ public static class DependencyInjection
         services.AddScoped<IEmailRepository, EmailRepository>();
         services.AddScoped<ICityRepository, CityRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
+        services.AddScoped<IEventRepository, EventRepository>();
+
+        services.AddSingleton<IClock, UtcClock>();
 
         var authSettings = new AuthSettings();
         configuration.Bind(AuthSettings.Key, authSettings);

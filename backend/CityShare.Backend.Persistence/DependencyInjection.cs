@@ -11,7 +11,7 @@ public static class DependencyInjection
     {
         var connectionString = configuration.GetConnectionString(ConnectionStrings.CityShareDB);
 
-        services.AddDbContext<CityShareDbContext>(options => options.UseSqlServer(connectionString));
+        services.AddDbContext<CityShareDbContext>(options => options.UseSqlServer(connectionString), ServiceLifetime.Transient);
 
         return services;
     }

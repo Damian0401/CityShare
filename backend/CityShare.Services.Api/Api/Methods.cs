@@ -24,11 +24,14 @@ public static class Methods
         app.MapGet(Endpoints.V1.Map.Reverse, V1.Map.Reverse)
             .RequireAuthorization();
 
-        app.MapGet(Endpoints.V1.Cities.GetAll, V1.Cities.GetAll)
+        app.MapGet(Endpoints.V1.Cities.Index, V1.Cities.GetAll)
             .RequireAuthorization();
 
-        app.MapGet(Endpoints.V1.Categories.GetAll, V1.Categories.GetAll)
-            .AllowAnonymous();
+        app.MapGet(Endpoints.V1.Categories.Index, V1.Categories.GetAll)
+            .RequireAuthorization();
+
+        app.MapPost(Endpoints.V1.Events.Index, V1.Events.Create)
+            .RequireAuthorization();
 
         return app;
     }

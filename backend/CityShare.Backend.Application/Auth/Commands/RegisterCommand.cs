@@ -85,8 +85,8 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
 
         if (user is not null)
         {
-            _logger.LogError("User with {@Email} already exists", user.Email);
-            return Result<RegisterResponseDto>.Failure(Errors.EmailTaken);
+            _logger.LogError("User with {@Email} already exists", request.Request.Email);
+            return Result<RegisterResponseDto>.Failure(Errors.EmailTaken(request.Request.Email));
         }
 
         user = _mapper.Map<ApplicationUser>(request.Request);

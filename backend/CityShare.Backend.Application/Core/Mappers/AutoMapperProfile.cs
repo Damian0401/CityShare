@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Domain.Entities;
 using System.Globalization;
 using CityShare.Backend.Application.Core.Dtos.Auth.Register;
@@ -9,6 +8,7 @@ using CityShare.Backend.Application.Core.Dtos.Map;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
 using CityShare.Backend.Application.Core.Dtos.Cities;
 using CityShare.Backend.Application.Core.Dtos.Categories;
+using CityShare.Backend.Application.Core.Dtos.Events;
 
 namespace CityShare.Backend.Application.Core.Mappers;
 
@@ -22,6 +22,7 @@ public class AutoMapperProfile : Profile
         MapsForAddresses();
         MapsForCities();
         MapsForCategories();
+        MapsForEvents();
     }
 
     private void MapsForUser()
@@ -63,6 +64,9 @@ public class AutoMapperProfile : Profile
             .ForMember(x => x.Point, s => s.MapFrom(a => new PointDto(a.X, a.Y)));
         CreateMap<Address, AddressDetailsDto>()
             .ForMember(x => x.Point, s => s.MapFrom(a => new PointDto(a.X, a.Y)));
+        CreateMap<AddressDto, Address>()
+            .ForMember(x => x.X, s => s.MapFrom(a => a.Point.X))
+            .ForMember(x => x.Y, s => s.MapFrom(a => a.Point.Y));
     }
 
     private void MapsForCities()
@@ -75,5 +79,11 @@ public class AutoMapperProfile : Profile
     private void MapsForCategories()
     {
         CreateMap<Category, CategoryDto>();
+    }
+
+    private void MapsForEvents()
+    {
+        CreateMap<CreateEventDto, Event>()
+            .ForMember(x => x.Address, s => s.MapFrom(e => e.Address));
     }
 }

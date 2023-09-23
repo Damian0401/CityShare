@@ -22,7 +22,6 @@ public class ResultResolver
     }
 
     public static IResult Resolve<T>(Result<T> result)
-        where T : class
     {
         if (result.IsSuccess)
         {
