@@ -49,7 +49,7 @@ public class SendNewEmailCommandHandler : IRequestHandler<SendNewEmailCommand, R
 
         if (!email.StatusId.Equals(newStatusId))
         {
-            _logger.LogError("Emailwith id {@Id} has wrong StatusId {@StatusId}, expected {@CorrectStatusId}", email.Id, email.StatusId, newStatusId);
+            _logger.LogError("Email with id {@Id} has wrong StatusId {@StatusId}, expected {@CorrectStatusId}", email.Id, email.StatusId, newStatusId);
             return Result.Failure(Errors.ForbiddenState);
         }
 

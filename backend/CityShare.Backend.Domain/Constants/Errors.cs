@@ -4,11 +4,11 @@ namespace CityShare.Backend.Domain.Constants;
 
 public static class Errors
 {
-    public const string InternalServerErrorMessage = "Something went wring";
+    public const string InternalServerErrorMessage = "Something went wrong";
 
-    public static IEnumerable<Error> EmailTaken => new[]
+    public static IEnumerable<Error> EmailTaken(string email) => new[]
     {
-        new Error("EmailTaken", "Email is already taken")
+        new Error("EmailTaken", $"Email {email} is already taken")
     };
     
     public static IEnumerable<Error> InvalidCredentials => new[]
@@ -34,11 +34,6 @@ public static class Errors
     public static IEnumerable<Error> OperationFailed => new[]
     {
         new Error("OperationFailed", "Unable to perform requested operation")
-    };
-
-    public static IEnumerable<Error> InvalidData => new[]
-    {
-        new Error("InvalidData", "Input data are invalid")
     };
 
     public static IEnumerable<Error> EmailAlreadyConfirmed => new[]
