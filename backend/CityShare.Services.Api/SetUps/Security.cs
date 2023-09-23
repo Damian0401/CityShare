@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace CityShare.Services.Api.Extensions;
+namespace CityShare.Services.Api.SetUps;
 
-public static class SecurityExtension
+public static class Security
 {
     public static IServiceCollection SetUpSecurity(this IServiceCollection services, IConfiguration configuration)
     {

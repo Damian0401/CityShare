@@ -1,4 +1,4 @@
-﻿namespace CityShare.Services.Api.Api;
+﻿namespace CityShare.Services.Api.Endpoints;
 
 public static class Methods
 {

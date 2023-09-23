@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
 
-namespace CityShare.Services.Api.Extensions;
+namespace CityShare.Services.Api.SetUps;
 
-public static class CommonExtension
+public static class Common
 {
     public static IServiceCollection SetUpCommon(this IServiceCollection services, IConfiguration configuration)
     {

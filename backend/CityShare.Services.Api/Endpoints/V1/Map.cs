@@ -3,7 +3,7 @@ using CityShare.Services.Api.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CityShare.Services.Api.Api.V1;
+namespace CityShare.Services.Api.Endpoints.V1;
 
 public class Map
 {

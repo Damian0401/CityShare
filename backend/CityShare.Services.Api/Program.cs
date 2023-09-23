@@ -4,8 +4,8 @@ using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Infrastructure;
 using CityShare.Backend.Persistence;
 using CityShare.Backend.Persistence.Extensions;
-using CityShare.Services.Api.Api;
-using CityShare.Services.Api.Extensions;
+using CityShare.Services.Api.Endpoints;
+using CityShare.Services.Api.SetUps;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);

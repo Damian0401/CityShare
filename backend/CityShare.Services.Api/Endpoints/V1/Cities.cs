@@ -1,16 +1,16 @@
-﻿using CityShare.Backend.Application.Categories.Queries;
+﻿using CityShare.Backend.Application.Cities.Queries;
 using CityShare.Services.Api.Common;
 using MediatR;
 
-namespace CityShare.Services.Api.Api.V1;
+namespace CityShare.Services.Api.Endpoints.V1;
 
-public class Categories
+public class Cities
 {
     public static async Task<IResult> GetAll(
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var result = await mediator.Send(new GetAllCategoriesQuery(), cancellationToken);
+        var result = await mediator.Send(new GetAllCitiesQuery(), cancellationToken);
 
         return ResultResolver.Resolve(result);
     }
