@@ -27,7 +27,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
     return "Not started";
   };
 
-  const handleEventClick = (eventId: number) => {
+  const handleEventClick = (eventId: string) => {
     navigate(Routes.Events + "/" + eventId);
   };
 

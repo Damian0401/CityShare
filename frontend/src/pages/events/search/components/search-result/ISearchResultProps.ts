@@ -2,5 +2,5 @@ import { IEvent } from "../../../../../common/interfaces";
 
 export interface ISearchResultProps {
   events: IEvent[];
-  onLikeClick: (eventId: number, isLiked: boolean) => void;
+  onLikeClick: (eventId: string, isLiked: boolean) => void;
 }

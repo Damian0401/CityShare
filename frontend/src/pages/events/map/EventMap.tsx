@@ -11,7 +11,7 @@ import MapMarker from "./components/MapMarker/MapMarker";
 
 const mockEvents: IEvent[] = [
   {
-    id: 1,
+    id: "1",
     title: "Event 1",
     description:
       "Event 1 description, a little bit longer, ok maybe a little bit more longer, let's see how it will look like",
@@ -30,7 +30,7 @@ const mockEvents: IEvent[] = [
     comments: 10,
   },
   {
-    id: 2,
+    id: "2",
     title: "Event 2",
     description: "Event 2 description",
     cityId: 1,
@@ -48,7 +48,7 @@ const mockEvents: IEvent[] = [
     comments: 20,
   },
   {
-    id: 3,
+    id: "3",
     title: "Event 3",
     description: "Event 3 description",
     cityId: 1,
@@ -66,7 +66,7 @@ const mockEvents: IEvent[] = [
     comments: 30,
   },
   {
-    id: 4,
+    id: "4",
     title: "Event 4",
     description: "Event 4 description",
     cityId: 2,
@@ -84,7 +84,7 @@ const mockEvents: IEvent[] = [
     comments: 40,
   },
   {
-    id: 5,
+    id: "5",
     title: "Event 5",
     description: "Event 5 description",
     cityId: 2,
@@ -148,7 +148,7 @@ const EventMap = observer(() => {
     ]);
   };
 
-  const handleLikeClick = (eventId: number, isLiked: boolean) => {
+  const handleLikeClick = (eventId: string, isLiked: boolean) => {
     const event = events.find((e) => e.id === eventId);
 
     if (!event) return;

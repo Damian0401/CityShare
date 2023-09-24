@@ -13,7 +13,7 @@ import { updateLikes } from "../../../common/utils/helpers";
 
 const events: IEvent[] = [
   {
-    id: 1,
+    id: "1",
     title: "Event 1",
     description:
       "Event 1 description, a little bit longer, ok maybe a little bit more longer, let's see how it will look like",
@@ -39,7 +39,7 @@ const events: IEvent[] = [
     comments: 10,
   },
   {
-    id: 2,
+    id: "2",
     title: "Event 2",
     description: "Event 2 description",
     cityId: 1,
@@ -71,7 +71,7 @@ const EventDetails = observer(() => {
       return;
     }
 
-    const event = events.find((p) => p.id === +id);
+    const event = events.find((p) => p.id === id);
 
     if (!event) {
       navigate(Routes.NotFound);

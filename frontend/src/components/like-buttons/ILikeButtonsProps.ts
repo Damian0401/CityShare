@@ -1,7 +1,7 @@
 export interface ILikeButtonsProps {
-  id: number;
+  id: string;
   likes: number;
   isLiked?: boolean;
   className?: string;
-  onLike: (id: number, isLiked: boolean) => void;
+  onLike: (id: string, isLiked: boolean) => void;
 }

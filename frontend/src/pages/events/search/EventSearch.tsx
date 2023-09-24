@@ -9,7 +9,7 @@ import { updateLikes } from "../../../common/utils/helpers";
 
 const mockEvents: IEvent[] = [
   {
-    id: 1,
+    id: "1",
     title: "Title 1",
     description: "Description 1",
     createdAt: new Date(),
@@ -31,7 +31,7 @@ const mockEvents: IEvent[] = [
     comments: 10,
   },
   {
-    id: 2,
+    id: "2",
     title: "Title 2",
     description: "Description 2",
     createdAt: new Date(),
@@ -53,7 +53,7 @@ const mockEvents: IEvent[] = [
     comments: 10,
   },
   {
-    id: 3,
+    id: "3",
     title: "Title 3",
     description: "Description 3",
     createdAt: new Date(),
@@ -82,7 +82,7 @@ const EventSearch = observer(() => {
     console.log(query);
   };
 
-  const handleLikeClick = (eventId: number, isLiked: boolean) => {
+  const handleLikeClick = (eventId: string, isLiked: boolean) => {
     const event = events.find((e) => e.id === eventId);
 
     if (!event) return;

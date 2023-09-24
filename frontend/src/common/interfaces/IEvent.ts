@@ -1,7 +1,7 @@
 import { IAddress } from ".";
 
 export interface IEvent {
-  id: number;
+  id: string;
   title: string;
   description: string;
   address: IAddress;
