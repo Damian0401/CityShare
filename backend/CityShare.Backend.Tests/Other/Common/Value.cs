@@ -7,7 +7,7 @@ using CityShare.Backend.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
 
-namespace CityShare.Backend.Tests.Common;
+namespace CityShare.Backend.Tests.Other.Common;
 
 internal class Value
 {

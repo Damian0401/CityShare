@@ -7,7 +7,7 @@ using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Domain.Entities;
 using Moq;
 
-namespace CityShare.Backend.Tests.Common;
+namespace CityShare.Backend.Tests.Other.Common;
 
 internal class Any
 {

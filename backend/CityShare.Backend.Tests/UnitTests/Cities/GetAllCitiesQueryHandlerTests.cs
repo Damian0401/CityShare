@@ -1,8 +1,8 @@
 ﻿using CityShare.Backend.Application.Cities.Queries;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Cities;
-using CityShare.Backend.Tests.Common;
-using CityShare.Backend.Tests.Helpers;
+using CityShare.Backend.Tests.Other.Common;
+using CityShare.Backend.Tests.Other.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 

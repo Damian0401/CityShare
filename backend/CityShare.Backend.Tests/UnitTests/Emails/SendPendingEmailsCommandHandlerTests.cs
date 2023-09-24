@@ -1,7 +1,7 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Emails.Commands;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Tests.Common;
+using CityShare.Backend.Tests.Other.Common;
 using Microsoft.Extensions.Logging;
 using Moq;
 
