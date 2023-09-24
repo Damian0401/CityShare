@@ -37,8 +37,8 @@ public class GetAllCitiesQueryHandler : IRequestHandler<GetAllCitiesQuery, Resul
         _logger.LogInformation("Checking for cities in {@Type}", _cacheService.GetType());
         if (_cacheService.TryGet<IEnumerable<CityDto>>(CacheKeys.Cities, out var cachedCities))
         {
-            var count = cachedCities?.Count() ?? throw new InvalidStateException();
-            _logger.LogInformation("Returning {@Count} cached cities", count);
+            var cachedCount = cachedCities?.Count() ?? throw new InvalidStateException();
+            _logger.LogInformation("Returning {@Count} cached cities", cachedCount);
             return Result<IEnumerable<CityDto>>.Success(cachedCities);
         }
 
@@ -48,8 +48,14 @@ public class GetAllCitiesQueryHandler : IRequestHandler<GetAllCitiesQuery, Resul
         _logger.LogInformation("Mapping cities to DTOs");
         var citiesDto = _mapper.Map<IEnumerable<CityDto>>(cities);
 
-        _logger.LogInformation("Caching {@Count} cities", citiesDto.Count());
-        _cacheService.Set(CacheKeys.Cities, citiesDto);
+        var count = citiesDto.Count();
+
+        _logger.LogInformation("Caching {@Count} cities", count);
+        var options = new CacheServiceOptions
+        {
+            Size = count
+        };
+        _cacheService.Set(CacheKeys.Cities, citiesDto, options);
 
         _logger.LogInformation("Returning cities");
         return Result<IEnumerable<CityDto>>.Success(citiesDto);
