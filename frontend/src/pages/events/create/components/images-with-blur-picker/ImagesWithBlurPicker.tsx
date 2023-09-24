@@ -2,15 +2,13 @@ import { useDisclosure } from "@chakra-ui/react";
 import { IImagesWithBlurPickerProps } from "./IImagesWithBlurPickerProps";
 import { useState } from "react";
 import {
-  INewImage,
-  IEventCreateValues,
+  INewImage
 } from "../../../../../common/interfaces";
 import ImagePicker from "../../../../../components/image-picker/ImagePicker";
-import { nameof } from "ts-simple-nameof";
 import ConfirmDialog from "../../../../../components/confirm-dialog/ConfirmDialog";
 
 const ImagesWithBlurPicker: React.FC<IImagesWithBlurPickerProps> = (props) => {
-  const { setImages, setImagesTouched, allImages, errors, touched } = props;
+  const { setImages, setImagesTouched, sizeLimit, allImages, errors, touched } = props;
 
   const {
     isOpen: isBlurDialogOpen,
@@ -59,10 +57,10 @@ const ImagesWithBlurPicker: React.FC<IImagesWithBlurPickerProps> = (props) => {
   return (
     <>
       <ImagePicker
-        name={nameof<IEventCreateValues>((x) => x.images)}
         label="Images"
         errors={errors}
         touched={touched}
+        sizeLimit={sizeLimit}
         isRequired
         highlightedImages={imagesToBlur}
         onImagesChange={async (newImages) =>

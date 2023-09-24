@@ -6,4 +6,5 @@ export interface IImagesWithBlurPickerProps {
   errors: string;
   touched: boolean;
   allImages: INewImage[];
+  sizeLimit?: number;
 }

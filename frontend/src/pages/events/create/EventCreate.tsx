@@ -17,6 +17,7 @@ import AddressPickerModal from "./components/address-picker-modal/AddressPickerM
 import MultiOptionSelect from "../../../components/multi-option-select/MultiOptionSelect";
 import DateTimePicker from "../../../components/date-time-picker/DateTimePicker";
 import ImagesWithBlurPicker from "./components/images-with-blur-picker/ImagesWithBlurPicker";
+import Constants from "../../../common/utils/constants";
 
 const EventCreate = observer(() => {
   const {
@@ -157,6 +158,7 @@ const EventCreate = observer(() => {
               errors={errors.images as string}
               touched={touched.images as unknown as boolean}
               allImages={values.images}
+              sizeLimit={5 * Constants.FileSizes.MB}
               setImages={async (images) => {
                 await setFieldValue(
                   nameof<IEventCreateValues>((x) => x.images),

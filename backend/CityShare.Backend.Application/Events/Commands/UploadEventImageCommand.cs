@@ -154,6 +154,12 @@ public class UploadEventImageCommandHandler : IRequestHandler<UploadEventImageCo
             return Errors.MaxImagesNumber;
         }
 
+        if (request.Image.Length > Constants.ImageSizeLimitInMB * 1024 * 1024)
+        {
+            _logger.LogError("Image size is too big: {@Size}", request.Image.Length);
+            return Errors.ImageSizeLimit;
+        }
+
         return Enumerable.Empty<Error>();
     }
 }
