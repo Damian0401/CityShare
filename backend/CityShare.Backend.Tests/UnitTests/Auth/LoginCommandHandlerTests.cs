@@ -47,6 +47,10 @@ public class LoginCommandHandlerTests
             x => x.FindByEmailAsync(Any.String),
             (ApplicationUser?)Value.Null);
 
+        _userManagerMockHelper.SetupAsync(
+            x => x.CheckPasswordAsync(Any.ApplicationUser, Any.String),
+            Value.True);
+
         // Act
         var result = await _systemUnderTests
             .Handle(_loginCommand, Value.CancelationToken);

@@ -46,6 +46,14 @@ public class RefreshCommandHandlerTests
         _jwtProviderMock.Setup(x => x.GetEmailFromToken(Any.String))
             .Returns((string?)Value.Null);
 
+        _userManagerMockHelper.SetupAsync(
+            x => x.FindByEmailAsync(Any.String),
+            Value.ApplicationUser);
+
+        _userManagerMockHelper.SetupAsync(
+            x => x.VerifyUserTokenAsync(Any.ApplicationUser, Any.String, Any.String, Any.String),
+            Value.True);
+
         // Act
         var result = await _systemUnderTests.Handle(_refreshCommand, Value.CancelationToken);
 
@@ -63,6 +71,10 @@ public class RefreshCommandHandlerTests
         _userManagerMockHelper.SetupAsync(
             x => x.FindByEmailAsync(Any.String),
             (ApplicationUser?)Value.Null);
+
+        _userManagerMockHelper.SetupAsync(
+            x => x.VerifyUserTokenAsync(Any.ApplicationUser, Any.String, Any.String, Any.String),
+            Value.True);
 
         // Act
         var result = await _systemUnderTests.Handle(_refreshCommand, Value.CancelationToken);

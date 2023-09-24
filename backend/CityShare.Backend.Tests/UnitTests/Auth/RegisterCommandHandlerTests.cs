@@ -60,6 +60,10 @@ public class RegisterCommandHandlerTests
             x => x.FindByEmailAsync(Any.String),
             Value.ApplicationUser);
 
+        _userManagerMockHelper.SetupAsync(
+            x => x.CreateAsync(Any.ApplicationUser, Any.String),
+            Value.IdentityResultSecceeded);
+
         // Act
         var result = await _systemUnderTests
             .Handle(_registerCommand, Value.CancelationToken);

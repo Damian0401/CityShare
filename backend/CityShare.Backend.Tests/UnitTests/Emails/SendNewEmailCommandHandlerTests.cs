@@ -37,6 +37,10 @@ public class SendNewEmailCommandHandlerTests
         _emailRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync((Email?)Value.Null);
 
+        var newStatusId = Value.Int;
+        _emailRepositoryMock.Setup(x => x.GetStatusIdAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(newStatusId);
+
         // Act
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 

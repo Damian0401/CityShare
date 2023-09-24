@@ -38,6 +38,10 @@ public class ConfirmEmailCommandHandlerTests
             x => x.FindByIdAsync(Any.String),
             (ApplicationUser?)Value.Null);
 
+        _userManagerMockHelper.SetupAsync(
+            x => x.ConfirmEmailAsync(Any.ApplicationUser, Any.String),
+            Value.IdentityResultSecceeded);
+
         // Act
         var result = await _systemUnderTests.Handle(_confirmEmailCommand, Value.CancelationToken);
 
@@ -55,6 +59,10 @@ public class ConfirmEmailCommandHandlerTests
         _userManagerMockHelper.SetupAsync(
             x => x.FindByIdAsync(Any.String),
             user);
+
+        _userManagerMockHelper.SetupAsync(
+            x => x.ConfirmEmailAsync(Any.ApplicationUser, Any.String),
+            Value.IdentityResultSecceeded);
 
         // Act
         var result = await _systemUnderTests.Handle(_confirmEmailCommand, Value.CancelationToken);
