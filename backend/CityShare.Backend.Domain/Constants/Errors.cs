@@ -51,8 +51,13 @@ public static class Errors
         new Error("CategoryNotExists", $"Category with id {categoryId} does not exists")
     };
 
-    public static IEnumerable<Error> Unauthorized => new[]
+    public static IEnumerable<Error> Forbidden => new[]
     {
-        new Error("Unauthorized", "User in unauthorized to perform this operation")
+        new Error("Forbidden", "User is authorized, but does not have permissions to perform this operation")
+    };
+
+    public static IEnumerable<Error> MaxImagesNumber => new[]
+    {
+        new Error("MaxImagesNumber", "Reached maximal number of images for one event")
     };
 }

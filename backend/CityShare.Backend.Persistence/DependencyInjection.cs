@@ -2,6 +2,7 @@
 using CityShare.Backend.Application.Core.Abstractions.Cities;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Events;
+using CityShare.Backend.Application.Core.Abstractions.Images;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ public static class DependencyInjection
         services.AddScoped<ICityRepository, CityRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
+        services.AddScoped<IImageRepository, ImageRepository>();
 
         return services;
     }

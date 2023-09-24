@@ -7,7 +7,7 @@ public interface IEmailRepository
 {
     Task<Guid> CreateAsync(CreateEmailDto dto, CancellationToken cancellationToken = default);
     Task<Email?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
-    Task<bool> UpdateAsync(Email email, CancellationToken cancellationToken = default);
+    Task UpdateAsync(Email email, CancellationToken cancellationToken = default);
     Task<int> GetStatusIdAsync(string statusName, CancellationToken cancellationToken = default);
     Task<IEnumerable<Email>> GetAllWithStatusAsync(string statusName, CancellationToken cancellationToken = default);
     Task<IEnumerable<EmailPriority>> GetAllPrioritiesAsync(CancellationToken cancellationToken = default);

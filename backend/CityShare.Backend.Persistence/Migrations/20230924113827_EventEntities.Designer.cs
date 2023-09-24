@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityShare.Backend.Persistence.Migrations
 {
     [DbContext(typeof(CityShareDbContext))]
-    [Migration("20230916233700_EventEntities")]
+    [Migration("20230924113827_EventEntities")]
     partial class EventEntities
     {
         /// <inheritdoc />
@@ -24,21 +24,6 @@ namespace CityShare.Backend.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CategoryEvent", b =>
-                {
-                    b.Property<int>("CategoriesId")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("EventsId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("CategoriesId", "EventsId");
-
-                    b.HasIndex("EventsId");
-
-                    b.ToTable("CategoryEvent");
-                });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Address", b =>
                 {
@@ -390,16 +375,39 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Image", b =>
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EventCategory", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.HasKey("EventId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("EventCategories");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsBlurred")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("ShouldBeBlurred")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Uri")
                         .IsRequired()
@@ -570,21 +578,6 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("CategoryEvent", b =>
-                {
-                    b.HasOne("CityShare.Backend.Domain.Entities.Category", null)
-                        .WithMany()
-                        .HasForeignKey("CategoriesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CityShare.Backend.Domain.Entities.Event", null)
-                        .WithMany()
-                        .HasForeignKey("EventsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.City", b =>
                 {
                     b.HasOne("CityShare.Backend.Domain.Entities.Address", "Address")
@@ -657,6 +650,21 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.Navigation("Author");
 
                     b.Navigation("City");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EventCategory", b =>
+                {
+                    b.HasOne("CityShare.Backend.Domain.Entities.Category", null)
+                        .WithMany("EventCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CityShare.Backend.Domain.Entities.Event", null)
+                        .WithMany("EventCategories")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Image", b =>
@@ -741,6 +749,11 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.Navigation("Likes");
                 });
 
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("EventCategories");
+                });
+
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailPriority", b =>
                 {
                     b.Navigation("Emails");
@@ -754,6 +767,8 @@ namespace CityShare.Backend.Persistence.Migrations
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Event", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("EventCategories");
 
                     b.Navigation("Images");
 

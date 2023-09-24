@@ -33,6 +33,12 @@ public static class Endpoints
         public class Events
         {
             public const string Index = "/api/v1/events";
+
+            public class Id
+            {
+                public const string Index = "/api/v1/events/{id}";
+                public const string Images = "/api/v1/events/{id}/images";
+            }
         }
     }
 }

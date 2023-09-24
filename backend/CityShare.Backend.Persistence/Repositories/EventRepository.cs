@@ -1,5 +1,6 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Persistence.Repositories;
@@ -33,5 +34,24 @@ public class EventRepository : IEventRepository
         await _context.SaveChangesAsync(cancellationToken);
 
         return eventToCreate.Id;
+    }
+
+    public async Task<bool> ExistsAsync(Guid eventId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Checking if event with id {@Id} exists in database", eventId);
+        var eventExists = await _context.Events
+            .AnyAsync(x => x.Id.Equals(eventId), cancellationToken);
+
+        return eventExists;
+    }
+
+    public async Task<int> GetImagesNumberAsync(Guid eventId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Getting number of images for event with id {@Id} from database", eventId);
+        var imagesNumber = await _context.Images
+            .Where(x => x.EventId.Equals(eventId))
+            .CountAsync();
+
+        return imagesNumber;
     }
 }

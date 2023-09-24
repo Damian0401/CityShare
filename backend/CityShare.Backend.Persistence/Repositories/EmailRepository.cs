@@ -56,12 +56,12 @@ public class EmailRepository : IEmailRepository
         return email;
     }
 
-    public async Task<bool> UpdateAsync(Email email, CancellationToken cancellationToken = default)
+    public async Task UpdateAsync(Email email, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Updating email with id {@Id}", email.Id);
         _context.Emails.Update(email);
 
-        return await _context.SaveChangesAsync(cancellationToken) > 0;
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<int> GetStatusIdAsync(string statusName, CancellationToken cancellationToken = default)

@@ -11,13 +11,13 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Map.Queries;
 
-public record SearchQuery(string Phrase) : IRequest<Result<AddressDetailsDto>>;
+public record SearchQuery(string Query) : IRequest<Result<AddressDetailsDto>>;
 
 public class SearchQueryValidator : AbstractValidator<SearchQuery>
 {
     public SearchQueryValidator()
     {
-        RuleFor(x => x.Phrase).NotEmpty();
+        RuleFor(x => x.Query).NotEmpty();
     }
 }
 
@@ -50,7 +50,7 @@ public class SearchQueryHandler : IRequestHandler<SearchQuery, Result<AddressDet
         }
 
         _logger.LogInformation("Getting result from {@Service}", _nominatimService.GetType());
-        var result = await _nominatimService.SearchByQueryAsync(request.Phrase, cancellationToken);
+        var result = await _nominatimService.SearchByQueryAsync(request.Query, cancellationToken);
 
         if (result is null)
         {

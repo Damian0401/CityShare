@@ -11,8 +11,15 @@ internal class ImageConfiguration : IEntityTypeConfiguration<Image>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Uri)
-            .IsRequired()
             .HasMaxLength(256);
+
+        builder.Property(x => x.ShouldBeBlurred)
+            .IsRequired()
+            .HasDefaultValue(false);
+
+        builder.Property(x => x.IsBlurred)
+            .IsRequired()
+            .HasDefaultValue(false);
 
         builder.HasOne<Event>()
             .WithMany(x => x.Images)

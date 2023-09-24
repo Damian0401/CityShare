@@ -6,6 +6,7 @@ using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
+using CityShare.Backend.Domain.Extensions;
 using CityShare.Backend.Domain.Shared;
 using FluentValidation;
 using MediatR;
@@ -56,7 +57,7 @@ public class CreateEventCommandValidator : AbstractValidator<CreateEventCommand>
         RuleFor(x => x.Request.CategoryIds)
             .NotEmpty()
             .Must(x => x.Count() > 0).WithMessage(x => $"{nameof(x.Request.CategoryIds)} must contains any ids")
-            .Must(x => x.Count() <= 3).WithMessage(x => $"{nameof(x.Request.CategoryIds)} must have less than 3 ids")
+            .Must(x => x.Count() <= Constants.MaxEvenCategoriesNumber).WithMessage(x => $"{nameof(x.Request.CategoryIds)} can contain max {Constants.MaxEvenCategoriesNumber} ids")
             .WithName(x => nameof(x.Request.CategoryIds));
 
         RuleFor(x => x.Request.StartDate)
@@ -138,42 +139,34 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
 
     private async Task<IEnumerable<Error>> ValidateRequestAsync(CreateEventCommand request, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Creating validation tasks");
-        var userTask = Task.Run(() => CheckIfUserIsAuthorizedAsync(request.UserId));
+        _logger.LogInformation("Checking if of user with id {@Id} is confirmed", request.UserId);
+        var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(request.UserId);
+
+        if (!isEmailConfirmed)
+        {
+            _logger.LogError("Email of user with id {@Id} is not confirmed", request.UserId);
+            return Errors.Forbidden;
+        }
+
+        _logger.LogInformation("Creating data validation tasks");
         var cityTask = Task.Run(() => CheckIfCityExistsAsync(request.Request.CityId, cancellationToken));
         var categoryTask = Task.Run(() => CheckIfCategoriesExistsAsync(request.Request.CategoryIds, cancellationToken));
 
-        var allTasks = new List<Task<IEnumerable<Error>?>>
+        var allTasks = new List<Task<IEnumerable<Error>>>
         {
-            userTask,
             cityTask,
             categoryTask
         };
 
-        _logger.LogInformation("Awaiting all validation tasks");
+        _logger.LogInformation("Awaiting all data validation tasks");
         var results = await Task.WhenAll(allTasks);
 
-        var errors = results.Where(x => x is not null)
-            .SelectMany(x => x!);
+        var errors = results.SelectMany(x => x);
 
         return errors;
     }
 
-    private async Task<IEnumerable<Error>?> CheckIfUserIsAuthorizedAsync(string userId)
-    {
-        _logger.LogInformation("Searching for user with id {@Id}", userId);
-        var user = await _userManager.FindByIdAsync(userId);
-
-        if (user is null || !user.EmailConfirmed)
-        {
-            _logger.LogError("User with id {@Id} and confirmed email not found", userId);
-            return Errors.Unauthorized;
-        }
-
-        return null;
-    }
-
-    private async Task<IEnumerable<Error>?> CheckIfCityExistsAsync(int cityId, CancellationToken cancellationToken = default)
+    private async Task<IEnumerable<Error>> CheckIfCityExistsAsync(int cityId, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Checking if city with id {@Id} exsits", cityId);
         var cityExists = await _cityRepository.ExistsAsync(cityId, cancellationToken);
@@ -184,10 +177,10 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
             return Errors.CityNotExists(cityId);
         }
 
-        return null;
+        return Enumerable.Empty<Error>();
     }
 
-    private async Task<IEnumerable<Error>?> CheckIfCategoriesExistsAsync(IEnumerable<int> categoryIds, CancellationToken cancellationToken = default)
+    private async Task<IEnumerable<Error>> CheckIfCategoriesExistsAsync(IEnumerable<int> categoryIds, CancellationToken cancellationToken = default)
     {
         var existingCategoryIds = await _categoryRepository.GetAllIdsAsync(cancellationToken);
 

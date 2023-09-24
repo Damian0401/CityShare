@@ -1,5 +1,7 @@
 ﻿using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Shared;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace CityShare.Services.Api.Common;
 
@@ -12,10 +14,14 @@ public class ResultResolver
             return Results.NoContent();
         }
 
-        if (result.Errors is not null &&
-            result.Errors.Any(x => x.Code.Equals(Errors.NotFound.First().Code)))
+        if (result.Errors is not null && result.Errors.All(e => e.Equals(Errors.NotFound.First())))
         {
             return Results.NotFound();
+        }
+
+        if (result.Errors is not null && result.Errors.All(e => e.Equals(Errors.EmailAlreadyConfirmed.First())))
+        {
+            return Results.StatusCode(StatusCodes.Status403Forbidden);
         }
 
         return Results.BadRequest(result.Errors);
@@ -28,10 +34,14 @@ public class ResultResolver
             return Results.Ok(result.Value);
         }
 
-        if (result.Errors is not null && 
-            result.Errors.Any(x => x.Code.Equals(Errors.NotFound.First().Code)))
+        if (result.Errors is not null && result.Errors.All(e => e.Equals(Errors.NotFound.First())))
         {
             return Results.NotFound();
+        }
+
+        if (result.Errors is not null && result.Errors.All(e => e.Equals(Errors.EmailAlreadyConfirmed.First())))
+        {
+            return Results.StatusCode(StatusCodes.Status403Forbidden);
         }
 
         return Results.BadRequest(result.Errors);

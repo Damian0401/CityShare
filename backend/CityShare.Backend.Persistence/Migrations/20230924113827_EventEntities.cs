@@ -115,30 +115,6 @@ namespace CityShare.Backend.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CategoryEvent",
-                columns: table => new
-                {
-                    CategoriesId = table.Column<int>(type: "int", nullable: false),
-                    EventsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_CategoryEvent", x => new { x.CategoriesId, x.EventsId });
-                    table.ForeignKey(
-                        name: "FK_CategoryEvent_Categories_CategoriesId",
-                        column: x => x.CategoriesId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_CategoryEvent_Events_EventsId",
-                        column: x => x.EventsId,
-                        principalTable: "Events",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Comments",
                 columns: table => new
                 {
@@ -160,13 +136,38 @@ namespace CityShare.Backend.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "EventCategories",
+                columns: table => new
+                {
+                    EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CategoryId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventCategories", x => new { x.EventId, x.CategoryId });
+                    table.ForeignKey(
+                        name: "FK_EventCategories_Categories_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Categories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EventCategories_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Images",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Uri = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
-                    EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ShouldBeBlurred = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
+                    IsBlurred = table.Column<bool>(type: "bit", nullable: false, defaultValue: false)
                 },
                 constraints: table =>
                 {
@@ -203,11 +204,6 @@ namespace CityShare.Backend.Persistence.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CategoryEvent_EventsId",
-                table: "CategoryEvent",
-                column: "EventsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Cities_AddressId",
                 table: "Cities",
                 column: "AddressId",
@@ -223,6 +219,11 @@ namespace CityShare.Backend.Persistence.Migrations
                 name: "IX_Comments_EventId",
                 table: "Comments",
                 column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventCategories_CategoryId",
+                table: "EventCategories",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_AddressId",
@@ -261,10 +262,10 @@ namespace CityShare.Backend.Persistence.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "CategoryEvent");
+                name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Comments");
+                name: "EventCategories");
 
             migrationBuilder.DropTable(
                 name: "Images");
