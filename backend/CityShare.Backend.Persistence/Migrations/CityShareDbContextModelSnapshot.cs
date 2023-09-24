@@ -22,6 +22,29 @@ namespace CityShare.Backend.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Address", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("X")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Y")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Address");
+                });
+
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
@@ -85,6 +108,109 @@ namespace CityShare.Backend.Persistence.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.BoundingBox", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("MaxX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MaxY")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MinX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("MinY")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BoundingBoxes");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("BoundingBoxId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId")
+                        .IsUnique();
+
+                    b.HasIndex("BoundingBoxId")
+                        .IsUnique();
+
+                    b.ToTable("Cities");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Email", b =>
@@ -196,6 +322,123 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EmailTemplates");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Event", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CityId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(3000)
+                        .HasColumnType("nvarchar(3000)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AddressId")
+                        .IsUnique();
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("CityId")
+                        .IsUnique();
+
+                    b.ToTable("Events");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EventCategory", b =>
+                {
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.HasKey("EventId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("EventCategories");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Image", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsBlurred")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<bool>("ShouldBeBlurred")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<string>("Uri")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Like", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("EventId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("EventId");
+
+                    b.ToTable("Likes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -331,6 +574,34 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.City", b =>
+                {
+                    b.HasOne("CityShare.Backend.Domain.Entities.Address", "Address")
+                        .WithOne()
+                        .HasForeignKey("CityShare.Backend.Domain.Entities.City", "AddressId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("CityShare.Backend.Domain.Entities.BoundingBox", "BoundingBox")
+                        .WithOne()
+                        .HasForeignKey("CityShare.Backend.Domain.Entities.City", "BoundingBoxId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("BoundingBox");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Comment", b =>
+                {
+                    b.HasOne("CityShare.Backend.Domain.Entities.Event", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Email", b =>
                 {
                     b.HasOne("CityShare.Backend.Domain.Entities.EmailPriority", "Prirority")
@@ -348,6 +619,72 @@ namespace CityShare.Backend.Persistence.Migrations
                     b.Navigation("Prirority");
 
                     b.Navigation("Status");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Event", b =>
+                {
+                    b.HasOne("CityShare.Backend.Domain.Entities.Address", "Address")
+                        .WithOne()
+                        .HasForeignKey("CityShare.Backend.Domain.Entities.Event", "AddressId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("CityShare.Backend.Domain.Entities.ApplicationUser", "Author")
+                        .WithMany("Events")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("CityShare.Backend.Domain.Entities.City", "City")
+                        .WithOne()
+                        .HasForeignKey("CityShare.Backend.Domain.Entities.Event", "CityId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.Navigation("Address");
+
+                    b.Navigation("Author");
+
+                    b.Navigation("City");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.EventCategory", b =>
+                {
+                    b.HasOne("CityShare.Backend.Domain.Entities.Category", null)
+                        .WithMany("EventCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CityShare.Backend.Domain.Entities.Event", null)
+                        .WithMany("EventCategories")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Image", b =>
+                {
+                    b.HasOne("CityShare.Backend.Domain.Entities.Event", null)
+                        .WithMany("Images")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Like", b =>
+                {
+                    b.HasOne("CityShare.Backend.Domain.Entities.ApplicationUser", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
+                    b.HasOne("CityShare.Backend.Domain.Entities.Event", null)
+                        .WithMany("Likes")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -401,6 +738,18 @@ namespace CityShare.Backend.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.ApplicationUser", b =>
+                {
+                    b.Navigation("Events");
+
+                    b.Navigation("Likes");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Category", b =>
+                {
+                    b.Navigation("EventCategories");
+                });
+
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailPriority", b =>
                 {
                     b.Navigation("Emails");
@@ -409,6 +758,17 @@ namespace CityShare.Backend.Persistence.Migrations
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.EmailStatus", b =>
                 {
                     b.Navigation("Emails");
+                });
+
+            modelBuilder.Entity("CityShare.Backend.Domain.Entities.Event", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("EventCategories");
+
+                    b.Navigation("Images");
+
+                    b.Navigation("Likes");
                 });
 #pragma warning restore 612, 618
         }

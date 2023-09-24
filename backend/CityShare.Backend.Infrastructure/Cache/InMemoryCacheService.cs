@@ -16,34 +16,58 @@ public class InMemoryCacheService : ICacheService
         _memoryCache = memoryCache;
     }
 
-    public bool TryGet<T>(string key, out T? value)
+    public bool TryGet<T>(object key, out T? value)
     {
         return _memoryCache.TryGetValue(key, out value);
     }
 
-    public T? Get<T>(string key)
+    public T? Get<T>(object key)
     {
         return _memoryCache.Get<T>(key);
     }
 
-    public void Set<T>(string key, T value, int size = 1)
+    public void Set<T>(object key, T value, CacheServiceOptions? options = null)
     {
-        var options = new MemoryCacheEntryOptions();
+        var entryOptions = new MemoryCacheEntryOptions();
 
-        if (_cacheSettings.AbsoluteExpirationSeconds is not null)
+        SetAbsoluteExpirationTime(options, entryOptions);
+        SetSlidingExpirationTime(options, entryOptions);
+        entryOptions.Size = options?.Size ?? 1;
+
+        _memoryCache.Set(key, value, entryOptions);
+    }
+
+    private void SetSlidingExpirationTime(CacheServiceOptions? options, MemoryCacheEntryOptions entryOptions)
+    {
+        if (options?.SlidingExpirationSeconds is not null)
         {
-            var seconds = (double)_cacheSettings.AbsoluteExpirationSeconds;
-            options.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(seconds);
+            var seconds = options.SlidingExpirationSeconds.Value;
+            entryOptions.SlidingExpiration = TimeSpan.FromSeconds(seconds);
+
+            return;
         }
 
         if (_cacheSettings.SlidingExpirationSeconds is not null)
         {
             var seconds = (double)_cacheSettings.SlidingExpirationSeconds;
-            options.SlidingExpiration = TimeSpan.FromSeconds(seconds);
+            entryOptions.SlidingExpiration = TimeSpan.FromSeconds(seconds);
+        }
+    }
+
+    private void SetAbsoluteExpirationTime(CacheServiceOptions? options, MemoryCacheEntryOptions entryOptions)
+    {
+        if (options?.AbsotuleExpirationSeconds is not null)
+        {
+            var seconds = options.AbsotuleExpirationSeconds.Value;
+            entryOptions.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(seconds);
+
+            return;
         }
 
-        options.Size = size;
-
-        _memoryCache.Set<T>(key, value, options);
+        if (_cacheSettings.AbsoluteExpirationSeconds is not null)
+        {
+            var seconds = (double)_cacheSettings.AbsoluteExpirationSeconds;
+            entryOptions.AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(seconds);
+        }
     }
 }

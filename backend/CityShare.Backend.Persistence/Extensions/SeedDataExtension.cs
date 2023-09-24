@@ -16,13 +16,17 @@ public static class SeedDataExtension
 
         var context = services.GetRequiredService<CityShareDbContext>();
 
-        await Roles.SeedAsync(roleManager);
+        await Users.SeedRolesAsync(roleManager);
 
         await Emails.SeedEmailTemplatesAsync(context);
 
         await Emails.SeedEmailPrioritiesAsync(context);
 
         await Emails.SeedEmailStatusesAsync(context);
+
+        await Events.SeedCitiesAsync(context);
+
+        await Events.SeedCategoriesAsync(context);
 
         return serviceProvider;
     }

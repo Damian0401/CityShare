@@ -1,10 +1,9 @@
-﻿using CityShare.Backend.Application.Core.Dtos;
-using CityShare.Backend.Application.Core.Models.Map.Reverse;
-using CityShare.Backend.Application.Core.Models.Map.Search;
-using CityShare.Backend.Application.Core.Models.Nominatim.Reverse;
-using CityShare.Backend.Application.Core.Models.Nominatim.Search;
+﻿using CityShare.Backend.Application.Core.Dtos.Categories;
+using CityShare.Backend.Application.Core.Dtos.Cities;
+using CityShare.Backend.Application.Core.Dtos.Map;
+using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
+using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Tests.Helpers;
 using Microsoft.AspNetCore.Identity;
 using System.Text.Json;
 
@@ -14,6 +13,7 @@ internal class Value
 {
     public static string String => Path.GetRandomFileName();
     public static int Int => Random.Shared.Next();
+    public static int Zero => 0;
     public static double Double => Random.Shared.NextDouble();
     public static readonly bool True = true;
     public static readonly bool False = false;
@@ -27,11 +27,17 @@ internal class Value
     public static readonly string SerializedNull = JsonSerializer.Serialize((object?)null);
     public static readonly string SerializedArrayWithSearchResult = JsonSerializer.Serialize(new[] 
     {
-        new NominatimSearchResponseModel()
+        new NominatimSearchResponseDto()
     });
-    public static readonly string SerializedReverseResponseModel = JsonSerializer.Serialize(new NominatimReverseResponseModel());
-    public static NominatimSearchResponseModel NominatimSearchResponseModel => new NominatimSearchResponseModel();
-    public static NominatimReverseResponseModel NominatimReverseResponseModel => new NominatimReverseResponseModel();
+    public static readonly string SerializedReverseResponseDto = JsonSerializer.Serialize(new NominatimReverseResponseDto());
+    public static AddressDetailsDto AddressDetailsDto => new AddressDetailsDto();
+    public static AddressDto AddressDto => new AddressDto();
     public static Email Email => new Email();
     public static EmailPriority EmailPriority => new EmailPriority();
+    public static NominatimSearchResponseDto NominatimSearchResponseDto => new NominatimSearchResponseDto();
+    public static NominatimReverseResponseDto NominatimReverseResponseDto => new NominatimReverseResponseDto();
+    public static IEnumerable<Category> Categories => Enumerable.Empty<Category>();
+    public static IEnumerable<CategoryDto> CategoryDtos => Enumerable.Empty<CategoryDto>();
+    public static IEnumerable<City> Cities => Enumerable.Empty<City>();
+    public static IEnumerable<CityDto> CityDtos => Enumerable.Empty<CityDto>();
 }

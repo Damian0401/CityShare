@@ -21,6 +21,7 @@ const ImagePicker: React.FC<IImagePickerProps> = (props) => {
     touched,
     label,
     isRequired,
+    sizeLimit,
     highlightedImages,
     onImagesChange,
     onImageRemove,
@@ -69,6 +70,7 @@ const ImagePicker: React.FC<IImagePickerProps> = (props) => {
           style={{ display: Constants.CSS.None }}
           accept={Constants.FileTypes.Image}
           onChange={handleFileChange}
+          maxLength={sizeLimit}
         />
         <Input
           onClick={() => inputRef.current?.click()}

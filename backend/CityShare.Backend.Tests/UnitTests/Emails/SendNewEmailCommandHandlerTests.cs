@@ -1,6 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Emails.Commands.SendNewEmail;
-using CityShare.Backend.Domain.Constants;
+using CityShare.Backend.Application.Emails.Commands;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Common;
 using Microsoft.Extensions.Logging;
@@ -37,6 +36,10 @@ public class SendNewEmailCommandHandlerTests
         // Arrange
         _emailRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync((Email?)Value.Null);
+
+        var newStatusId = Value.Int;
+        _emailRepositoryMock.Setup(x => x.GetStatusIdAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(newStatusId);
 
         // Act
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);

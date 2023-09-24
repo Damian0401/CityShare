@@ -1,19 +1,19 @@
-﻿using Azure.Storage.Queues;
-using CityShare.Backend.Application.Core.Abstractions.Authentication;
+﻿using CityShare.Backend.Application.Core.Abstractions.Auth;
+using CityShare.Backend.Application.Core.Abstractions.Blobs;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Abstractions.Queue;
+using CityShare.Backend.Application.Core.Abstractions.Queues;
+using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Domain.Constants;
-using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
-using CityShare.Backend.Infrastructure.Authentication;
+using CityShare.Backend.Infrastructure.Auth;
+using CityShare.Backend.Infrastructure.Blobs;
 using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Emails;
 using CityShare.Backend.Infrastructure.Nominatim;
-using CityShare.Backend.Infrastructure.Queue;
-using CityShare.Backend.Persistence;
-using Microsoft.AspNetCore.Identity;
+using CityShare.Backend.Infrastructure.Queues;
+using CityShare.Backend.Infrastructure.Utils;
 using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,8 +33,10 @@ public static class DependencyInjection
         services.AddScoped<IJwtProvider, JwtProvider>();
         services.AddScoped<ICacheService, InMemoryCacheService>();
         services.AddScoped<IEmailService, EmailService>();
-        services.AddScoped<IEmailRepository, EmailRepository>();
         services.AddScoped<IQueueService, StorageQueueService>();
+        services.AddScoped<IBlobService, StorageBlobService>();
+
+        services.AddSingleton<IClock, UtcClock>();
 
         var authSettings = new AuthSettings();
         configuration.Bind(AuthSettings.Key, authSettings);
@@ -60,12 +62,6 @@ public static class DependencyInjection
             options.TokenLifespan = TimeSpan.FromDays(authSettings.EmailConfirmationExpirationDays);
         });
 
-        services.AddIdentityCore<ApplicationUser>()
-            .AddRoles<IdentityRole>()
-            .AddTokenProvider<RefreshTokenProvider<ApplicationUser>>(RefreshToken.Provider)
-            .AddTokenProvider<EmailConfirmationTokenProvider<ApplicationUser>>(EmailConfirmation.Provider)
-            .AddEntityFrameworkStores<CityShareDbContext>();
-
         services.AddHttpClient<INominatimService, NominatimService>((serviveProvider, httpClient) =>
         {
             httpClient.DefaultRequestHeaders.UserAgent
@@ -77,6 +73,7 @@ public static class DependencyInjection
         services.AddAzureClients(builder =>
         {
             builder.AddQueueServiceClient(configuration.GetConnectionString(ConnectionStrings.StorageAccount));
+            builder.AddBlobServiceClient(configuration.GetConnectionString(ConnectionStrings.StorageAccount));
         });
 
         return services;

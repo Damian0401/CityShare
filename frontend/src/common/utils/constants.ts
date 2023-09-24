@@ -25,6 +25,9 @@ const Constants = {
   FileTypes: {
     Image: "image/*",
   },
+  FileSizes: {
+    MB: 1024 * 1024,
+  },
   Strings: {
     Empty: "",
     ImagePlaceholder: "https://picsum.photos/600/600",

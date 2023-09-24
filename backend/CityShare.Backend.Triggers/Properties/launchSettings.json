@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "CityShare.Backend.Triggers": {
-      "commandName": "Project",
-      "commandLineArgs": "--port 7225",
-      "launchBrowser": false
-    }
-  }
-}

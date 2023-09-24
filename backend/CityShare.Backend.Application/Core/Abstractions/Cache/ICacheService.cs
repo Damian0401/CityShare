@@ -2,7 +2,14 @@
 
 public interface ICacheService
 {
-    T? Get<T>(string key);
-    bool TryGet<T>(string key, out T? value);
-    void Set<T>(string key, T value, int size = 1);
+    T? Get<T>(object key);
+    bool TryGet<T>(object key, out T? value);
+    void Set<T>(object key, T value, CacheServiceOptions? options = null);
+}
+
+public class CacheServiceOptions
+{
+    public int? Size { get; set; }
+    public int? AbsotuleExpirationSeconds { get; set; }
+    public int? SlidingExpirationSeconds { get; set; }
 }
