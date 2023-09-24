@@ -33,6 +33,9 @@ public static class Methods
         app.MapPost(Endpoints.V1.Events.Index, V1.Events.Create)
             .RequireAuthorization();
 
+        app.MapGet(Endpoints.V1.Events.Id.Index, V1.Events.GetById)
+            .RequireAuthorization();
+
         app.MapPost(Endpoints.V1.Events.Id.Images, V1.Events.UploadImage)
             .RequireAuthorization();
 

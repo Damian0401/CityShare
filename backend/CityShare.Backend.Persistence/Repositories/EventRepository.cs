@@ -1,4 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Events;
+using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,24 @@ public class EventRepository : IEventRepository
         return eventExists;
     }
 
+    public async Task<SearchEventDto?> GetByIdWithDetails(Guid eventId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Searching for event with id {@Id} in database", eventId);
+        var searchResult = await _context.Events
+            .Include(x => x.Images)
+            .Include(x => x.Address)
+            .Include(x => x.EventCategories)
+            .Where(x => x.Id.Equals(eventId))
+            .Select(x => new SearchEventDto
+            {
+                Event = x,
+                Likes = x.Likes.Count(),
+                CommentsNumber = x.Comments.Count()
+            }).FirstOrDefaultAsync(cancellationToken);
+
+        return searchResult;
+    }
+
     public async Task<int> GetImagesNumberAsync(Guid eventId, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting number of images for event with id {@Id} from database", eventId);
@@ -53,5 +72,14 @@ public class EventRepository : IEventRepository
             .CountAsync();
 
         return imagesNumber;
+    }
+
+    public async Task<bool> IsEventLiked(Guid eventId, string userId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Searching for like with user id {@UserId} and event id {@EventId} in database", userId, eventId);
+        var likeExists = await _context.Likes
+            .AnyAsync(x => x.EventId.Equals(eventId) && x.AuthorId.Equals(userId));
+
+        return likeExists;
     }
 }

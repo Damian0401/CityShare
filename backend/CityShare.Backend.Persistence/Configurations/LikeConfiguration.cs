@@ -8,7 +8,7 @@ internal class LikeConfiguration : IEntityTypeConfiguration<Like>
 {
     public void Configure(EntityTypeBuilder<Like> builder)
     {
-        builder.HasKey(x => x.Id);
+        builder.HasKey(x => new { x.EventId, x.AuthorId });
 
         builder.HasOne<Event>()
             .WithMany(x => x.Likes)

@@ -182,6 +182,7 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
 
     private async Task<IEnumerable<Error>> CheckIfCategoriesExistsAsync(IEnumerable<int> categoryIds, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Getting all category ids using {@Type}", _categoryRepository.GetType());
         var existingCategoryIds = await _categoryRepository.GetAllIdsAsync(cancellationToken);
 
         var errors = new List<Error>();

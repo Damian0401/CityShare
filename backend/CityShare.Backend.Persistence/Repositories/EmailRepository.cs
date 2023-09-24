@@ -11,16 +11,13 @@ namespace CityShare.Backend.Persistence.Repositories;
 public class EmailRepository : IEmailRepository
 {
     private readonly CityShareDbContext _context;
-    private readonly IMapper _mapper;
     private readonly ILogger<EmailRepository> _logger;
 
     public EmailRepository(
         CityShareDbContext context,
-        IMapper mapper,
         ILogger<EmailRepository> logger)
     {
         _context = context;
-        _mapper = mapper;
         _logger = logger;
     }
 
@@ -77,7 +74,11 @@ public class EmailRepository : IEmailRepository
     private async Task<Email> CreateEmailAsync(CreateEmailDto dto, EmailTemplate template, EmailPriority emailPrirority)
     {
         _logger.LogInformation("Mapping template with id {@Id} to email", template.Id);
-        var email = _mapper.Map<Email>(template);
+        var email = new Email
+        {
+            Subject = template.Subject,
+            Body = template.Body
+        };
         email.PrirorityId = emailPrirority.Id;
         email.Receiver = dto.Receiver;
         email.StatusId = (await _context.EmailStatuses
@@ -111,6 +112,7 @@ public class EmailRepository : IEmailRepository
 
     public async Task<IEnumerable<EmailPriority>> GetAllPrioritiesAsync(CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Getting all EmailPriorities form database");
         var priotiries = await _context.EmailPriorities.ToListAsync(cancellationToken);
 
         return priotiries;
@@ -118,6 +120,7 @@ public class EmailRepository : IEmailRepository
 
     public async Task<bool> UpdateEmailsAsync(IEnumerable<Email> emails, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Updating emails with ids {@Ids}", emails.Select(x => x.Id).ToList());
         _context.Emails.UpdateRange(emails);
 
         return await _context.SaveChangesAsync(cancellationToken) > 0;
