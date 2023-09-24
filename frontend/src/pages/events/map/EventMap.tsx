@@ -27,7 +27,7 @@ const mockEvents: IEvent[] = [
     createdAt: new Date(),
     likes: 5,
     author: "Author 1",
-    comments: 10,
+    commentNumber: 10,
   },
   {
     id: "2",
@@ -45,7 +45,7 @@ const mockEvents: IEvent[] = [
     createdAt: new Date(),
     likes: 10,
     author: "Author 2",
-    comments: 20,
+    commentNumber: 20,
   },
   {
     id: "3",
@@ -63,7 +63,7 @@ const mockEvents: IEvent[] = [
     createdAt: new Date(),
     likes: 15,
     author: "Author 3",
-    comments: 30,
+    commentNumber: 30,
   },
   {
     id: "4",
@@ -81,7 +81,7 @@ const mockEvents: IEvent[] = [
     createdAt: new Date(),
     likes: 20,
     author: "Author 4",
-    comments: 40,
+    commentNumber: 40,
   },
   {
     id: "5",
@@ -99,7 +99,7 @@ const mockEvents: IEvent[] = [
     createdAt: new Date(),
     likes: 25,
     author: "Author 5",
-    comments: 50,
+    commentNumber: 50,
   },
 ];
 

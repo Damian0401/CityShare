@@ -28,7 +28,7 @@ const mockEvents: IEvent[] = [
     likes: 5,
     author: "Author 1",
     isLiked: true,
-    comments: 10,
+    commentNumber: 10,
   },
   {
     id: "2",
@@ -50,7 +50,7 @@ const mockEvents: IEvent[] = [
     likes: 5,
     author: "Author 2",
     isLiked: false,
-    comments: 10,
+    commentNumber: 10,
   },
   {
     id: "3",
@@ -71,7 +71,7 @@ const mockEvents: IEvent[] = [
     imageUrls: ["https://picsum.photos/200/300"],
     likes: 5,
     author: "Author 3",
-    comments: 10,
+    commentNumber: 10,
   },
 ];
 

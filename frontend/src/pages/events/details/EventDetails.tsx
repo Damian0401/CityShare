@@ -36,7 +36,7 @@ const events: IEvent[] = [
     createdAt: new Date(),
     likes: 5,
     author: "Author 1",
-    comments: 10,
+    commentNumber: 10,
   },
   {
     id: "2",
@@ -54,7 +54,7 @@ const events: IEvent[] = [
     createdAt: new Date(),
     likes: 10,
     author: "Author 2",
-    comments: 10,
+    commentNumber: 10,
   },
 ];
 
