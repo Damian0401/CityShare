@@ -62,13 +62,13 @@ public class CreateEventCommandHandlerTests
     {
         // Arrange
         var user = Value.ApplicationUser;
-        user.EmailConfirmed = true;
+        user.EmailConfirmed = Value.True;
         _userManagerMockHelper.SetupAsync(
             x => x.FindByIdAsync(Any.String),
             user);
 
         _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(false);
+            .ReturnsAsync(Value.False);
 
         var categoryIds = new List<int> { Value.Int };
         _request.CategoryIds = categoryIds;
@@ -87,13 +87,13 @@ public class CreateEventCommandHandlerTests
     {
         // Arrange
         var user = Value.ApplicationUser;
-        user.EmailConfirmed = false;
+        user.EmailConfirmed = Value.False;
         _userManagerMockHelper.SetupAsync(
             x => x.FindByIdAsync(Any.String),
             user);
 
         _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(true);
+            .ReturnsAsync(Value.True);
 
         var categoryIds = new List<int> { Value.Int };
         _request.CategoryIds = categoryIds;
@@ -116,7 +116,7 @@ public class CreateEventCommandHandlerTests
             (ApplicationUser?)Value.Null);
 
         _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(true);
+            .ReturnsAsync(Value.True);
 
         var categoryIds = new List<int> { Value.Int };
         _request.CategoryIds = categoryIds;
@@ -135,13 +135,13 @@ public class CreateEventCommandHandlerTests
     {
         // Arrange
         var user = Value.ApplicationUser;
-        user.EmailConfirmed = true;
+        user.EmailConfirmed = Value.True;
         _userManagerMockHelper.SetupAsync(
             x => x.FindByIdAsync(Any.String),
             user);
 
         _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(true);
+            .ReturnsAsync(Value.True);
 
         var categoryId = Value.Int;
         _request.CategoryIds = new List<int> { categoryId };
@@ -160,13 +160,13 @@ public class CreateEventCommandHandlerTests
     {
         // Arrange
         var user = Value.ApplicationUser;
-        user.EmailConfirmed = true;
+        user.EmailConfirmed = Value.True;
         _userManagerMockHelper.SetupAsync(
             x => x.FindByIdAsync(Any.String),
             user);
 
         _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(true);
+            .ReturnsAsync(Value.True);
 
         var categoryIds = new List<int> { Value.Int };
         _request.CategoryIds = categoryIds;
