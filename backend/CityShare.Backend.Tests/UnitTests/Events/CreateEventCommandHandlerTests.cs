@@ -34,7 +34,7 @@ public class CreateEventCommandHandlerTests
 
         var clock = new Mock<IClock>().Object;
 
-        _userManagerMockHelper = _userManagerMockHelper = new UserManagerMockHelper<ApplicationUser>();
+        _userManagerMockHelper = new UserManagerMockHelper<ApplicationUser>();
 
         var mapper = MapperHelper.GetMapper();
 

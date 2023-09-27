@@ -48,7 +48,7 @@ public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Resul
     public async Task<Result<EventDto>> Handle(GetEventByIdQuery request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for event with id {@Id}", request.EventId);
-        var searchResult = await _eventRepository.GetByIdWithDetails(request.EventId);
+        var searchResult = await _eventRepository.GetByIdWithDetailsAsync(request.EventId);
 
         if (searchResult is null)
         {
@@ -65,7 +65,7 @@ public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Resul
         eventDto.Author = await _userManager.GetUserNameByIdAsync(searchResult.Event.AuthorId);
 
         _logger.LogInformation("Checking if user with id {@UserId} likes event with id {@EventId}", request.UserId, request.EventId);
-        eventDto.IsLiked = await _eventRepository.IsEventLiked(searchResult.Event.Id, request.UserId, cancellationToken);
+        eventDto.IsLiked = await _eventRepository.IsEventLikedAsync(searchResult.Event.Id, request.UserId, cancellationToken);
 
         return eventDto;
     }
