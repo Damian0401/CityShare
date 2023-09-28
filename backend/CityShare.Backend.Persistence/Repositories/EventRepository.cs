@@ -1,8 +1,12 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Dtos.Events;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
+using CityShare.Backend.Domain.Enums;
+using CityShare.Backend.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Threading;
 
 namespace CityShare.Backend.Persistence.Repositories;
 
@@ -58,10 +62,101 @@ public class EventRepository : IEventRepository
             {
                 Event = x,
                 Likes = x.Likes.Count(),
-                CommentsNumber = x.Comments.Count()
+                CommentNumber = x.Comments.Count()
             }).FirstOrDefaultAsync(cancellationToken);
 
         return searchResult;
+    }
+
+    public async Task<(IEnumerable<SearchEventDto>, int)> GetByQueryAsync(EventQueryDto eventQuery, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Creating query from {@Query}", eventQuery);
+
+        var query = _context.Events
+            .Include(x => x.Images)
+            .Include(x => x.Address)
+            .Include(x => x.EventCategories)
+            .AsQueryable();
+
+        if (eventQuery.StartDate is not null)
+        {
+            _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.StartDate));
+            query = query.Where(x => x.StartDate >= eventQuery.StartDate);
+        }
+
+        if (eventQuery.EndDate is not null)
+        {
+            _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.EndDate));
+            query = query.Where(x => x.EndDate <= eventQuery.EndDate);
+        }
+
+        if (eventQuery.Query is not null)
+        {
+            _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.Query));
+            query = query.Where(x => x.Title.Contains(eventQuery.Query) ||
+                x.Description.Contains(eventQuery.Query));
+        }
+
+        if (eventQuery.CityId is not null)
+        {
+            _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.CityId));
+            query = query.Where(x => x.CityId.Equals(eventQuery.CityId));
+        }
+
+        if (eventQuery.SkipCategoryIds is not null)
+        {
+            var skipCategoryIds = eventQuery.SkipCategoryIds
+                .Split(',')
+                .Select(int.Parse)
+                .ToList();
+
+            _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.SkipCategoryIds));
+            query = query.Where(x => !x.EventCategories.Select(c => c.CategoryId).Any(id => skipCategoryIds.Contains(id)));
+        }
+
+        _logger.LogInformation("Getting number of events for {@Name} from database", nameof(GetByQueryAsync));
+
+        var count = await query.CountAsync(cancellationToken);
+
+        if (eventQuery.SortBy is not null)
+        {
+            _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.SortBy));
+            query = eventQuery.SortBy switch
+            {
+                EventSortByOptions.CreatedAtDesc => query.OrderByDescending(x => x.CreatedAt),
+                EventSortByOptions.CreatedAtAsc => query.OrderBy(x => x.CreatedAt),
+                EventSortByOptions.LikesDesc => query.OrderByDescending(x => x.Likes.Count()),
+                EventSortByOptions.LikesAsc => query.OrderBy(x => x.Likes.Count()),
+                _ => throw new InvalidStateException(),
+            };
+        }
+
+        query = AddPagination(eventQuery, query);
+
+        _logger.LogInformation("Executing {@Name} on database", nameof(GetByQueryAsync));
+        var searchResult = await query.Select(x => new SearchEventDto
+        {
+            Event = x,
+            Likes = x.Likes.Count(),
+            CommentNumber = x.Comments.Count()
+        }).ToListAsync(cancellationToken);
+
+        return (searchResult, count);
+    }
+
+    private IQueryable<Event> AddPagination(EventQueryDto eventQuery, IQueryable<Event> query)
+    {
+        var pageSize = eventQuery.PageSize ?? Constants.DefaultEventPageSize;
+
+        if (eventQuery.PageNumber is not null)
+        {
+            _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.PageNumber));
+            query = query.Skip(pageSize * eventQuery.PageNumber.Value - 1);
+        }
+
+        _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.PageSize));
+        query.Take(pageSize);
+        return query;
     }
 
     public async Task<int> GetImagesNumberAsync(Guid eventId, CancellationToken cancellationToken = default)

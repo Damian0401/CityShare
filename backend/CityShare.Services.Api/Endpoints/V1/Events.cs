@@ -61,4 +61,15 @@ public class Events
 
         return ResultResolver.Resolve(result);
     }
+
+    public static async Task<IResult> GetByQuery(
+        [AsParameters] EventQueryDto Request,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetEventsByQuery(Request), cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
 }

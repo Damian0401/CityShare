@@ -59,7 +59,7 @@ public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Resul
         _logger.LogInformation("Mapping event with id {@Id} to dto", request.EventId);
         var eventDto = _mapper.Map<EventDto>(searchResult.Event);
         eventDto.Likes = searchResult.Likes;
-        eventDto.CommentNumber = searchResult.CommentsNumber;
+        eventDto.CommentNumber = searchResult.CommentNumber;
 
         _logger.LogInformation("Searching for UserName of user with id {@Id}", searchResult.Event.AuthorId);
         eventDto.Author = await _userManager.GetUserNameByIdAsync(searchResult.Event.AuthorId);

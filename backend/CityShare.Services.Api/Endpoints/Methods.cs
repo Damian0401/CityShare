@@ -30,6 +30,9 @@ public static class Methods
         app.MapGet(Endpoints.V1.Categories.Index, V1.Categories.GetAll)
             .RequireAuthorization();
 
+        app.MapGet(Endpoints.V1.Events.Index, V1.Events.GetByQuery)
+            .RequireAuthorization();
+
         app.MapPost(Endpoints.V1.Events.Index, V1.Events.Create)
             .RequireAuthorization();
 
