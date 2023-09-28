@@ -1,9 +1,5 @@
 ﻿using CityShare.Backend.Application.Auth.Commands;
 using CityShare.Backend.Application.Core.Dtos.Auth;
-using CityShare.Backend.Application.Core.Dtos.Auth.ConfirmEmail;
-using CityShare.Backend.Application.Core.Dtos.Auth.Login;
-using CityShare.Backend.Application.Core.Dtos.Auth.Refresh;
-using CityShare.Backend.Application.Core.Dtos.Auth.Register;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Services.Api.Common;
@@ -34,8 +30,7 @@ public class Auth
         return ReturnResponseAndToken(
             response, 
             authSettings, 
-            result.Value.User, 
-            result.Value.RefreshToken);
+            result.Value);
     }
 
     public static async Task<IResult> Login(
@@ -57,8 +52,7 @@ public class Auth
         return ReturnResponseAndToken(
             response,
             authSettings,
-            result.Value.User,
-            result.Value.RefreshToken);
+            result.Value);
     }
 
     public static async Task<IResult> Refresh(
@@ -79,7 +73,7 @@ public class Auth
             cancellationToken);
 
         return result.IsSuccess
-            ? Results.Ok(result.Value.User) 
+            ? Results.Ok(result.Value) 
             : Results.Unauthorized();
     }
 
@@ -98,8 +92,7 @@ public class Auth
     private static IResult ReturnResponseAndToken(
         HttpResponse response, 
         IOptions<AuthSettings> authSettings, 
-        UserDto user, 
-        string refreshToken)
+        AuthResponseDto dto)
     {
         var cookieOptions = new CookieOptions
         {
@@ -112,9 +105,9 @@ public class Auth
 
         response.Cookies.Append(
             RefreshToken.CookieKey, 
-            refreshToken, 
+            dto.RefreshToken, 
             cookieOptions);
 
-        return Results.Ok(user);
+        return Results.Ok(dto.User);
     }
 }

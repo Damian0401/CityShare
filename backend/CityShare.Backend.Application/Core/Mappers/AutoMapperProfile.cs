@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Domain.Entities;
 using System.Globalization;
-using CityShare.Backend.Application.Core.Dtos.Auth.Register;
 using CityShare.Backend.Application.Core.Dtos.Auth;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Application.Core.Dtos.Map;

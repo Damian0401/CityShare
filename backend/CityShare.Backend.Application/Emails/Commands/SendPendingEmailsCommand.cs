@@ -1,5 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Core.Dtos.Emails.Send;
+using CityShare.Backend.Application.Core.Dtos.Emails;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Shared;

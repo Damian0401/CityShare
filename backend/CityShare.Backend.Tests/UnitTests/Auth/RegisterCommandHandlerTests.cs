@@ -2,7 +2,7 @@
 using CityShare.Backend.Application.Core.Abstractions.Auth;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
-using CityShare.Backend.Application.Core.Dtos.Auth.Register;
+using CityShare.Backend.Application.Core.Dtos.Auth;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Tests.Other.Common;

@@ -3,8 +3,7 @@ using CityShare.Backend.Application.Core.Abstractions.Auth;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Application.Core.Dtos.Auth;
-using CityShare.Backend.Application.Core.Dtos.Auth.Register;
-using CityShare.Backend.Application.Core.Dtos.Emails.Create;
+using CityShare.Backend.Application.Core.Dtos.Emails;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
@@ -19,7 +18,7 @@ using System.Web;
 namespace CityShare.Backend.Application.Auth.Commands;
 
 public record RegisterCommand(RegisterRequestDto Request)
-    : IRequest<Result<RegisterResponseDto>>;
+    : IRequest<Result<AuthResponseDto>>;
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
 {
@@ -50,7 +49,7 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
     }
 }
 
-public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<RegisterResponseDto>>
+public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<AuthResponseDto>>
 {
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IJwtProvider _jwtProvider;
@@ -78,7 +77,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         _logger = logger;
     }
 
-    public async Task<Result<RegisterResponseDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<AuthResponseDto>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for user with {@Email}", request.Request.Email);
         var user = await _userManager.FindByEmailAsync(request.Request.Email);
@@ -86,7 +85,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         if (user is not null)
         {
             _logger.LogError("User with {@Email} already exists", request.Request.Email);
-            return Result<RegisterResponseDto>.Failure(Errors.EmailTaken(request.Request.Email));
+            return Result<AuthResponseDto>.Failure(Errors.EmailTaken(request.Request.Email));
         }
 
         user = _mapper.Map<ApplicationUser>(request.Request);
@@ -101,7 +100,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
                 .ToList();
 
             _logger.LogError("Creating user failed with {@Errors}", errors);
-            return Result<RegisterResponseDto>
+            return Result<AuthResponseDto>
                 .Failure(errors);
         }
 
@@ -148,7 +147,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         await _queueService.SendAsync(QueueNames.EmailsToSend, emailId, options, cancellationToken);
     }
 
-    private async Task<RegisterResponseDto> CreateResponseAsync(ApplicationUser user)
+    private async Task<AuthResponseDto> CreateResponseAsync(ApplicationUser user)
     {
         _logger.LogInformation("Getting all {@Emaill} roles", user.Email);
         var roles = await _userManager.GetRolesAsync(user);
@@ -167,6 +166,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Re
         userDto.AccessToken = accessToken;
         userDto.Roles = roles;
 
-        return new RegisterResponseDto(userDto, refreshToken);
+        return new AuthResponseDto(userDto, refreshToken);
     }
 }

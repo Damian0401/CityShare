@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Core.Dtos.Emails.Create;
+﻿using CityShare.Backend.Application.Core.Dtos.Emails;
 using CityShare.Backend.Domain.Entities;
 
 namespace CityShare.Backend.Application.Core.Abstractions.Emails;

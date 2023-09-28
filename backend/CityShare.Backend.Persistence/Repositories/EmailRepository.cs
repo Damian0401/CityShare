@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Core.Dtos.Emails.Create;
+using CityShare.Backend.Application.Core.Dtos.Emails;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using Microsoft.EntityFrameworkCore;

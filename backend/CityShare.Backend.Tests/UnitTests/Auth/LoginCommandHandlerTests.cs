@@ -1,6 +1,6 @@
 ﻿using CityShare.Backend.Application.Auth.Commands;
 using CityShare.Backend.Application.Core.Abstractions.Auth;
-using CityShare.Backend.Application.Core.Dtos.Auth.Login;
+using CityShare.Backend.Application.Core.Dtos.Auth;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
