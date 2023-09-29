@@ -45,7 +45,9 @@ public class UploadEventImageCommandHandlerTests
 
         _uploadEventImageCommand = new UploadEventImageCommand
         {
-            Image = _image.Object
+            Image = _image.Object,
+            EventId = Value.Guid,
+            UserId = Value.String
         };
 
         _systemUnderTests = new UploadEventImageCommandHandler(

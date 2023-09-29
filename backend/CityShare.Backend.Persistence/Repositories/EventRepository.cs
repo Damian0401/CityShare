@@ -146,7 +146,7 @@ public class EventRepository : IEventRepository
 
     private IQueryable<Event> AddPagination(EventQueryDto eventQuery, IQueryable<Event> query)
     {
-        var pageSize = eventQuery.PageSize ?? Constants.DefaultEventPageSize;
+        var pageSize = eventQuery.PageSize ?? Constants.MaxEventPageSize;
 
         if (eventQuery.PageNumber is not null)
         {

@@ -41,9 +41,9 @@ public class SendPendingEmailsCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.Equal(0, result.Value.ErrorEmails);
-        Assert.Equal(0, result.Value.NotSentEmails);
-        Assert.Equal(0, result.Value.SentEmails);
+        Assert.Equal(Value.Zero, result.Value.ErrorEmails);
+        Assert.Equal(Value.Zero, result.Value.NotSentEmails);
+        Assert.Equal(Value.Zero, result.Value.SentEmails);
     }
 
     [Fact]
@@ -71,9 +71,9 @@ public class SendPendingEmailsCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.Equal(1, result.Value.ErrorEmails);
-        Assert.Equal(0, result.Value.NotSentEmails);
-        Assert.Equal(0, result.Value.SentEmails);
+        Assert.Equal(Value.One, result.Value.ErrorEmails);
+        Assert.Equal(Value.Zero, result.Value.NotSentEmails);
+        Assert.Equal(Value.Zero, result.Value.SentEmails);
     }
 
     [Fact]
@@ -103,9 +103,9 @@ public class SendPendingEmailsCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.Equal(0, result.Value.ErrorEmails);
-        Assert.Equal(1, result.Value.NotSentEmails);
-        Assert.Equal(0, result.Value.SentEmails);
+        Assert.Equal(Value.Zero, result.Value.ErrorEmails);
+        Assert.Equal(Value.One, result.Value.NotSentEmails);
+        Assert.Equal(Value.Zero, result.Value.SentEmails);
     }
 
     [Fact]
@@ -133,9 +133,9 @@ public class SendPendingEmailsCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.Equal(0, result.Value.ErrorEmails);
-        Assert.Equal(0, result.Value.NotSentEmails);
-        Assert.Equal(1, result.Value.SentEmails);
+        Assert.Equal(Value.Zero, result.Value.ErrorEmails);
+        Assert.Equal(Value.Zero, result.Value.NotSentEmails);
+        Assert.Equal(Value.One, result.Value.SentEmails);
     }
 }
 

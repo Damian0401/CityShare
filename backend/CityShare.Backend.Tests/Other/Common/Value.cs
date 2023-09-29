@@ -15,6 +15,7 @@ internal class Value
     public static string String => Path.GetRandomFileName();
     public static int Int => Random.Shared.Next();
     public static int Zero => 0;
+    public static int One => 1;
     public static double Double => Random.Shared.NextDouble();
     public static readonly bool True = true;
     public static readonly bool False = false;
@@ -45,4 +46,5 @@ internal class Value
     public static IEnumerable<CategoryDto> CategoryDtos => Enumerable.Empty<CategoryDto>();
     public static IEnumerable<City> Cities => Enumerable.Empty<City>();
     public static IEnumerable<CityDto> CityDtos => Enumerable.Empty<CityDto>();
+    public static IEnumerable<SearchEventDto> SearchEventDtos => Enumerable.Empty<SearchEventDto>();
 }

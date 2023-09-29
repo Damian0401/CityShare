@@ -17,7 +17,7 @@ public class GetEventsByQueryValidator : AbstractValidator<GetEventsByQuery>
     {
         RuleFor(x => x.Request.PageNumber)
             .GreaterThan(0)
-            .LessThanOrEqualTo(Constants.DefaultEventPageSize)
+            .LessThanOrEqualTo(Constants.MaxEventPageSize)
             .WithName(x => nameof(x.Request.PageNumber));
 
         RuleFor(x => x.Request.EndDate)
@@ -66,7 +66,7 @@ public class GetEventsByQueryHandler : IRequestHandler<GetEventsByQuery, Result<
         {
             Content = dtos,
             TotalPages = GetTotalPagesNumber(request.Request.PageSize, totalCount),
-            PageSize = request.Request.PageSize ?? Constants.DefaultEventPageSize,
+            PageSize = request.Request.PageSize ?? Constants.MaxEventPageSize,
             PageNumber = request.Request.PageNumber ?? 1
         };
 
@@ -76,6 +76,6 @@ public class GetEventsByQueryHandler : IRequestHandler<GetEventsByQuery, Result<
     private int GetTotalPagesNumber(int? pageSize, int totalCount)
     {
         _logger.LogInformation("Calculating total pages number for {0} = {1} and {2} = {3}", nameof(totalCount), totalCount, nameof(pageSize), pageSize);
-        return (int)Math.Ceiling((double)totalCount / (pageSize ?? Constants.DefaultEventPageSize));
+        return (int)Math.Ceiling((double)totalCount / (pageSize ?? Constants.MaxEventPageSize));
     }
 }
