@@ -1,4 +1,4 @@
-﻿namespace CityShare.Backend.Tests.Common;
+﻿namespace CityShare.Backend.Tests.Other.Common;
 
 public class Constants
 {

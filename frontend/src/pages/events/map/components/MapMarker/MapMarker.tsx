@@ -11,7 +11,7 @@ const MapMarker: React.FC<IMapMarkerProps> = (props) => {
 
   const navigate = useNavigate();
 
-  const handlePopupClick = (eventId: number) => {
+  const handlePopupClick = (eventId: string) => {
     navigate(Routes.Events + "/" + eventId);
   };
 

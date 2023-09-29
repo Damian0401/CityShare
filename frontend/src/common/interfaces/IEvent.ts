@@ -1,7 +1,7 @@
 import { IAddress } from ".";
 
 export interface IEvent {
-  id: number;
+  id: string;
   title: string;
   description: string;
   address: IAddress;
@@ -13,6 +13,6 @@ export interface IEvent {
   createdAt: Date;
   likes: number;
   author: string;
-  comments: number;
+  commentNumber: number;
   isLiked?: boolean;
 }

@@ -130,7 +130,8 @@ public class UploadEventImageCommandHandler : IRequestHandler<UploadEventImageCo
     private async Task<IEnumerable<Error>> ValidateAsync(UploadEventImageCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Checking if of user with id {@Id} is confirmed", request.UserId);
-        var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(request.UserId);
+        var user = await _userManager.FindByIdAsync(request.UserId);
+        var isEmailConfirmed = user is not null && user.EmailConfirmed;
 
         if (!isEmailConfirmed)
         {

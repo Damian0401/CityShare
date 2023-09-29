@@ -1,9 +1,9 @@
-﻿using CityShare.Backend.Tests.Interfaces;
+﻿using CityShare.Backend.Tests.Other.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Moq;
 using System.Linq.Expressions;
 
-namespace CityShare.Backend.Tests.Helpers;
+namespace CityShare.Backend.Tests.Other.Helpers;
 
 internal class UserManagerMockHelper<TUser>
     : IMockHelper<UserManager<TUser>>

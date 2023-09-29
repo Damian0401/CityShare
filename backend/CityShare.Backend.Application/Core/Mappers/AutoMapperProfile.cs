@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Domain.Entities;
 using System.Globalization;
-using CityShare.Backend.Application.Core.Dtos.Auth.Register;
 using CityShare.Backend.Application.Core.Dtos.Auth;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Application.Core.Dtos.Map;
@@ -85,5 +84,8 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<CreateEventDto, Event>()
             .ForMember(x => x.Address, s => s.MapFrom(e => e.Address));
+        CreateMap<Event, EventDto>()
+            .ForMember(x => x.ImageUrls, s => s.MapFrom(e => e.Images.Select(c => c.Uri)))
+            .ForMember(x => x.CategoryIds, s => s.MapFrom(e => e.EventCategories.Select(c => c.CategoryId)));
     }
 }

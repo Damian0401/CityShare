@@ -39,8 +39,8 @@ public class GetAllCategoriesQueryHandler
         _logger.LogInformation("Checking for categories in {@Type}", _cacheService.GetType());
         if (_cacheService.TryGet<IEnumerable<CategoryDto>>(CacheKeys.Categories, out var cachedCategories))
         {
-            var count = cachedCategories?.Count() ?? throw new InvalidStateException();
-            _logger.LogInformation("Returning {@Count} cached categories", count);
+            var cachedCount = cachedCategories?.Count() ?? throw new InvalidStateException();
+            _logger.LogInformation("Returning {@Count} cached categories", cachedCount);
             return Result<IEnumerable<CategoryDto>>.Success(cachedCategories);
         }
 
@@ -50,8 +50,14 @@ public class GetAllCategoriesQueryHandler
         _logger.LogInformation("Mapping categories to DTOs");
         var categoriesDto = _mapper.Map<IEnumerable<CategoryDto>>(categories);
 
-        _logger.LogInformation("Caching {@Count} categories", categoriesDto.Count());
-        _cacheService.Set(CacheKeys.Categories, categoriesDto);
+        var count = categoriesDto.Count();
+
+        _logger.LogInformation("Caching {@Count} categories", count);
+        var options = new CacheServiceOptions
+        {
+            Size = count
+        };
+        _cacheService.Set(CacheKeys.Categories, categoriesDto, options);
 
         _logger.LogInformation("Returning categories");
         return Result<IEnumerable<CategoryDto>>.Success(categoriesDto);

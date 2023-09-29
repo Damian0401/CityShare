@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace CityShare.Backend.Tests.Interfaces;
+namespace CityShare.Backend.Tests.Other.Interfaces;
 
 internal interface IMockHelper<TMock>
     where TMock : class

@@ -1,10 +1,10 @@
 ﻿using CityShare.Backend.Application.Auth.Commands;
 using CityShare.Backend.Application.Core.Abstractions.Auth;
-using CityShare.Backend.Application.Core.Dtos.Auth.Login;
+using CityShare.Backend.Application.Core.Dtos.Auth;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Tests.Common;
-using CityShare.Backend.Tests.Helpers;
-using CityShare.Backend.Tests.Interfaces;
+using CityShare.Backend.Tests.Other.Common;
+using CityShare.Backend.Tests.Other.Helpers;
+using CityShare.Backend.Tests.Other.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Moq;

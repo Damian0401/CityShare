@@ -1,7 +1,6 @@
-﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
+﻿using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
 using CityShare.Backend.Infrastructure.Nominatim;
-using CityShare.Backend.Tests.Common;
+using CityShare.Backend.Tests.Other.Common;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RichardSzalay.MockHttp;

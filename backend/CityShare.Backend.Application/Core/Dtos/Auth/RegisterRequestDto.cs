@@ -1,4 +1,4 @@
-﻿namespace CityShare.Backend.Application.Core.Dtos.Auth.Register;
+﻿namespace CityShare.Backend.Application.Core.Dtos.Auth;
 
 public record RegisterRequestDto(
     string Email,

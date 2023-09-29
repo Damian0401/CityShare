@@ -2,8 +2,8 @@
 using CityShare.Backend.Application.Core.Abstractions.Nominatim;
 using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
 using CityShare.Backend.Application.Map.Queries;
-using CityShare.Backend.Tests.Common;
-using CityShare.Backend.Tests.Helpers;
+using CityShare.Backend.Tests.Other.Common;
+using CityShare.Backend.Tests.Other.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 

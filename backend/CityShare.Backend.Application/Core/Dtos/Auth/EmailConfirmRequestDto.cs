@@ -1,10 +1,10 @@
-﻿namespace CityShare.Backend.Application.Core.Dtos.Auth.ConfirmEmail;
+﻿namespace CityShare.Backend.Application.Core.Dtos.Auth;
 
 public record EmailConfirmRequestDto(string Id, string Token)
 {
     public void Deconstruct(out string id, out string token)
     {
-        id = Id; 
+        id = Id;
         token = Token;
     }
 };

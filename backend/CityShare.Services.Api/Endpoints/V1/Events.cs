@@ -1,5 +1,6 @@
 ﻿using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
+using CityShare.Backend.Application.Events.Queries;
 using CityShare.Backend.Domain.Extensions;
 using CityShare.Services.Api.Common;
 using MediatR;
@@ -18,7 +19,9 @@ public class Events
     {
         var command = new CreateEventCommand(createEventDto, claimsPrincipal.GetUserId());
 
-        var result = await mediator.Send(command, cancellationToken);
+        var result = await mediator.Send(
+            command, 
+            cancellationToken);
 
         return ResultResolver.Resolve(result);
     }
@@ -39,7 +42,33 @@ public class Events
             ShouldBeBlurred = shouldBeBlurred,
         };
 
-        var result = await mediator.Send(command, cancellationToken);
+        var result = await mediator.Send(
+            command, 
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
+
+    public static async Task<IResult> GetById(
+        [FromRoute] Guid id,
+        ClaimsPrincipal claimsPrincipal,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetEventByIdQuery(id, claimsPrincipal.GetUserId()), 
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
+
+    public static async Task<IResult> GetByQuery(
+        [AsParameters] EventQueryDto Request,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetEventsByQuery(Request), cancellationToken);
 
         return ResultResolver.Resolve(result);
     }

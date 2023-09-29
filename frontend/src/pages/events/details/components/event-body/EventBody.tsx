@@ -27,7 +27,7 @@ const EventBody: React.FC<IEventBodyProps> = observer((props) => {
               className={styles.likes}
             />
             <div className={styles.comment}>
-              <MdOutlineComment /> {event.comments}
+              <MdOutlineComment /> {event.commentNumber}
             </div>
           </div>
         </div>

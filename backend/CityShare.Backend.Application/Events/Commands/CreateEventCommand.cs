@@ -103,7 +103,7 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
     public async Task<Result<Guid>> Handle(CreateEventCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Validating request {@Request}", request);
-        var errors = await ValidateRequestAsync(request, cancellationToken);
+        var errors = await ValidateAsync(request, cancellationToken);
 
         if (errors.Any())
         {
@@ -137,10 +137,11 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
         return eventId;
     }
 
-    private async Task<IEnumerable<Error>> ValidateRequestAsync(CreateEventCommand request, CancellationToken cancellationToken = default)
+    private async Task<IEnumerable<Error>> ValidateAsync(CreateEventCommand request, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Checking if of user with id {@Id} is confirmed", request.UserId);
-        var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(request.UserId);
+        var user = await _userManager.FindByIdAsync(request.UserId);
+        var isEmailConfirmed = user is not null && user.EmailConfirmed;
 
         if (!isEmailConfirmed)
         {
@@ -182,6 +183,7 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
 
     private async Task<IEnumerable<Error>> CheckIfCategoriesExistsAsync(IEnumerable<int> categoryIds, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Getting all category ids using {@Type}", _categoryRepository.GetType());
         var existingCategoryIds = await _categoryRepository.GetAllIdsAsync(cancellationToken);
 
         var errors = new List<Error>();

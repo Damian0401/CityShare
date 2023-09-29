@@ -1,14 +1,13 @@
-﻿using CityShare.Backend.Application.Auth.Commands;
-using CityShare.Backend.Application.Core.Abstractions.Categories;
+﻿using CityShare.Backend.Application.Core.Abstractions.Categories;
 using CityShare.Backend.Application.Core.Abstractions.Cities;
 using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Tests.Common;
-using CityShare.Backend.Tests.Helpers;
-using CityShare.Backend.Tests.Interfaces;
+using CityShare.Backend.Tests.Other.Common;
+using CityShare.Backend.Tests.Other.Helpers;
+using CityShare.Backend.Tests.Other.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -35,7 +34,7 @@ public class CreateEventCommandHandlerTests
 
         var clock = new Mock<IClock>().Object;
 
-        _userManagerMockHelper = _userManagerMockHelper = new UserManagerMockHelper<ApplicationUser>();
+        _userManagerMockHelper = new UserManagerMockHelper<ApplicationUser>();
 
         var mapper = MapperHelper.GetMapper();
 

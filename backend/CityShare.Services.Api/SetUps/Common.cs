@@ -11,6 +11,8 @@ public static class Common
 {
     public static IServiceCollection SetUpCommon(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<RouteHandlerOptions>(options => options.ThrowOnBadRequest = false);
+
         var cultureInfo = new CultureInfo(CultureInfos.EnUs);
         ValidatorOptions.Global.LanguageManager.Culture = cultureInfo;
         Thread.CurrentThread.CurrentCulture = cultureInfo;

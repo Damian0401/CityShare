@@ -27,11 +27,11 @@ const sortByOptions: IOption[] = [
     label: "Oldest",
   },
   {
-    value: "scoreDesc",
+    value: "likesDesc",
     label: "Most popular",
   },
   {
-    value: "scoreAsc",
+    value: "likesAsc",
     label: "Least popular",
   },
 ];

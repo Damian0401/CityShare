@@ -5,9 +5,9 @@ using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Tests.Common;
-using CityShare.Backend.Tests.Helpers;
-using CityShare.Backend.Tests.Interfaces;
+using CityShare.Backend.Tests.Other.Helpers;
+using CityShare.Backend.Tests.Other.Common;
+using CityShare.Backend.Tests.Other.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
@@ -45,7 +45,9 @@ public class UploadEventImageCommandHandlerTests
 
         _uploadEventImageCommand = new UploadEventImageCommand
         {
-            Image = _image.Object
+            Image = _image.Object,
+            EventId = Value.Guid,
+            UserId = Value.String
         };
 
         _systemUnderTests = new UploadEventImageCommandHandler(
