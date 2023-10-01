@@ -25,12 +25,12 @@ export default class EventStore {
     return agent.Event.get(query, signal);
   };
 
-  loadSelectedEvent = async (id: string) => {
+  loadSelectedEvent = async (id: string, signal?: AbortSignal) => {
     if (this.selectedEvent && this.selectedEvent.id === id) {
       return;
     }
 
-    const event = await agent.Event.getById(id);
+    const event = await agent.Event.getById(id, signal);
 
     runInAction(() => {
       this.selectedEvent = event;

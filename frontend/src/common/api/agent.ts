@@ -44,6 +44,11 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
 
   const { status, data } = error.response;
 
+  if (status === StatusCodes.BadRequest && !data) {
+    Router.navigate(Routes.NotFound);
+    return Promise.reject(error);
+  }
+
   switch (status) {
     case StatusCodes.BadRequest: {
       const errors = data as IError[];
@@ -109,9 +114,9 @@ const Auth = {
   login: (values: ILoginValues) => requests.post<IUser>("/auth/login", values),
   register: (values: IRegisterValues) =>
     requests.post<IUser>("/auth/register", values),
-  refresh: () => {
+  refresh: (signal?: AbortSignal) => {
     const accessToken = accessTokenHelper.getAccessToken();
-    return requests.post<IUser>("/auth/refresh", { accessToken });
+    return requests.post<IUser>("/auth/refresh", { accessToken }, signal);
   },
   confirmEmail: (id: string, token: string, signal: AbortSignal) =>
     requests.post("/auth/confirm-email", { id, token }, signal),
@@ -168,7 +173,8 @@ const Event = {
 
     return response;
   },
-  getById: (id: string) => requests.get<IEvent>(`/events/${id}`),
+  getById: (id: string, signal?: AbortSignal) =>
+    requests.get<IEvent>(`/events/${id}`, signal),
 };
 
 const agent = {

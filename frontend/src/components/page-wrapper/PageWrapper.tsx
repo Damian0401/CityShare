@@ -23,9 +23,10 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
       return;
     }
 
+    const controller = new AbortController();
     const refreshUser = async () => {
       try {
-        await authStore.refresh();
+        await authStore.refresh(controller.signal);
         await commonStore.loadCommonData();
       } catch {
         await authStore.logout();
@@ -36,6 +37,8 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
     };
 
     refreshUser();
+
+    return () => controller.abort();
   }, [authStore, commonStore, navigate]);
 
   return (

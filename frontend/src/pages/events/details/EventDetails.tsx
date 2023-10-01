@@ -24,12 +24,20 @@ const EventDetails = observer(() => {
 
     commonStore.setLoading(true);
 
+    const controller = new AbortController();
     const loadEvent = async () => {
-      await eventStore.loadSelectedEvent(id);
-      commonStore.setLoading(false);
+      try {
+        await eventStore.loadSelectedEvent(id, controller.signal);
+      } catch {
+        navigate(Routes.NotFound);
+      } finally {
+        commonStore.setLoading(false);
+      }
     };
 
     loadEvent();
+
+    return () => controller.abort();
   }, [id, commonStore, eventStore, navigate]);
 
   return (
