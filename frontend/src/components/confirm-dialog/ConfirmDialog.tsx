@@ -9,6 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { useRef } from "react";
+import { MotionPresets } from "../../common/enums";
 import { IConfirmDialogProps } from "./IConfirmDialogProps";
 import styles from "./ConfirmDialog.module.scss";
 
@@ -19,7 +20,7 @@ const ConfirmDialog: React.FC<IConfirmDialogProps> = (props) => {
   return (
     <>
       <AlertDialog
-        motionPreset="slideInBottom"
+        motionPreset={MotionPresets.SlideInRight}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
         isOpen={isOpen}

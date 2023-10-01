@@ -29,7 +29,7 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
         await commonStore.loadCommonData();
       } catch {
         await authStore.logout();
-        Routes.Login;
+        navigate(Routes.Login);
       } finally {
         setIsLoading(false);
       }
