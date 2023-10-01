@@ -28,8 +28,7 @@ export const InitialValues: IInitialValues = {
     endDate: new Date(),
   },
   EventSearch: {
+    query: "",
     skipCategoryIds: [],
-    startDate: new Date(),
-    endDate: null,
   },
 };

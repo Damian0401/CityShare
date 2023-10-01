@@ -7,7 +7,7 @@ import { IEvent } from "../../../../../common/interfaces";
 import { useNavigate } from "react-router-dom";
 import Category from "../../../../../components/categories/Categories";
 import { formatDistanceToNow } from "date-fns";
-import LikeButtons from "../../../../../components/like-buttons/LikeButtons";
+import LikeButton from "../../../../../components/like-button/LikeButton";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { events, onLikeClick } = props;
@@ -58,7 +58,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
                 <span className={styles.title}>{event.title}</span>
                 <Category categoryIds={event.categoryIds} />
               </div>
-              <LikeButtons
+              <LikeButton
                 id={event.id}
                 likes={event.likes}
                 isLiked={event.isLiked}

@@ -5,108 +5,14 @@ import { useStore } from "../../../common/stores/store";
 import { Checkbox, Select, Text } from "@chakra-ui/react";
 import { ChakraSizes } from "../../../common/enums";
 import { useEffect, useState } from "react";
-import { ICity, IEvent } from "../../../common/interfaces";
+import { ICity, IEvent, IEventSearchQuery } from "../../../common/interfaces";
 import { updateLikes } from "../../../common/utils/helpers";
 import MapMarker from "./components/MapMarker/MapMarker";
 
-const mockEvents: IEvent[] = [
-  {
-    id: "1",
-    title: "Event 1",
-    description:
-      "Event 1 description, a little bit longer, ok maybe a little bit more longer, let's see how it will look like",
-    cityId: 1,
-    categoryIds: [1, 2, 3],
-    imageUrls: [],
-    address: {
-      point: { x: 51.1059776, y: 17.0356689 },
-      displayName: "Address 1",
-    },
-    startDate: new Date(),
-    endDate: new Date(),
-    createdAt: new Date(),
-    likes: 5,
-    author: "Author 1",
-    commentNumber: 10,
-  },
-  {
-    id: "2",
-    title: "Event 2",
-    description: "Event 2 description",
-    cityId: 1,
-    categoryIds: [1, 2, 4],
-    imageUrls: [],
-    address: {
-      point: { x: 51.1109776, y: 17.0306689 },
-      displayName: "Address 2",
-    },
-    startDate: new Date(),
-    endDate: new Date(),
-    createdAt: new Date(),
-    likes: 10,
-    author: "Author 2",
-    commentNumber: 20,
-  },
-  {
-    id: "3",
-    title: "Event 3",
-    description: "Event 3 description",
-    cityId: 1,
-    categoryIds: [3],
-    imageUrls: [],
-    address: {
-      point: { x: 51.1089776, y: 17.0326689 },
-      displayName: "Address 3",
-    },
-    startDate: new Date(),
-    endDate: new Date(),
-    createdAt: new Date(),
-    likes: 15,
-    author: "Author 3",
-    commentNumber: 30,
-  },
-  {
-    id: "4",
-    title: "Event 4",
-    description: "Event 4 description",
-    cityId: 2,
-    categoryIds: [1],
-    imageUrls: [],
-    address: {
-      point: { x: 52.2349581, y: 21.0087249 },
-      displayName: "Address 4",
-    },
-    startDate: new Date(),
-    endDate: new Date(),
-    createdAt: new Date(),
-    likes: 20,
-    author: "Author 4",
-    commentNumber: 40,
-  },
-  {
-    id: "5",
-    title: "Event 5",
-    description: "Event 5 description",
-    cityId: 2,
-    categoryIds: [2, 3],
-    imageUrls: [],
-    address: {
-      point: { x: 52.2319581, y: 21.0067249 },
-      displayName: "Address 5",
-    },
-    startDate: new Date(),
-    endDate: new Date(),
-    createdAt: new Date(),
-    likes: 25,
-    author: "Author 5",
-    commentNumber: 50,
-  },
-];
-
 const EventMap = observer(() => {
-  const { commonStore } = useStore();
+  const { commonStore, eventStore } = useStore();
 
-  const [events, setEvents] = useState<IEvent[]>(mockEvents);
+  const [events, setEvents] = useState<IEvent[]>([]);
 
   const [selectedCity, setSelectedCity] = useState<ICity>(
     commonStore.cities[0]
@@ -119,6 +25,26 @@ const EventMap = observer(() => {
   );
 
   useEffect(() => {
+    commonStore.setLoading(true);
+
+    const controller = new AbortController();
+    const loadEvents = async () => {
+      const query: IEventSearchQuery = {
+        cityId: selectedCity.id,
+        isNow: true,
+      };
+
+      const events = await eventStore.getEvents(query, controller.signal);
+      setEvents(events.content);
+    };
+
+    loadEvents();
+    commonStore.setLoading(false);
+
+    return () => controller.abort();
+  }, [commonStore, eventStore, selectedCity.id]);
+
+  useEffect(() => {
     const selectedCategoriesIds = selectedCategories
       .map((selected, index) =>
         selected ? commonStore.categories[index].id : -1
@@ -126,15 +52,13 @@ const EventMap = observer(() => {
       .filter((index) => index !== -1);
 
     setEventsToShow(
-      events.filter(
-        (event) =>
-          event.cityId === selectedCity.id &&
-          event.categoryIds.every((categoryId) =>
-            selectedCategoriesIds.includes(categoryId)
-          )
+      events.filter((event) =>
+        event.categoryIds.every((categoryId) =>
+          selectedCategoriesIds.includes(categoryId)
+        )
       )
     );
-  }, [commonStore, events, selectedCity, selectedCategories]);
+  }, [commonStore, events, selectedCategories]);
 
   const handleSelectCity = (index: number) => {
     setSelectedCity(commonStore.cities[index]);

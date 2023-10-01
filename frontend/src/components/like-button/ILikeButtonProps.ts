@@ -1,4 +1,4 @@
-export interface ILikeButtonsProps {
+export interface ILikeButtonProps {
   id: string;
   likes: number;
   isLiked?: boolean;

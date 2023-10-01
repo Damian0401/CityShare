@@ -97,10 +97,10 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                         setFieldValue(
                           nameof<IEventSearchQuery>((x) => x.skipCategoryIds),
                           e.target.checked
-                            ? values.skipCategoryIds.filter(
+                            ? (values.skipCategoryIds ?? []).filter(
                                 (id) => id !== category.id
                               )
-                            : [...values.skipCategoryIds, category.id]
+                            : [...(values.skipCategoryIds ?? []), category.id]
                         )
                       }
                     >
@@ -119,7 +119,6 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                         date
                       );
                     }}
-                    defaultValue={values.startDate}
                   />
                   <DateTimePicker
                     label="End Date"

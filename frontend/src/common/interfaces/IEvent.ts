@@ -14,5 +14,5 @@ export interface IEvent {
   likes: number;
   author: string;
   commentNumber: number;
-  isLiked?: boolean;
+  isLiked: boolean;
 }

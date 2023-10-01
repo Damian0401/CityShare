@@ -29,11 +29,7 @@ export default class EventStore {
     });
   };
 
-  getEvents = (
-    query: IEventSearchQuery,
-    pageNumber?: number,
-    pageSize?: number
-  ) => {
-    return agent.Event.get(query, pageNumber, pageSize);
+  getEvents = (query: IEventSearchQuery, signal?: AbortSignal) => {
+    return agent.Event.get(query, signal);
   };
 }

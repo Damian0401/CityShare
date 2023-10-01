@@ -96,7 +96,8 @@ const refreshToken = async (error: AxiosError) => {
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const requests = {
-  get: <T>(url: string) => axios.get<T>(url).then(responseBody),
+  get: <T>(url: string, signal?: AbortSignal) =>
+    axios.get<T>(url, { signal: signal }).then(responseBody),
   post: <T>(url: string, body: object, signal?: AbortSignal) =>
     axios.post<T>(url, body, { signal: signal }).then(responseBody),
   put: <T>(url: string, body: object) =>
@@ -132,27 +133,15 @@ const City = {
 };
 
 const Event = {
-  get: async (
-    query: IEventSearchQuery,
-    pageNumber?: number,
-    pageSize?: number
-  ) => {
-    let url = `/event?`;
-
-    if (pageNumber) {
-      url += `pageNumber=${pageNumber}&`;
-    }
-
-    if (pageSize) {
-      url += `pageSize=${pageSize}&`;
-    }
+  get: async (query: IEventSearchQuery, signal?: AbortSignal) => {
+    let url = `/events?`;
 
     for (const [key, value] of Object.entries(query)) {
       if (!value) {
         continue;
       }
 
-      if (Array.isArray(value)) {
+      if (Array.isArray(value) && value.length > 0) {
         url += `${key}=${value.join(",")}&`;
         continue;
       }
@@ -165,7 +154,7 @@ const Event = {
       url += `${key}=${value}&`;
     }
 
-    const response = await requests.get<IPageWrapper<IEvent>>(url);
+    const response = await requests.get<IPageWrapper<IEvent>>(url, signal);
 
     for (const event of response.content) {
       event.startDate = new Date(event.startDate);

@@ -1,7 +1,7 @@
 import { IEventBodyProps } from "./IEventBodyProps";
 import styles from "./EventBody.module.scss";
 import Category from "../../../../../components/categories/Categories";
-import LikeButtons from "../../../../../components/like-buttons/LikeButtons";
+import LikeButton from "../../../../../components/like-button/LikeButton";
 import { formatDistanceToNow } from "date-fns";
 import { getFormattedDate } from "../../../../../common/utils/helpers";
 import { MdOutlineComment } from "react-icons/md";
@@ -19,7 +19,7 @@ const EventBody: React.FC<IEventBodyProps> = observer((props) => {
             <Category categoryIds={event.categoryIds} />
           </div>
           <div className={styles.buttons}>
-            <LikeButtons
+            <LikeButton
               likes={event.likes}
               isLiked={event.isLiked}
               id={event.id}

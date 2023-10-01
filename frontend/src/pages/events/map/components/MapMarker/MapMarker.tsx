@@ -2,7 +2,7 @@ import { Marker, Popup } from "react-leaflet";
 import { IMapMarkerProps } from "./IMapMarkerProps";
 import styles from "./MapMarker.module.scss";
 import Constants from "../../../../../common/utils/constants";
-import LikeButtons from "../../../../../components/like-buttons/LikeButtons";
+import LikeButton from "../../../../../components/like-button/LikeButton";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "../../../../../common/enums";
 
@@ -37,7 +37,7 @@ const MapMarker: React.FC<IMapMarkerProps> = (props) => {
           <div className={styles.content}>
             <div className={styles.title}>{event.title}</div>
             <div className={styles.description}>{event.description}</div>
-            <LikeButtons
+            <LikeButton
               id={event.id}
               likes={event.likes}
               isLiked={event.isLiked}

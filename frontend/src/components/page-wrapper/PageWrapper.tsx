@@ -10,7 +10,7 @@ import LoadingSpinner from "../loading-spinner/LoadingSpinner";
 import BaseContainer from "../base-container/BaseContainer";
 
 const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const { authStore, commonStore } = useStore();
   const navigate = useNavigate();
 
@@ -19,7 +19,7 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
 
     if (!isTokenStored) {
       navigate(Routes.Login);
-      setIsLoading(false);
+      setIsPageLoading(false);
       return;
     }
 
@@ -31,7 +31,7 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
         await authStore.logout();
         navigate(Routes.Login);
       } finally {
-        setIsLoading(false);
+        setIsPageLoading(false);
       }
     };
 
@@ -41,18 +41,22 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
   return (
     <>
       <div className={styles.wrapper}>
-        {isLoading ? (
+        {isPageLoading ? (
           <LoadingSpinner />
         ) : (
           <>
             {Element && <Element />}
             <main>
-              <BaseContainer
-                type={Containers.Primary}
-                className={styles.container}
-              >
-                <Outlet />
-              </BaseContainer>
+              {commonStore.isContentLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <BaseContainer
+                  type={Containers.Primary}
+                  className={styles.container}
+                >
+                  <Outlet />
+                </BaseContainer>
+              )}
             </main>
           </>
         )}

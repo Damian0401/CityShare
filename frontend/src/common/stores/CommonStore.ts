@@ -5,6 +5,7 @@ import agent from "../api/agent";
 export default class CommonStore {
   cities: ICity[] = [];
   categories: ICategory[] = [];
+  isContentLoading = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -26,5 +27,11 @@ export default class CommonStore {
     };
 
     return Promise.all([citiesPromise(), categoriesPromise()]);
+  };
+
+  setLoading = (state: boolean) => {
+    runInAction(() => {
+      this.isContentLoading = state;
+    });
   };
 }
