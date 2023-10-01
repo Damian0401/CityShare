@@ -14,13 +14,14 @@ import { InitialValues } from "../../common/utils/initialValues";
 
 const Register = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
-  const { authStore } = useStore();
+  const { authStore, commonStore } = useStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (values: IRegisterValues) => {
     setIsLoading(true);
     try {
       await authStore.register(values);
+      await commonStore.loadCommonData();
       navigate(Routes.Index);
     } catch {
       setIsLoading(false);

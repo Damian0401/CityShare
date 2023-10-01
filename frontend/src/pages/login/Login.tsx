@@ -14,13 +14,14 @@ import { InitialValues } from "../../common/utils/initialValues";
 
 const Login = observer(() => {
   const [isLoading, setIsLoading] = useState(false);
-  const { authStore } = useStore();
+  const { authStore, commonStore } = useStore();
   const navigate = useNavigate();
 
   const handleSubmit = async (values: ILoginValues) => {
     setIsLoading(true);
     try {
       await authStore.login(values);
+      await commonStore.loadCommonData();
       navigate(Routes.Index);
     } catch {
       setIsLoading(false);
