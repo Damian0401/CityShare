@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Events.Queries;
 
-public record GetEventsByQuery(EventQueryDto Request) : IRequest<Result<PageWrapper<EventDto>>>;
+public record GetEventsByQuery(EventSearchQueryDto Request) : IRequest<Result<PageWrapper<EventDto>>>;
 
 public class GetEventsByQueryValidator : AbstractValidator<GetEventsByQuery>
 {

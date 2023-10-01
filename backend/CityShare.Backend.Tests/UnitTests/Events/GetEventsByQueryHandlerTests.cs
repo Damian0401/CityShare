@@ -11,7 +11,7 @@ namespace CityShare.Backend.Tests.UnitTests.Events;
 public class GetEventsByQueryHandlerTests
 {
     private readonly Mock<IEventRepository> _eventRepositoryMock;
-    private readonly EventQueryDto _request;
+    private readonly EventSearchQueryDto _request;
     private readonly GetEventsByQuery _getEventsByQuery;
     private readonly GetEventsByQueryHandler _systemUnderTests;
 
@@ -23,7 +23,7 @@ public class GetEventsByQueryHandlerTests
 
         var logger = new Mock<ILogger<GetEventsByQueryHandler>>().Object;
 
-        _request = new EventQueryDto();
+        _request = new EventSearchQueryDto();
 
         _getEventsByQuery = new GetEventsByQuery(_request);
 

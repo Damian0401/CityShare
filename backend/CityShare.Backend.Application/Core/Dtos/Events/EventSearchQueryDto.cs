@@ -2,7 +2,7 @@
 
 namespace CityShare.Backend.Application.Core.Dtos.Events;
 
-public class EventQueryDto
+public class EventSearchQueryDto
 {
     public string? Query { get; set; }
     public int? CityId { get; set; }

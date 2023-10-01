@@ -63,7 +63,7 @@ public class Events
     }
 
     public static async Task<IResult> GetByQuery(
-        [AsParameters] EventQueryDto Request,
+        [AsParameters] EventSearchQueryDto Request,
         IMediator mediator,
         CancellationToken cancellationToken)
     {

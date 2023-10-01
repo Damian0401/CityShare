@@ -14,3 +14,4 @@ export * from "./IOption";
 export * from "./IAddressDetails";
 export * from "./IEventSearchQuery";
 export * from "./INewImage";
+export * from "./IPageWrapper";

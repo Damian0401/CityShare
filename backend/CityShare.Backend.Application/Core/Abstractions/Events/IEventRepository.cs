@@ -5,7 +5,7 @@ namespace CityShare.Backend.Application.Core.Abstractions.Events;
 
 public interface IEventRepository
 {
-    Task<(IEnumerable<SearchEventDto>, int)> GetByQueryAsync(EventQueryDto eventQuery, CancellationToken cancellationToken = default);
+    Task<(IEnumerable<SearchEventDto>, int)> GetByQueryAsync(EventSearchQueryDto eventQuery, CancellationToken cancellationToken = default);
     Task<Guid> CreateAsync(Event eventToCreate, CancellationToken cancellationToken = default);
     Task<bool> ExistsAsync(Guid eventId, CancellationToken cancellationToken = default);
     Task<SearchEventDto?> GetByIdWithDetailsAsync(Guid eventId, CancellationToken cancellationToken = default);

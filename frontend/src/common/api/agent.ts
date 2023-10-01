@@ -7,6 +7,9 @@ import {
   IPoint,
   IUser,
   IAddressDetails,
+  IEventSearchQuery,
+  IPageWrapper,
+  IEvent,
 } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { toast } from "react-toastify";
@@ -118,9 +121,55 @@ const Map = {
     requests.get<IAddress>(`/map/reverse?x=${point.x}&y=${point.y}`),
 };
 
+const Event = {
+  get: async (
+    query: IEventSearchQuery,
+    pageNumber?: number,
+    pageSize?: number
+  ) => {
+    let url = `/event?`;
+
+    if (pageNumber) {
+      url += `pageNumber=${pageNumber}&`;
+    }
+
+    if (pageSize) {
+      url += `pageSize=${pageSize}&`;
+    }
+
+    for (const [key, value] of Object.entries(query)) {
+      if (!value) {
+        continue;
+      }
+
+      if (Array.isArray(value)) {
+        url += `${key}=${value.join(",")}&`;
+        continue;
+      }
+
+      if (value instanceof Date) {
+        url += `${key}=${value.toISOString()}&`;
+        continue;
+      }
+
+      url += `${key}=${value}&`;
+    }
+
+    const response = await requests.get<IPageWrapper<IEvent>>(url);
+
+    for (const event of response.content) {
+      event.startDate = new Date(event.startDate);
+      event.endDate = new Date(event.endDate);
+    }
+
+    return response;
+  },
+};
+
 const agent = {
   Auth,
   Map,
+  Event,
 };
 
 export default agent;

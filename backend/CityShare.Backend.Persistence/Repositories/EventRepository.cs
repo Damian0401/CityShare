@@ -68,7 +68,7 @@ public class EventRepository : IEventRepository
         return searchResult;
     }
 
-    public async Task<(IEnumerable<SearchEventDto>, int)> GetByQueryAsync(EventQueryDto eventQuery, CancellationToken cancellationToken = default)
+    public async Task<(IEnumerable<SearchEventDto>, int)> GetByQueryAsync(EventSearchQueryDto eventQuery, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating query from {@Query}", eventQuery);
 
@@ -144,7 +144,7 @@ public class EventRepository : IEventRepository
         return (searchResult, count);
     }
 
-    private IQueryable<Event> AddPagination(EventQueryDto eventQuery, IQueryable<Event> query)
+    private IQueryable<Event> AddPagination(EventSearchQueryDto eventQuery, IQueryable<Event> query)
     {
         var pageSize = eventQuery.PageSize ?? Constants.MaxEventPageSize;
 
