@@ -45,22 +45,18 @@ export default class CommonStore {
       {
         id: 1,
         name: "Sport",
-        description: "Sport event",
       },
       {
         id: 2,
         name: "Music",
-        description: "Music event",
       },
       {
         id: 3,
         name: "Theatre",
-        description: "Theatre event",
       },
       {
         id: 4,
         name: "Cinema",
-        description: "Cinema event",
       },
     ];
 
