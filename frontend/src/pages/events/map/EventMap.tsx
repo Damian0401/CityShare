@@ -34,7 +34,10 @@ const EventMap = observer(() => {
         isNow: true,
       };
 
-      const events = await eventStore.getEvents(query, controller.signal);
+      const events = await eventStore.getEventsByQuery(
+        query,
+        controller.signal
+      );
       setEvents(events.content);
     };
 

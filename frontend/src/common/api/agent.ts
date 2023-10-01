@@ -168,6 +168,7 @@ const Event = {
 
     return response;
   },
+  getById: (id: string) => requests.get<IEvent>(`/events/${id}`),
 };
 
 const agent = {

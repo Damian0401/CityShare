@@ -9,7 +9,7 @@ export default class EventStore {
     makeAutoObservable(this);
   }
 
-  selectEvent = (event: IEvent | null) => {
+  setSelectedEvent = (event: IEvent | null) => {
     runInAction(() => {
       this.selectedEvent = event;
     });
@@ -21,15 +21,19 @@ export default class EventStore {
     });
   };
 
-  updateEvent = (event: IEvent) => {
-    if (!this.selectedEvent) return;
-
-    runInAction(() => {
-      this.selectedEvent = { ...this.selectedEvent, ...event };
-    });
+  getEventsByQuery = (query: IEventSearchQuery, signal?: AbortSignal) => {
+    return agent.Event.get(query, signal);
   };
 
-  getEvents = (query: IEventSearchQuery, signal?: AbortSignal) => {
-    return agent.Event.get(query, signal);
+  loadSelectedEvent = async (id: string) => {
+    if (this.selectedEvent && this.selectedEvent.id === id) {
+      return;
+    }
+
+    const event = await agent.Event.getById(id);
+
+    runInAction(() => {
+      this.selectedEvent = event;
+    });
   };
 }

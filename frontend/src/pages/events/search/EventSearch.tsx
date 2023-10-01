@@ -14,7 +14,7 @@ const EventSearch = observer(() => {
   const [events, setEvents] = useState<IEvent[]>([]);
 
   const handleSearch = async (query: IEventSearchQuery) => {
-    const events = await eventStore.getEvents(query);
+    const events = await eventStore.getEventsByQuery(query);
     setEvents(events.content);
   };
 

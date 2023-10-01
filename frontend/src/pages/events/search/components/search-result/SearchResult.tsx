@@ -8,9 +8,12 @@ import { useNavigate } from "react-router-dom";
 import Category from "../../../../../components/categories/Categories";
 import { formatDistanceToNow } from "date-fns";
 import LikeButton from "../../../../../components/like-button/LikeButton";
+import { useStore } from "../../../../../common/stores/store";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { events, onLikeClick } = props;
+
+  const { eventStore } = useStore();
 
   const navigate = useNavigate();
 
@@ -28,6 +31,11 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   };
 
   const handleEventClick = (eventId: string) => {
+    const selectedEvent = events.find((e) => e.id === eventId);
+
+    if (!selectedEvent) return;
+
+    eventStore.setSelectedEvent(selectedEvent);
     navigate(Routes.Events + "/" + eventId);
   };
 
