@@ -25,7 +25,7 @@ public class GetEventsByQueryHandlerTests
 
         _request = new EventSearchQueryDto();
 
-        _getEventsByQuery = new GetEventsByQuery(_request);
+        _getEventsByQuery = new GetEventsByQuery(_request, Value.String);
 
         _systemUnderTests = new GetEventsByQueryHandler(
             _eventRepositoryMock.Object,

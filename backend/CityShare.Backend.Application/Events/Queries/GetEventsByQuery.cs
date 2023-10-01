@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Events.Queries;
 
-public record GetEventsByQuery(EventSearchQueryDto Request) : IRequest<Result<PageWrapper<EventDto>>>;
+public record GetEventsByQuery(EventSearchQueryDto Request, string UserId) : IRequest<Result<PageWrapper<EventDto>>>;
 
 public class GetEventsByQueryValidator : AbstractValidator<GetEventsByQuery>
 {
@@ -57,9 +57,19 @@ public class GetEventsByQueryHandler : IRequestHandler<GetEventsByQuery, Result<
             var dto = _mapper.Map<EventDto>(e.Event);
             dto.Likes = e.Likes;
             dto.CommentNumber = e.CommentNumber;
+            dto.Author = e.Author;
 
             return dto;
         });
+
+        _logger.LogInformation("Creating tasks for likes");
+        var isLikesTasks = dtos.Select(d => Task.Run(async () =>
+        {
+            d.IsLiked = await _eventRepository.IsEventLikedAsync(d.Id, request.UserId);
+        }));
+
+        _logger.LogInformation("Awaiting like tasks");
+        await Task.WhenAll(isLikesTasks);
 
         _logger.LogInformation("Creating response");
         var result = new PageWrapper<EventDto>
