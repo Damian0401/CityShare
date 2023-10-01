@@ -19,19 +19,19 @@ import OptionSelect from "../../../../../components/option-select/OptionSelect";
 
 const sortByOptions: IOption[] = [
   {
-    value: "createdAtDesc",
+    value: "CreatedAtDesc",
     label: "Newest",
   },
   {
-    value: "createdAtAsc",
+    value: "CreatedAtAsc",
     label: "Oldest",
   },
   {
-    value: "likesDesc",
+    value: "LikesDesc",
     label: "Most popular",
   },
   {
-    value: "likesAsc",
+    value: "LikesAsc",
     label: "Least popular",
   },
 ];

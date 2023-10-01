@@ -72,12 +72,12 @@ const EventMap = observer(() => {
     ]);
   };
 
-  const handleLikeClick = (eventId: string, isLiked: boolean) => {
+  const handleLikeClick = (eventId: string) => {
     const event = events.find((e) => e.id === eventId);
 
     if (!event) return;
 
-    updateLikes(event, isLiked);
+    updateLikes(event);
 
     setEvents([...events]);
   };

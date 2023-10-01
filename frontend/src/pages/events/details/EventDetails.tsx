@@ -81,10 +81,10 @@ const EventDetails = observer(() => {
     setEvent(event);
   }, [id, navigate]);
 
-  const handleLikeClick = (_: number, isLiked: boolean) => {
+  const handleLikeClick = (_: string) => {
     if (!event) return;
 
-    updateLikes(event, isLiked);
+    updateLikes(event);
 
     setEvent({ ...event });
   };

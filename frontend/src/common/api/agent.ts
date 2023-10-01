@@ -141,6 +141,10 @@ const Event = {
         continue;
       }
 
+      if (Array.isArray(value) && value.length === 0) {
+        continue;
+      }
+
       if (Array.isArray(value) && value.length > 0) {
         url += `${key}=${value.join(",")}&`;
         continue;
@@ -159,6 +163,7 @@ const Event = {
     for (const event of response.content) {
       event.startDate = new Date(event.startDate);
       event.endDate = new Date(event.endDate);
+      event.createdAt = new Date(event.createdAt);
     }
 
     return response;
