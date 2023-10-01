@@ -10,6 +10,8 @@ import {
   IEventSearchQuery,
   IPageWrapper,
   IEvent,
+  ICategory,
+  ICity,
 } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { toast } from "react-toastify";
@@ -121,6 +123,14 @@ const Map = {
     requests.get<IAddress>(`/map/reverse?x=${point.x}&y=${point.y}`),
 };
 
+const Category = {
+  get: () => requests.get<ICategory[]>("/categories"),
+};
+
+const City = {
+  get: () => requests.get<ICity[]>("/cities"),
+};
+
 const Event = {
   get: async (
     query: IEventSearchQuery,
@@ -169,6 +179,8 @@ const Event = {
 const agent = {
   Auth,
   Map,
+  Category,
+  City,
   Event,
 };
 
