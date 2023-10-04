@@ -83,7 +83,7 @@ public class EventRepository : IEventRepository
             .Include(x => x.EventCategories)
             .AsQueryable();
 
-        if (eventQuery.IsNow is not null)
+        if (eventQuery.IsNow is not null && eventQuery.IsNow.Value)
         {
             _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.IsNow));
             query = query.Where(x => x.StartDate < _clock.Now && x.EndDate > _clock.Now);
