@@ -2,6 +2,7 @@ import { CSSProperties } from "react";
 
 const Constants = {
   ApiPrefix: "/api/v1",
+  ImagePlaceholder: "https://placehold.co/600x600?text=no+image",
   MultilineToast: { whiteSpace: "pre-line" } as CSSProperties,
   AriaLabels: {
     ToggleThemeButton: "toggle theme",
@@ -30,7 +31,6 @@ const Constants = {
   },
   Strings: {
     Empty: "",
-    ImagePlaceholder: "https://placehold.co/600x600?text=no+image",
   },
 };
 

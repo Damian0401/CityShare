@@ -29,7 +29,7 @@ const MapMarker: React.FC<IMapMarkerProps> = (props) => {
             src={
               event.imageUrls.length > 0
                 ? event.imageUrls[0]
-                : Constants.Strings.ImagePlaceholder
+                : Constants.ImagePlaceholder
             }
             alt="Event"
             className={styles.image}
