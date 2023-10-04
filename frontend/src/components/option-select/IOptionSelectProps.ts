@@ -1,7 +1,7 @@
 import { IOption } from "../../common/interfaces";
 
 export interface IOptionSelectProps {
-  label: string;
+  label?: string;
   name: string;
   options: IOption[];
   errors?: string;

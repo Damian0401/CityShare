@@ -7,10 +7,14 @@ import { IEvent } from "../../../../../common/interfaces";
 import { useNavigate } from "react-router-dom";
 import Category from "../../../../../components/categories/Categories";
 import { formatDistanceToNow } from "date-fns";
-import LikeButtons from "../../../../../components/like-buttons/LikeButtons";
+import LikeButton from "../../../../../components/like-button/LikeButton";
+import { useStore } from "../../../../../common/stores/store";
+import Constants from "../../../../../common/utils/constants";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { events, onLikeClick } = props;
+
+  const { eventStore } = useStore();
 
   const navigate = useNavigate();
 
@@ -28,6 +32,11 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   };
 
   const handleEventClick = (eventId: string) => {
+    const selectedEvent = events.find((e) => e.id === eventId);
+
+    if (!selectedEvent) return;
+
+    eventStore.setSelectedEvent(selectedEvent);
     navigate(Routes.Events + "/" + eventId);
   };
 
@@ -48,7 +57,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
                 src={
                   event.imageUrls.length > 0
                     ? event.imageUrls[0]
-                    : "https://picsum.photos/200/300"
+                    : Constants.Strings.ImagePlaceholder
                 }
                 alt="event"
               />
@@ -58,7 +67,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
                 <span className={styles.title}>{event.title}</span>
                 <Category categoryIds={event.categoryIds} />
               </div>
-              <LikeButtons
+              <LikeButton
                 id={event.id}
                 likes={event.likes}
                 isLiked={event.isLiked}

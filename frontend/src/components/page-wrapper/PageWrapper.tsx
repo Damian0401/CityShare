@@ -5,12 +5,13 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../common/stores/store";
 import { accessTokenHelper } from "../../common/utils/helpers";
 import { useEffect, useState } from "react";
-import { Containers, Routes } from "../../common/enums";
+import { AxiosErrorCodes, Containers, Routes } from "../../common/enums";
 import LoadingSpinner from "../loading-spinner/LoadingSpinner";
 import BaseContainer from "../base-container/BaseContainer";
+import { AxiosError } from "axios";
 
 const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isPageLoading, setIsPageLoading] = useState(true);
   const { authStore, commonStore } = useStore();
   const navigate = useNavigate();
 
@@ -19,40 +20,53 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
 
     if (!isTokenStored) {
       navigate(Routes.Login);
-      setIsLoading(false);
+      setIsPageLoading(false);
       return;
     }
 
+    const controller = new AbortController();
     const refreshUser = async () => {
       try {
-        await authStore.refresh();
+        await authStore.refresh(controller.signal);
         await commonStore.loadCommonData();
-      } catch {
+      } catch (error) {
+        if (
+          error instanceof AxiosError &&
+          error.code === AxiosErrorCodes.Canceled
+        ) {
+          return;
+        }
+
         await authStore.logout();
-        Routes.Login;
-      } finally {
-        setIsLoading(false);
+        navigate(Routes.Login);
       }
+      setIsPageLoading(false);
     };
 
     refreshUser();
+
+    return () => controller.abort();
   }, [authStore, commonStore, navigate]);
 
   return (
     <>
       <div className={styles.wrapper}>
-        {isLoading ? (
+        {isPageLoading ? (
           <LoadingSpinner />
         ) : (
           <>
             {Element && <Element />}
             <main>
-              <BaseContainer
-                type={Containers.Primary}
-                className={styles.container}
-              >
-                <Outlet />
-              </BaseContainer>
+              {commonStore.isContentLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <BaseContainer
+                  type={Containers.Primary}
+                  className={styles.container}
+                >
+                  <Outlet />
+                </BaseContainer>
+              )}
             </main>
           </>
         )}

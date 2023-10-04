@@ -16,15 +16,12 @@ namespace CityShare.Backend.Tests.UnitTests.Events;
 public class GetEventByIdQueryHandlerTests
 {
     private readonly Mock<IEventRepository> _eventRepositoryMock;
-    private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly GetEventByIdQuery _getEventByIdQuery;
     private readonly GetEventByIdQueryHandler _systemUnderTests;
 
     public GetEventByIdQueryHandlerTests()
     {
         _eventRepositoryMock = new Mock<IEventRepository>();
-
-        _userManagerMockHelper = new UserManagerMockHelper<ApplicationUser>();
 
         var mapper = MapperHelper.GetMapper();
 
@@ -34,7 +31,6 @@ public class GetEventByIdQueryHandlerTests
 
         _systemUnderTests = new GetEventByIdQueryHandler(
             _eventRepositoryMock.Object,
-            _userManagerMockHelper.Object,
             mapper,
             logger);
     }

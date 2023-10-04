@@ -63,12 +63,14 @@ public class Events
     }
 
     public static async Task<IResult> GetByQuery(
-        [AsParameters] EventQueryDto Request,
+        [AsParameters] EventSearchQueryDto Request,
+        ClaimsPrincipal claimsPrincipal,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new GetEventsByQuery(Request), cancellationToken);
+            new GetEventsByQuery(Request, claimsPrincipal.GetUserId()), 
+            cancellationToken);
 
         return ResultResolver.Resolve(result);
     }

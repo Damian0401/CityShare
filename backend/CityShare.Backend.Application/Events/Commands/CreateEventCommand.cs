@@ -6,7 +6,6 @@ using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Domain.Extensions;
 using CityShare.Backend.Domain.Shared;
 using FluentValidation;
 using MediatR;
@@ -62,12 +61,12 @@ public class CreateEventCommandValidator : AbstractValidator<CreateEventCommand>
 
         RuleFor(x => x.Request.StartDate)
             .NotEmpty()
-            .GreaterThanOrEqualTo(DateTime.Now)
             .WithName(x => nameof(x.Request.StartDate));
 
         RuleFor(x => x.Request.EndDate)
             .NotEmpty()
             .GreaterThanOrEqualTo(x => x.Request.StartDate)
+            .GreaterThanOrEqualTo(DateTime.UtcNow)
             .WithName(x => nameof(x.Request.EndDate));
     }
 }

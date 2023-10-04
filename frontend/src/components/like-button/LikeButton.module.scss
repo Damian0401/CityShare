@@ -1,12 +1,12 @@
 @import "../../assets/styles/variables.module.scss";
 
 .container {
-  font-size: $mdFontSize;
+  font-size: $lgFontSize;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  column-gap: 0.3rem;
+  column-gap: 0.1rem;
 
   .icon:hover {
     opacity: $hoverOpacity;

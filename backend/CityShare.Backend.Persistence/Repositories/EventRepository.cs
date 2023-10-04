@@ -1,4 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Events;
+using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
@@ -13,13 +14,16 @@ namespace CityShare.Backend.Persistence.Repositories;
 public class EventRepository : IEventRepository
 {
     private readonly CityShareDbContext _context;
+    private readonly IClock _clock;
     private readonly ILogger<EventRepository> _logger;
 
     public EventRepository(
         CityShareDbContext context,
+        IClock clock,
         ILogger<EventRepository> logger)
     {
         _context = context;
+        _clock = clock;
         _logger = logger;
     }
 
@@ -62,13 +66,14 @@ public class EventRepository : IEventRepository
             {
                 Event = x,
                 Likes = x.Likes.Count(),
-                CommentNumber = x.Comments.Count()
+                CommentNumber = x.Comments.Count(),
+                Author = x.Author.UserName ?? string.Empty
             }).FirstOrDefaultAsync(cancellationToken);
 
         return searchResult;
     }
 
-    public async Task<(IEnumerable<SearchEventDto>, int)> GetByQueryAsync(EventQueryDto eventQuery, CancellationToken cancellationToken = default)
+    public async Task<(IEnumerable<SearchEventDto>, int)> GetByQueryAsync(EventSearchQueryDto eventQuery, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating query from {@Query}", eventQuery);
 
@@ -77,6 +82,12 @@ public class EventRepository : IEventRepository
             .Include(x => x.Address)
             .Include(x => x.EventCategories)
             .AsQueryable();
+
+        if (eventQuery.IsNow is not null && eventQuery.IsNow.Value)
+        {
+            _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.IsNow));
+            query = query.Where(x => x.StartDate < _clock.Now && x.EndDate > _clock.Now);
+        }
 
         if (eventQuery.StartDate is not null)
         {
@@ -138,13 +149,14 @@ public class EventRepository : IEventRepository
         {
             Event = x,
             Likes = x.Likes.Count(),
-            CommentNumber = x.Comments.Count()
+            CommentNumber = x.Comments.Count(),
+            Author = x.Author.UserName ?? string.Empty
         }).ToListAsync(cancellationToken);
 
         return (searchResult, count);
     }
 
-    private IQueryable<Event> AddPagination(EventQueryDto eventQuery, IQueryable<Event> query)
+    private IQueryable<Event> AddPagination(EventSearchQueryDto eventQuery, IQueryable<Event> query)
     {
         var pageSize = eventQuery.PageSize ?? Constants.MaxEventPageSize;
 

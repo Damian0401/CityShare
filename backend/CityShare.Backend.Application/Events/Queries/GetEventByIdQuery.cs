@@ -2,12 +2,9 @@
 using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Domain.Constants;
-using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Domain.Extensions;
 using CityShare.Backend.Domain.Shared;
 using FluentValidation;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Events.Queries;
@@ -29,18 +26,15 @@ public class GetEventByIdQueryValidator : AbstractValidator<GetEventByIdQuery>
 public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Result<EventDto>>
 {
     private readonly IEventRepository _eventRepository;
-    private readonly UserManager<ApplicationUser> _userManager;
     private readonly IMapper _mapper;
     private readonly ILogger<GetEventByIdQueryHandler> _logger;
 
     public GetEventByIdQueryHandler(
         IEventRepository eventRepository,
-        UserManager<ApplicationUser> userManager,
         IMapper mapper,
         ILogger<GetEventByIdQueryHandler> logger)
     {
         _eventRepository = eventRepository;
-        _userManager = userManager;
         _mapper = mapper;
         _logger = logger;
     }
@@ -60,9 +54,6 @@ public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Resul
         var eventDto = _mapper.Map<EventDto>(searchResult.Event);
         eventDto.Likes = searchResult.Likes;
         eventDto.CommentNumber = searchResult.CommentNumber;
-
-        _logger.LogInformation("Searching for UserName of user with id {@Id}", searchResult.Event.AuthorId);
-        eventDto.Author = await _userManager.GetUserNameByIdAsync(searchResult.Event.AuthorId);
 
         _logger.LogInformation("Checking if user with id {@UserId} likes event with id {@EventId}", request.UserId, request.EventId);
         eventDto.IsLiked = await _eventRepository.IsEventLikedAsync(searchResult.Event.Id, request.UserId, cancellationToken);

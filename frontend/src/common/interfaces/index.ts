@@ -13,4 +13,5 @@ export * from "./IInitialValues";
 export * from "./IOption";
 export * from "./IAddressDetails";
 export * from "./IEventSearchQuery";
-export * from "./INewImage";
+export * from "./IEventImage";
+export * from "./IPageWrapper";

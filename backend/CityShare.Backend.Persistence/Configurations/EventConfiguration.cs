@@ -33,8 +33,8 @@ internal class EventConfiguration : IEntityTypeConfiguration<Event>
             .OnDelete(DeleteBehavior.ClientCascade);
 
         builder.HasOne(x => x.City)
-            .WithOne()
-            .HasForeignKey<Event>(x => x.CityId)
+            .WithMany(x => x.Events)
+            .HasForeignKey(x => x.CityId)
             .OnDelete(DeleteBehavior.ClientCascade);
 
         builder.HasOne(x => x.Address)

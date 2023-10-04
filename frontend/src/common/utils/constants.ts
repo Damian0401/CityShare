@@ -30,7 +30,7 @@ const Constants = {
   },
   Strings: {
     Empty: "",
-    ImagePlaceholder: "https://picsum.photos/600/600",
+    ImagePlaceholder: "https://placehold.co/600x600?text=no+image",
   },
 };
 

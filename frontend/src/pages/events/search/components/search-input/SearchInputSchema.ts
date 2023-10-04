@@ -2,7 +2,7 @@ import * as Yup from "yup";
 
 export const searchInputSchema = Yup.object({
   query: Yup.string().notRequired().max(30),
-  startDate: Yup.date().required(),
+  startDate: Yup.date(),
   endDate: Yup.date()
     .nullable()
     .test({

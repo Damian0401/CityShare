@@ -23,6 +23,7 @@ const EventCreate = observer(() => {
   const {
     authStore: { user },
     commonStore,
+    eventStore,
   } = useStore();
 
   const navigate = useNavigate();
@@ -49,13 +50,21 @@ const EventCreate = observer(() => {
     onAddressModalOpen();
   };
 
+  const handleSubmit = async (values: IEventCreateValues) => {
+    const id = await eventStore.createEvent(values);
+
+    toast.success("Event created successfully");
+
+    navigate(`${Routes.Events}/${id}`);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.title}>Create a new event to share</div>
       <Divider />
       <Formik
         initialValues={InitialValues.EventCreate}
-        onSubmit={console.log}
+        onSubmit={handleSubmit}
         validationSchema={EventCreateSchema}
       >
         {({
@@ -157,7 +166,7 @@ const EventCreate = observer(() => {
             <ImagesWithBlurPicker
               errors={errors.images as string}
               touched={touched.images as unknown as boolean}
-              allImages={values.images}
+              allImages={values.images ?? []}
               sizeLimit={5 * Constants.FileSizes.MB}
               setImages={async (images) => {
                 await setFieldValue(

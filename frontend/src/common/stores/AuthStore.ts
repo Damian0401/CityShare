@@ -41,8 +41,8 @@ export default class AuthStore {
     });
   };
 
-  refresh = async () => {
-    const user = await agent.Auth.refresh();
+  refresh = async (signal?: AbortSignal) => {
+    const user = await agent.Auth.refresh(signal);
     runInAction(() => {
       this.user = user;
     });

@@ -2,7 +2,7 @@
 
 namespace CityShare.Backend.Application.Core.Dtos.Events;
 
-public class EventQueryDto
+public class EventSearchQueryDto
 {
     public string? Query { get; set; }
     public int? CityId { get; set; }
@@ -10,6 +10,7 @@ public class EventQueryDto
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public EventSortByOptions? SortBy { get; set; }
+    public bool? IsNow { get; set; }
     public int? PageSize { get; set; }
     public int? PageNumber { get; set; }
 }
