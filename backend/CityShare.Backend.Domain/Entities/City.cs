@@ -9,4 +9,5 @@ public class City
 
     public virtual Address Address { get; set; } = default!;
     public virtual BoundingBox BoundingBox { get; set; } = default!;
+    public virtual IEnumerable<Event> Events { get; set; } = default!;
 }
