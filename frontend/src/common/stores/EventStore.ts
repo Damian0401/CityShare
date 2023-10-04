@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { IEvent, IEventSearchQuery } from "../interfaces";
+import { IEvent, IEventCreateValues, IEventSearchQuery } from "../interfaces";
 import agent from "../api/agent";
 
 export default class EventStore {
@@ -35,5 +35,18 @@ export default class EventStore {
     runInAction(() => {
       this.selectedEvent = event;
     });
+  };
+
+  createEvent = async (values: IEventCreateValues) => {
+    const images = [...(values.images ?? [])];
+    delete values.images;
+
+    const id = await agent.Event.create(values);
+
+    for (const image of images) {
+      await agent.Event.uploadImage(id, image);
+    }
+
+    return id;
   };
 }

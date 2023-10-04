@@ -1,4 +1,4 @@
-import { IAddress, INewImage } from ".";
+import { IAddress, IEventImage } from ".";
 
 export interface IEventCreateValues {
   title: string;
@@ -6,7 +6,7 @@ export interface IEventCreateValues {
   cityId: number;
   address: IAddress;
   categoryIds: number[];
-  images: INewImage[];
+  images?: IEventImage[];
   startDate: Date;
   endDate: Date;
 }

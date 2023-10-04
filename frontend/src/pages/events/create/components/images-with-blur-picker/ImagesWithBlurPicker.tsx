@@ -1,14 +1,13 @@
 import { useDisclosure } from "@chakra-ui/react";
 import { IImagesWithBlurPickerProps } from "./IImagesWithBlurPickerProps";
 import { useState } from "react";
-import {
-  INewImage
-} from "../../../../../common/interfaces";
+import { IEventImage } from "../../../../../common/interfaces";
 import ImagePicker from "../../../../../components/image-picker/ImagePicker";
 import ConfirmDialog from "../../../../../components/confirm-dialog/ConfirmDialog";
 
 const ImagesWithBlurPicker: React.FC<IImagesWithBlurPickerProps> = (props) => {
-  const { setImages, setImagesTouched, sizeLimit, allImages, errors, touched } = props;
+  const { setImages, setImagesTouched, sizeLimit, allImages, errors, touched } =
+    props;
 
   const {
     isOpen: isBlurDialogOpen,
@@ -26,8 +25,8 @@ const ImagesWithBlurPicker: React.FC<IImagesWithBlurPickerProps> = (props) => {
   };
 
   const handleImagesChange = async (images: File[], isNewImage: boolean) => {
-    const mappedImages: INewImage[] = images.map((image) => ({
-      image: image,
+    const mappedImages: IEventImage[] = images.map((image) => ({
+      file: image,
       shouldBeBlurred: imagesToBlur.includes(image.name),
     }));
 
@@ -45,9 +44,9 @@ const ImagesWithBlurPicker: React.FC<IImagesWithBlurPickerProps> = (props) => {
     onBlurDialogClose();
     const newImagesToBlur = [...imagesToBlur, selectedImage];
 
-    const mappedImages: INewImage[] = allImages.map((image) => ({
-      image: image.image,
-      shouldBeBlurred: newImagesToBlur.includes(image.image.name),
+    const mappedImages: IEventImage[] = allImages.map((image) => ({
+      file: image.file,
+      shouldBeBlurred: newImagesToBlur.includes(image.file.name),
     }));
 
     setImagesToBlur(newImagesToBlur);

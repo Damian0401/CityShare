@@ -9,6 +9,7 @@ import Category from "../../../../../components/categories/Categories";
 import { formatDistanceToNow } from "date-fns";
 import LikeButton from "../../../../../components/like-button/LikeButton";
 import { useStore } from "../../../../../common/stores/store";
+import Constants from "../../../../../common/utils/constants";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { events, onLikeClick } = props;
@@ -56,7 +57,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
                 src={
                   event.imageUrls.length > 0
                     ? event.imageUrls[0]
-                    : "https://picsum.photos/200/300"
+                    : Constants.Strings.ImagePlaceholder
                 }
                 alt="event"
               />

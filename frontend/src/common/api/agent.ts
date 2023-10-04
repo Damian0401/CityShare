@@ -1,5 +1,9 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { accessTokenHelper, getSecret } from "../utils/helpers";
+import {
+  accessTokenHelper,
+  correctEventDates,
+  getSecret,
+} from "../utils/helpers";
 import { Environments, Routes, StatusCodes } from "../enums";
 import {
   IAddress,
@@ -12,6 +16,8 @@ import {
   IEvent,
   ICategory,
   ICity,
+  IEventCreateValues,
+  IEventImage,
 } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { toast } from "react-toastify";
@@ -45,7 +51,7 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
   const { status, data } = error.response;
 
   if (status === StatusCodes.BadRequest && !data) {
-    Router.navigate(Routes.NotFound);
+    Router.navigate(Routes.ServerError);
     return Promise.reject(error);
   }
 
@@ -166,15 +172,32 @@ const Event = {
     const response = await requests.get<IPageWrapper<IEvent>>(url, signal);
 
     for (const event of response.content) {
-      event.startDate = new Date(event.startDate);
-      event.endDate = new Date(event.endDate);
-      event.createdAt = new Date(event.createdAt);
+      correctEventDates(event);
     }
 
     return response;
   },
-  getById: (id: string, signal?: AbortSignal) =>
-    requests.get<IEvent>(`/events/${id}`, signal),
+  getById: async (id: string, signal?: AbortSignal) => {
+    const event = await requests.get<IEvent>(`/events/${id}`, signal);
+
+    correctEventDates(event);
+
+    return event;
+  },
+  create: (values: IEventCreateValues) =>
+    requests.post<string>("/events", values),
+  uploadImage: (id: string, image: IEventImage) => {
+    let url = `/events/${id}/images`;
+
+    if (image.shouldBeBlurred) {
+      url += "?shouldBeBlurred=true";
+    }
+
+    const formData = new FormData();
+    formData.append("image", image.file);
+
+    return requests.post(url, formData);
+  },
 };
 
 const agent = {

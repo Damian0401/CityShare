@@ -1,10 +1,10 @@
-import { INewImage } from "../../../../../common/interfaces";
+import { IEventImage } from "../../../../../common/interfaces";
 
 export interface IImagesWithBlurPickerProps {
-  setImages: (values: INewImage[]) => Promise<void>;
+  setImages: (values: IEventImage[]) => Promise<void>;
   setImagesTouched: (value: boolean) => Promise<void>;
   errors: string;
   touched: boolean;
-  allImages: INewImage[];
+  allImages: IEventImage[];
   sizeLimit?: number;
 }

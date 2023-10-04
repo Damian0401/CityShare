@@ -62,14 +62,11 @@ public class GetEventsByQueryHandler : IRequestHandler<GetEventsByQuery, Result<
             return dto;
         });
 
-        _logger.LogInformation("Creating tasks for likes");
-        var isLikesTasks = dtos.Select(d => Task.Run(async () =>
+        _logger.LogInformation("Checking likes");
+        foreach (var dto in dtos)
         {
-            d.IsLiked = await _eventRepository.IsEventLikedAsync(d.Id, request.UserId);
-        }));
-
-        _logger.LogInformation("Awaiting like tasks");
-        await Task.WhenAll(isLikesTasks);
+            dto.IsLiked = await _eventRepository.IsEventLikedAsync(dto.Id, request.UserId);
+        }
 
         _logger.LogInformation("Creating response");
         var result = new PageWrapper<EventDto>

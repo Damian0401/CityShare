@@ -17,7 +17,7 @@ const OptionSelect: React.FC<IOptionSelectProps> = (props) => {
       isRequired={isRequired}
       isDisabled={isDisabled}
     >
-      <FormLabel htmlFor={name}>{label}</FormLabel>
+      {label && <FormLabel htmlFor={name}>{label}</FormLabel>}
       <Field
         as={Select}
         name={name}

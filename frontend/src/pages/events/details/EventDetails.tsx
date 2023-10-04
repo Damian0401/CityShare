@@ -1,13 +1,14 @@
 import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Containers, Routes } from "../../../common/enums";
+import { Containers, Routes, StatusCodes } from "../../../common/enums";
 import styles from "./EventDetails.module.scss";
 import BaseContainer from "../../../components/base-container/BaseContainer";
 import EventImages from "./components/event-images/EventImages";
 import EventBody from "./components/event-body/EventBody";
 import EventMap from "./components/event-map/EventMap";
 import { useStore } from "../../../common/stores/store";
+import { AxiosError } from "axios";
 
 const EventDetails = observer(() => {
   const { id } = useParams<{ id: string }>();
@@ -28,8 +29,14 @@ const EventDetails = observer(() => {
     const loadEvent = async () => {
       try {
         await eventStore.loadSelectedEvent(id, controller.signal);
-      } catch {
-        navigate(Routes.NotFound);
+      } catch (error) {
+        if (
+          error instanceof AxiosError &&
+          error.response?.status === StatusCodes.NotFound
+        ) {
+          navigate(Routes.NotFound);
+          return;
+        }
       } finally {
         commonStore.setLoading(false);
       }

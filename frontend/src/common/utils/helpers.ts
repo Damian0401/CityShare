@@ -24,6 +24,12 @@ export const accessTokenHelper = {
   },
 };
 
+export const correctEventDates = (event: IEvent) => {
+  event.startDate = new Date(event.startDate);
+  event.endDate = new Date(event.endDate);
+  event.createdAt = new Date(event.createdAt);
+};
+
 export const importantStyle = (style: string) => {
   return `${style} !important`;
 };

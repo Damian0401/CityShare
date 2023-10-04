@@ -5,9 +5,10 @@ import { observer } from "mobx-react-lite";
 import { useStore } from "../../common/stores/store";
 import { accessTokenHelper } from "../../common/utils/helpers";
 import { useEffect, useState } from "react";
-import { Containers, Routes } from "../../common/enums";
+import { AxiosErrorCodes, Containers, Routes } from "../../common/enums";
 import LoadingSpinner from "../loading-spinner/LoadingSpinner";
 import BaseContainer from "../base-container/BaseContainer";
+import { AxiosError } from "axios";
 
 const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -28,12 +29,18 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
       try {
         await authStore.refresh(controller.signal);
         await commonStore.loadCommonData();
-      } catch {
+      } catch (error) {
+        if (
+          error instanceof AxiosError &&
+          error.code === AxiosErrorCodes.Canceled
+        ) {
+          return;
+        }
+
         await authStore.logout();
         navigate(Routes.Login);
-      } finally {
-        setIsPageLoading(false);
       }
+      setIsPageLoading(false);
     };
 
     refreshUser();
