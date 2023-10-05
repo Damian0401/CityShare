@@ -23,7 +23,7 @@ public class QueueTriggers
     {
         _logger.LogInformation("Executing {@Name} trigger for id {@Id}", nameof(SendNewEmail), emailId);
 
-        var response = await _mediator.Send(new SendNewEmailCommand(emailId), cancellationToken);
+        var response = await _mediator.Send(new SendPendingEmailCommand(emailId), cancellationToken);
 
         if (response.IsFailure)
         {

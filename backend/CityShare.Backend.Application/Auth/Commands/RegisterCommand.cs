@@ -126,7 +126,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
         var dto = new CreateEmailDto(
             request.Request.Email,
             EmailTemplates.WelcomeAndEmailConfirmLink,
-            EmailPriorities.Medium,
             new Dictionary<string, string>
             {
                 {EmailPlaceholders.Id, user.Id },

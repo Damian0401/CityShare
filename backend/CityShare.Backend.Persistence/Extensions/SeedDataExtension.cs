@@ -20,8 +20,6 @@ public static class SeedDataExtension
 
         await Emails.SeedEmailTemplatesAsync(context);
 
-        await Emails.SeedEmailPrioritiesAsync(context);
-
         await Emails.SeedEmailStatusesAsync(context);
 
         await Events.SeedCitiesAsync(context);

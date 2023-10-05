@@ -39,7 +39,6 @@ internal class Value
     {
         Event = new Event()
     };
-    public static EmailPriority EmailPriority => new EmailPriority();
     public static NominatimSearchResponseDto NominatimSearchResponseDto => new NominatimSearchResponseDto();
     public static NominatimReverseResponseDto NominatimReverseResponseDto => new NominatimReverseResponseDto();
     public static IEnumerable<Category> Categories => Enumerable.Empty<Category>();
