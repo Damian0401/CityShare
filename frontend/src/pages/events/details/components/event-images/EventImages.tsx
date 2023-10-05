@@ -21,7 +21,7 @@ const EventImages: React.FC<IEventImagesProps> = observer(({ imageUrls }) => {
   return (
     <div className={styles.container}>
       <img
-        className={imageUrls.length > 1 ? styles.mainBig : styles.mainSmall}
+        className={imageUrls.length > 1 ? styles.mainSmall : styles.mainBig}
         src={
           imageUrls.length > 0
             ? imageUrls[selectedImageIndex]
