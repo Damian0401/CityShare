@@ -1,18 +1,17 @@
-﻿using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
-using CityShare.Backend.Infrastructure.Nominatim;
+﻿using CityShare.Backend.Infrastructure.Maps;
 using CityShare.Backend.Tests.Other.Common;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RichardSzalay.MockHttp;
 
-namespace CityShare.Backend.Tests.UnitTests.Nominatim;
+namespace CityShare.Backend.Tests.UnitTests.Maps;
 
-public class NominatimServiceSearchAsyncTests
+public class NominatimServiceSearchByQueryAsyncTests
 {
     private readonly MockHttpMessageHandler _mockHttp;
     private readonly NominatimService _systemUnderTests;
 
-    public NominatimServiceSearchAsyncTests()
+    public NominatimServiceSearchByQueryAsyncTests()
     {
         _mockHttp = new MockHttpMessageHandler();
         var httpClient = _mockHttp.ToHttpClient();
@@ -28,19 +27,14 @@ public class NominatimServiceSearchAsyncTests
     public async Task HttpClient_ShouldBeCalled_WithCorrectQuery()
     {
         // Arrange
-        var city = Value.String;
-        var dto = new NominatimSearchRequestDto
-        {
-            City = city
-        };
+        var query = Value.String;
+        var parsedQuery = $"search?format=json&addressdetails=0&q={query}";
 
-        var parsedQuery = $"search?format=json&addressdetails=0&city={city}";
-        
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
             .Respond(Constants.JsonContentType, Value.JsonEmptyArray);
 
         // Act
-        await _systemUnderTests.SearchAsync(dto);
+        await _systemUnderTests.SearchByQueryAsync(query);
 
         // Assert
         _mockHttp.VerifyNoOutstandingExpectation();
@@ -50,13 +44,13 @@ public class NominatimServiceSearchAsyncTests
     public async Task EmptyResult_ShouldReturn_Null()
     {
         // Arrange
-        var dto = new NominatimSearchRequestDto();
+        var query = Value.String;
 
         _mockHttp.Fallback
             .Respond(Constants.JsonContentType, Value.JsonEmptyArray);
 
         // Act
-        var result = await _systemUnderTests.SearchAsync(dto);
+        var result = await _systemUnderTests.SearchByQueryAsync(query);
 
         // Assert
         Assert.Null(result);
@@ -66,13 +60,13 @@ public class NominatimServiceSearchAsyncTests
     public async Task CorrectQuery_ShouldReturn_Result()
     {
         // Arrange
-        var dto = new NominatimSearchRequestDto();
+        var query = Value.String;
 
         _mockHttp.Fallback
             .Respond(Constants.JsonContentType, Value.SerializedArrayWithSearchResult);
 
         // Act
-        var result = await _systemUnderTests.SearchAsync(dto);
+        var result = await _systemUnderTests.SearchByQueryAsync(query);
 
         // Assert
         Assert.NotNull(result);

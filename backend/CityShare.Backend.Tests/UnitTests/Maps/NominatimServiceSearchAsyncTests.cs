@@ -1,18 +1,18 @@
-﻿using CityShare.Backend.Infrastructure.Nominatim;
+﻿using CityShare.Backend.Application.Core.Dtos.Maps;
+using CityShare.Backend.Infrastructure.Maps;
 using CityShare.Backend.Tests.Other.Common;
 using Microsoft.Extensions.Logging;
 using Moq;
 using RichardSzalay.MockHttp;
-using System.Globalization;
 
-namespace CityShare.Backend.Tests.UnitTests.Nominatim;
+namespace CityShare.Backend.Tests.UnitTests.Maps;
 
-public class NominatimServiceReverseAsyncTests
+public class NominatimServiceSearchAsyncTests
 {
     private readonly MockHttpMessageHandler _mockHttp;
     private readonly NominatimService _systemUnderTests;
 
-    public NominatimServiceReverseAsyncTests()
+    public NominatimServiceSearchAsyncTests()
     {
         _mockHttp = new MockHttpMessageHandler();
         var httpClient = _mockHttp.ToHttpClient();
@@ -28,16 +28,19 @@ public class NominatimServiceReverseAsyncTests
     public async Task HttpClient_ShouldBeCalled_WithCorrectQuery()
     {
         // Arrange
-        var x = Value.Double;
-        var y = Value.Double;
-        var parsedQuery = $"reverse?format=json&zoom=18&addressdetails=0" +
-            $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
+        var city = Value.String;
+        var dto = new MapSearchRequestDto
+        {
+            City = city
+        };
+
+        var parsedQuery = $"search?format=json&addressdetails=0&city={city}";
 
         _mockHttp.Expect($"{Constants.BaseUrl}/{parsedQuery}")
-            .Respond(Constants.JsonContentType, Value.SerializedNull);
+            .Respond(Constants.JsonContentType, Value.JsonEmptyArray);
 
         // Act
-        await _systemUnderTests.ReverseAsync(x, y);
+        await _systemUnderTests.SearchAsync(dto);
 
         // Assert
         _mockHttp.VerifyNoOutstandingExpectation();
@@ -47,14 +50,13 @@ public class NominatimServiceReverseAsyncTests
     public async Task EmptyResult_ShouldReturn_Null()
     {
         // Arrange
-        var x = Value.Double;
-        var y = Value.Double;
+        var dto = new MapSearchRequestDto();
 
         _mockHttp.Fallback
-            .Respond(Constants.JsonContentType, Value.SerializedNull);
+            .Respond(Constants.JsonContentType, Value.JsonEmptyArray);
 
         // Act
-        var result = await _systemUnderTests.ReverseAsync(x, y);
+        var result = await _systemUnderTests.SearchAsync(dto);
 
         // Assert
         Assert.Null(result);
@@ -64,14 +66,13 @@ public class NominatimServiceReverseAsyncTests
     public async Task CorrectQuery_ShouldReturn_Result()
     {
         // Arrange
-        var x = Value.Double;
-        var y = Value.Double;
+        var dto = new MapSearchRequestDto();
 
         _mockHttp.Fallback
-            .Respond(Constants.JsonContentType, Value.SerializedReverseResponseDto);
+            .Respond(Constants.JsonContentType, Value.SerializedArrayWithSearchResult);
 
         // Act
-        var result = await _systemUnderTests.ReverseAsync(x, y);
+        var result = await _systemUnderTests.SearchAsync(dto);
 
         // Assert
         Assert.NotNull(result);

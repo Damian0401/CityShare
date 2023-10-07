@@ -1,6 +1,6 @@
-﻿namespace CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
+﻿namespace CityShare.Backend.Application.Core.Dtos.Maps;
 
-public class NominatimSearchRequestDto
+public class MapSearchRequestDto
 {
     public string? Street { get; set; }
     public string? City { get; set; }

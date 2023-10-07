@@ -86,14 +86,14 @@ public class UploadEventImageCommandHandler : IRequestHandler<UploadEventImageCo
         }
 
         _logger.LogInformation("Setting uri for image with id {@Id}", imageId);
-        await _imageRepository.SetImageUriAsync(imageId, uri);
+        await _imageRepository.SetUriAsync(imageId, uri);
 
         return Result.Success();
     }
 
     private async Task SendImageToQueueAsync(Guid imageId, CancellationToken cancellationToken)
     {
-        var queueOptions = new QueueServiceOptions
+        var queueOptions = new QueueServiceSendOptions
         {
             CreateIfNotExists = true,
             EncodeToBase64 = true
@@ -116,14 +116,13 @@ public class UploadEventImageCommandHandler : IRequestHandler<UploadEventImageCo
 
     private async Task<string> UploadImageAsync(IFormFile image, Guid imageId, CancellationToken cancellationToken)
     {
-        var uploadOptions = new BlobServiceOptions
+        var uploadOptions = new BlobServiceUploadOptions
         {
             AnonymousRead = true,
             CreateIfNotExists = true,
-            BlobName = imageId.ToString()
         };
 
-        var uri = await _blobService.UploadFileAsync(image, ContainerNames.EventImages, uploadOptions, cancellationToken);
+        var uri = await _blobService.UploadFileAsync(image.OpenReadStream(), imageId.ToString(), ContainerNames.EventImages, uploadOptions, cancellationToken);
         return uri;
     }
 

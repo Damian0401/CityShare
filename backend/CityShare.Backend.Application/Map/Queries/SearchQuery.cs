@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
-using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Dtos.Map;
+using CityShare.Backend.Application.Core.Abstractions.Maps;
+using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Exceptions;
 using CityShare.Backend.Domain.Shared;
@@ -23,13 +23,13 @@ public class SearchQueryValidator : AbstractValidator<SearchQuery>
 
 public class SearchQueryHandler : IRequestHandler<SearchQuery, Result<AddressDetailsDto>>
 {
-    private readonly INominatimService _nominatimService;
+    private readonly IMapService _nominatimService;
     private readonly ICacheService _cacheService;
     private readonly IMapper _mapper;
     private readonly ILogger<SearchQueryHandler> _logger;
 
     public SearchQueryHandler(
-        INominatimService nominatimService,
+        IMapService nominatimService,
         ICacheService cacheService,
         IMapper mapper,
         ILogger<SearchQueryHandler> logger)

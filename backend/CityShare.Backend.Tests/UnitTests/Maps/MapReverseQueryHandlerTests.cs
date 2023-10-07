@@ -1,24 +1,24 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
-using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
+using CityShare.Backend.Application.Core.Abstractions.Maps;
+using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Application.Map.Queries;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace CityShare.Backend.Tests.UnitTests.Map;
+namespace CityShare.Backend.Tests.UnitTests.Maps;
 
 public class MapReverseHandlerTests
 {
-    private readonly Mock<INominatimService> _nominatimServiceMock;
+    private readonly Mock<IMapService> _nominatimServiceMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
     private readonly ReverseQuery _reverseQuery;
     private readonly ReverseQueryHandler _systemUnderTests;
 
     public MapReverseHandlerTests()
     {
-        _nominatimServiceMock = new Mock<INominatimService>();
+        _nominatimServiceMock = new Mock<IMapService>();
 
         _cacheServiceMock = new Mock<ICacheService>();
 
@@ -71,7 +71,7 @@ public class MapReverseHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
         _nominatimServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
-            .ReturnsAsync((NominatimReverseResponseDto?)Value.Null);
+            .ReturnsAsync((MapReverseResponseDto?)Value.Null);
 
         // Act
         var result = await _systemUnderTests.Handle(_reverseQuery, Value.CancelationToken);

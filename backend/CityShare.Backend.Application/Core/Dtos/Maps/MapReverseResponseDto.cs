@@ -1,7 +1,7 @@
-﻿namespace CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
+﻿namespace CityShare.Backend.Application.Core.Dtos.Maps;
 
 
-public class NominatimReverseResponseDto
+public class MapReverseResponseDto
 {
     public long place_id { get; set; }
     public string licence { get; set; } = default!;

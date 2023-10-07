@@ -1,24 +1,24 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
-using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
+using CityShare.Backend.Application.Core.Abstractions.Maps;
+using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Application.Map.Queries;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace CityShare.Backend.Tests.UnitTests.Map;
+namespace CityShare.Backend.Tests.UnitTests.Maps;
 
 public class MapSearchQueryHandlerTests
 {
-    private readonly Mock<INominatimService> _nominatimServiceMock;
+    private readonly Mock<IMapService> _nominatimServiceMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
     private readonly SearchQuery _searchQuery;
     private readonly SearchQueryHandler _systemUnderTests;
 
     public MapSearchQueryHandlerTests()
     {
-        _nominatimServiceMock = new Mock<INominatimService>();
+        _nominatimServiceMock = new Mock<IMapService>();
 
         _cacheServiceMock = new Mock<ICacheService>();
 
@@ -74,7 +74,7 @@ public class MapSearchQueryHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
         _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
-            .ReturnsAsync((NominatimSearchResponseDto?)Value.Null);
+            .ReturnsAsync((MapSearchResponseDto?)Value.Null);
 
         // Act
         var result = await _systemUnderTests.Handle(_searchQuery, Value.CancelationToken);

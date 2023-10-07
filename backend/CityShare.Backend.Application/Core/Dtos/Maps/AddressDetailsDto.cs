@@ -1,4 +1,4 @@
-﻿namespace CityShare.Backend.Application.Core.Dtos.Map;
+﻿namespace CityShare.Backend.Application.Core.Dtos.Maps;
 
 public class AddressDetailsDto
 {

@@ -1,15 +1,13 @@
-﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
-using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
+﻿using CityShare.Backend.Application.Core.Abstractions.Maps;
+using CityShare.Backend.Application.Core.Dtos.Maps;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using System.Net.Http.Json;
 using System.Text;
 
-namespace CityShare.Backend.Infrastructure.Nominatim;
+namespace CityShare.Backend.Infrastructure.Maps;
 
-public class NominatimService : INominatimService
+public class NominatimService : IMapService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<NominatimService> _logger;
@@ -22,7 +20,7 @@ public class NominatimService : INominatimService
         _logger = logger;
     }
 
-    public async Task<NominatimReverseResponseDto?> ReverseAsync(
+    public async Task<MapReverseResponseDto?> ReverseAsync(
         double x, 
         double y, 
         CancellationToken cancellationToken = default)
@@ -32,7 +30,7 @@ public class NominatimService : INominatimService
             $"&lat={x.ToString(CultureInfo.InvariantCulture)}&lon={y.ToString(CultureInfo.InvariantCulture)}";
 
         _logger.LogInformation("Calling httpClient with {@Query}", reverseQuery);
-        var result = await _httpClient.GetFromJsonAsync<NominatimReverseResponseDto>(
+        var result = await _httpClient.GetFromJsonAsync<MapReverseResponseDto>(
             reverseQuery, cancellationToken);
 
         if (result is null || result.error is not null)
@@ -44,15 +42,15 @@ public class NominatimService : INominatimService
         return result;
     }
 
-    public async Task<NominatimSearchResponseDto?> SearchAsync(
-        NominatimSearchRequestDto dto, 
+    public async Task<MapSearchResponseDto?> SearchAsync(
+        MapSearchRequestDto dto, 
         CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Creating query");
         var searchQuery = ParseParameters(dto);
 
         _logger.LogInformation("Calling httpClient with {@Query}", searchQuery);
-        var result = await _httpClient.GetFromJsonAsync<NominatimSearchResponseDto[]>(
+        var result = await _httpClient.GetFromJsonAsync<MapSearchResponseDto[]>(
             searchQuery, cancellationToken);
 
         if (result is null || !result.Any())
@@ -66,7 +64,7 @@ public class NominatimService : INominatimService
         return bestResult;
     }
 
-    public async Task<NominatimSearchResponseDto?> SearchByQueryAsync(
+    public async Task<MapSearchResponseDto?> SearchByQueryAsync(
         string query, 
         CancellationToken cancellationToken = default)
     {
@@ -74,8 +72,8 @@ public class NominatimService : INominatimService
         var searchQuery = $"search?format=json&q={query}&addressdetails=0";
 
         _logger.LogInformation("Calling httpClient with {@Query}", searchQuery);
-        var result = await _httpClient.GetFromJsonAsync<NominatimSearchResponseDto[]>(
-            searchQuery, cancellationToken) ?? Array.Empty<NominatimSearchResponseDto>();
+        var result = await _httpClient.GetFromJsonAsync<MapSearchResponseDto[]>(
+            searchQuery, cancellationToken) ?? Array.Empty<MapSearchResponseDto>();
 
         if (!result.Any())
         {
@@ -89,13 +87,13 @@ public class NominatimService : INominatimService
         return bestResult;
     }
 
-    private string ParseParameters(NominatimSearchRequestDto dto)
+    private string ParseParameters(MapSearchRequestDto dto)
     {
         _logger.LogInformation("Parsing parameters {@Dto}", dto);
 
         var searchQuery = new StringBuilder("search?format=json&addressdetails=0");
 
-        var fields = typeof(NominatimSearchRequestDto).GetProperties();
+        var fields = typeof(MapSearchRequestDto).GetProperties();
 
         foreach (var field in fields)
         {

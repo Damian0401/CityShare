@@ -123,14 +123,14 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
         eventToCreate.CreatedAt = _clock.Now;
         eventToCreate.AuthorId = request.UserId;
 
-        _logger.LogInformation("Creating Event using {@type}", _eventRepository.GetType());
+        _logger.LogInformation("Creating Event using {@Type}", _eventRepository.GetType());
         var eventId = await _eventRepository.CreateAsync(eventToCreate);
 
         _logger.LogInformation("Mapping CategoryIds to EventCategories");
         var eventCategories = request.Request.CategoryIds
             .Select(x => new EventCategory { EventId = eventId, CategoryId = x });
 
-        _logger.LogInformation("Adding EventCategories using {@type}", _eventRepository.GetType());
+        _logger.LogInformation("Adding EventCategories using {@Type}", _eventRepository.GetType());
         await _eventRepository.AddEventCategoriesAsync(eventCategories);
 
         return eventId;

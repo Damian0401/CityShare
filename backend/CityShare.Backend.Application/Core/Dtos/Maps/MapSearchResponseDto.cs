@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
+namespace CityShare.Backend.Application.Core.Dtos.Maps;
 
-public class NominatimSearchResponseDto
+public class MapSearchResponseDto
 {
     public long place_id { get; set; }
     public string licence { get; set; } = default!;

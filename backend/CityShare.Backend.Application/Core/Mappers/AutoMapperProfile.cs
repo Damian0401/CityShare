@@ -2,9 +2,7 @@
 using CityShare.Backend.Domain.Entities;
 using System.Globalization;
 using CityShare.Backend.Application.Core.Dtos.Auth;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
-using CityShare.Backend.Application.Core.Dtos.Map;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Reverse;
+using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Application.Core.Dtos.Cities;
 using CityShare.Backend.Application.Core.Dtos.Categories;
 using CityShare.Backend.Application.Core.Dtos.Events;
@@ -32,7 +30,7 @@ public class AutoMapperProfile : Profile
 
     private void MapsForNominatim()
     {
-        CreateMap<NominatimSearchResponseDto, AddressDetailsDto>()
+        CreateMap<MapSearchResponseDto, AddressDetailsDto>()
             .ForMember(x => x.DisplayName, s => s.MapFrom(d => d.display_name.Replace("\"", "'")))
             .ForMember(x => x.Point, s => s.MapFrom(l => new PointDto(
                 double.Parse(l.lat, CultureInfo.InvariantCulture),
@@ -43,7 +41,7 @@ public class AutoMapperProfile : Profile
                     double.Parse(b.boundingbox[1], CultureInfo.InvariantCulture),
                     double.Parse(b.boundingbox[2], CultureInfo.InvariantCulture), 
                     double.Parse(b.boundingbox[3], CultureInfo.InvariantCulture))));
-        CreateMap<NominatimReverseResponseDto, AddressDto>()
+        CreateMap<MapReverseResponseDto, AddressDto>()
             .ForMember(x => x.DisplayName, s => s.MapFrom(d => d.display_name.Replace("\"", "'")))
             .ForMember(x => x.Point, s => s.MapFrom(l => new PointDto(
                 double.Parse(l.lat, CultureInfo.InvariantCulture),
