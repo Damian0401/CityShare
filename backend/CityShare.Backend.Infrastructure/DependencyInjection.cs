@@ -2,6 +2,7 @@
 using CityShare.Backend.Application.Core.Abstractions.Blobs;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
+using CityShare.Backend.Application.Core.Abstractions.Images;
 using CityShare.Backend.Application.Core.Abstractions.Maps;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Application.Core.Abstractions.Utils;
@@ -11,6 +12,7 @@ using CityShare.Backend.Infrastructure.Auth;
 using CityShare.Backend.Infrastructure.Blobs;
 using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Emails;
+using CityShare.Backend.Infrastructure.Images;
 using CityShare.Backend.Infrastructure.Maps;
 using CityShare.Backend.Infrastructure.Queues;
 using CityShare.Backend.Infrastructure.Utils;
@@ -35,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IQueueService, StorageQueueService>();
         services.AddScoped<IBlobService, StorageBlobService>();
+        services.AddSingleton<IImageService, OpenCvSharpService>();
 
         services.AddSingleton<IClock, UtcClock>();
 

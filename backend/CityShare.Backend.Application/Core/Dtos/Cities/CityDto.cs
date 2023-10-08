@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Core.Dtos.Map;
+﻿using CityShare.Backend.Application.Core.Dtos.Maps;
 
 namespace CityShare.Backend.Application.Core.Dtos.Cities;
 

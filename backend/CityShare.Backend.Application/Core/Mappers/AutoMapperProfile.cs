@@ -14,7 +14,7 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         MapsForUser();
-        MapsForNominatim();
+        MapsForMaps();
         MapsForEmails();
         MapsForAddresses();
         MapsForCities();
@@ -28,7 +28,7 @@ public class AutoMapperProfile : Profile
         CreateMap<ApplicationUser, UserDto>();
     }
 
-    private void MapsForNominatim()
+    private void MapsForMaps()
     {
         CreateMap<MapSearchResponseDto, AddressDetailsDto>()
             .ForMember(x => x.DisplayName, s => s.MapFrom(d => d.display_name.Replace("\"", "'")))
@@ -83,7 +83,7 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateEventDto, Event>()
             .ForMember(x => x.Address, s => s.MapFrom(e => e.Address));
         CreateMap<Event, EventDto>()
-            .ForMember(x => x.ImageUrls, s => s.MapFrom(e => e.Images.Select(c => c.Uri)))
+            .ForMember(x => x.ImageUrls, s => s.MapFrom(e => e.Images.Select(c => c.IsBlurred == c.ShouldBeBlurred ? c.Uri : null)))
             .ForMember(x => x.CategoryIds, s => s.MapFrom(e => e.EventCategories.Select(c => c.CategoryId)));
     }
 }

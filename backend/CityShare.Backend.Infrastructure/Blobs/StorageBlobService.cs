@@ -1,7 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using CityShare.Backend.Application.Core.Abstractions.Blobs;
-using Microsoft.AspNetCore.Http;
 
 namespace CityShare.Backend.Infrastructure.Blobs;
 
@@ -14,18 +13,32 @@ public class StorageBlobService : IBlobService
         _blobServiceClient = blobServiceClient;
     }
 
-    public async Task<string> UploadFileAsync(IFormFile file,
+    public async Task<Stream?> ReadFileAsync(string fileName, string containerName, CancellationToken cancellationToken = default)
+    {
+        var container = await GetContainerAsync(containerName, cancellationToken: cancellationToken);
+
+        var client = container.GetBlobClient(fileName);
+
+        if (!client.Exists(cancellationToken))
+        {
+            return null;
+        }
+
+        var stream = client.OpenRead();
+
+        return stream;
+    }
+
+    public async Task<string> UploadFileAsync(
+        Stream stream,
+        string fileName,
         string containerName,
-        BlobServiceOptions? options = null,
+        BlobServiceUploadOptions? options = null,
         CancellationToken cancellationToken = default)
     {
         var container = await GetContainerAsync(containerName, options, cancellationToken);
 
-        var name = options?.BlobName ?? Guid.NewGuid().ToString();
-
-        var client = container.GetBlobClient(name);
-
-        using var stream = file.OpenReadStream();
+        var client = container.GetBlobClient(fileName);
 
         var overwrite = options?.Overwrite ?? false;
         await client.UploadAsync(stream, overwrite, cancellationToken);
@@ -33,7 +46,7 @@ public class StorageBlobService : IBlobService
         return client.Uri.AbsoluteUri;
     }
 
-    private async Task<BlobContainerClient> GetContainerAsync(string containerName, BlobServiceOptions? options, CancellationToken cancellationToken)
+    private async Task<BlobContainerClient> GetContainerAsync(string containerName, BlobServiceUploadOptions? options = null, CancellationToken cancellationToken = default)
     {
         var container = _blobServiceClient.GetBlobContainerClient(containerName);
 

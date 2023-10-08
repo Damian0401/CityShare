@@ -181,7 +181,7 @@ public class EventRepository : IEventRepository
         return imagesNumber;
     }
 
-    public async Task<bool> IsEventLikedAsync(Guid eventId, string userId, CancellationToken cancellationToken = default)
+    public async Task<bool> IsLikedByUserAsync(Guid eventId, string userId, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Searching for like with user id {@UserId} and event id {@EventId} in database", userId, eventId);
         var likeExists = await _context.Likes

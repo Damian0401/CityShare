@@ -8,14 +8,14 @@ using Moq;
 
 namespace CityShare.Backend.Tests.UnitTests.Emails;
 
-public class SendPendingEmailCommandHandlerTests
+public class SendEmailCommandHandlerTests
 {
     private readonly Mock<IEmailRepository> _emailRepositoryMock;
     private readonly Mock<IEmailService> _emailServiceMock;
-    private readonly SendPendingEmailCommand _command;
-    private readonly SendPendingEmailCommandHandler _systemUnderTests;
+    private readonly SendEmailCommand _sendEmailCommand;
+    private readonly SendEmailCommandHandler _systemUnderTests;
 
-    public SendPendingEmailCommandHandlerTests()
+    public SendEmailCommandHandlerTests()
     {
         _emailRepositoryMock = new Mock<IEmailRepository>();
 
@@ -23,11 +23,11 @@ public class SendPendingEmailCommandHandlerTests
 
         var click = new Mock<IClock>();
 
-        var logger = new Mock<ILogger<SendPendingEmailCommandHandler>>().Object;
+        var logger = new Mock<ILogger<SendEmailCommandHandler>>().Object;
 
-        _command = new SendPendingEmailCommand(Value.Guid);
+        _sendEmailCommand = new SendEmailCommand(Value.Guid);
 
-        _systemUnderTests = new SendPendingEmailCommandHandler(
+        _systemUnderTests = new SendEmailCommandHandler(
             _emailRepositoryMock.Object,
             _emailServiceMock.Object,
             click.Object,
@@ -46,7 +46,7 @@ public class SendPendingEmailCommandHandlerTests
             .ReturnsAsync(newStatusId);
 
         // Act
-        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_sendEmailCommand, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -67,7 +67,7 @@ public class SendPendingEmailCommandHandlerTests
             .ReturnsAsync(pendingStatusId);
 
         // Act
-        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_sendEmailCommand, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -88,7 +88,7 @@ public class SendPendingEmailCommandHandlerTests
             .ReturnsAsync(newStatusId);
 
         // Act
-        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_sendEmailCommand, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);

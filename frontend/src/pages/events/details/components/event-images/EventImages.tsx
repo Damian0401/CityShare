@@ -24,7 +24,7 @@ const EventImages: React.FC<IEventImagesProps> = observer(({ imageUrls }) => {
         className={imageUrls.length > 1 ? styles.mainSmall : styles.mainBig}
         src={
           imageUrls.length > 0
-            ? imageUrls[selectedImageIndex]
+            ? imageUrls[selectedImageIndex] ?? Constants.ImageProcessing
             : Constants.ImagePlaceholder
         }
         alt="event"
@@ -34,7 +34,7 @@ const EventImages: React.FC<IEventImagesProps> = observer(({ imageUrls }) => {
           {imageUrls.map((url, index) => (
             <img
               key={index}
-              src={url}
+              src={url ?? Constants.ImageProcessing}
               alt="event"
               onClick={() => setSelectedImageIndex(index)}
             />

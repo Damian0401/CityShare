@@ -5,11 +5,11 @@ public interface IQueueService
     Task SendAsync<T>(
         string queueName, 
         T item,
-        QueueServiceOptions? options = null,
+        QueueServiceSendOptions? options = null,
         CancellationToken cancellationToken = default);
 }
 
-public class QueueServiceOptions
+public class QueueServiceSendOptions
 {
     public bool? EncodeToBase64 { get; set; }
     public bool? CreateIfNotExists { get; set; }

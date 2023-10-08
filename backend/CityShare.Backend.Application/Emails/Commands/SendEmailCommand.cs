@@ -8,29 +8,29 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Emails.Commands;
 
-public record SendPendingEmailCommand(Guid EmailId) : IRequest<Result>;
+public record SendEmailCommand(Guid EmailId) : IRequest<Result>;
 
-public class SendPendingEmailCommandValidator : AbstractValidator<SendPendingEmailCommand>
+public class SendEmailCommandValidator : AbstractValidator<SendEmailCommand>
 {
-    public SendPendingEmailCommandValidator()
+    public SendEmailCommandValidator()
     {
         RuleFor(x => x.EmailId)
             .NotEmpty();
     }
 }
 
-public class SendPendingEmailCommandHandler : IRequestHandler<SendPendingEmailCommand, Result>
+public class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, Result>
 {
     private readonly IEmailRepository _emailRepository;
     private readonly IEmailService _emailService;
     private readonly IClock _clock;
-    private readonly ILogger<SendPendingEmailCommandHandler> _logger;
+    private readonly ILogger<SendEmailCommandHandler> _logger;
 
-    public SendPendingEmailCommandHandler(
+    public SendEmailCommandHandler(
         IEmailRepository emailRepository,
         IEmailService emailService,
         IClock clock,
-        ILogger<SendPendingEmailCommandHandler> logger)
+        ILogger<SendEmailCommandHandler> logger)
     {
         _emailRepository = emailRepository;
         _emailService = emailService;
@@ -38,7 +38,7 @@ public class SendPendingEmailCommandHandler : IRequestHandler<SendPendingEmailCo
         _logger = logger;
     }
 
-    public async Task<Result> Handle(SendPendingEmailCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(SendEmailCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Searching for email with id {@Id}", request.EmailId);
         var email = await _emailRepository.GetByIdAsync(request.EmailId, cancellationToken);

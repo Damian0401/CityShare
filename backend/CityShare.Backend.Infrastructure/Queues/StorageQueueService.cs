@@ -16,7 +16,7 @@ public class StorageQueueService : IQueueService
 
     public async Task SendAsync<T>(string queueName, 
         T item, 
-        QueueServiceOptions? options = null, 
+        QueueServiceSendOptions? options = null, 
         CancellationToken cancellationToken = default)
     {
         var queueClient = _queueServiceClient.GetQueueClient(queueName);
