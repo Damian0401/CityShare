@@ -13,7 +13,7 @@ const EventImages: React.FC<IEventImagesProps> = observer(({ imageUrls }) => {
       setSelectedImageIndex((prev) =>
         prev === imageUrls.length - 1 ? 0 : prev + 1
       );
-    }, 10000);
+    }, Constants.ChangeImageInterval);
 
     return () => clearInterval(changeImageIntervalId);
   }, [imageUrls.length, setSelectedImageIndex]);
@@ -21,21 +21,21 @@ const EventImages: React.FC<IEventImagesProps> = observer(({ imageUrls }) => {
   return (
     <div className={styles.container}>
       <img
-        className={styles.main}
+        className={imageUrls.length > 1 ? styles.mainSmall : styles.mainBig}
         src={
           imageUrls.length > 0
-            ? imageUrls[selectedImageIndex]
-            : Constants.Strings.ImagePlaceholder
+            ? imageUrls[selectedImageIndex] ?? Constants.Images.Urls.Processing
+            : Constants.Images.Urls.Placeholder
         }
-        alt="event"
+        alt={Constants.Images.Alts.Event}
       />
       {imageUrls.length > 1 && (
         <div className={styles.preview}>
           {imageUrls.map((url, index) => (
             <img
               key={index}
-              src={url}
-              alt="event"
+              src={url ?? Constants.Images.Urls.Processing}
+              alt={Constants.Images.Alts.Event}
               onClick={() => setSelectedImageIndex(index)}
             />
           ))}

@@ -5,15 +5,20 @@ namespace CityShare.Backend.Application.Core.Abstractions.Blobs;
 public interface IBlobService
 {
     Task<string> UploadFileAsync(
-        IFormFile file, 
+        Stream stream,
+        string fileName,
         string containerName, 
-        BlobServiceOptions? options = null, 
+        BlobServiceUploadOptions? options = null, 
+        CancellationToken cancellationToken = default);
+
+    Task<Stream?> ReadFileAsync(
+        string fileName,
+        string containerName,
         CancellationToken cancellationToken = default);
 }
 
-public class BlobServiceOptions
+public class BlobServiceUploadOptions
 {
-    public string? BlobName { get; set; }
     public bool? Overwrite { get; set; }
     public bool? CreateIfNotExists { get; set; }
     public bool? AnonymousRead { get; set; }

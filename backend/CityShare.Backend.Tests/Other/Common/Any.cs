@@ -3,8 +3,7 @@ using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Application.Core.Dtos.Categories;
 using CityShare.Backend.Application.Core.Dtos.Cities;
 using CityShare.Backend.Application.Core.Dtos.Events;
-using CityShare.Backend.Application.Core.Dtos.Map;
-using CityShare.Backend.Application.Core.Dtos.Nominatim.Search;
+using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Domain.Entities;
 using Moq;
 
@@ -20,7 +19,7 @@ internal class Any
     public static Email Email => It.IsAny<Email>();
     public static ApplicationUser ApplicationUser => It.IsAny<ApplicationUser>();
     public static CancellationToken CancellationToken => It.IsAny<CancellationToken>();
-    public static NominatimSearchRequestDto NominatimSearchRequestDto => It.IsAny<NominatimSearchRequestDto>();
+    public static MapSearchRequestDto NominatimSearchRequestDto => It.IsAny<MapSearchRequestDto>();
     public static AddressDetailsDto AddressDetailsDto => It.IsAny<AddressDetailsDto>();
     public static CacheServiceOptions CacheServiceOptions => It.IsAny<CacheServiceOptions>();
     public static AddressDto AddressDto => It.IsAny<AddressDto>();

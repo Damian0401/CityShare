@@ -10,6 +10,7 @@ const EventMap: React.FC<IEventMapProps> = observer(({ address }) => {
     <div className={styles.container}>
       <AddressSearchMap
         initialPoint={address.point}
+        scrollToPoint={address.point}
         disableSelect
         isSearchVisible={false}
         elements={[

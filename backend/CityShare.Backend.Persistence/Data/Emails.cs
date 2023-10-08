@@ -44,47 +44,6 @@ internal static class Emails
         await context.SaveChangesAsync();
     }
 
-    internal static async Task SeedEmailPrioritiesAsync(CityShareDbContext context)
-    {
-        var emailPriorities = new List<EmailPriority>
-        {
-            new()
-            {
-                Name = EmailPriorities.High,
-                RetryNumber = 15
-            },
-            new()
-            {
-                Name = EmailPriorities.Medium,
-                RetryNumber = 5
-            },
-            new()
-            {
-                Name = EmailPriorities.Low,
-                RetryNumber = 1
-            },
-        };
-
-        var existingEmailPriorities = context.EmailPriorities
-            .AsNoTracking()
-            .Select(x => x.Name)
-            .ToList();
-
-        foreach (var emailPriority in emailPriorities)
-        {
-            var priorityExists = existingEmailPriorities.Contains(emailPriority.Name);
-
-            if (priorityExists)
-            {
-                continue;
-            }
-
-            context.EmailPriorities.Add(emailPriority);
-        }
-
-        await context.SaveChangesAsync();
-    }    
-    
     internal static async Task SeedEmailStatusesAsync(CityShareDbContext context)
     {
         var emailStatuses = typeof(EmailStatuses)

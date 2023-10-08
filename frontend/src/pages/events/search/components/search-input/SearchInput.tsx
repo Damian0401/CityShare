@@ -19,20 +19,20 @@ import OptionSelect from "../../../../../components/option-select/OptionSelect";
 
 const sortByOptions: IOption[] = [
   {
-    value: "CreatedAtDesc",
-    label: "Newest",
-  },
-  {
-    value: "CreatedAtAsc",
-    label: "Oldest",
-  },
-  {
     value: "LikesDesc",
     label: "Most popular",
   },
   {
     value: "LikesAsc",
     label: "Least popular",
+  },
+  {
+    value: "CreatedAtDesc",
+    label: "Newest",
+  },
+  {
+    value: "CreatedAtAsc",
+    label: "Oldest",
   },
 ];
 
@@ -92,7 +92,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                       key={category.id}
                       value={category.id}
                       className={styles.checkbox}
-                      defaultChecked
+                      isChecked={!values.skipCategoryIds?.includes(category.id)}
                       onChange={(e) =>
                         setFieldValue(
                           nameof<IEventSearchQuery>((x) => x.skipCategoryIds),

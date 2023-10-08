@@ -29,6 +29,7 @@ const EventDetails = observer(() => {
     const loadEvent = async () => {
       try {
         await eventStore.loadSelectedEvent(id, controller.signal);
+        commonStore.setLoading(false);
       } catch (error) {
         if (
           error instanceof AxiosError &&
@@ -37,8 +38,6 @@ const EventDetails = observer(() => {
           navigate(Routes.NotFound);
           return;
         }
-      } finally {
-        commonStore.setLoading(false);
       }
     };
 

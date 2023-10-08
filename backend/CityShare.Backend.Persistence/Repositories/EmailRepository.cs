@@ -28,13 +28,8 @@ public class EmailRepository : IEmailRepository
             .AsNoTracking()
             .FirstAsync(x => x.Name.Equals(dto.Template), cancellationToken);
 
-        _logger.LogInformation("Searching for priority with name: {@Name}", dto.Priority);
-        var emailPriority = await _context.EmailPriorities
-            .AsNoTracking()
-            .FirstAsync(x => x.Name.Equals(dto.Priority), cancellationToken);
-
         _logger.LogInformation("Creating email from dto {@Dto}", dto);
-        var email = await CreateEmailAsync(dto, template, emailPriority);
+        var email = await CreateEmailAsync(dto, template);
 
         _logger.LogInformation("Saving new email to database");
         _context.Emails.Add(email);
@@ -71,7 +66,7 @@ public class EmailRepository : IEmailRepository
         return status.Id;
     }
 
-    private async Task<Email> CreateEmailAsync(CreateEmailDto dto, EmailTemplate template, EmailPriority emailPrirority)
+    private async Task<Email> CreateEmailAsync(CreateEmailDto dto, EmailTemplate template)
     {
         _logger.LogInformation("Mapping template with id {@Id} to email", template.Id);
         var email = new Email
@@ -79,11 +74,13 @@ public class EmailRepository : IEmailRepository
             Subject = template.Subject,
             Body = template.Body
         };
-        email.PrirorityId = emailPrirority.Id;
         email.Receiver = dto.Receiver;
-        email.StatusId = (await _context.EmailStatuses
+        email.StatusId = await _context.EmailStatuses
             .AsNoTracking()
-            .FirstAsync(x => x.Name.Equals(EmailStatuses.New))).Id;
+            .Where(x => x.Name.Equals(EmailStatuses.Pending))
+            .Select(x => x.Id)
+            .FirstAsync();
+
 
         _logger.LogInformation("Mapping parameters {@Parameters}", dto.Parameters);
         foreach (var (key, value) in dto.Parameters)
@@ -108,14 +105,6 @@ public class EmailRepository : IEmailRepository
             .ToListAsync(cancellationToken);
 
         return emails;
-    }
-
-    public async Task<IEnumerable<EmailPriority>> GetAllPrioritiesAsync(CancellationToken cancellationToken = default)
-    {
-        _logger.LogInformation("Getting all EmailPriorities form database");
-        var priotiries = await _context.EmailPriorities.ToListAsync(cancellationToken);
-
-        return priotiries;
     }
 
     public async Task<bool> UpdateEmailsAsync(IEnumerable<Email> emails, CancellationToken cancellationToken = default)

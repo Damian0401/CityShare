@@ -65,7 +65,7 @@ public class GetEventsByQueryHandler : IRequestHandler<GetEventsByQuery, Result<
         _logger.LogInformation("Checking likes");
         foreach (var dto in dtos)
         {
-            dto.IsLiked = await _eventRepository.IsEventLikedAsync(dto.Id, request.UserId);
+            dto.IsLiked = await _eventRepository.IsLikedByUserAsync(dto.Id, request.UserId);
         }
 
         _logger.LogInformation("Creating response");

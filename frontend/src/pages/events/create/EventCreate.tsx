@@ -10,7 +10,7 @@ import { IEventCreateValues } from "../../../common/interfaces";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../common/stores/store";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import OptionSelect from "../../../components/option-select/OptionSelect";
 import { toast } from "react-toastify";
 import AddressPickerModal from "./components/address-picker-modal/AddressPickerModal";
@@ -25,6 +25,8 @@ const EventCreate = observer(() => {
     commonStore,
     eventStore,
   } = useStore();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -51,7 +53,11 @@ const EventCreate = observer(() => {
   };
 
   const handleSubmit = async (values: IEventCreateValues) => {
+    setIsLoading(true);
+
     const id = await eventStore.createEvent(values);
+
+    setIsLoading(false);
 
     toast.success("Event created successfully");
 
@@ -182,7 +188,9 @@ const EventCreate = observer(() => {
               }}
             />
             <div className={styles.buttonContainer}>
-              <Button type={ButtonTypes.Submit}>Create</Button>
+              <Button isLoading={isLoading} type={ButtonTypes.Submit}>
+                Create
+              </Button>
             </div>
             <AddressPickerModal
               isOpen={isAddressModalOpen}

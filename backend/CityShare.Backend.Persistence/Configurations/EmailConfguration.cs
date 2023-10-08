@@ -22,14 +22,6 @@ internal class EmailConfguration : IEntityTypeConfiguration<Email>
             .IsRequired()
             .HasMaxLength(256);
 
-        builder.Property(x => x.TryCount)
-            .IsRequired()
-            .HasDefaultValue(0);
-
-        builder.HasOne(x => x.Prirority)
-            .WithMany(x => x.Emails)
-            .HasForeignKey(x => x.PrirorityId);
-
         builder.HasOne(x => x.Status)
             .WithMany(x => x.Emails)
             .HasForeignKey(x => x.StatusId);

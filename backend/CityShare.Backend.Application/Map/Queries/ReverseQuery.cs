@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
-using CityShare.Backend.Application.Core.Abstractions.Nominatim;
-using CityShare.Backend.Application.Core.Dtos.Map;
+using CityShare.Backend.Application.Core.Abstractions.Maps;
+using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Exceptions;
 using CityShare.Backend.Domain.Shared;
@@ -24,13 +24,13 @@ public class ReverseQueryValidator : AbstractValidator<ReverseQuery>
 
 public class ReverseQueryHandler : IRequestHandler<ReverseQuery, Result<AddressDto>>
 {
-    private readonly INominatimService _nominatimService;
+    private readonly IMapService _nominatimService;
     private readonly IMapper _mapper;
     private readonly ICacheService _cacheService;
     private readonly ILogger<ReverseQueryHandler> _logger;
 
     public ReverseQueryHandler(
-        INominatimService nominatimService,
+        IMapService nominatimService,
         ICacheService cacheService,
         IMapper mapper,
         ILogger<ReverseQueryHandler> logger)

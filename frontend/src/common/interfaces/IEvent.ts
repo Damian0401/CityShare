@@ -7,7 +7,7 @@ export interface IEvent {
   address: IAddress;
   cityId: number;
   categoryIds: number[];
-  imageUrls: string[];
+  imageUrls: (string | null)[];
   startDate: Date;
   endDate: Date;
   createdAt: Date;

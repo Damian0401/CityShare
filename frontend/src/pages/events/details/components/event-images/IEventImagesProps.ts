@@ -1,3 +1,3 @@
 export interface IEventImagesProps {
-  imageUrls: string[];
+  imageUrls: (string | null)[];
 }

@@ -8,8 +8,14 @@
   box-shadow: $boxShadow;
   border-radius: $borderRadius;
 
-  .main {
+  .mainBig {
     height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
+
+  .mainSmall {
+    height: 80%;
     width: 100%;
     object-fit: cover;
   }

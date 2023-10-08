@@ -54,9 +54,10 @@ public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Resul
         var eventDto = _mapper.Map<EventDto>(searchResult.Event);
         eventDto.Likes = searchResult.Likes;
         eventDto.CommentNumber = searchResult.CommentNumber;
+        eventDto.Author = searchResult.Author;
 
         _logger.LogInformation("Checking if user with id {@UserId} likes event with id {@EventId}", request.UserId, request.EventId);
-        eventDto.IsLiked = await _eventRepository.IsEventLikedAsync(searchResult.Event.Id, request.UserId, cancellationToken);
+        eventDto.IsLiked = await _eventRepository.IsLikedByUserAsync(searchResult.Event.Id, request.UserId, cancellationToken);
 
         return eventDto;
     }

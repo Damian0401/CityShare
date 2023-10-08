@@ -126,7 +126,6 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
         var dto = new CreateEmailDto(
             request.Request.Email,
             EmailTemplates.WelcomeAndEmailConfirmLink,
-            EmailPriorities.Medium,
             new Dictionary<string, string>
             {
                 {EmailPlaceholders.Id, user.Id },
@@ -139,7 +138,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
         var emailId = await _emailRepository.CreateAsync(dto, cancellationToken);
 
         _logger.LogInformation("Sending emailId {@Id} to queue {@Queue}", emailId, QueueNames.EmailsToSend);
-        var options = new QueueServiceOptions
+        var options = new QueueServiceSendOptions
         {
             CreateIfNotExists = true,
             EncodeToBase64 = true,

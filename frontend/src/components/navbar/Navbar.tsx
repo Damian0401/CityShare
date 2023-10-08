@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.scss";
 import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
 import { Containers, Routes } from "../../common/enums";
@@ -7,14 +7,15 @@ import NavbarLogo from "../../assets/images/navbar-logo.svg";
 import { useStore } from "../../common/stores/store";
 import { observer } from "mobx-react-lite";
 import UserMenu from "./components/user-menu/UserMenu";
-import Router from "../../pages/Router";
 
 const Navbar = observer(() => {
   const { authStore } = useStore();
 
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     await authStore.logout();
-    Router.navigate(Routes.Login);
+    navigate(Routes.Login);
   };
 
   return (

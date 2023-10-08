@@ -27,13 +27,28 @@ public class ImageRepository : IImageRepository
         return image.Id;
     }
 
-    public async Task SetImageUriAsync(Guid imageId, string imageUri, CancellationToken cancellationToken = default)
+    public async Task<Image?> GetByIdAsync(Guid imageId, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Getting image with id {@Id} from database", imageId);
-        var image = await _context.Images.FirstAsync(x => x.Id.Equals(imageId));
+        var image = await _context.Images
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id.Equals(imageId), cancellationToken);
 
-        image.Uri = imageUri;
+        return image;
+    }
 
-        await _context.SaveChangesAsync(cancellationToken);
+    public async Task SetUriAsync(Guid imageId, string imageUri, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Updating {@Name} for image with id {@Id} in database", nameof(Image.Uri), imageId);
+        await _context.Images
+            .Where(x => x.Id.Equals(imageId))
+            .ExecuteUpdateAsync(x => x.SetProperty(i => i.Uri, imageUri), cancellationToken);
+    }
+
+    public async Task SetIsBlurredAsync(Guid imageId, bool isBlurred, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Setting {@Name} as true for image with id {@Id} in database", nameof(Image.IsBlurred), imageId);
+        await _context.Images
+            .Where(x => x.Id.Equals(imageId))
+            .ExecuteUpdateAsync(x => x.SetProperty(i => i.IsBlurred, isBlurred), cancellationToken);
     }
 }

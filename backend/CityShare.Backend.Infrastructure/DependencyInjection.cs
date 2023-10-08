@@ -2,7 +2,8 @@
 using CityShare.Backend.Application.Core.Abstractions.Blobs;
 using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
-using CityShare.Backend.Application.Core.Abstractions.Nominatim;
+using CityShare.Backend.Application.Core.Abstractions.Images;
+using CityShare.Backend.Application.Core.Abstractions.Maps;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Domain.Constants;
@@ -11,7 +12,8 @@ using CityShare.Backend.Infrastructure.Auth;
 using CityShare.Backend.Infrastructure.Blobs;
 using CityShare.Backend.Infrastructure.Cache;
 using CityShare.Backend.Infrastructure.Emails;
-using CityShare.Backend.Infrastructure.Nominatim;
+using CityShare.Backend.Infrastructure.Images;
+using CityShare.Backend.Infrastructure.Maps;
 using CityShare.Backend.Infrastructure.Queues;
 using CityShare.Backend.Infrastructure.Utils;
 using Microsoft.Extensions.Azure;
@@ -35,6 +37,7 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IQueueService, StorageQueueService>();
         services.AddScoped<IBlobService, StorageBlobService>();
+        services.AddSingleton<IImageService, OpenCvSharpService>();
 
         services.AddSingleton<IClock, UtcClock>();
 
@@ -62,7 +65,7 @@ public static class DependencyInjection
             options.TokenLifespan = TimeSpan.FromDays(authSettings.EmailConfirmationExpirationDays);
         });
 
-        services.AddHttpClient<INominatimService, NominatimService>((serviveProvider, httpClient) =>
+        services.AddHttpClient<IMapService, NominatimService>((serviveProvider, httpClient) =>
         {
             httpClient.DefaultRequestHeaders.UserAgent
                 .Add(new(commonSettings.ApplicationName, commonSettings.ApplicationVersion));
