@@ -23,18 +23,18 @@ public class SearchQueryValidator : AbstractValidator<SearchQuery>
 
 public class SearchQueryHandler : IRequestHandler<SearchQuery, Result<AddressDetailsDto>>
 {
-    private readonly IMapService _nominatimService;
+    private readonly IMapService _mapService;
     private readonly ICacheService _cacheService;
     private readonly IMapper _mapper;
     private readonly ILogger<SearchQueryHandler> _logger;
 
     public SearchQueryHandler(
-        IMapService nominatimService,
+        IMapService mapService,
         ICacheService cacheService,
         IMapper mapper,
         ILogger<SearchQueryHandler> logger)
     {
-        _nominatimService = nominatimService;
+        _mapService = mapService;
         _cacheService = cacheService;
         _mapper = mapper;
         _logger = logger;
@@ -49,8 +49,8 @@ public class SearchQueryHandler : IRequestHandler<SearchQuery, Result<AddressDet
             return cachedDto ?? throw new InvalidStateException();
         }
 
-        _logger.LogInformation("Getting result from {@Service}", _nominatimService.GetType());
-        var result = await _nominatimService.SearchByQueryAsync(request.Query, cancellationToken);
+        _logger.LogInformation("Getting result from {@Service}", _mapService.GetType());
+        var result = await _mapService.SearchByQueryAsync(request.Query, cancellationToken);
 
         if (result is null)
         {

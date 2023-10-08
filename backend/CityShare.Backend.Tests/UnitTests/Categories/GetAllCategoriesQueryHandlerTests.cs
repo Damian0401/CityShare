@@ -12,7 +12,7 @@ public class GetAllCategoriesQueryHandlerTests
 {
     private readonly Mock<ICategoryRepository> _categoryRepositoryMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
-    private readonly GetAllCategoriesQuery _getAllCategoriesQuery;
+    private readonly GetAllCategoriesQuery _query;
     private readonly GetAllCategoriesQueryHandler _systemUnderTests;
 
     public GetAllCategoriesQueryHandlerTests()
@@ -25,7 +25,7 @@ public class GetAllCategoriesQueryHandlerTests
 
         var logger = new Mock<ILogger<GetAllCategoriesQueryHandler>>().Object;
 
-        _getAllCategoriesQuery = new GetAllCategoriesQuery();
+        _query = new GetAllCategoriesQuery();
 
         _systemUnderTests = new GetAllCategoriesQueryHandler(
             _categoryRepositoryMock.Object,
@@ -42,7 +42,7 @@ public class GetAllCategoriesQueryHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getAllCategoriesQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.Same(response, result.Value);
@@ -56,7 +56,7 @@ public class GetAllCategoriesQueryHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getAllCategoriesQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         _categoryRepositoryMock.Verify(x => x.GetAllAsync(Any.CancellationToken), Times.Never);
@@ -73,7 +73,7 @@ public class GetAllCategoriesQueryHandlerTests
             .ReturnsAsync(Value.Categories);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getAllCategoriesQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         _cacheServiceMock.Verify(

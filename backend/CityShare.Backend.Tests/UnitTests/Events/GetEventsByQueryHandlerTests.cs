@@ -12,7 +12,7 @@ public class GetEventsByQueryHandlerTests
 {
     private readonly Mock<IEventRepository> _eventRepositoryMock;
     private readonly EventSearchQueryDto _request;
-    private readonly GetEventsByQuery _getEventsByQuery;
+    private readonly GetEventsByQuery _query;
     private readonly GetEventsByQueryHandler _systemUnderTests;
 
     public GetEventsByQueryHandlerTests()
@@ -25,7 +25,7 @@ public class GetEventsByQueryHandlerTests
 
         _request = new EventSearchQueryDto();
 
-        _getEventsByQuery = new GetEventsByQuery(_request, Value.String);
+        _query = new GetEventsByQuery(_request, Value.String);
 
         _systemUnderTests = new GetEventsByQueryHandler(
             _eventRepositoryMock.Object,
@@ -40,7 +40,7 @@ public class GetEventsByQueryHandlerTests
         _request.PageSize = (int?)Value.Null;
 
         // Act
-        var result = await _systemUnderTests.Handle(_getEventsByQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.Equal(Domain.Constants.Constants.MaxEventPageSize, result.Value.PageSize);
@@ -53,7 +53,7 @@ public class GetEventsByQueryHandlerTests
         _request.PageNumber = (int?)Value.Null;
 
         // Act
-        var result = await _systemUnderTests.Handle(_getEventsByQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.Equal(Value.One, result.Value.PageNumber);
@@ -72,7 +72,7 @@ public class GetEventsByQueryHandlerTests
             .ReturnsAsync((Value.SearchEventDtos, totalCount));
 
         // Act
-        var result = await _systemUnderTests.Handle(_getEventsByQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.Equal(expectedTotalPages, result.Value.TotalPages);

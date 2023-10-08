@@ -24,7 +24,7 @@ public class UploadImageCommandHandlerTests
     private readonly Mock<IQueueService> _queueServiceMock;
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IFormFile> _image;
-    private readonly UploadImageCommand _uploadImageCommand;
+    private readonly UploadImageCommand _command;
     private readonly UploadImageCommandHandler _systemUnderTests;
 
     public UploadImageCommandHandlerTests()
@@ -43,7 +43,7 @@ public class UploadImageCommandHandlerTests
 
         _image = new Mock<IFormFile>();
 
-        _uploadImageCommand = new UploadImageCommand
+        _command = new UploadImageCommand
         {
             Image = _image.Object,
             EventId = Value.Guid,
@@ -79,7 +79,7 @@ public class UploadImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB / 2);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -105,7 +105,7 @@ public class UploadImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB + 1);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -131,7 +131,7 @@ public class UploadImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB / 2);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -157,7 +157,7 @@ public class UploadImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB / 2);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -183,7 +183,7 @@ public class UploadImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB / 2);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsFailure);

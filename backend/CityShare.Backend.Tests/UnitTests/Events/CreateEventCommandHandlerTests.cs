@@ -21,7 +21,7 @@ public class CreateEventCommandHandlerTests
     private readonly Mock<ICategoryRepository> _categoryRepositoryMock;
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly CreateEventDto _request;
-    private readonly CreateEventCommand _createEventCommand;
+    private readonly CreateEventCommand _command;
     private readonly CreateEventCommandHandler _systemUnderTests;
 
     public CreateEventCommandHandlerTests()
@@ -42,7 +42,7 @@ public class CreateEventCommandHandlerTests
 
         _request = new CreateEventDto();
 
-        _createEventCommand = new CreateEventCommand(
+        _command = new CreateEventCommand(
             _request, 
             Value.String);
 
@@ -75,7 +75,7 @@ public class CreateEventCommandHandlerTests
             .ReturnsAsync(categoryIds);
 
         // Act
-        var result = await _systemUnderTests.Handle(_createEventCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -100,7 +100,7 @@ public class CreateEventCommandHandlerTests
             .ReturnsAsync(categoryIds);
 
         // Act
-        var result = await _systemUnderTests.Handle(_createEventCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -123,7 +123,7 @@ public class CreateEventCommandHandlerTests
             .ReturnsAsync(categoryIds);
 
         // Act
-        var result = await _systemUnderTests.Handle(_createEventCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -148,7 +148,7 @@ public class CreateEventCommandHandlerTests
             .ReturnsAsync(new List<int> { categoryId + 1 });
 
         // Act
-        var result = await _systemUnderTests.Handle(_createEventCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -173,7 +173,7 @@ public class CreateEventCommandHandlerTests
             .ReturnsAsync(categoryIds);
 
         // Act
-        var result = await _systemUnderTests.Handle(_createEventCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);

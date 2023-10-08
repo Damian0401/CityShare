@@ -13,7 +13,7 @@ namespace CityShare.Backend.Tests.UnitTests.Auth;
 public class ConfirmEmailCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
-    private readonly ConfirmEmailCommand _confirmEmailCommand;
+    private readonly ConfirmEmailCommand _command;
     private readonly ConfirmEmailCommandHandler _systemUnderTests;
 
     public ConfirmEmailCommandHandlerTests()
@@ -22,7 +22,7 @@ public class ConfirmEmailCommandHandlerTests
 
         var logger = new Mock<ILogger<ConfirmEmailCommandHandler>>().Object;
 
-        _confirmEmailCommand = new ConfirmEmailCommand(
+        _command = new ConfirmEmailCommand(
             new EmailConfirmRequestDto(Value.String, Value.String));
 
         _systemUnderTests = new ConfirmEmailCommandHandler(
@@ -43,7 +43,7 @@ public class ConfirmEmailCommandHandlerTests
             Value.IdentityResultSecceeded);
 
         // Act
-        var result = await _systemUnderTests.Handle(_confirmEmailCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -65,7 +65,7 @@ public class ConfirmEmailCommandHandlerTests
             Value.IdentityResultSecceeded);
 
         // Act
-        var result = await _systemUnderTests.Handle(_confirmEmailCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -87,7 +87,7 @@ public class ConfirmEmailCommandHandlerTests
             Value.IdentityResultFailed);
 
         // Act
-        var result = await _systemUnderTests.Handle(_confirmEmailCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -109,7 +109,7 @@ public class ConfirmEmailCommandHandlerTests
             Value.IdentityResultSecceeded);
 
         // Act
-        var result = await _systemUnderTests.Handle(_confirmEmailCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
