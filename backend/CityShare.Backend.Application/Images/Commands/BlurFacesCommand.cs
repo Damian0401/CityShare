@@ -89,12 +89,12 @@ public class BlurFacesCommandHandler : IRequestHandler<BlurFacesCommand, Result>
         _logger.LogInformation("Getting image blob with id {@Id} in {@Container} using {@Type}",
                     request.ImageId, ContainerNames.EventImages, _blobService.GetType());
 
-        var rawStream = await _blobService.ReadFileAsync(
+        var stream = await _blobService.ReadFileAsync(
                     request.ImageId.ToString(),
                     ContainerNames.EventImages,
                     cancellationToken);
 
-        return rawStream;
+        return stream;
     }
 
     private async Task<Stream> BlurImageAsync(BlurFacesCommand request, Stream stream, CancellationToken cancellationToken)
