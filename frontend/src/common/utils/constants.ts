@@ -2,8 +2,15 @@ import { CSSProperties } from "react";
 
 const Constants = {
   ApiPrefix: "/api/v1",
-  ImagePlaceholder: "https://placehold.co/600x600?text=no+image",
-  ImageProcessing: "https://placehold.co/600x600?text=processing",
+  Images: {
+    Urls: {
+      Placeholder: "https://placehold.co/600x600?text=no+image",
+      Processing: "https://placehold.co/600x600?text=processing",
+    },
+    Alts: {
+      Event: "event",
+    },
+  },
   MultilineToast: { whiteSpace: "pre-line" } as CSSProperties,
   AriaLabels: {
     ToggleThemeButton: "toggle theme",
@@ -20,6 +27,7 @@ const Constants = {
     },
   },
   RedirectTimeout: 3000,
+  ChangeImageInterval: 10000,
   CSS: {
     Inherit: "inherit",
     None: "none",
