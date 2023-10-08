@@ -12,7 +12,7 @@ public class GetAllCitiesQueryHandlerTests
 {
     private readonly Mock<ICityRepository> _cityRepositoryMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
-    private readonly GetAllCitiesQuery _getAllCitiesQuery;
+    private readonly GetAllCitiesQuery _query;
     private readonly GetAllCitiesQueryHandler _systemUnderTests;
 
     public GetAllCitiesQueryHandlerTests()
@@ -25,7 +25,7 @@ public class GetAllCitiesQueryHandlerTests
 
         var logger = new Mock<ILogger<GetAllCitiesQueryHandler>>().Object;
 
-        _getAllCitiesQuery = new GetAllCitiesQuery();
+        _query = new GetAllCitiesQuery();
 
         _systemUnderTests = new GetAllCitiesQueryHandler(
             _cityRepositoryMock.Object,
@@ -42,7 +42,7 @@ public class GetAllCitiesQueryHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getAllCitiesQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.Same(response, result.Value);
@@ -56,7 +56,7 @@ public class GetAllCitiesQueryHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getAllCitiesQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         _cityRepositoryMock.Verify(x => x.GetAllWithDetailsAsync(Any.CancellationToken), Times.Never);
@@ -73,7 +73,7 @@ public class GetAllCitiesQueryHandlerTests
             .ReturnsAsync(Value.Cities);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getAllCitiesQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         _cacheServiceMock.Verify(

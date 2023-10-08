@@ -11,14 +11,14 @@ namespace CityShare.Backend.Tests.UnitTests.Maps;
 
 public class MapSearchQueryHandlerTests
 {
-    private readonly Mock<IMapService> _nominatimServiceMock;
+    private readonly Mock<IMapService> _mapServiceMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
-    private readonly SearchQuery _searchQuery;
+    private readonly SearchQuery _query;
     private readonly SearchQueryHandler _systemUnderTests;
 
     public MapSearchQueryHandlerTests()
     {
-        _nominatimServiceMock = new Mock<IMapService>();
+        _mapServiceMock = new Mock<IMapService>();
 
         _cacheServiceMock = new Mock<ICacheService>();
 
@@ -26,10 +26,10 @@ public class MapSearchQueryHandlerTests
 
         var logger = new Mock<ILogger<SearchQueryHandler>>().Object;
 
-        _searchQuery = new SearchQuery(Value.String);
+        _query = new SearchQuery(Value.String);
 
         _systemUnderTests = new SearchQueryHandler(
-            _nominatimServiceMock.Object,
+            _mapServiceMock.Object,
             _cacheServiceMock.Object,
             mapper,
             logger);
@@ -43,7 +43,7 @@ public class MapSearchQueryHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
 
         // Act
-        var result = await _systemUnderTests.Handle(_searchQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -56,14 +56,14 @@ public class MapSearchQueryHandlerTests
         var response = Value.AddressDetailsDto;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
 
-        _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
+        _mapServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
             .ReturnsAsync(Value.NominatimSearchResponseDto);
 
         // Act
-        var result = await _systemUnderTests.Handle(_searchQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
-        _nominatimServiceMock.Verify(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken), Times.Never);
+        _mapServiceMock.Verify(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken), Times.Never);
     }
 
     [Fact]
@@ -73,11 +73,11 @@ public class MapSearchQueryHandlerTests
         var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
-        _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
+        _mapServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
             .ReturnsAsync((MapSearchResponseDto?)Value.Null);
 
         // Act
-        var result = await _systemUnderTests.Handle(_searchQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -90,11 +90,11 @@ public class MapSearchQueryHandlerTests
         var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
-        _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
+        _mapServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
             .ReturnsAsync(Value.NominatimSearchResponseDto);
 
         // Act
-        var result = await _systemUnderTests.Handle(_searchQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -107,11 +107,11 @@ public class MapSearchQueryHandlerTests
         var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
-        _nominatimServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
+        _mapServiceMock.Setup(x => x.SearchByQueryAsync(Any.String, Any.CancellationToken))
             .ReturnsAsync(Value.NominatimSearchResponseDto);
 
         // Act
-        var result = await _systemUnderTests.Handle(_searchQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         _cacheServiceMock.Verify(

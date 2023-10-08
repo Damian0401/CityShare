@@ -19,7 +19,7 @@ public class RegisterCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IJwtProvider> _jwtProviderMock;
-    private readonly RegisterCommand _registerCommand;
+    private readonly RegisterCommand _command;
     private readonly RegisterCommandHandler _systemUnderTests;
 
     public RegisterCommandHandlerTests()
@@ -40,7 +40,7 @@ public class RegisterCommandHandlerTests
 
         var request = new RegisterRequestDto(Value.String, Value.String, Value.String);
 
-        _registerCommand = new RegisterCommand(request);
+        _command = new RegisterCommand(request);
 
         _systemUnderTests = new RegisterCommandHandler(
             _userManagerMockHelper.Object,
@@ -66,7 +66,7 @@ public class RegisterCommandHandlerTests
 
         // Act
         var result = await _systemUnderTests
-            .Handle(_registerCommand, Value.CancelationToken);
+            .Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -85,7 +85,7 @@ public class RegisterCommandHandlerTests
             Value.IdentityResultFailed);
 
         // Act
-        var result = await _systemUnderTests.Handle(_registerCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -104,7 +104,7 @@ public class RegisterCommandHandlerTests
             Value.IdentityResultSecceeded);
 
         // Act
-        var result = await _systemUnderTests.Handle(_registerCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);

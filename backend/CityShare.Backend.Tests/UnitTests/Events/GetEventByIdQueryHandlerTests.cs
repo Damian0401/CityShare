@@ -1,13 +1,9 @@
-﻿using Castle.Core.Logging;
-using CityShare.Backend.Application.Core.Abstractions.Events;
+﻿using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Queries;
 using CityShare.Backend.Domain.Constants;
-using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
-using CityShare.Backend.Tests.Other.Interfaces;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -16,7 +12,7 @@ namespace CityShare.Backend.Tests.UnitTests.Events;
 public class GetEventByIdQueryHandlerTests
 {
     private readonly Mock<IEventRepository> _eventRepositoryMock;
-    private readonly GetEventByIdQuery _getEventByIdQuery;
+    private readonly GetEventByIdQuery _query;
     private readonly GetEventByIdQueryHandler _systemUnderTests;
 
     public GetEventByIdQueryHandlerTests()
@@ -27,7 +23,7 @@ public class GetEventByIdQueryHandlerTests
 
         var logger = new Mock<ILogger<GetEventByIdQueryHandler>>().Object;
 
-        _getEventByIdQuery = new GetEventByIdQuery(Value.Guid, Value.String);
+        _query = new GetEventByIdQuery(Value.Guid, Value.String);
 
         _systemUnderTests = new GetEventByIdQueryHandler(
             _eventRepositoryMock.Object,
@@ -43,7 +39,7 @@ public class GetEventByIdQueryHandlerTests
             .ReturnsAsync(Value.SearchEventDto);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getEventByIdQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -57,7 +53,7 @@ public class GetEventByIdQueryHandlerTests
             .ReturnsAsync((SearchEventDto?)Value.Null);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getEventByIdQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -71,7 +67,7 @@ public class GetEventByIdQueryHandlerTests
             .ReturnsAsync((SearchEventDto?)Value.Null);
 
         // Act
-        var result = await _systemUnderTests.Handle(_getEventByIdQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.Equal(Errors.NotFound.First(), result.Errors?.First());

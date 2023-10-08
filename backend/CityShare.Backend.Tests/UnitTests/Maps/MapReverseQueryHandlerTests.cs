@@ -11,14 +11,14 @@ namespace CityShare.Backend.Tests.UnitTests.Maps;
 
 public class MapReverseHandlerTests
 {
-    private readonly Mock<IMapService> _nominatimServiceMock;
+    private readonly Mock<IMapService> _mapServiceMock;
     private readonly Mock<ICacheService> _cacheServiceMock;
-    private readonly ReverseQuery _reverseQuery;
+    private readonly ReverseQuery _query;
     private readonly ReverseQueryHandler _systemUnderTests;
 
     public MapReverseHandlerTests()
     {
-        _nominatimServiceMock = new Mock<IMapService>();
+        _mapServiceMock = new Mock<IMapService>();
 
         _cacheServiceMock = new Mock<ICacheService>();
 
@@ -26,10 +26,10 @@ public class MapReverseHandlerTests
 
         var logger = new Mock<ILogger<ReverseQueryHandler>>().Object;
 
-        _reverseQuery = new ReverseQuery(Value.Double, Value.Double);
+        _query = new ReverseQuery(Value.Double, Value.Double);
 
         _systemUnderTests = new ReverseQueryHandler(
-            _nominatimServiceMock.Object,
+            _mapServiceMock.Object,
             _cacheServiceMock.Object,
             mapper,
             logger);
@@ -43,7 +43,7 @@ public class MapReverseHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
 
         // Act
-        var result = await _systemUnderTests.Handle(_reverseQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -57,10 +57,10 @@ public class MapReverseHandlerTests
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(true);
 
         // Act
-        var result = await _systemUnderTests.Handle(_reverseQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
-        _nominatimServiceMock.Verify(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken), Times.Never);
+        _mapServiceMock.Verify(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken), Times.Never);
     }
 
     [Fact]
@@ -70,11 +70,11 @@ public class MapReverseHandlerTests
         var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
-        _nominatimServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
+        _mapServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
             .ReturnsAsync((MapReverseResponseDto?)Value.Null);
 
         // Act
-        var result = await _systemUnderTests.Handle(_reverseQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -87,11 +87,11 @@ public class MapReverseHandlerTests
         var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
-        _nominatimServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
+        _mapServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
             .ReturnsAsync(Value.NominatimReverseResponseDto);
 
         // Act
-        var result = await _systemUnderTests.Handle(_reverseQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -104,11 +104,11 @@ public class MapReverseHandlerTests
         var response = Value.Null;
         _cacheServiceMock.Setup(x => x.TryGet(Any.Object, out response)).Returns(false);
 
-        _nominatimServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
+        _mapServiceMock.Setup(x => x.ReverseAsync(Any.Double, Any.Double, Any.CancellationToken))
             .ReturnsAsync(Value.NominatimReverseResponseDto);
 
         // Act
-        var result = await _systemUnderTests.Handle(_reverseQuery, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
         _cacheServiceMock.Verify(x => x.Set(Any.Object, Any.AddressDto, Any.CacheServiceOptions), Times.Once);

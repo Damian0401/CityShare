@@ -12,7 +12,7 @@ public class SendEmailCommandHandlerTests
 {
     private readonly Mock<IEmailRepository> _emailRepositoryMock;
     private readonly Mock<IEmailService> _emailServiceMock;
-    private readonly SendEmailCommand _sendEmailCommand;
+    private readonly SendEmailCommand _command;
     private readonly SendEmailCommandHandler _systemUnderTests;
 
     public SendEmailCommandHandlerTests()
@@ -25,7 +25,7 @@ public class SendEmailCommandHandlerTests
 
         var logger = new Mock<ILogger<SendEmailCommandHandler>>().Object;
 
-        _sendEmailCommand = new SendEmailCommand(Value.Guid);
+        _command = new SendEmailCommand(Value.Guid);
 
         _systemUnderTests = new SendEmailCommandHandler(
             _emailRepositoryMock.Object,
@@ -46,7 +46,7 @@ public class SendEmailCommandHandlerTests
             .ReturnsAsync(newStatusId);
 
         // Act
-        var result = await _systemUnderTests.Handle(_sendEmailCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -67,7 +67,7 @@ public class SendEmailCommandHandlerTests
             .ReturnsAsync(pendingStatusId);
 
         // Act
-        var result = await _systemUnderTests.Handle(_sendEmailCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -88,7 +88,7 @@ public class SendEmailCommandHandlerTests
             .ReturnsAsync(newStatusId);
 
         // Act
-        var result = await _systemUnderTests.Handle(_sendEmailCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);

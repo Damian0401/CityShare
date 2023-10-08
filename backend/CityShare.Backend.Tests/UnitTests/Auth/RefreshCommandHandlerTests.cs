@@ -15,7 +15,7 @@ public class RefreshCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IJwtProvider> _jwtProviderMock;
-    private readonly RefreshCommand _refreshCommand;
+    private readonly RefreshCommand _command;
     private readonly RefreshCommandHandler _systemUnderTests;
 
     public RefreshCommandHandlerTests()
@@ -30,7 +30,7 @@ public class RefreshCommandHandlerTests
 
         var request = new RefreshRequestDto(Value.String);
 
-        _refreshCommand = new RefreshCommand(request, Value.String);
+        _command = new RefreshCommand(request, Value.String);
 
         _systemUnderTests = new RefreshCommandHandler(
             _userManagerMockHelper.Object,
@@ -55,7 +55,7 @@ public class RefreshCommandHandlerTests
             Value.True);
 
         // Act
-        var result = await _systemUnderTests.Handle(_refreshCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -77,7 +77,7 @@ public class RefreshCommandHandlerTests
             Value.True);
 
         // Act
-        var result = await _systemUnderTests.Handle(_refreshCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -99,7 +99,7 @@ public class RefreshCommandHandlerTests
             Value.False);
 
         // Act
-        var result = await _systemUnderTests.Handle(_refreshCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -121,7 +121,7 @@ public class RefreshCommandHandlerTests
             Value.True);
 
         // Act
-        var result = await _systemUnderTests.Handle(_refreshCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);

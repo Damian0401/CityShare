@@ -13,7 +13,7 @@ public class BlurFacesCommandHandlerTests
     private readonly Mock<IImageRepository> _imageRepositoryMock;
     private readonly Mock<IBlobService> _blobServiceMock;
     private readonly Mock<IImageService> _imageServiceMock;
-    private readonly BlurFacesCommand _blurFacesCommand;
+    private readonly BlurFacesCommand _command;
     private readonly BlurFacesCommandHandler _systemUnderTests;
 
     public BlurFacesCommandHandlerTests()
@@ -26,7 +26,7 @@ public class BlurFacesCommandHandlerTests
 
         var logger = new Mock<ILogger<BlurFacesCommandHandler>>().Object;
 
-        _blurFacesCommand = new BlurFacesCommand(Value.Guid);
+        _command = new BlurFacesCommand(Value.Guid);
 
         _systemUnderTests = new BlurFacesCommandHandler(
             _imageRepositoryMock.Object,
@@ -49,7 +49,7 @@ public class BlurFacesCommandHandlerTests
             .ReturnsAsync(stream);
 
         // Act
-        var result = await _systemUnderTests.Handle(_blurFacesCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -69,11 +69,11 @@ public class BlurFacesCommandHandlerTests
             .ReturnsAsync(stream);
 
         // Act
-        var result = await _systemUnderTests.Handle(_blurFacesCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         _imageRepositoryMock.Verify(
-            x => x.SetIsBlurredAsync(_blurFacesCommand.ImageId, Value.True, Value.CancelationToken),
+            x => x.SetIsBlurredAsync(_command.ImageId, Value.True, Value.CancelationToken),
             Times.Once);
     }
 
@@ -89,7 +89,7 @@ public class BlurFacesCommandHandlerTests
             .ReturnsAsync(stream);
 
         // Act
-        var result = await _systemUnderTests.Handle(_blurFacesCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -109,7 +109,7 @@ public class BlurFacesCommandHandlerTests
             .ReturnsAsync(stream);
 
         // Act
-        var result = await _systemUnderTests.Handle(_blurFacesCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -129,7 +129,7 @@ public class BlurFacesCommandHandlerTests
             .ReturnsAsync((Stream?)Value.Null);
 
         // Act
-        var result = await _systemUnderTests.Handle(_blurFacesCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);

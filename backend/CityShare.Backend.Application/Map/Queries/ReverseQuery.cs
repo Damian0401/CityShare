@@ -24,18 +24,18 @@ public class ReverseQueryValidator : AbstractValidator<ReverseQuery>
 
 public class ReverseQueryHandler : IRequestHandler<ReverseQuery, Result<AddressDto>>
 {
-    private readonly IMapService _nominatimService;
+    private readonly IMapService _mapService;
     private readonly IMapper _mapper;
     private readonly ICacheService _cacheService;
     private readonly ILogger<ReverseQueryHandler> _logger;
 
     public ReverseQueryHandler(
-        IMapService nominatimService,
+        IMapService mapService,
         ICacheService cacheService,
         IMapper mapper,
         ILogger<ReverseQueryHandler> logger)
     {
-        _nominatimService = nominatimService;
+        _mapService = mapService;
         _mapper = mapper;
         _cacheService = cacheService;
         _logger = logger;
@@ -50,8 +50,8 @@ public class ReverseQueryHandler : IRequestHandler<ReverseQuery, Result<AddressD
             return cachedDto ?? throw new InvalidStateException();
         }
 
-        _logger.LogInformation("Getting result from {@Service}", _nominatimService.GetType());
-        var result = await _nominatimService.ReverseAsync(request.X, request.Y, cancellationToken);
+        _logger.LogInformation("Getting result from {@Service}", _mapService.GetType());
+        var result = await _mapService.ReverseAsync(request.X, request.Y, cancellationToken);
 
         if (result is null)
         {

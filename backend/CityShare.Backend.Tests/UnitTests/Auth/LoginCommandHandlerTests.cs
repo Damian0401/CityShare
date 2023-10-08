@@ -15,7 +15,7 @@ public class LoginCommandHandlerTests
 {
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IJwtProvider> _jwtProviderMock;
-    private readonly LoginCommand _loginCommand;
+    private readonly LoginCommand _command;
     private readonly LoginCommandHandler _systemUnderTests;
 
     public LoginCommandHandlerTests()
@@ -30,7 +30,7 @@ public class LoginCommandHandlerTests
 
         var request = new LoginRequestDto(Value.String, Value.String);
 
-        _loginCommand = new LoginCommand(request);
+        _command = new LoginCommand(request);
 
         _systemUnderTests = new LoginCommandHandler(
             _userManagerMockHelper.Object,
@@ -53,7 +53,7 @@ public class LoginCommandHandlerTests
 
         // Act
         var result = await _systemUnderTests
-            .Handle(_loginCommand, Value.CancelationToken);
+            .Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -72,7 +72,7 @@ public class LoginCommandHandlerTests
             Value.False);
 
         // Act
-        var result = await _systemUnderTests.Handle(_loginCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -91,7 +91,7 @@ public class LoginCommandHandlerTests
             Value.True);
 
         // Act
-        var result = await _systemUnderTests.Handle(_loginCommand, Value.CancelationToken);
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
