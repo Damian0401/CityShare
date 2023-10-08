@@ -1,6 +1,7 @@
 ﻿using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Application.Events.Queries;
+using CityShare.Backend.Application.Images.Commands;
 using CityShare.Backend.Domain.Extensions;
 using CityShare.Services.Api.Common;
 using MediatR;
@@ -34,7 +35,7 @@ public class Events
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var command = new UploadEventImageCommand
+        var command = new UploadImageCommand
         {
             Image = image,
             EventId = id,

@@ -4,7 +4,6 @@ using CityShare.Backend.Application.Core.Abstractions.Images;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
-using CityShare.Backend.Domain.Extensions;
 using CityShare.Backend.Domain.Shared;
 using FluentValidation;
 using MediatR;
@@ -12,9 +11,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 
-namespace CityShare.Backend.Application.Events.Commands;
+namespace CityShare.Backend.Application.Images.Commands;
 
-public class UploadEventImageCommand : IRequest<Result>
+public class UploadImageCommand : IRequest<Result>
 {
     public IFormFile Image { get; init; } = default!;
     public Guid EventId { get; init; }
@@ -22,9 +21,9 @@ public class UploadEventImageCommand : IRequest<Result>
     public bool? ShouldBeBlurred { get; init; }
 }
 
-public class UploadEventImageCommandValidator : AbstractValidator<UploadEventImageCommand>
+public class UploadImageCommandValidator : AbstractValidator<UploadImageCommand>
 {
-    public UploadEventImageCommandValidator()
+    public UploadImageCommandValidator()
     {
         RuleFor(x => x.Image)
             .NotEmpty();
@@ -37,22 +36,22 @@ public class UploadEventImageCommandValidator : AbstractValidator<UploadEventIma
     }
 }
 
-public class UploadEventImageCommandHandler : IRequestHandler<UploadEventImageCommand, Result>
+public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Result>
 {
     private readonly IImageRepository _imageRepository;
     private readonly IEventRepository _eventRepository;
     private readonly IBlobService _blobService;
     private readonly IQueueService _queueService;
     private readonly UserManager<ApplicationUser> _userManager;
-    private readonly ILogger<UploadEventImageCommandHandler> _logger;
+    private readonly ILogger<UploadImageCommandHandler> _logger;
 
-    public UploadEventImageCommandHandler(
+    public UploadImageCommandHandler(
         IImageRepository imageRepository,
         IEventRepository eventRepository,
         IBlobService blobService,
         IQueueService queueService,
         UserManager<ApplicationUser> userManager,
-        ILogger<UploadEventImageCommandHandler> logger)
+        ILogger<UploadImageCommandHandler> logger)
     {
         _imageRepository = imageRepository;
         _eventRepository = eventRepository;
@@ -62,7 +61,7 @@ public class UploadEventImageCommandHandler : IRequestHandler<UploadEventImageCo
         _logger = logger;
     }
 
-    public async Task<Result> Handle(UploadEventImageCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(UploadImageCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Validating {@Type} request", request.GetType());
         var errors = await ValidateAsync(request, cancellationToken);
@@ -102,7 +101,7 @@ public class UploadEventImageCommandHandler : IRequestHandler<UploadEventImageCo
         await _queueService.SendAsync(QueueNames.ImagesToBlur, imageId, queueOptions, cancellationToken);
     }
 
-    private async Task<Guid> CreateImageAsync(UploadEventImageCommand request)
+    private async Task<Guid> CreateImageAsync(UploadImageCommand request)
     {
         var image = new Image
         {
@@ -126,7 +125,7 @@ public class UploadEventImageCommandHandler : IRequestHandler<UploadEventImageCo
         return uri;
     }
 
-    private async Task<IEnumerable<Error>> ValidateAsync(UploadEventImageCommand request, CancellationToken cancellationToken)
+    private async Task<IEnumerable<Error>> ValidateAsync(UploadImageCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Checking if of user with id {@Id} is confirmed", request.UserId);
         var user = await _userManager.FindByIdAsync(request.UserId);

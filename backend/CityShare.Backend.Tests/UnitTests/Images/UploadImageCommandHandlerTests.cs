@@ -2,7 +2,6 @@
 using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Images;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
-using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Other.Helpers;
@@ -13,10 +12,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Constants = CityShare.Backend.Domain.Constants.Constants;
+using CityShare.Backend.Application.Images.Commands;
 
-namespace CityShare.Backend.Tests.UnitTests.Events;
+namespace CityShare.Backend.Tests.UnitTests.Images;
 
-public class UploadEventImageCommandHandlerTests
+public class UploadImageCommandHandlerTests
 {
     private readonly Mock<IImageRepository> _imageRepositoryMock;
     private readonly Mock<IEventRepository> _eventRepositoryMock;
@@ -24,13 +24,13 @@ public class UploadEventImageCommandHandlerTests
     private readonly Mock<IQueueService> _queueServiceMock;
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IFormFile> _image;
-    private readonly UploadEventImageCommand _uploadEventImageCommand;
-    private readonly UploadEventImageCommandHandler _systemUnderTests;
+    private readonly UploadImageCommand _uploadImageCommand;
+    private readonly UploadImageCommandHandler _systemUnderTests;
 
-    public UploadEventImageCommandHandlerTests()
+    public UploadImageCommandHandlerTests()
     {
         _imageRepositoryMock = new Mock<IImageRepository>();
-     
+
         _eventRepositoryMock = new Mock<IEventRepository>();
 
         _blobServiceMock = new Mock<IBlobService>();
@@ -39,18 +39,18 @@ public class UploadEventImageCommandHandlerTests
 
         _userManagerMockHelper = _userManagerMockHelper = new UserManagerMockHelper<ApplicationUser>();
 
-        var logger = new Mock<ILogger<UploadEventImageCommandHandler>>().Object;
+        var logger = new Mock<ILogger<UploadImageCommandHandler>>().Object;
 
         _image = new Mock<IFormFile>();
 
-        _uploadEventImageCommand = new UploadEventImageCommand
+        _uploadImageCommand = new UploadImageCommand
         {
             Image = _image.Object,
             EventId = Value.Guid,
             UserId = Value.String
         };
 
-        _systemUnderTests = new UploadEventImageCommandHandler(
+        _systemUnderTests = new UploadImageCommandHandler(
             _imageRepositoryMock.Object,
             _eventRepositoryMock.Object,
             _blobServiceMock.Object,
@@ -79,7 +79,7 @@ public class UploadEventImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB / 2);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadEventImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -105,7 +105,7 @@ public class UploadEventImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB + 1);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadEventImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -131,7 +131,7 @@ public class UploadEventImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB / 2);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadEventImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -157,7 +157,7 @@ public class UploadEventImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB / 2);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadEventImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsFailure);
@@ -183,7 +183,7 @@ public class UploadEventImageCommandHandlerTests
             .Returns(Constants.ImageSizeLimitInMB * FileSizes.MB / 2);
 
         // Act
-        var result = await _systemUnderTests.Handle(_uploadEventImageCommand, Any.CancellationToken);
+        var result = await _systemUnderTests.Handle(_uploadImageCommand, Any.CancellationToken);
 
         // Assert
         Assert.True(result.IsFailure);
