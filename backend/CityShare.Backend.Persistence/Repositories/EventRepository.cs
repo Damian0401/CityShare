@@ -197,10 +197,10 @@ public class EventRepository : IEventRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task RemoveLikeAsync(Guid eventId, string userId, CancellationToken cancellationToken = default)
+    public async Task RemoveLikeAsync(Guid eventId, string authorId, CancellationToken cancellationToken = default)
     {
         await _context.Likes
-            .Where(x => x.EventId.Equals(eventId) && x.AuthorId.Equals(userId))
+            .Where(x => x.EventId.Equals(eventId) && x.AuthorId.Equals(authorId))
             .ExecuteDeleteAsync(cancellationToken);
     }
 }

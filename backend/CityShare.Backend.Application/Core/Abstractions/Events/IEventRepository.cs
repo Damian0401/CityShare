@@ -13,5 +13,5 @@ public interface IEventRepository
     Task<bool> IsLikedByUserAsync(Guid eventId, string userId, CancellationToken cancellationToken = default); 
     Task AddEventCategoriesAsync(IEnumerable<EventCategory> eventCategories, CancellationToken cancellationToken = default);
     Task AddLikeAsync(Like like, CancellationToken cancellationToken = default);
-    Task RemoveLikeAsync(Guid eventId, string userId, CancellationToken cancellationToken = default);
+    Task RemoveLikeAsync(Guid eventId, string authorId, CancellationToken cancellationToken = default);
 }

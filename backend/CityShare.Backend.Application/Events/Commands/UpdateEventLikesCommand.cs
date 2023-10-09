@@ -26,12 +26,12 @@ public class UpdateEventLikesCommandHandler : IRequestHandler<UpdateEventLikesCo
 {
     private readonly IEventRepository _eventRepository;
     private readonly IMapper _mapper;
-    private readonly ILogger<UpdateEventLikesCommand> _logger;
+    private readonly ILogger<UpdateEventLikesCommandHandler> _logger;
 
     public UpdateEventLikesCommandHandler(
         IEventRepository eventRepository,
         IMapper mapper,
-        ILogger<UpdateEventLikesCommand> logger)
+        ILogger<UpdateEventLikesCommandHandler> logger)
     {
         _eventRepository = eventRepository;
         _mapper = mapper;
