@@ -9,11 +9,11 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Events.Queries;
 
-public record GetEventsByQuery(EventSearchQueryDto Request, string UserId) : IRequest<Result<PageWrapper<EventDto>>>;
+public record GetEventsQuery(EventSearchQueryDto Request, string UserId) : IRequest<Result<PageWrapper<EventDto>>>;
 
-public class GetEventsByQueryValidator : AbstractValidator<GetEventsByQuery>
+public class GetEventsQueryValidator : AbstractValidator<GetEventsQuery>
 {
-    public GetEventsByQueryValidator()
+    public GetEventsQueryValidator()
     {
         RuleFor(x => x.Request.PageNumber)
             .GreaterThan(0)
@@ -30,23 +30,23 @@ public class GetEventsByQueryValidator : AbstractValidator<GetEventsByQuery>
     }
 }
 
-public class GetEventsByQueryHandler : IRequestHandler<GetEventsByQuery, Result<PageWrapper<EventDto>>>
+public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, Result<PageWrapper<EventDto>>>
 {
     private readonly IEventRepository _eventRepository;
     private readonly IMapper _mapper;
-    private readonly ILogger<GetEventsByQueryHandler> _logger;
+    private readonly ILogger<GetEventsQueryHandler> _logger;
 
-    public GetEventsByQueryHandler(
+    public GetEventsQueryHandler(
         IEventRepository eventRepository,
         IMapper mapper,
-        ILogger<GetEventsByQueryHandler> logger)
+        ILogger<GetEventsQueryHandler> logger)
     {
         _eventRepository = eventRepository;
         _mapper = mapper;
         _logger = logger;
     }
 
-    public async Task<Result<PageWrapper<EventDto>>> Handle(GetEventsByQuery request, CancellationToken cancellationToken)
+    public async Task<Result<PageWrapper<EventDto>>> Handle(GetEventsQuery request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting event and total count from {@Type}", _eventRepository.GetType());
         (var searchedEvents, var totalCount) = await _eventRepository.GetByQueryAsync(request.Request);

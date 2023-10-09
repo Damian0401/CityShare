@@ -8,26 +8,26 @@ using Moq;
 
 namespace CityShare.Backend.Tests.UnitTests.Events;
 
-public class GetEventsByQueryHandlerTests
+public class GetEventsQueryHandlerTests
 {
     private readonly Mock<IEventRepository> _eventRepositoryMock;
     private readonly EventSearchQueryDto _request;
-    private readonly GetEventsByQuery _query;
-    private readonly GetEventsByQueryHandler _systemUnderTests;
+    private readonly GetEventsQuery _query;
+    private readonly GetEventsQueryHandler _systemUnderTests;
 
-    public GetEventsByQueryHandlerTests()
+    public GetEventsQueryHandlerTests()
     {
         _eventRepositoryMock = new Mock<IEventRepository>();
 
         var mapper = MapperHelper.GetMapper();
 
-        var logger = new Mock<ILogger<GetEventsByQueryHandler>>().Object;
+        var logger = new Mock<ILogger<GetEventsQueryHandler>>().Object;
 
         _request = new EventSearchQueryDto();
 
-        _query = new GetEventsByQuery(_request, Value.String);
+        _query = new GetEventsQuery(_request, Value.String);
 
-        _systemUnderTests = new GetEventsByQueryHandler(
+        _systemUnderTests = new GetEventsQueryHandler(
             _eventRepositoryMock.Object,
             mapper,
             logger);
