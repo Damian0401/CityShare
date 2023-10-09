@@ -18,7 +18,9 @@ const EventSearch = observer(() => {
     setEvents(events.content);
   };
 
-  const handleLikeClick = (eventId: string) => {
+  const handleLikeClick = async (eventId: string) => {
+    await eventStore.updateLikes(eventId);
+
     const event = events.find((e) => e.id === eventId);
 
     if (!event) return;

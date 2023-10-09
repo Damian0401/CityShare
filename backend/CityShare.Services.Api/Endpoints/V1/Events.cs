@@ -70,7 +70,20 @@ public class Events
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new GetEventsByQuery(Request, claimsPrincipal.GetUserId()), 
+            new GetEventsQuery(Request, claimsPrincipal.GetUserId()), 
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
+
+    public static async Task<IResult> UpdateLikes(
+        [FromRoute] Guid id,
+        ClaimsPrincipal claimsPrincipal,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new UpdateEventLikesCommand(id, claimsPrincipal.GetUserId()),
             cancellationToken);
 
         return ResultResolver.Resolve(result);

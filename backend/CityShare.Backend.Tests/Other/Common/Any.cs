@@ -26,4 +26,5 @@ internal class Any
     public static IEnumerable<CategoryDto> CategoryDtos => It.IsAny<IEnumerable<CategoryDto>>();
     public static IEnumerable<CityDto> CityDtos => It.IsAny<IEnumerable<CityDto>>();
     public static EventSearchQueryDto EventQueryDto => It.IsAny<EventSearchQueryDto>();
+    public static Like Like => It.IsAny<Like>();
 }

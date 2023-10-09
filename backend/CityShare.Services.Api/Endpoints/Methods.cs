@@ -30,7 +30,7 @@ public static class Methods
         app.MapGet(Endpoints.V1.Categories.Index, V1.Categories.GetAll)
             .RequireAuthorization();
 
-        app.MapGet(Endpoints.V1.Events.Index, V1.Events.GetByQuery)
+        app.MapGet(Endpoints.V1.Events.Index, V1.Events.GetByQuery) 
             .RequireAuthorization();
 
         app.MapPost(Endpoints.V1.Events.Index, V1.Events.Create)
@@ -40,6 +40,9 @@ public static class Methods
             .RequireAuthorization();
 
         app.MapPost(Endpoints.V1.Events.Id.Images, V1.Events.UploadImage)
+            .RequireAuthorization();
+
+        app.MapPost(Endpoints.V1.Events.Id.Likes, V1.Events.UpdateLikes)
             .RequireAuthorization();
 
         return app;

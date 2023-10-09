@@ -6,6 +6,7 @@ using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Application.Core.Dtos.Cities;
 using CityShare.Backend.Application.Core.Dtos.Categories;
 using CityShare.Backend.Application.Core.Dtos.Events;
+using CityShare.Backend.Application.Events.Commands;
 
 namespace CityShare.Backend.Application.Core.Mappers;
 
@@ -20,6 +21,7 @@ public class AutoMapperProfile : Profile
         MapsForCities();
         MapsForCategories();
         MapsForEvents();
+        MapsForLikes();
     }
 
     private void MapsForUser()
@@ -85,5 +87,10 @@ public class AutoMapperProfile : Profile
         CreateMap<Event, EventDto>()
             .ForMember(x => x.ImageUrls, s => s.MapFrom(e => e.Images.Select(c => c.IsBlurred == c.ShouldBeBlurred ? c.Uri : null)))
             .ForMember(x => x.CategoryIds, s => s.MapFrom(e => e.EventCategories.Select(c => c.CategoryId)));
+    }
+
+    private void MapsForLikes()
+    {
+        CreateMap<UpdateEventLikesCommand, Like>();
     }
 }
