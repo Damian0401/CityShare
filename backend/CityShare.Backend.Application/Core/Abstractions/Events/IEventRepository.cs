@@ -12,4 +12,6 @@ public interface IEventRepository
     Task<int> GetImagesNumberAsync(Guid eventId, CancellationToken cancellationToken = default);
     Task<bool> IsLikedByUserAsync(Guid eventId, string userId, CancellationToken cancellationToken = default); 
     Task AddEventCategoriesAsync(IEnumerable<EventCategory> eventCategories, CancellationToken cancellationToken = default);
+    Task AddLikeAsync(Like like, CancellationToken cancellationToken = default);
+    Task RemoveLikeAsync(Guid eventId, string userId, CancellationToken cancellationToken = default);
 }

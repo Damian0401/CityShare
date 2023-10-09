@@ -189,4 +189,18 @@ public class EventRepository : IEventRepository
 
         return likeExists;
     }
+
+    public async Task AddLikeAsync(Like like, CancellationToken cancellationToken = default)
+    {
+        _context.Likes.Add(like);
+
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task RemoveLikeAsync(Guid eventId, string userId, CancellationToken cancellationToken = default)
+    {
+        await _context.Likes
+            .Where(x => x.EventId.Equals(eventId) && x.AuthorId.Equals(userId))
+            .ExecuteDeleteAsync(cancellationToken);
+    }
 }

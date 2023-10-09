@@ -46,6 +46,10 @@ const EventDetails = observer(() => {
     return () => controller.abort();
   }, [id, commonStore, eventStore, navigate]);
 
+  const handleLikeClick = async (id: string) => {
+    await eventStore.updateLikes(id);
+  };
+
   return (
     <div className={styles.container}>
       {eventStore.selectedEvent && (
@@ -54,7 +58,7 @@ const EventDetails = observer(() => {
           <EventMap address={eventStore.selectedEvent.address} />
           <EventBody
             event={eventStore.selectedEvent}
-            onLikeClick={() => console.log("liked")}
+            onLikeClick={handleLikeClick}
           />
         </BaseContainer>
       )}

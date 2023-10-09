@@ -1,6 +1,7 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { IEvent, IEventCreateValues, IEventSearchQuery } from "../interfaces";
 import agent from "../api/agent";
+import { updateLikes } from "../utils/helpers";
 
 export default class EventStore {
   selectedEvent: IEvent | null = null;
@@ -48,5 +49,17 @@ export default class EventStore {
     }
 
     return id;
+  };
+
+  updateLikes = async (id: string) => {
+    await agent.Event.updateLikes(id);
+
+    runInAction(() => {
+      if (!this.selectedEvent || this.selectedEvent.id !== id) {
+        return;
+      }
+
+      updateLikes(this.selectedEvent);
+    });
   };
 }

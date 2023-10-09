@@ -60,7 +60,7 @@ public class GetEventsByQueryHandler : IRequestHandler<GetEventsByQuery, Result<
             dto.Author = e.Author;
 
             return dto;
-        });
+        }).ToList();
 
         _logger.LogInformation("Checking likes");
         foreach (var dto in dtos)
