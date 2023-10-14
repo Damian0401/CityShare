@@ -92,13 +92,13 @@ public class EventRepository : IEventRepository
         if (eventQuery.StartDate is not null)
         {
             _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.StartDate));
-            query = query.Where(x => x.StartDate >= eventQuery.StartDate);
+            query = query.Where(x => x.EndDate > eventQuery.StartDate);
         }
 
         if (eventQuery.EndDate is not null)
         {
             _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.EndDate));
-            query = query.Where(x => x.EndDate <= eventQuery.EndDate);
+            query = query.Where(x => x.StartDate < eventQuery.EndDate);
         }
 
         if (eventQuery.Query is not null)
