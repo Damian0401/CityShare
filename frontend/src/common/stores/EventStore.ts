@@ -1,5 +1,10 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { IEvent, IEventCreateValues, IEventSearchQuery } from "../interfaces";
+import {
+  IComment,
+  IEvent,
+  IEventCreateValues,
+  IEventSearchQuery,
+} from "../interfaces";
 import agent from "../api/agent";
 import { updateLikes } from "../utils/helpers";
 
@@ -60,6 +65,18 @@ export default class EventStore {
       }
 
       updateLikes(this.selectedEvent);
+    });
+  };
+
+  addComment = async (id: string, comment: IComment) => {
+    // const newComment = await agent.Event.addComment(id, comment);
+
+    runInAction(() => {
+      if (!this.selectedEvent || this.selectedEvent.id !== id) {
+        return;
+      }
+
+      this.selectedEvent.commentNumber += 1;
     });
   };
 }

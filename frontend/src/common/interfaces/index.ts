@@ -15,3 +15,4 @@ export * from "./IAddressDetails";
 export * from "./IEventSearchQuery";
 export * from "./IEventImage";
 export * from "./IPageWrapper";
+export * from "./IComment";

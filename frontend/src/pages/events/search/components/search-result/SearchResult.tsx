@@ -3,13 +3,13 @@ import BaseContainer from "../../../../../components/base-container/BaseContaine
 import { ISearchResultProps } from "./ISearchResultProps";
 import styles from "./SearchResult.module.scss";
 import { observer } from "mobx-react-lite";
-import { IEvent } from "../../../../../common/interfaces";
 import { useNavigate } from "react-router-dom";
-import Category from "../../../../../components/categories/Categories";
+import Categories from "../../../../../components/categories/Categories";
 import { formatDistanceToNow } from "date-fns";
 import LikeButton from "../../../../../components/like-button/LikeButton";
 import { useStore } from "../../../../../common/stores/store";
 import Constants from "../../../../../common/utils/constants";
+import { getFormattedDate } from "../../../../../common/utils/helpers";
 
 const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { events, onLikeClick } = props;
@@ -17,19 +17,6 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
   const { eventStore } = useStore();
 
   const navigate = useNavigate();
-
-  const getEventStatus = (event: IEvent) => {
-    const currentDate = new Date();
-    if (event.endDate < currentDate) {
-      return "Finished";
-    }
-
-    if (event.startDate < currentDate) {
-      return "Started";
-    }
-
-    return "Not started";
-  };
 
   const handleEventClick = (eventId: string) => {
     const selectedEvent = events.find((e) => e.id === eventId);
@@ -65,7 +52,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
             <div className={styles.header}>
               <div>
                 <span className={styles.title}>{event.title}</span>
-                <Category categoryIds={event.categoryIds} />
+                <Categories categoryIds={event.categoryIds} />
               </div>
               <LikeButton
                 id={event.id}
@@ -75,7 +62,10 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
               />
             </div>
             <div className={styles.body}>
-              <div>{getEventStatus(event)}</div>
+              <div>
+                {getFormattedDate(event.startDate)} -{" "}
+                {getFormattedDate(event.endDate)}
+              </div>
               <div>{event.description}</div>
             </div>
             <div className={styles.footer}>

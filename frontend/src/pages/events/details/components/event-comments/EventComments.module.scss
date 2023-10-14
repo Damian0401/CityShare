@@ -1,0 +1,45 @@
+@import "../../../../../assets/styles/variables.module.scss";
+
+.spinner {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  row-gap: 1rem;
+
+  .title {
+    font-size: $mdFontSize;
+  }
+
+  .comments {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+
+    .comment {
+      padding: 0.5rem;
+      box-shadow: $lessBoxShadow;
+      display: flex;
+      flex-direction: column;
+      row-gap: 0.3rem;
+
+      .header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        column-gap: 0.5rem;
+
+        & > span:first-of-type {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

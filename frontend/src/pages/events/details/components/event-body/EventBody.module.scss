@@ -47,6 +47,15 @@
           display: flex;
           flex-direction: row;
           align-items: center;
+          column-gap: 0.3rem;
+
+          & > span:first-of-type {
+            cursor: pointer;
+
+            &:hover {
+              opacity: $hoverOpacity;
+            }
+          }
         }
       }
     }

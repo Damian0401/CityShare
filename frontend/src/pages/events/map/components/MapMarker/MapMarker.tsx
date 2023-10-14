@@ -5,13 +5,16 @@ import Constants from "../../../../../common/utils/constants";
 import LikeButton from "../../../../../components/like-button/LikeButton";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "../../../../../common/enums";
+import { useStore } from "../../../../../common/stores/store";
 
 const MapMarker: React.FC<IMapMarkerProps> = (props) => {
   const { event, onLikeClick } = props;
+  const { eventStore } = useStore();
 
   const navigate = useNavigate();
 
   const handlePopupClick = (eventId: string) => {
+    eventStore.setSelectedEvent(event);
     navigate(Routes.Events + "/" + eventId);
   };
 

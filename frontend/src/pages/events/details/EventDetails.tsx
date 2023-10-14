@@ -1,5 +1,5 @@
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Containers, Routes, StatusCodes } from "../../../common/enums";
 import styles from "./EventDetails.module.scss";
@@ -9,6 +9,7 @@ import EventBody from "./components/event-body/EventBody";
 import EventMap from "./components/event-map/EventMap";
 import { useStore } from "../../../common/stores/store";
 import { AxiosError } from "axios";
+import EventComments from "./components/event-comments/EventComments";
 
 const EventDetails = observer(() => {
   const { id } = useParams<{ id: string }>();
@@ -16,6 +17,8 @@ const EventDetails = observer(() => {
   const { commonStore, eventStore } = useStore();
 
   const navigate = useNavigate();
+
+  const [commentsVisible, setCommentsVisible] = useState(false);
 
   useEffect(() => {
     if (!id) {
@@ -50,22 +53,32 @@ const EventDetails = observer(() => {
     await eventStore.updateLikes(id);
   };
 
+  const handleCommentsClick = () => {
+    setCommentsVisible(!commentsVisible);
+  };
+
   return (
-    <div className={styles.container}>
+    <>
       {eventStore.selectedEvent && (
-        <BaseContainer type={Containers.Tertiary} className={styles.event}>
-          <EventImages imageUrls={eventStore.selectedEvent.imageUrls} />
-          <EventMap address={eventStore.selectedEvent.address} />
-          <EventBody
-            event={eventStore.selectedEvent}
-            onLikeClick={handleLikeClick}
-          />
-        </BaseContainer>
+        <>
+          <BaseContainer
+            type={Containers.Tertiary}
+            className={styles.container}
+          >
+            <BaseContainer type={Containers.Tertiary} className={styles.event}>
+              <EventImages imageUrls={eventStore.selectedEvent.imageUrls} />
+              <EventMap address={eventStore.selectedEvent.address} />
+              <EventBody
+                event={eventStore.selectedEvent}
+                onLikeClick={handleLikeClick}
+                onCommentClick={handleCommentsClick}
+              />
+            </BaseContainer>
+            {commentsVisible && <EventComments />}
+          </BaseContainer>
+        </>
       )}
-      <div className={styles.comments}>
-        <BaseContainer type={Containers.Secondary}>Comment</BaseContainer>
-      </div>
-    </div>
+    </>
   );
 });
 
