@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Comments.Queries;
+﻿using CityShare.Backend.Application.Comments.Commands;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Application.Events.Queries;

@@ -1,5 +1,6 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Categories;
 using CityShare.Backend.Application.Core.Abstractions.Cities;
+using CityShare.Backend.Application.Core.Abstractions.Comments;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Images;
@@ -24,6 +25,7 @@ public static class DependencyInjection
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IImageRepository, ImageRepository>();
+        services.AddScoped<ICommentRepository, CommentRepository>();
 
         return services;
     }
