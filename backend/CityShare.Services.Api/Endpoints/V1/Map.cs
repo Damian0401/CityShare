@@ -1,4 +1,4 @@
-﻿using CityShare.Backend.Application.Map.Queries;
+﻿using CityShare.Backend.Application.Maps.Queries;
 using CityShare.Services.Api.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

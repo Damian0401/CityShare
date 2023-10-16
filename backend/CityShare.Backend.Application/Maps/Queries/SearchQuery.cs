@@ -9,7 +9,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace CityShare.Backend.Application.Map.Queries;
+namespace CityShare.Backend.Application.Maps.Queries;
 
 public record SearchQuery(string Query) : IRequest<Result<AddressDetailsDto>>;
 

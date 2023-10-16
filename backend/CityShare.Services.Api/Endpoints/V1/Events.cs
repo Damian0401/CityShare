@@ -1,4 +1,5 @@
-﻿using CityShare.Backend.Application.Core.Dtos.Events;
+﻿using CityShare.Backend.Application.Comments.Queries;
+using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Application.Events.Queries;
 using CityShare.Backend.Application.Images.Commands;
@@ -84,6 +85,20 @@ public class Events
     {
         var result = await mediator.Send(
             new UpdateEventLikesCommand(id, claimsPrincipal.GetUserId()),
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
+
+    public static async Task<IResult> AddComment(
+        [FromRoute] Guid id,
+        [FromBody] string message,
+        ClaimsPrincipal claimsPrincipal,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new AddCommentCommand(id, claimsPrincipal.GetUserId(), message),
             cancellationToken);
 
         return ResultResolver.Resolve(result);
