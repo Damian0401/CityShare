@@ -1,4 +1,5 @@
 ﻿using CityShare.Backend.Application.Comments.Commands;
+using CityShare.Backend.Application.Comments.Queries;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Application.Events.Queries;
@@ -99,6 +100,18 @@ public class Events
     {
         var result = await mediator.Send(
             new AddCommentCommand(id, claimsPrincipal.GetUserId(), message),
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
+
+    public static async Task<IResult> GetComments(
+        [FromRoute] Guid id,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new GetCommentsQuery(id),
             cancellationToken);
 
         return ResultResolver.Resolve(result);

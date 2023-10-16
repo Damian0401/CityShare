@@ -7,4 +7,6 @@ public class Comment
     public DateTime CreatedAt { get; set; }
     public string AuthorId { get; set; } = default!;
     public Guid EventId { get; set; }
+
+    public virtual ApplicationUser Author { get; set; } = default!;
 }
