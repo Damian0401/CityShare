@@ -193,7 +193,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
                     b.Property<string>("AuthorId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -207,6 +207,8 @@ namespace CityShare.Backend.Persistence.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("EventId");
 
@@ -554,11 +556,19 @@ namespace CityShare.Backend.Persistence.Migrations
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Comment", b =>
                 {
+                    b.HasOne("CityShare.Backend.Domain.Entities.ApplicationUser", "Author")
+                        .WithMany("Comments")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+
                     b.HasOne("CityShare.Backend.Domain.Entities.Event", null)
                         .WithMany("Comments")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.Email", b =>
@@ -691,6 +701,8 @@ namespace CityShare.Backend.Persistence.Migrations
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.ApplicationUser", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("Events");
 
                     b.Navigation("Likes");

@@ -1,5 +1,6 @@
 ﻿using CityShare.Backend.Application.Core.Dtos.Categories;
 using CityShare.Backend.Application.Core.Dtos.Cities;
+using CityShare.Backend.Application.Core.Dtos.Comments;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Domain.Entities;
@@ -48,4 +49,5 @@ internal class Value
     public static IEnumerable<City> Cities => Enumerable.Empty<City>();
     public static IEnumerable<CityDto> CityDtos => Enumerable.Empty<CityDto>();
     public static IEnumerable<SearchEventDto> SearchEventDtos => Enumerable.Empty<SearchEventDto>();
+    public static CreateCommentDto CreateCommentDto => new CreateCommentDto();
 }

@@ -8,7 +8,11 @@
   justify-content: flex-start;
   column-gap: 0.1rem;
 
-  .icon:hover {
-    opacity: $hoverOpacity;
+  .icon {
+    cursor: pointer;
+
+    &:hover {
+      opacity: $hoverOpacity;
+    }
   }
 }

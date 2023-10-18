@@ -26,6 +26,7 @@ public class JwtProvider : IJwtProvider
         {
             new (ClaimTypes.Email, user.Email ?? string.Empty),
             new (ClaimTypes.NameIdentifier, user.Id),
+            new (ClaimTypes.Name, user.UserName ?? string.Empty),
         };
 
         foreach (var role in roles)

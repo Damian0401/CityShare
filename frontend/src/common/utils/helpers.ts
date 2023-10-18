@@ -1,12 +1,12 @@
 import { format } from "date-fns";
 import { Environments, StorageKeys } from "../enums";
-import { IEvent } from "../interfaces";
+import { IComment, IEvent } from "../interfaces";
 
 export const getSecret = (environment: Environments) => {
   return import.meta.env[environment];
 };
 
-export const accessTokenHelper = {
+export const AccessTokenHelper = {
   isAccessTokenPresent: () => {
     return !!localStorage.getItem(StorageKeys.AccessToken);
   },
@@ -28,6 +28,10 @@ export const correctEventDates = (event: IEvent) => {
   event.startDate = new Date(event.startDate);
   event.endDate = new Date(event.endDate);
   event.createdAt = new Date(event.createdAt);
+};
+
+export const correctCommentDate = (comment: IComment) => {
+  comment.createdAt = new Date(comment.createdAt);
 };
 
 export const importantStyle = (style: string) => {

@@ -3,7 +3,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import styles from "./PageWrapper.module.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../common/stores/store";
-import { accessTokenHelper } from "../../common/utils/helpers";
+import { AccessTokenHelper } from "../../common/utils/helpers";
 import { useEffect, useState } from "react";
 import { AxiosErrorCodes, Containers, Routes } from "../../common/enums";
 import LoadingSpinner from "../loading-spinner/LoadingSpinner";
@@ -16,7 +16,7 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const isTokenStored = accessTokenHelper.isAccessTokenPresent();
+    const isTokenStored = AccessTokenHelper.isAccessTokenPresent();
 
     if (!isTokenStored) {
       navigate(Routes.Login);
@@ -59,11 +59,11 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
             <main>
               {commonStore.isContentLoading && <LoadingSpinner />}
               <div
-                style={
-                  commonStore.isContentLoading
-                    ? { visibility: "hidden" }
-                    : undefined
-                }
+                style={{
+                  visibility: commonStore.isContentLoading
+                    ? "hidden"
+                    : undefined,
+                }}
               >
                 <BaseContainer
                   type={Containers.Primary}

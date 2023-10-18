@@ -21,5 +21,10 @@ internal class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .WithMany(x => x.Comments)
             .HasForeignKey(x => x.EventId)
             .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder.HasOne(x => x.Author)
+            .WithMany(x => x.Comments)
+            .HasForeignKey(x => x.AuthorId)
+            .OnDelete(DeleteBehavior.ClientCascade);
     }
 }

@@ -2,6 +2,7 @@
 using CityShare.Backend.Application.Core.Dtos;
 using CityShare.Backend.Application.Core.Dtos.Categories;
 using CityShare.Backend.Application.Core.Dtos.Cities;
+using CityShare.Backend.Application.Core.Dtos.Comments;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Domain.Entities;
@@ -27,4 +28,5 @@ internal class Any
     public static IEnumerable<CityDto> CityDtos => It.IsAny<IEnumerable<CityDto>>();
     public static EventSearchQueryDto EventQueryDto => It.IsAny<EventSearchQueryDto>();
     public static Like Like => It.IsAny<Like>();
+    public static CommentDto CommentDto => It.IsAny<CommentDto>();
 }

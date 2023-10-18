@@ -2,7 +2,7 @@ import { makeAutoObservable, reaction, runInAction } from "mobx";
 import { ILoginValues, IUser } from "../interfaces";
 import agent from "../api/agent";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
-import { accessTokenHelper } from "../utils/helpers";
+import { AccessTokenHelper } from "../utils/helpers";
 export default class AuthStore {
   user: IUser | null = null;
 
@@ -13,9 +13,9 @@ export default class AuthStore {
       () => this.user,
       (user) => {
         if (user) {
-          accessTokenHelper.setAccessToken(user.accessToken);
+          AccessTokenHelper.setAccessToken(user.accessToken);
         } else {
-          accessTokenHelper.removeAccessToken();
+          AccessTokenHelper.removeAccessToken();
         }
       }
     );

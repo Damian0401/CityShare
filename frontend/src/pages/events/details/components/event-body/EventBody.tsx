@@ -8,7 +8,7 @@ import { MdOutlineComment } from "react-icons/md";
 import { observer } from "mobx-react-lite";
 
 const EventBody: React.FC<IEventBodyProps> = observer((props) => {
-  const { event, onLikeClick } = props;
+  const { event, onLikeClick, onCommentClick } = props;
 
   return (
     <div className={styles.container}>
@@ -27,7 +27,10 @@ const EventBody: React.FC<IEventBodyProps> = observer((props) => {
               className={styles.likes}
             />
             <div className={styles.comment}>
-              <MdOutlineComment /> {event.commentNumber}
+              <span onClick={onCommentClick}>
+                <MdOutlineComment />
+              </span>
+              <span>{event.commentNumber}</span>
             </div>
           </div>
         </div>

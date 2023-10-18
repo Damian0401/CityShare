@@ -39,7 +39,13 @@ public static class Endpoints
                 public const string Index = "/api/v1/events/{id}";
                 public const string Images = "/api/v1/events/{id}/images";
                 public const string Likes = "/api/v1/events/{id}/likes";
+                public const string Comments = "/api/v1/events/{id}/comments";
             }
         }
+    }
+
+    public class Hubs
+    {
+        public const string Comments = "/hubs/comments";
     }
 }

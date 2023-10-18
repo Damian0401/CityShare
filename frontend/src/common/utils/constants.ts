@@ -2,6 +2,7 @@ import { CSSProperties } from "react";
 
 const Constants = {
   ApiPrefix: "/api/v1",
+  HubPrefix: "/hubs",
   Images: {
     Urls: {
       Placeholder: "https://placehold.co/600x600?text=no+image",

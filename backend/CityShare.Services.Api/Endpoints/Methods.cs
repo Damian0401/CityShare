@@ -45,6 +45,12 @@ public static class Methods
         app.MapPost(Endpoints.V1.Events.Id.Likes, V1.Events.UpdateLikes)
             .RequireAuthorization();
 
+        app.MapPost(Endpoints.V1.Events.Id.Comments, V1.Events.AddComment)
+            .RequireAuthorization();
+
+        app.MapGet(Endpoints.V1.Events.Id.Comments, V1.Events.GetComments)
+            .RequireAuthorization();
+
         return app;
     }
 }

@@ -68,7 +68,8 @@ public class EventRepository : IEventRepository
                 Likes = x.Likes.Count(),
                 CommentNumber = x.Comments.Count(),
                 Author = x.Author.UserName ?? string.Empty
-            }).FirstOrDefaultAsync(cancellationToken);
+            }).AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
         return searchResult;
     }
@@ -92,13 +93,13 @@ public class EventRepository : IEventRepository
         if (eventQuery.StartDate is not null)
         {
             _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.StartDate));
-            query = query.Where(x => x.StartDate >= eventQuery.StartDate);
+            query = query.Where(x => x.EndDate > eventQuery.StartDate);
         }
 
         if (eventQuery.EndDate is not null)
         {
             _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.EndDate));
-            query = query.Where(x => x.EndDate <= eventQuery.EndDate);
+            query = query.Where(x => x.StartDate < eventQuery.EndDate);
         }
 
         if (eventQuery.Query is not null)
@@ -151,7 +152,7 @@ public class EventRepository : IEventRepository
             Likes = x.Likes.Count(),
             CommentNumber = x.Comments.Count(),
             Author = x.Author.UserName ?? string.Empty
-        }).ToListAsync(cancellationToken);
+        }).AsNoTracking().ToListAsync(cancellationToken);
 
         return (searchResult, count);
     }

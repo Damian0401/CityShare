@@ -1,7 +1,7 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Cache;
 using CityShare.Backend.Application.Core.Abstractions.Maps;
 using CityShare.Backend.Application.Core.Dtos.Maps;
-using CityShare.Backend.Application.Map.Queries;
+using CityShare.Backend.Application.Maps.Queries;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
 using Microsoft.Extensions.Logging;

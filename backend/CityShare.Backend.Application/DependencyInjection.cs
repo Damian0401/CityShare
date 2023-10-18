@@ -26,6 +26,7 @@ public static class DependencyInjection
         services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
         services.AddScoped<ErrorHandlingMiddleware>();
+        services.AddScoped<WebSocketsMiddleware>();
 
         return services;
     }
