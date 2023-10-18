@@ -54,6 +54,11 @@ const EventDetails = observer(() => {
   };
 
   const handleCommentsClick = () => {
+    if (!commentsVisible) {
+      eventStore.createHubConnection();
+    } else {
+      eventStore.stopHubConnection();
+    }
     setCommentsVisible(!commentsVisible);
   };
 

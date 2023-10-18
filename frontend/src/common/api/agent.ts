@@ -1,6 +1,7 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import {
-  accessTokenHelper,
+  AccessTokenHelper,
+  correctCommentDate,
   correctEventDates,
   getSecret,
 } from "../utils/helpers";
@@ -18,6 +19,7 @@ import {
   ICity,
   IEventCreateValues,
   IEventImage,
+  IComment,
 } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { toast } from "react-toastify";
@@ -30,7 +32,7 @@ axios.defaults.baseURL = getSecret(Environments.BaseUrl) + Constants.ApiPrefix;
 axios.defaults.withCredentials = true;
 
 axios.interceptors.request.use((config) => {
-  const accessToken = accessTokenHelper.getAccessToken();
+  const accessToken = AccessTokenHelper.getAccessToken();
 
   if (accessToken) {
     config.headers.Authorization = `Bearer ${accessToken}`;
@@ -79,10 +81,10 @@ axios.interceptors.response.use(undefined, (error: AxiosError) => {
 });
 
 const refreshToken = async (error: AxiosError) => {
-  const isTokenStored = accessTokenHelper.isAccessTokenPresent();
+  const isTokenStored = AccessTokenHelper.isAccessTokenPresent();
 
   if (!isTokenStored || !error.config || error.config.url === "/auth/refresh") {
-    accessTokenHelper.removeAccessToken();
+    AccessTokenHelper.removeAccessToken();
     toast.error("Your session has expired, please login again");
     Router.navigate(Routes.Login);
     return Promise.reject(error);
@@ -90,14 +92,14 @@ const refreshToken = async (error: AxiosError) => {
 
   try {
     const response = await agent.Auth.refresh();
-    accessTokenHelper.setAccessToken(response.accessToken);
+    AccessTokenHelper.setAccessToken(response.accessToken);
 
     const config = { ...error.config };
     config.headers.Authorization = `Bearer ${response.accessToken}`;
 
     return axios.request(config);
   } catch (error) {
-    accessTokenHelper.removeAccessToken();
+    AccessTokenHelper.removeAccessToken();
     toast.error("Your session has expired, please login again");
     Router.navigate(Routes.Login);
     return Promise.reject(error);
@@ -121,7 +123,7 @@ const Auth = {
   register: (values: IRegisterValues) =>
     requests.post<IUser>("/auth/register", values),
   refresh: (signal?: AbortSignal) => {
-    const accessToken = accessTokenHelper.getAccessToken();
+    const accessToken = AccessTokenHelper.getAccessToken();
     return requests.post<IUser>("/auth/refresh", { accessToken }, signal);
   },
   confirmEmail: (id: string, token: string, signal: AbortSignal) =>
@@ -199,6 +201,17 @@ const Event = {
     return requests.post(url, formData);
   },
   updateLikes: (id: string) => requests.post(`/events/${id}/likes`),
+  addComment: (id: string, comment: string) =>
+    requests.post(`/events/${id}/comments`, { message: comment }),
+  getComments: async (id: string) => {
+    const comments = await requests.get<IComment[]>(`/events/${id}/comments`);
+
+    for (const comment of comments) {
+      correctCommentDate(comment);
+    }
+
+    return comments;
+  },
 };
 
 const agent = {

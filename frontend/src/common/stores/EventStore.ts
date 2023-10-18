@@ -6,10 +6,25 @@ import {
   IEventSearchQuery,
 } from "../interfaces";
 import agent from "../api/agent";
-import { updateLikes } from "../utils/helpers";
+import {
+  AccessTokenHelper,
+  correctCommentDate,
+  getSecret,
+  updateLikes,
+} from "../utils/helpers";
+import {
+  HubConnection,
+  HubConnectionBuilder,
+  LogLevel,
+} from "@microsoft/signalr";
+import { Environments } from "../enums";
+import { CommentHubMethods } from "../enums/CommentHubMethods";
+import Constants from "../utils/constants";
 
 export default class EventStore {
   selectedEvent: IEvent | null = null;
+  comments: IComment[] = [];
+  hubConnection: HubConnection | null = null;
 
   constructor() {
     makeAutoObservable(this);
@@ -68,15 +83,56 @@ export default class EventStore {
     });
   };
 
-  addComment = async (id: string, comment: IComment) => {
-    // const newComment = await agent.Event.addComment(id, comment);
+  addComment = async (id: string, comment: string) => {
+    await agent.Event.addComment(id, comment);
+  };
+
+  createHubConnection = async () => {
+    if (!this.selectedEvent) return;
+
+    const comments = await agent.Event.getComments(this.selectedEvent.id);
 
     runInAction(() => {
-      if (!this.selectedEvent || this.selectedEvent.id !== id) {
+      this.comments = comments;
+
+      if (!this.selectedEvent) {
         return;
       }
 
-      this.selectedEvent.commentNumber += 1;
+      this.selectedEvent.commentNumber = comments.length;
     });
+
+    this.hubConnection = new HubConnectionBuilder()
+      .withUrl(
+        getSecret(Environments.BaseUrl) +
+          Constants.HubPrefix +
+          `/comments?event_id=${this.selectedEvent.id}`,
+        {
+          accessTokenFactory: () => AccessTokenHelper.getAccessToken() ?? "",
+        }
+      )
+      .withAutomaticReconnect()
+      .configureLogging(LogLevel.Information)
+      .build();
+
+    this.hubConnection.on(CommentHubMethods.AddComment, (comment: IComment) => {
+      correctCommentDate(comment);
+      runInAction(() => {
+        this.comments.push(comment);
+      });
+
+      runInAction(() => {
+        if (!this.selectedEvent) {
+          return;
+        }
+        this.selectedEvent.commentNumber += 1;
+      });
+    });
+
+    this.hubConnection.start().catch((error) => console.log(error));
+  };
+
+  stopHubConnection = () => {
+    this.hubConnection?.stop().catch((error) => console.log(error));
   };
 }

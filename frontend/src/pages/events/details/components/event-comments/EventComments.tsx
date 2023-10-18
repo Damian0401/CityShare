@@ -1,40 +1,16 @@
 import styles from "./EventComments.module.scss";
-import { IComment } from "../../../../../common/interfaces";
 import BaseContainer from "../../../../../components/base-container/BaseContainer";
 import { Containers } from "../../../../../common/enums";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { AiOutlineSend } from "react-icons/ai";
 import { formatDistanceToNow } from "date-fns";
-import { useRef, useState } from "react";
 import LoadingSpinner from "../../../../../components/loading-spinner/LoadingSpinner";
 import { useStore } from "../../../../../common/stores/store";
 import { observer } from "mobx-react-lite";
-
-const commentsMock: IComment[] = [
-  {
-    id: "1",
-    message: "Comment 1",
-    author: "Author 1",
-    createdAt: new Date(),
-  },
-  {
-    id: "2",
-    message: "Comment 2",
-    author: "Author 2",
-    createdAt: new Date(),
-  },
-  {
-    id: "3",
-    message: "Comment 3",
-    author: "Author 3",
-    createdAt: new Date(),
-  },
-];
+import { useRef } from "react";
 
 const EventComments: React.FC = observer(() => {
   const { authStore, eventStore } = useStore();
-
-  const [comments, setComments] = useState<IComment[]>(commentsMock);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -43,20 +19,12 @@ const EventComments: React.FC = observer(() => {
 
     if (!message || !authStore.user || !eventStore.selectedEvent) return;
 
-    const newComment: IComment = {
-      id: (comments.length + 1).toString(),
-      message: message,
-      author: authStore.user.userName,
-      createdAt: new Date(),
-    };
+    await eventStore.addComment(eventStore.selectedEvent.id, message);
 
-    await eventStore.addComment(eventStore.selectedEvent.id, newComment);
-
-    setComments([...comments, newComment]);
     inputRef.current.value = "";
   };
 
-  if (!comments)
+  if (!eventStore.comments)
     return (
       <div className={styles.spinner}>
         <LoadingSpinner />
@@ -74,7 +42,7 @@ const EventComments: React.FC = observer(() => {
         <Input ref={inputRef} placeholder="Add a comment" />
       </InputGroup>
       <div className={styles.comments}>
-        {comments.map((comment) => (
+        {eventStore.comments.map((comment) => (
           <BaseContainer
             key={comment.id}
             type={Containers.Secondary}
