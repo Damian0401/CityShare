@@ -2,6 +2,7 @@
 
 public class CommentDto
 {
+    public int Id { get; set; }
     public string Message { get; set; } = default!;
     public string Author { get; set; } = default!;
     public string AuthorId { get; set; } = default!;

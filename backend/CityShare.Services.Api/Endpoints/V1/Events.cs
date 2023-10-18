@@ -1,5 +1,6 @@
 ﻿using CityShare.Backend.Application.Comments.Commands;
 using CityShare.Backend.Application.Comments.Queries;
+using CityShare.Backend.Application.Core.Dtos.Comments;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Application.Events.Queries;
@@ -93,13 +94,13 @@ public class Events
 
     public static async Task<IResult> AddComment(
         [FromRoute] Guid id,
-        [FromBody] string message,
+        [FromBody] CreateCommentDto dto,
         ClaimsPrincipal claimsPrincipal,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
-            new AddCommentCommand(id, claimsPrincipal.GetUserId(), message),
+            new AddCommentCommand(id, claimsPrincipal.GetUserId(), claimsPrincipal.GetUserName(), dto),
             cancellationToken);
 
         return ResultResolver.Resolve(result);

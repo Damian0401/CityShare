@@ -68,7 +68,8 @@ public class EventRepository : IEventRepository
                 Likes = x.Likes.Count(),
                 CommentNumber = x.Comments.Count(),
                 Author = x.Author.UserName ?? string.Empty
-            }).FirstOrDefaultAsync(cancellationToken);
+            }).AsNoTracking()
+            .FirstOrDefaultAsync(cancellationToken);
 
         return searchResult;
     }
@@ -151,7 +152,7 @@ public class EventRepository : IEventRepository
             Likes = x.Likes.Count(),
             CommentNumber = x.Comments.Count(),
             Author = x.Author.UserName ?? string.Empty
-        }).ToListAsync(cancellationToken);
+        }).AsNoTracking().ToListAsync(cancellationToken);
 
         return (searchResult, count);
     }

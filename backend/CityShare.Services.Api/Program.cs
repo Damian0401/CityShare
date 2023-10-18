@@ -1,4 +1,5 @@
 using CityShare.Backend.Application;
+using CityShare.Backend.Application.Core.Hubs;
 using CityShare.Backend.Application.Core.Middleware;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Infrastructure;
@@ -19,6 +20,8 @@ builder.Services.AddApplication();
 builder.Services.AddInfrastructure(configuration);
 builder.Services.AddPersistence(configuration);
 
+builder.Services.AddSignalR();
+
 builder.Host.UseSerilog((context, configuration) =>
 {
     configuration.ReadFrom.Configuration(context.Configuration);
@@ -36,9 +39,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseSerilogRequestLogging();
 
-app.UseHttpsRedirection();
-
 app.UseMiddleware<ErrorHandlingMiddleware>();
+app.UseMiddleware<WebSocketsMiddleware>();
+
+app.UseHttpsRedirection();
 
 app.UseEndpoints();
 
@@ -46,5 +50,7 @@ app.UseCors(Cors.PolicyName);
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHub<CommentHub>(Endpoints.Hubs.Comments);
 
 app.Run();

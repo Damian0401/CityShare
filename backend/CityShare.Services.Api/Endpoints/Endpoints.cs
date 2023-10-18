@@ -43,4 +43,9 @@ public static class Endpoints
             }
         }
     }
+
+    public class Hubs
+    {
+        public const string Comments = "/hubs/comments";
+    }
 }
