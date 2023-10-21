@@ -4,6 +4,7 @@ using CityShare.Backend.Application.Core.Abstractions.Cities;
 using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Core.Dtos.Events;
+using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Shared;
@@ -149,7 +150,7 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
         }
 
         _logger.LogInformation("Creating data validation tasks");
-        var cityTask = Task.Run(() => CheckIfCityExistsAsync(request.Request.CityId, cancellationToken));
+        var cityTask = Task.Run(() => CheckIfAddressIsValidAsync(request.Request.CityId, request.Request.Address, cancellationToken));
         var categoryTask = Task.Run(() => CheckIfCategoriesExistsAsync(request.Request.CategoryIds, cancellationToken));
 
         var allTasks = new List<Task<IEnumerable<Error>>>
@@ -166,18 +167,32 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
         return errors;
     }
 
-    private async Task<IEnumerable<Error>> CheckIfCityExistsAsync(int cityId, CancellationToken cancellationToken = default)
+    private async Task<IEnumerable<Error>> CheckIfAddressIsValidAsync(int cityId, AddressDto address, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Checking if city with id {@Id} exsits", cityId);
-        var cityExists = await _cityRepository.ExistsAsync(cityId, cancellationToken);
+        var city = await _cityRepository.GeyByIdWithBoundingBoxAsync(cityId, cancellationToken);
 
-        if (!cityExists)
+        if (city is null)
         {
             _logger.LogError("City with id {@Id} does not exists", cityId);
             return Errors.CityNotExists(cityId);
         }
 
+        if (!PointIsInsideBoundingBox(address.Point, city.BoundingBox))
+        {
+            _logger.LogError("Address {@Address} is located outside city {@City}", address, city);
+            return Errors.AddressOutsideCity;
+        }
+
         return Enumerable.Empty<Error>();
+    }
+
+    private static bool PointIsInsideBoundingBox(PointDto point, BoundingBox boundingBox)
+    {
+        return point.X > boundingBox.MinX
+            && point.X < boundingBox.MaxX
+            && point.Y > boundingBox.MinY
+            && point.Y < boundingBox.MaxY;
     }
 
     private async Task<IEnumerable<Error>> CheckIfCategoriesExistsAsync(IEnumerable<int> categoryIds, CancellationToken cancellationToken = default)

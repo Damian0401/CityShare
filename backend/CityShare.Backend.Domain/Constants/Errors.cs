@@ -36,11 +36,6 @@ public static class Errors
         new Error("ForbiddenState", "Forbidden state has occurred")
     };
 
-    public static IEnumerable<Error> OperationFailed => new[]
-    {
-        new Error("OperationFailed", "Unable to perform requested operation")
-    };
-
     public static IEnumerable<Error> EmailAlreadyConfirmed => new[]
     {
         new Error("EmailAlreadyConfirmed", "Email is already confirmed")
@@ -49,6 +44,11 @@ public static class Errors
     public static IEnumerable<Error> CityNotExists(int cityId) => new[]
     {
         new Error("CityNotExists", $"City with id {cityId} does not exists")
+    };
+
+    public static IEnumerable<Error> AddressOutsideCity => new[]
+    {
+        new Error("AddressOutsideCity", $"Provided address is located outside selected city")
     };
 
     public static IEnumerable<Error> CategoryNotExists(int categoryId) => new[]
