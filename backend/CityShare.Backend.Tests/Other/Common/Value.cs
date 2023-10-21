@@ -50,4 +50,7 @@ internal class Value
     public static IEnumerable<CityDto> CityDtos => Enumerable.Empty<CityDto>();
     public static IEnumerable<SearchEventDto> SearchEventDtos => Enumerable.Empty<SearchEventDto>();
     public static CreateCommentDto CreateCommentDto => new CreateCommentDto();
+    public static City City => new City();
+    public static BoundingBox BoundingBox => new BoundingBox();
+    public static PointDto PointDtoAtX0Y0 => new PointDto(0, 0);
 }

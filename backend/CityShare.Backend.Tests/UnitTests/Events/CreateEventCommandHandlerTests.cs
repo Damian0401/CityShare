@@ -4,6 +4,7 @@ using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
@@ -57,6 +58,40 @@ public class CreateEventCommandHandlerTests
     }
 
     [Fact]
+    public async Task CorrectRequest_ShouldReturn_Success()
+    {
+        // Arrange
+        var user = Value.ApplicationUser;
+        user.EmailConfirmed = Value.True;
+        _userManagerMockHelper.SetupAsync(
+            x => x.FindByIdAsync(Any.String),
+            user);
+
+        var city = Value.City;
+        city.BoundingBox = Value.BoundingBox;
+        city.BoundingBox.MinX = -Value.One;
+        city.BoundingBox.MaxX = Value.One;
+        city.BoundingBox.MinY = -Value.One;
+        city.BoundingBox.MaxY = Value.One;
+        _cityRepositoryMock.Setup(x => x.GeyByIdWithBoundingBoxAsync(Any.Int, Any.CancellationToken))
+            .ReturnsAsync(city);
+
+        var categoryIds = new List<int> { Value.Int };
+        _request.CategoryIds = categoryIds;
+        _categoryRepositoryMock.Setup(x => x.GetAllIdsAsync(Any.CancellationToken))
+            .ReturnsAsync(categoryIds);
+
+        _command.Request.Address = Value.AddressDto;
+        _command.Request.Address.Point = Value.PointDtoAtX0Y0;
+
+        // Act
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+    }
+
+    [Fact]
     public async Task CityNotFound_ShouldReturn_Failure()
     {
         // Arrange
@@ -66,19 +101,22 @@ public class CreateEventCommandHandlerTests
             x => x.FindByIdAsync(Any.String),
             user);
 
-        _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(Value.False);
+        _cityRepositoryMock.Setup(x => x.GeyByIdWithBoundingBoxAsync(Any.Int, Any.CancellationToken))
+            .ReturnsAsync((City?)Value.Null);
 
         var categoryIds = new List<int> { Value.Int };
         _request.CategoryIds = categoryIds;
         _categoryRepositoryMock.Setup(x => x.GetAllIdsAsync(Any.CancellationToken))
             .ReturnsAsync(categoryIds);
 
+        _command.Request.Address = Value.AddressDto;
+        _command.Request.Address.Point = Value.PointDtoAtX0Y0;
+
         // Act
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsCorrectErrorCode(result, Errors.CityNotExists(_command.Request.CityId)));
     }
 
     [Fact]
@@ -91,19 +129,22 @@ public class CreateEventCommandHandlerTests
             x => x.FindByIdAsync(Any.String),
             user);
 
-        _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(Value.True);
+        _cityRepositoryMock.Setup(x => x.GeyByIdWithBoundingBoxAsync(Any.Int, Any.CancellationToken))
+            .ReturnsAsync((City?)Value.Null);
 
         var categoryIds = new List<int> { Value.Int };
         _request.CategoryIds = categoryIds;
         _categoryRepositoryMock.Setup(x => x.GetAllIdsAsync(Any.CancellationToken))
             .ReturnsAsync(categoryIds);
 
+        _command.Request.Address = Value.AddressDto;
+        _command.Request.Address.Point = Value.PointDtoAtX0Y0;
+
         // Act
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsCorrectErrorCode(result, Errors.Forbidden));
     }
 
     [Fact]
@@ -114,19 +155,22 @@ public class CreateEventCommandHandlerTests
             x => x.FindByIdAsync(Any.String),
             (ApplicationUser?)Value.Null);
 
-        _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(Value.True);
+        _cityRepositoryMock.Setup(x => x.GeyByIdWithBoundingBoxAsync(Any.Int, Any.CancellationToken))
+            .ReturnsAsync((City?)Value.Null);
 
         var categoryIds = new List<int> { Value.Int };
         _request.CategoryIds = categoryIds;
         _categoryRepositoryMock.Setup(x => x.GetAllIdsAsync(Any.CancellationToken))
             .ReturnsAsync(categoryIds);
 
+        _command.Request.Address = Value.AddressDto;
+        _command.Request.Address.Point = Value.PointDtoAtX0Y0;
+
         // Act
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsCorrectErrorCode(result, Errors.Forbidden));
     }
 
     [Fact]
@@ -139,43 +183,27 @@ public class CreateEventCommandHandlerTests
             x => x.FindByIdAsync(Any.String),
             user);
 
-        _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(Value.True);
+        var city = Value.City;
+        city.BoundingBox = Value.BoundingBox;
+        city.BoundingBox.MinX = -Value.One;
+        city.BoundingBox.MaxX = Value.One;
+        city.BoundingBox.MinY = -Value.One;
+        city.BoundingBox.MaxY = Value.One;
+        _cityRepositoryMock.Setup(x => x.GeyByIdWithBoundingBoxAsync(Any.Int, Any.CancellationToken))
+            .ReturnsAsync(city);
 
         var categoryId = Value.Int;
         _request.CategoryIds = new List<int> { categoryId };
         _categoryRepositoryMock.Setup(x => x.GetAllIdsAsync(Any.CancellationToken))
-            .ReturnsAsync(new List<int> { categoryId + 1 });
+            .ReturnsAsync(new List<int> { categoryId + Value.One });
+
+        _command.Request.Address = Value.AddressDto;
+        _command.Request.Address.Point = Value.PointDtoAtX0Y0;
 
         // Act
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
-    }
-
-    [Fact]
-    public async Task CorrectRequest_ShouldReturn_Success()
-    {
-        // Arrange
-        var user = Value.ApplicationUser;
-        user.EmailConfirmed = Value.True;
-        _userManagerMockHelper.SetupAsync(
-            x => x.FindByIdAsync(Any.String),
-            user);
-
-        _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
-            .ReturnsAsync(Value.True);
-
-        var categoryIds = new List<int> { Value.Int };
-        _request.CategoryIds = categoryIds;
-        _categoryRepositoryMock.Setup(x => x.GetAllIdsAsync(Any.CancellationToken))
-            .ReturnsAsync(categoryIds);
-
-        // Act
-        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
-
-        // Assert
-        Assert.True(result.IsSuccess);
+        Assert.True(ResultHelper.IsCorrectErrorCode(result, Errors.CategoryNotExists(categoryId)));
     }
 }

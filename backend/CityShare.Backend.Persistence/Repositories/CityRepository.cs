@@ -18,12 +18,13 @@ public class CityRepository : ICityRepository
         _logger = logger;
     }
 
-    public async Task<bool> ExistsAsync(int cityId, CancellationToken cancellationToken = default)
+    public async Task<City?> GeyByIdWithBoundingBoxAsync(int cityId, CancellationToken cancellationToken = default)
     {
-        var cityExists = await _context.Cities
-            .AnyAsync(x => x.Id.Equals(cityId), cancellationToken);
+        var city = await _context.Cities
+            .Include(x => x.BoundingBox)
+            .FirstOrDefaultAsync(x => x.Id.Equals(cityId), cancellationToken);
 
-        return cityExists;
+        return city;
     }
 
     public async Task<IEnumerable<City>> GetAllWithDetailsAsync(CancellationToken cancellationToken = default)
