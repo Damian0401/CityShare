@@ -26,11 +26,6 @@ public static class Errors
         new Error("EmailTaken", $"Email {email} is already taken")
     };
     
-    public static IEnumerable<Error> InvalidToken => new[]
-    {
-        new Error("InvalidToken", "Provided token is invalid or expired")
-    };    
-    
     public static IEnumerable<Error> ForbiddenState => new[]
     {
         new Error("ForbiddenState", "Forbidden state has occurred")

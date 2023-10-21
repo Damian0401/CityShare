@@ -2,6 +2,7 @@
 using CityShare.Backend.Application.Core.Abstractions.Maps;
 using CityShare.Backend.Application.Core.Dtos.Maps;
 using CityShare.Backend.Application.Maps.Queries;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
 using Microsoft.Extensions.Logging;
@@ -77,7 +78,7 @@ public class MapReverseHandlerTests
         var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.NotFound));
     }
 
     [Fact]

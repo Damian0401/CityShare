@@ -5,8 +5,9 @@ import { toast } from "react-toastify";
 import { Routes } from "../../common/enums";
 import { useStore } from "../../common/stores/store";
 import Constants from "../../common/utils/constants";
+import { observer } from "mobx-react-lite";
 
-const ConfirmEmail = () => {
+const ConfirmEmail = observer(() => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -43,6 +44,6 @@ const ConfirmEmail = () => {
     return () => controller.abort();
   }, [searchParams, authStore, navigate]);
   return <LoadingSpinner />;
-};
+});
 
 export default ConfirmEmail;

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Moq;
 using CityShare.Backend.Application.Core.Dtos.Auth;
+using CityShare.Backend.Domain.Constants;
 
 namespace CityShare.Backend.Tests.UnitTests.Auth;
 
@@ -31,6 +32,28 @@ public class ConfirmEmailCommandHandlerTests
     }
 
     [Fact]
+    public async Task CorrectRequest_ShouldReturn_Success()
+    {
+        // Arrange
+        var user = Value.ApplicationUser;
+        user.EmailConfirmed = false;
+
+        _userManagerMockHelper.SetupAsync(
+            x => x.FindByIdAsync(Any.String),
+            user);
+
+        _userManagerMockHelper.SetupAsync(
+            x => x.ConfirmEmailAsync(Any.ApplicationUser, Any.String),
+            Value.IdentityResultSecceeded);
+
+        // Act
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+    }
+
+    [Fact]
     public async Task UserNotFound_ShouldReturn_Failure()
     {
         // Arrange
@@ -46,7 +69,7 @@ public class ConfirmEmailCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.Forbidden));
     }
     
     [Fact]
@@ -68,7 +91,7 @@ public class ConfirmEmailCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.EmailAlreadyConfirmed));
     }
 
     [Fact]
@@ -91,27 +114,5 @@ public class ConfirmEmailCommandHandlerTests
 
         // Assert
         Assert.True(result.IsFailure);
-    }
-
-    [Fact]
-    public async Task CorrectRequest_ShouldReturn_Success()
-    {
-        // Arrange
-        var user = Value.ApplicationUser;
-        user.EmailConfirmed = false;
-
-        _userManagerMockHelper.SetupAsync(
-            x => x.FindByIdAsync(Any.String),
-            user);
-
-        _userManagerMockHelper.SetupAsync(
-            x => x.ConfirmEmailAsync(Any.ApplicationUser, Any.String),
-            Value.IdentityResultSecceeded);
-
-        // Act
-        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
-
-        // Assert
-        Assert.True(result.IsSuccess);
     }
 }

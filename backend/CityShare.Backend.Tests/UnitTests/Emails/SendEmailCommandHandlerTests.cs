@@ -1,8 +1,10 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Emails.Commands;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Other.Common;
+using CityShare.Backend.Tests.Other.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -35,6 +37,27 @@ public class SendEmailCommandHandlerTests
     }
 
     [Fact]
+    public async Task CorrectRequest_ShouldReturn_Success()
+    {
+        // Arrange
+        var newStatusId = Value.Int;
+        var email = Value.Email;
+        email.StatusId = newStatusId;
+
+        _emailRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
+            .ReturnsAsync(email);
+
+        _emailRepositoryMock.Setup(x => x.GetStatusIdAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(newStatusId);
+
+        // Act
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+    }
+
+    [Fact]
     public async Task EmailNotFound_ShouldReturn_Failure()
     {
         // Arrange
@@ -49,7 +72,7 @@ public class SendEmailCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.NotFound));
     }    
     
     [Fact]
@@ -70,27 +93,6 @@ public class SendEmailCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
-    }
-
-    [Fact]
-    public async Task CorrectRequest_ShouldReturn_Success()
-    {
-        // Arrange
-        var newStatusId = Value.Int;
-        var email = Value.Email;
-        email.StatusId = newStatusId;
-
-        _emailRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
-            .ReturnsAsync(email);
-
-        _emailRepositoryMock.Setup(x => x.GetStatusIdAsync(Any.String, Any.CancellationToken))
-            .ReturnsAsync(newStatusId);
-
-        // Act
-        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
-
-        // Assert
-        Assert.True(result.IsSuccess);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.ForbiddenState));
     }
 }

@@ -1,8 +1,10 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Blobs;
 using CityShare.Backend.Application.Core.Abstractions.Images;
 using CityShare.Backend.Application.Images.Commands;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Other.Common;
+using CityShare.Backend.Tests.Other.Helpers;
 using Microsoft.Extensions.Logging;
 using Moq;
 
@@ -92,7 +94,7 @@ public class BlurFacesCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.NotFound));
     }
 
     [Fact]
@@ -112,7 +114,7 @@ public class BlurFacesCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.ForbiddenState));
     }
 
     [Fact]
@@ -132,6 +134,6 @@ public class BlurFacesCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.NotFound));
     }
 }
