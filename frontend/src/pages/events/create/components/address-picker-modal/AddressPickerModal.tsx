@@ -9,10 +9,12 @@ import {
 import { IAddressPickerModalProps } from "./IAddressPickerModalProps";
 import { useStore } from "../../../../../common/stores/store";
 import { useEffect, useState } from "react";
-import { ICity } from "../../../../../common/interfaces";
+import { IAddress, ICity } from "../../../../../common/interfaces";
 import AddressSearchMap from "../../../../../components/address-search-map/AddressSearchMap";
 import styles from "./AddressPickerModal.module.scss";
 import { observer } from "mobx-react-lite";
+import { isPointInsideBoundingBox } from "../../../../../common/utils/helpers";
+import { toast } from "react-toastify";
 
 const AddressPickerModal: React.FC<IAddressPickerModalProps> = observer(
   (props) => {
@@ -32,6 +34,18 @@ const AddressPickerModal: React.FC<IAddressPickerModalProps> = observer(
       setCity(city);
     }, [cityId, commonStore.cities]);
 
+    const handleSelect = (address: IAddress) => {
+      if (
+        !city ||
+        !isPointInsideBoundingBox(address.point, city.address.boundingBox)
+      ) {
+        toast.error("Address is outside of the city");
+        return;
+      }
+
+      onSelect(address);
+    };
+
     return (
       <>
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -47,7 +61,7 @@ const AddressPickerModal: React.FC<IAddressPickerModalProps> = observer(
                   <AddressSearchMap
                     initialPoint={city.address.point}
                     additionalQuery={city.name}
-                    onSelect={onSelect}
+                    onSelect={handleSelect}
                   />
                 </div>
               )}

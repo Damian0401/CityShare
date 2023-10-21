@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { Environments, StorageKeys } from "../enums";
-import { IComment, IEvent } from "../interfaces";
+import { IBoundingBox, IComment, IEvent, IPoint } from "../interfaces";
 
 export const getSecret = (environment: Environments) => {
   return import.meta.env[environment];
@@ -51,4 +51,16 @@ export const updateLikes = (event: IEvent) => {
 
   event.likes += 1;
   event.isLiked = true;
+};
+
+export const isPointInsideBoundingBox = (
+  point: IPoint,
+  boundingBox: IBoundingBox
+) => {
+  return (
+    point.x > boundingBox.minX &&
+    point.x < boundingBox.maxX &&
+    point.y > boundingBox.minY &&
+    point.y < boundingBox.maxY
+  );
 };
