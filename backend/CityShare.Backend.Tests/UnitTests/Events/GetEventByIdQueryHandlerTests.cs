@@ -56,20 +56,6 @@ public class GetEventByIdQueryHandlerTests
         var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
-    }
-
-    [Fact]
-    public async Task EventNotFound_ShouldReturn_CorrectErrorCode()
-    {
-        // Arrange
-        _eventRepositoryMock.Setup(x => x.GetByIdWithDetailsAsync(Any.Guid, Any.CancellationToken))
-            .ReturnsAsync((SearchEventDto?)Value.Null);
-
-        // Act
-        var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
-
-        // Assert
-        Assert.Equal(Errors.NotFound.First(), result.Errors?.First());
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.NotFound));
     }
 }

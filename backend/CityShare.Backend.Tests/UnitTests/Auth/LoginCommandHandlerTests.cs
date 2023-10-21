@@ -1,6 +1,7 @@
 ﻿using CityShare.Backend.Application.Auth.Commands;
 using CityShare.Backend.Application.Core.Abstractions.Auth;
 using CityShare.Backend.Application.Core.Dtos.Auth;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
@@ -40,6 +41,25 @@ public class LoginCommandHandlerTests
     }
 
     [Fact]
+    public async Task CorrectRequest_ShouldReturn_Success()
+    {
+        // Arrange
+        _userManagerMockHelper.SetupAsync(
+            x => x.FindByEmailAsync(Any.String),
+            Value.ApplicationUser);
+
+        _userManagerMockHelper.SetupAsync(
+            x => x.CheckPasswordAsync(Any.ApplicationUser, Any.String),
+            Value.True);
+
+        // Act
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+    }
+
+    [Fact]
     public async Task UserNotFound_ShouldReturn_Failure()
     {
         // Arrange
@@ -56,7 +76,7 @@ public class LoginCommandHandlerTests
             .Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.InvalidCredentials));
     }
 
     [Fact]
@@ -75,25 +95,6 @@ public class LoginCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
-    }
-
-    [Fact]
-    public async Task CorrectRequest_ShouldReturn_Success()
-    {
-        // Arrange
-        _userManagerMockHelper.SetupAsync(
-            x => x.FindByEmailAsync(Any.String),
-            Value.ApplicationUser);
-
-        _userManagerMockHelper.SetupAsync(
-            x => x.CheckPasswordAsync(Any.ApplicationUser, Any.String),
-            Value.True);
-
-        // Act
-        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
-
-        // Assert
-        Assert.True(result.IsSuccess);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.InvalidCredentials));
     }
 }

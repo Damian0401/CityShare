@@ -18,7 +18,12 @@ public class ResultResolver
             return Results.NotFound();
         }
 
-        if (result.Errors is not null && result.Errors.All(e => e.Equals(Errors.EmailAlreadyConfirmed.First())))
+        if (result.Errors is not null && result.Errors.Any(e => e.Equals(Errors.EmailAlreadyConfirmed.First())))
+        {
+            return Results.StatusCode(StatusCodes.Status403Forbidden);
+        }
+
+        if (result.Errors is not null && result.Errors.Any(e => e.Equals(Errors.Forbidden.First())))
         {
             return Results.StatusCode(StatusCodes.Status403Forbidden);
         }
@@ -38,7 +43,12 @@ public class ResultResolver
             return Results.NotFound();
         }
 
-        if (result.Errors is not null && result.Errors.All(e => e.Equals(Errors.EmailAlreadyConfirmed.First())))
+        if (result.Errors is not null && result.Errors.Any(e => e.Equals(Errors.EmailAlreadyConfirmed.First())))
+        {
+            return Results.StatusCode(StatusCodes.Status403Forbidden);
+        }
+
+        if (result.Errors is not null && result.Errors.Any(e => e.Equals(Errors.Forbidden.First())))
         {
             return Results.StatusCode(StatusCodes.Status403Forbidden);
         }

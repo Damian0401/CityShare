@@ -49,7 +49,7 @@ public class ConfirmEmailCommandHandler : IRequestHandler<ConfirmEmailCommand, R
         if (user is null)
         {
             _logger.LogError("User with id {@Id} not found", id);
-            return Result.Failure(Errors.InvalidToken);
+            return Result.Failure(Errors.Forbidden);
         }
 
         if (user.EmailConfirmed)

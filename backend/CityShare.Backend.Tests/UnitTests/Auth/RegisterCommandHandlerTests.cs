@@ -3,6 +3,7 @@ using CityShare.Backend.Application.Core.Abstractions.Auth;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Application.Core.Dtos.Auth;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Backend.Tests.Other.Common;
@@ -53,6 +54,25 @@ public class RegisterCommandHandlerTests
     }
 
     [Fact]
+    public async Task CorrectRequest_ShouldReturn_Success()
+    {
+        // Arrange
+        _userManagerMockHelper.SetupAsync(
+            x => x.FindByEmailAsync(Any.String),
+            (ApplicationUser?)Value.Null);
+
+        _userManagerMockHelper.SetupAsync(
+            x => x.CreateAsync(Any.ApplicationUser, Any.String),
+            Value.IdentityResultSecceeded);
+
+        // Act
+        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
+
+        // Assert
+        Assert.True(result.IsSuccess);
+    }
+
+    [Fact]
     public async Task EmailTaken_ShouldReturn_Failure()
     {
         // Arrange
@@ -69,7 +89,7 @@ public class RegisterCommandHandlerTests
             .Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(result.IsFailure);
+        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.EmailTaken(_command.Request.Email)));
     }
 
     [Fact]
@@ -89,24 +109,5 @@ public class RegisterCommandHandlerTests
 
         // Assert
         Assert.True(result.IsFailure);
-    }
-
-    [Fact]
-    public async Task CorrectRequest_ShouldReturn_Success()
-    {
-        // Arrange
-        _userManagerMockHelper.SetupAsync(
-            x => x.FindByEmailAsync(Any.String),
-            (ApplicationUser?)Value.Null);
-
-        _userManagerMockHelper.SetupAsync(
-            x => x.CreateAsync(Any.ApplicationUser, Any.String),
-            Value.IdentityResultSecceeded);
-
-        // Act
-        var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
-
-        // Assert
-        Assert.True(result.IsSuccess);
     }
 }
