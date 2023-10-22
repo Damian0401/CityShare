@@ -16,22 +16,23 @@ import { useStore } from "../../../../../common/stores/store";
 import { Checkbox } from "@chakra-ui/react";
 import DateTimePicker from "../../../../../components/date-time-picker/DateTimePicker";
 import OptionSelect from "../../../../../components/option-select/OptionSelect";
+import { EventFilters } from "../../../../../common/enums/EventFilters";
 
 const sortByOptions: IOption[] = [
   {
-    value: "CreatedAtDesc",
+    value: EventFilters.Newest,
     label: "Newest",
   },
   {
-    value: "CreatedAtAsc",
+    value: EventFilters.Oldest,
     label: "Oldest",
   },
   {
-    value: "LikesDesc",
+    value: EventFilters.MostPopular,
     label: "Most popular",
   },
   {
-    value: "LikesAsc",
+    value: EventFilters.LeastPopular,
     label: "Least popular",
   },
 ];

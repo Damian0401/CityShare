@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { ICity, IEvent, IEventSearchQuery } from "../../../common/interfaces";
 import { updateLikes } from "../../../common/utils/helpers";
 import MapMarker from "./components/MapMarker/MapMarker";
+import { EventFilters } from "../../../common/enums/EventFilters";
 
 const EventMap = observer(() => {
   const { commonStore, eventStore } = useStore();
@@ -32,6 +33,7 @@ const EventMap = observer(() => {
       const query: IEventSearchQuery = {
         cityId: selectedCity.id,
         isNow: true,
+        sortBy: EventFilters.MostPopular,
       };
 
       const events = await eventStore.getEventsByQuery(
