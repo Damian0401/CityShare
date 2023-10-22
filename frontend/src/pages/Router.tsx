@@ -4,7 +4,7 @@ import Navbar from "../components/navbar/Navbar";
 import Home from "./home/Home";
 import Login from "./login/Login";
 import Register from "./register/Register";
-import { Routes } from "../common/enums";
+import { Roles, Routes } from "../common/enums";
 import NotFound from "./not-found/NotFound";
 import ServerError from "./server-error/ServerError";
 import AnonymousRoute from "../components/anonymous-route/AnonymousRoute";
@@ -14,6 +14,7 @@ import EventMap from "./events/map/EventMap";
 import EventDetails from "./events/details/EventDetails";
 import EventCreate from "./events/create/EventCreate";
 import EventSearch from "./events/search/EventSearch";
+import AdminPanel from "./admin-panel/AdminPanel";
 
 const Router = createBrowserRouter([
   {
@@ -56,6 +57,10 @@ const Router = createBrowserRouter([
       {
         path: Routes.ConfirmEmail,
         element: <ConfirmEmail />,
+      },
+      {
+        path: Routes.AdminPanel,
+        element: <PrivateRoute Component={AdminPanel} Roles={[Roles.Admin]} />,
       },
       {
         path: Routes.NotFound,

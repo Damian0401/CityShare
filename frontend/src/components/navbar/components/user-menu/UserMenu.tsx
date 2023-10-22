@@ -25,10 +25,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import Constants from "../../../../common/utils/constants";
 import { observer } from "mobx-react-lite";
-import ToggleThemeButton from "../../../toggle-theme-button/ToggleThemeButton";
+import ToggleThemeButton from "./components/toggle-theme-button/ToggleThemeButton";
+import { useStore } from "../../../../common/stores/store";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
-  const { user, logout } = props;
+  const { logout } = props;
+  const {
+    authStore: { user, isAdmin },
+  } = useStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef<HTMLButtonElement | null>(null);
   const navigate = useNavigate();
@@ -61,8 +66,8 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
               CityShare
             </Link>
             <Divider className={styles.divider} />
-            <div className={styles.userName}>{user.userName}</div>
-            {!user.emailConfirmed && (
+            <div className={styles.userName}>{user?.userName || ""}</div>
+            {!user?.emailConfirmed && (
               <Tooltip
                 label="Confirm your email by clicking on the link from the email we sent you."
                 aria-label={Constants.AriaLabels.ConfirmEmailTooltip}
@@ -74,8 +79,16 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             )}
           </DrawerHeader>
           <DrawerBody className={styles.modalBody}>
-            <ToggleThemeButton />
-            <Button leftIcon={<CgProfile />} onClick={onClose} ref={initialRef}>
+            <ToggleThemeButton buttonRef={initialRef} />
+            {isAdmin && (
+              <Button
+                leftIcon={<MdOutlineAdminPanelSettings />}
+                onClick={redirectAndClose(Routes.AdminPanel)}
+              >
+                Admin panel
+              </Button>
+            )}
+            <Button leftIcon={<CgProfile />} onClick={onClose}>
               Profile
             </Button>
             <Button
@@ -93,7 +106,7 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             <Button
               leftIcon={<IoCreateOutline />}
               onClick={redirectAndClose(Routes.EventsCreate)}
-              isDisabled={!user.emailConfirmed}
+              isDisabled={!user?.emailConfirmed}
             >
               Create
             </Button>

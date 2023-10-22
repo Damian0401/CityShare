@@ -39,9 +39,7 @@ const Navbar = observer(() => {
               <Link to={Routes.Register}>Register</Link>
             </>
           )}
-          {authStore.user && (
-            <UserMenu user={authStore.user} logout={handleLogout} />
-          )}
+          {authStore.user && <UserMenu logout={handleLogout} />}
         </div>
       </BaseContainer>
     </nav>

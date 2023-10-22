@@ -3,6 +3,7 @@ import { ILoginValues, IUser } from "../interfaces";
 import agent from "../api/agent";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { AccessTokenHelper } from "../utils/helpers";
+import { Roles } from "../enums";
 export default class AuthStore {
   user: IUser | null = null;
 
@@ -55,4 +56,8 @@ export default class AuthStore {
       this.user.emailConfirmed = true;
     });
   };
+
+  get isAdmin() {
+    return !!this.user?.roles.includes(Roles.Admin);
+  }
 }

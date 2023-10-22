@@ -12,5 +12,6 @@ export enum Routes {
   ServerError = "/server-error",
   Map = "/map",
   ConfirmEmail = "/confirm-email",
+  AdminPanel = "/admin-panel",
   Wildcard = "*",
 }
