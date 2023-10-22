@@ -64,3 +64,10 @@ export const isPointInsideBoundingBox = (
     point.y < boundingBox.maxY
   );
 };
+
+export const getSelectedCityId = () => {
+  return (
+    parseInt(localStorage.getItem(StorageKeys.SelectedCityId) || "") ||
+    undefined
+  );
+};

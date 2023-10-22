@@ -17,6 +17,7 @@ import { Checkbox } from "@chakra-ui/react";
 import DateTimePicker from "../../../../../components/date-time-picker/DateTimePicker";
 import OptionSelect from "../../../../../components/option-select/OptionSelect";
 import { EventFilters } from "../../../../../common/enums/EventFilters";
+import { getSelectedCityId } from "../../../../../common/utils/helpers";
 
 const sortByOptions: IOption[] = [
   {
@@ -53,7 +54,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
       <Formik
         initialValues={{
           ...InitialValues.EventSearch,
-          cityId: commonStore.cities[0].id,
+          cityId: getSelectedCityId() ?? commonStore.cities[0].id,
           sortBy: sortByOptions[0].value as string,
         }}
         onSubmit={onSearch}

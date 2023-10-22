@@ -3,10 +3,10 @@ import styles from "./EventMap.module.scss";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../../common/stores/store";
 import { Checkbox, Select, Text } from "@chakra-ui/react";
-import { ChakraSizes } from "../../../common/enums";
+import { ChakraSizes, StorageKeys } from "../../../common/enums";
 import { useEffect, useState } from "react";
 import { ICity, IEvent, IEventSearchQuery } from "../../../common/interfaces";
-import { updateLikes } from "../../../common/utils/helpers";
+import { getSelectedCityId, updateLikes } from "../../../common/utils/helpers";
 import MapMarker from "./components/MapMarker/MapMarker";
 import { EventFilters } from "../../../common/enums/EventFilters";
 
@@ -16,7 +16,8 @@ const EventMap = observer(() => {
   const [events, setEvents] = useState<IEvent[]>([]);
 
   const [selectedCity, setSelectedCity] = useState<ICity>(
-    commonStore.cities[0]
+    commonStore.cities.find((x) => x.id === getSelectedCityId()) ??
+      commonStore.cities[0]
   );
 
   const [eventsToShow, setEventsToShow] = useState<IEvent[]>([]);
@@ -67,6 +68,10 @@ const EventMap = observer(() => {
 
   const handleSelectCity = (index: number) => {
     setSelectedCity(commonStore.cities[index]);
+    localStorage.setItem(
+      StorageKeys.SelectedCityId,
+      commonStore.cities[index].id.toString()
+    );
   };
 
   const handleSelectCategories = (checked: boolean, index: number) => {
@@ -111,7 +116,7 @@ const EventMap = observer(() => {
         <div>
           <Text>City:</Text>
           <Select
-            defaultValue={0}
+            defaultValue={commonStore.cities.indexOf(selectedCity)}
             onChange={(event) => handleSelectCity(parseInt(event.target.value))}
           >
             {commonStore.cities.map((city, index) => (
