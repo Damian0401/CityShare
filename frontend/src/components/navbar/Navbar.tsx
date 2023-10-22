@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./Navbar.module.scss";
-import ToggleThemeButton from "../toggle-theme-button/ToggleThemeButton";
 import { Containers, Routes } from "../../common/enums";
 import BaseContainer from "../base-container/BaseContainer";
 import NavbarLogo from "../../assets/images/navbar-logo.svg";
@@ -40,12 +39,11 @@ const Navbar = observer(() => {
               <Link to={Routes.Register}>Register</Link>
             </>
           )}
-          <ToggleThemeButton />
+          {authStore.user && (
+            <UserMenu user={authStore.user} logout={handleLogout} />
+          )}
         </div>
       </BaseContainer>
-      {authStore.user && (
-        <UserMenu user={authStore.user} logout={handleLogout} />
-      )}
     </nav>
   );
 });

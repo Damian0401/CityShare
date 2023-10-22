@@ -8,14 +8,12 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Spacer,
-  Text,
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { IUserMenuProps } from "./IUserMenuProps";
 import styles from "./UserMenu.module.scss";
-import BaseContainer from "../../../base-container/BaseContainer";
-import { Containers, DrawerPlacements, Routes } from "../../../../common/enums";
+import { DrawerPlacements, Routes } from "../../../../common/enums";
 import { BiLogOutCircle } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoCreateOutline } from "react-icons/io5";
@@ -27,6 +25,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import Constants from "../../../../common/utils/constants";
 import { observer } from "mobx-react-lite";
+import ToggleThemeButton from "../../../toggle-theme-button/ToggleThemeButton";
 
 const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
   const { user, logout } = props;
@@ -42,14 +41,11 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
   return (
     <>
       <div className={styles.container}>
-        <BaseContainer type={Containers.Primary} className={styles.wrapper}>
-          <div onClick={onOpen} className={styles.menuButton}>
-            <div className={styles.menuText}>
-              <Text>Menu</Text>
-            </div>
-            <HamburgerIcon />
-          </div>
-        </BaseContainer>
+        <HamburgerIcon
+          _hover={{}}
+          onClick={onOpen}
+          className={styles.menuButton}
+        />
       </div>
       <Drawer
         onClose={onClose}
@@ -78,6 +74,7 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             )}
           </DrawerHeader>
           <DrawerBody className={styles.modalBody}>
+            <ToggleThemeButton />
             <Button leftIcon={<CgProfile />} onClick={onClose} ref={initialRef}>
               Profile
             </Button>
