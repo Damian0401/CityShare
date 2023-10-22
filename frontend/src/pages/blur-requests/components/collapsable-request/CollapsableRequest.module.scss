@@ -1,0 +1,30 @@
+@import "../../../../assets/styles/variables.module.scss";
+
+.container {
+  box-shadow: $lessBoxShadow;
+  padding: 0.5rem;
+
+  .collapse {
+    display: flex !important;
+    flex-direction: column;
+    row-gap: 0.5rem;
+
+    .title {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .buttons {
+        display: flex;
+        flex-direction: row;
+        column-gap: 0.5rem;
+      }
+    }
+  }
+}
