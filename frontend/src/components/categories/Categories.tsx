@@ -3,7 +3,7 @@ import styles from "./Categories.module.scss";
 import { ICategoryProps } from "./ICategoriesProps";
 import { useStore } from "../../common/stores/store";
 
-const Category: React.FC<ICategoryProps> = observer(({ categoryIds }) => {
+const Categories: React.FC<ICategoryProps> = observer(({ categoryIds }) => {
   const { commonStore } = useStore();
   return categoryIds.map((categoryId) => (
     <span className={styles.container} key={categoryId}>
@@ -12,4 +12,4 @@ const Category: React.FC<ICategoryProps> = observer(({ categoryIds }) => {
   ));
 });
 
-export default Category;
+export default Categories;

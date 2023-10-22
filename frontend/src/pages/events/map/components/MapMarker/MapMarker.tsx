@@ -6,6 +6,7 @@ import LikeButton from "../../../../../components/like-button/LikeButton";
 import { useNavigate } from "react-router-dom";
 import { Routes } from "../../../../../common/enums";
 import { useStore } from "../../../../../common/stores/store";
+import Categories from "../../../../../components/categories/Categories";
 
 const MapMarker: React.FC<IMapMarkerProps> = (props) => {
   const { event, onLikeClick } = props;
@@ -39,6 +40,9 @@ const MapMarker: React.FC<IMapMarkerProps> = (props) => {
           />
           <div className={styles.content}>
             <div className={styles.title}>{event.title}</div>
+            <div>
+              <Categories categoryIds={event.categoryIds} />
+            </div>
             <div className={styles.description}>{event.description}</div>
             <LikeButton
               id={event.id}
