@@ -66,7 +66,7 @@ public class EventRepository : IEventRepository
             {
                 Event = x,
                 Likes = x.Likes.Count(),
-                CommentNumber = x.Comments.Count(),
+                Comments = x.Comments.Count(),
                 Author = x.Author.UserName ?? string.Empty
             }).AsNoTracking()
             .FirstOrDefaultAsync(cancellationToken);
@@ -150,7 +150,7 @@ public class EventRepository : IEventRepository
         {
             Event = x,
             Likes = x.Likes.Count(),
-            CommentNumber = x.Comments.Count(),
+            Comments = x.Comments.Count(),
             Author = x.Author.UserName ?? string.Empty
         }).AsNoTracking().ToListAsync(cancellationToken);
 

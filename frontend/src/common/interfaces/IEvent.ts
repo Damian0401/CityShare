@@ -13,6 +13,6 @@ export interface IEvent {
   createdAt: Date;
   likes: number;
   author: string;
-  commentNumber: number;
+  comments: number;
   isLiked: boolean;
 }

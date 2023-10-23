@@ -53,7 +53,7 @@ public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Resul
         _logger.LogInformation("Mapping event with id {@Id} to dto", request.EventId);
         var eventDto = _mapper.Map<EventDto>(searchResult.Event);
         eventDto.Likes = searchResult.Likes;
-        eventDto.CommentNumber = searchResult.CommentNumber;
+        eventDto.Comments = searchResult.Comments;
         eventDto.Author = searchResult.Author;
 
         _logger.LogInformation("Checking if user with id {@UserId} likes event with id {@EventId}", request.UserId, request.EventId);

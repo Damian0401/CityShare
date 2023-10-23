@@ -56,7 +56,7 @@ public class GetEventsQueryHandler : IRequestHandler<GetEventsQuery, Result<Page
         {
             var dto = _mapper.Map<EventDto>(e.Event);
             dto.Likes = e.Likes;
-            dto.CommentNumber = e.CommentNumber;
+            dto.Comments = e.Comments;
             dto.Author = e.Author;
 
             return dto;

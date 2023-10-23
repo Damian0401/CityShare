@@ -16,6 +16,6 @@ public class EventDto
     public DateTime CreatedAt { get; set; }
     public int Likes { get; set; }
     public string Author { get; set; } = default!;
-    public int CommentNumber { get; set; }
+    public int Comments { get; set; }
     public bool IsLiked { get; set; }
 }

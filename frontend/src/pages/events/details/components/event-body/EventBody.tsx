@@ -30,7 +30,7 @@ const EventBody: React.FC<IEventBodyProps> = observer((props) => {
               <span onClick={onCommentClick}>
                 <MdOutlineComment />
               </span>
-              <span>{event.commentNumber}</span>
+              <span>{event.comments}</span>
             </div>
           </div>
         </div>
