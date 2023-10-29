@@ -32,7 +32,9 @@ public static class SeedDataExtension
 
         await Emails.SeedEmailStatusesAsync(context);
 
-        await Events.SeedRequestStatusesAsync(context);
+        await Requests.SeedRequestStatusesAsync(context);
+
+        await Requests.SeedRequestTypesAsync(context);
 
         await Events.SeedCitiesAsync(context);
 

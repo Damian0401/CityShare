@@ -10,13 +10,14 @@ internal class RequestConfiguration : IEntityTypeConfiguration<Request>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Description)
+        builder.Property(x => x.Message)
             .IsRequired()
             .HasMaxLength(500);
 
         builder.HasOne(x => x.Author)
             .WithMany(x => x.Requests)
-            .HasForeignKey(x => x.AuthorId);
+            .HasForeignKey(x => x.AuthorId)
+            .OnDelete(DeleteBehavior.ClientCascade);
 
         builder.HasOne(x => x.Event)
             .WithMany(x => x.Requests)
@@ -25,6 +26,12 @@ internal class RequestConfiguration : IEntityTypeConfiguration<Request>
 
         builder.HasOne(x => x.Status)
             .WithMany(x => x.Requests)
-            .HasForeignKey(x => x.StatusId);
+            .HasForeignKey(x => x.StatusId)
+            .OnDelete(DeleteBehavior.ClientCascade);
+
+        builder.HasOne(x => x.Type)
+            .WithMany(x => x.Requests)
+            .HasForeignKey(x => x.TypeId)
+            .OnDelete(DeleteBehavior.ClientCascade);
     }
 }

@@ -112,36 +112,4 @@ internal class Events
 
         await context.SaveChangesAsync();
     }
-
-    internal static async Task SeedRequestStatusesAsync(CityShareDbContext context)
-    {
-        var requestStatuses = typeof(RequestStatuses)
-            .GetFields()
-            .Select(x => x.GetValue(null))
-            .Cast<string>();
-
-        var existingRequestStatuses = context.RequestStatuses
-            .AsNoTracking()
-            .Select(x => x.Name)
-            .ToList();
-
-        foreach (var requestStatus in requestStatuses)
-        {
-            var statusExists = existingRequestStatuses.Contains(requestStatus);
-
-            if (statusExists)
-            {
-                continue;
-            }
-
-            var newStatus = new RequestStatus
-            {
-                Name = requestStatus
-            };
-
-            context.RequestStatuses.Add(newStatus);
-        }
-
-        await context.SaveChangesAsync();
-    }
 }
