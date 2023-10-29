@@ -4,6 +4,7 @@ public class Request
 {
     public Guid Id { get; set; }
     public string Message { get; set; } = default!;
+    public DateTime CreatedAt { get; set; }
     public string AuthorId { get; set; } = default!;
     public Guid EventId { get; set; }
     public int StatusId { get; set; }

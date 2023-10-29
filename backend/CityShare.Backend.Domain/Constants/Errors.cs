@@ -40,6 +40,16 @@ public static class Errors
     {
         new Error("CityNotExists", $"City with id {cityId} does not exists")
     };
+    
+    public static IEnumerable<Error> RequestTypeNotExists(int typeId) => new[]
+    {
+        new Error("RequestTypeNotExists", $"Type with id {typeId} does not exists")
+    };  
+    
+    public static IEnumerable<Error> EventNotExists(Guid eventId) => new[]
+    {
+        new Error("EventNotExists", $"Event with id {eventId} does not exists")
+    };
 
     public static IEnumerable<Error> AddressOutsideCity => new[]
     {

@@ -42,6 +42,11 @@ public static class Endpoints
                 public const string Comments = "/api/v1/events/{id}/comments";
             }
         }
+
+        public class Requests
+        {
+            public const string Index = "/api/v1/requests";
+        }
     }
 
     public class Hubs

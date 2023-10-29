@@ -51,6 +51,9 @@ public static class Methods
         app.MapGet(Endpoints.V1.Events.Id.Comments, V1.Events.GetComments)
             .RequireAuthorization();
 
+        app.MapPost(Endpoints.V1.Requests.Index, V1.Requests.Create)
+            .RequireAuthorization();
+
         return app;
     }
 }

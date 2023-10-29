@@ -14,6 +14,9 @@ internal class RequestConfiguration : IEntityTypeConfiguration<Request>
             .IsRequired()
             .HasMaxLength(500);
 
+        builder.Property(x => x.CreatedAt)
+            .IsRequired();
+
         builder.HasOne(x => x.Author)
             .WithMany(x => x.Requests)
             .HasForeignKey(x => x.AuthorId)

@@ -29,6 +29,7 @@ public class ImageRepository : IImageRepository
 
     public async Task<Image?> GetByIdAsync(Guid imageId, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Searching for image with id {@Id) in database", imageId);
         var image = await _context.Images
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id.Equals(imageId), cancellationToken);
@@ -50,5 +51,15 @@ public class ImageRepository : IImageRepository
         await _context.Images
             .Where(x => x.Id.Equals(imageId))
             .ExecuteUpdateAsync(x => x.SetProperty(i => i.IsBlurred, isBlurred), cancellationToken);
+    }
+
+    public async Task<IEnumerable<Image>> GetByEventIdAsync(Guid eventId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Searching for images with event id {@Id} in database", eventId);
+        var images = await _context.Images
+            .Where(x => x.EventId.Equals(eventId))
+            .ToListAsync();
+
+        return images;
     }
 }

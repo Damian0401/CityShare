@@ -150,13 +150,10 @@ public class CreateEventCommandHandler : IRequestHandler<CreateEventCommand, Res
         }
 
         _logger.LogInformation("Creating data validation tasks");
-        var cityTask = Task.Run(() => CheckIfAddressIsValidAsync(request.Request.CityId, request.Request.Address, cancellationToken));
-        var categoryTask = Task.Run(() => CheckIfCategoriesExistsAsync(request.Request.CategoryIds, cancellationToken));
-
         var allTasks = new List<Task<IEnumerable<Error>>>
         {
-            cityTask,
-            categoryTask
+            CheckIfAddressIsValidAsync(request.Request.CityId, request.Request.Address, cancellationToken),
+            CheckIfCategoriesExistsAsync(request.Request.CategoryIds, cancellationToken)
         };
 
         _logger.LogInformation("Awaiting all data validation tasks");

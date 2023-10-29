@@ -7,7 +7,6 @@ using CityShare.Backend.Domain.Enums;
 using CityShare.Backend.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System.Threading;
 
 namespace CityShare.Backend.Persistence.Repositories;
 

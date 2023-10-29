@@ -8,6 +8,7 @@ using CityShare.Backend.Application.Core.Dtos.Categories;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Application.Core.Dtos.Comments;
+using CityShare.Backend.Application.Core.Dtos.Requests;
 
 namespace CityShare.Backend.Application.Core.Mappers;
 
@@ -24,6 +25,7 @@ public class AutoMapperProfile : Profile
         MapsForEvents();
         MapsForLikes();
         MapsForComments();
+        MapsForRequests();
     }
 
     private void MapsForUser()
@@ -100,5 +102,10 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<Comment, CommentDto>()
             .ForMember(x => x.Author, s => s.MapFrom(c => c.Author.UserName));
+    }
+
+    private void MapsForRequests()
+    {
+        CreateMap<CreateRequestDto, Request>();
     }
 }
