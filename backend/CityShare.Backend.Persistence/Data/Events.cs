@@ -1,4 +1,6 @@
-﻿using CityShare.Backend.Domain.Entities;
+﻿using CityShare.Backend.Domain.Constants;
+using CityShare.Backend.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CityShare.Backend.Persistence.Data;
 
@@ -107,6 +109,38 @@ internal class Events
         };
 
         context.Cities.AddRange(cities);
+
+        await context.SaveChangesAsync();
+    }
+
+    internal static async Task SeedRequestStatusesAsync(CityShareDbContext context)
+    {
+        var requestStatuses = typeof(RequestStatuses)
+            .GetFields()
+            .Select(x => x.GetValue(null))
+            .Cast<string>();
+
+        var existingRequestStatuses = context.RequestStatuses
+            .AsNoTracking()
+            .Select(x => x.Name)
+            .ToList();
+
+        foreach (var requestStatus in requestStatuses)
+        {
+            var statusExists = existingRequestStatuses.Contains(requestStatus);
+
+            if (statusExists)
+            {
+                continue;
+            }
+
+            var newStatus = new RequestStatus
+            {
+                Name = requestStatus
+            };
+
+            context.RequestStatuses.Add(newStatus);
+        }
 
         await context.SaveChangesAsync();
     }

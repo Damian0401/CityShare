@@ -4,6 +4,7 @@ using CityShare.Backend.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CityShare.Backend.Persistence.Migrations
 {
     [DbContext(typeof(CityShareDbContext))]
-    partial class CityShareDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231029100436_Requests")]
+    partial class Requests
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -431,7 +434,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
                     b.HasIndex("StatusId");
 
-                    b.ToTable("Requests");
+                    b.ToTable("Request");
                 });
 
             modelBuilder.Entity("CityShare.Backend.Domain.Entities.RequestStatus", b =>
@@ -449,7 +452,7 @@ namespace CityShare.Backend.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RequestStatuses");
+                    b.ToTable("RequestStatus");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

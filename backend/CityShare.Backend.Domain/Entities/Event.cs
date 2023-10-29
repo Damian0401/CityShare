@@ -18,5 +18,6 @@ public class Event
     public virtual IEnumerable<Like> Likes { get; set; } = default!;
     public virtual IEnumerable<Image> Images { get; set; } = default!;
     public virtual IEnumerable<Comment> Comments { get; set; } = default!;
+    public virtual IEnumerable<Request> Requests { get; set; } = default!;
     public virtual IEnumerable<EventCategory> EventCategories { get; set; } = default!;
 }
