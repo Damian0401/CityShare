@@ -11,6 +11,6 @@ export enum Routes {
   NotFound = "/not-found",
   ServerError = "/server-error",
   ConfirmEmail = "/confirm-email",
-  BlurRequsts = "/blur-requsts",
+  Requsts = "/requsts",
   Wildcard = "*",
 }

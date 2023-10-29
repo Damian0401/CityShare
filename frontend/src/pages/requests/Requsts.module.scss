@@ -8,10 +8,14 @@
   flex-direction: column;
   row-gap: 0.5rem;
 
+  .tab {
+    margin-bottom: 1rem;
+  }
+
   .requests {
     display: flex;
     flex-direction: column;
     row-gap: 1rem;
-    padding: 0.5rem;
+    padding: 0;
   }
 }

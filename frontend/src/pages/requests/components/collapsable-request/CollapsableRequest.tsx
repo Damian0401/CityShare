@@ -32,11 +32,11 @@ const CollapsableRequest: React.FC<ICollapsableRequestProps> = (props) => {
         className={styles.collapse}
         onClick={onToggle}
       >
-        <div className={styles.title}>
-          <span>{request.title}</span>
+        <div>{request.message}</div>
+        <div className={styles.info}>
+          <span>{request.author}</span>
           <span>{getFormattedDate(request.createdAt)}</span>
         </div>
-        <div>{request.description}</div>
         <div className={styles.footer}>
           <div>
             <Button

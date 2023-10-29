@@ -14,7 +14,7 @@ import EventMap from "./events/map/EventMap";
 import EventDetails from "./events/details/EventDetails";
 import EventCreate from "./events/create/EventCreate";
 import EventSearch from "./events/search/EventSearch";
-import BlurRequsts from "./blur-requests/BlurRequests";
+import Requsts from "./requests/Requests";
 
 const Router = createBrowserRouter([
   {
@@ -59,8 +59,8 @@ const Router = createBrowserRouter([
         element: <ConfirmEmail />,
       },
       {
-        path: Routes.BlurRequsts,
-        element: <PrivateRoute Component={BlurRequsts} Roles={[Roles.Admin]} />,
+        path: Routes.Requsts,
+        element: <PrivateRoute Component={Requsts} Roles={[Roles.Admin]} />,
       },
       {
         path: Routes.NotFound,

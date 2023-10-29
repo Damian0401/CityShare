@@ -1,7 +1,7 @@
-import { IBlurRequest } from "../../../../common/interfaces/IBlurRequest";
+import { IRequest } from "../../../../common/interfaces/IRequest";
 
 export interface ICollapsableRequestProps {
-  request: IBlurRequest;
+  request: IRequest;
   onAccept: (requestId: string) => void;
   onReject: (requestId: string) => void;
 }

@@ -83,7 +83,7 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             {isAdmin && (
               <Button
                 leftIcon={<MdOutlineAdminPanelSettings />}
-                onClick={redirectAndClose(Routes.BlurRequsts)}
+                onClick={redirectAndClose(Routes.Requsts)}
               >
                 Blur requsts
               </Button>

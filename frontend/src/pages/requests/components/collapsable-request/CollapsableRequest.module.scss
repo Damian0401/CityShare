@@ -9,10 +9,11 @@
     flex-direction: column;
     row-gap: 0.5rem;
 
-    .title {
+    .info {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+      font-size: $smFontSize;
     }
 
     .footer {
