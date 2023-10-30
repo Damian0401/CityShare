@@ -69,7 +69,7 @@ public class ConfirmEmailCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.Forbidden));
+        AssertHelper.FailureWithStatusCode(result, Errors.Forbidden);
     }
     
     [Fact]
@@ -91,7 +91,7 @@ public class ConfirmEmailCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.EmailAlreadyConfirmed));
+        AssertHelper.FailureWithStatusCode(result, Errors.EmailAlreadyConfirmed);
     }
 
     [Fact]

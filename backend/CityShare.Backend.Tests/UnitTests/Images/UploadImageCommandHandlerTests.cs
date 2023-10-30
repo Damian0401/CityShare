@@ -108,7 +108,7 @@ public class UploadImageCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.ImageSizeLimit));
+        AssertHelper.FailureWithStatusCode(result, Errors.ImageSizeLimit);
     }
 
     [Fact]
@@ -134,7 +134,7 @@ public class UploadImageCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.MaxImagesNumber));
+        AssertHelper.FailureWithStatusCode(result, Errors.MaxImagesNumber);
     }
 
     [Fact]
@@ -160,7 +160,7 @@ public class UploadImageCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.NotFound));
+        AssertHelper.FailureWithStatusCode(result, Errors.NotFound);
     }
 
     [Fact]
@@ -186,6 +186,6 @@ public class UploadImageCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Any.CancellationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.Forbidden));
+        AssertHelper.FailureWithStatusCode(result, Errors.Forbidden);
     }
 }

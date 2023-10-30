@@ -3,6 +3,7 @@ using CityShare.Backend.Application.Core.Dtos.Cities;
 using CityShare.Backend.Application.Core.Dtos.Comments;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Core.Dtos.Maps;
+using CityShare.Backend.Application.Core.Dtos.Requests;
 using CityShare.Backend.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Moq;
@@ -53,4 +54,5 @@ internal class Value
     public static City City => new City();
     public static BoundingBox BoundingBox => new BoundingBox();
     public static PointDto PointDtoAtX0Y0 => new PointDto(0, 0);
+    public static CreateRequestDto CreateRequestDto => new CreateRequestDto();
 }

@@ -89,7 +89,7 @@ public class RegisterCommandHandlerTests
             .Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.EmailTaken(_command.Request.Email)));
+        AssertHelper.FailureWithStatusCode(result, Errors.EmailTaken(_command.Request.Email));
     }
 
     [Fact]
