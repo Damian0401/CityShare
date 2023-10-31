@@ -107,5 +107,6 @@ public class AutoMapperProfile : Profile
     private void MapsForRequests()
     {
         CreateMap<CreateRequestDto, Request>();
+        CreateMap<RequestType, RequestTypeDto>();
     }
 }

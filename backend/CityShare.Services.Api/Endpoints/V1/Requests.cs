@@ -1,5 +1,6 @@
 ﻿using CityShare.Backend.Application.Core.Dtos.Requests;
 using CityShare.Backend.Application.Requests.Commands;
+using CityShare.Backend.Application.Requests.Queries;
 using CityShare.Backend.Domain.Extensions;
 using CityShare.Services.Api.Common;
 using MediatR;
@@ -20,6 +21,19 @@ public class Requests
 
         var result = await mediator.Send(
             command, 
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
+
+    public static async Task<IResult> GetTypes(
+               IMediator mediator,
+                      CancellationToken cancellationToken)
+    {
+        var query = new GetRequestTypesQuery();
+
+        var result = await mediator.Send(
+            query,
             cancellationToken);
 
         return ResultResolver.Resolve(result);

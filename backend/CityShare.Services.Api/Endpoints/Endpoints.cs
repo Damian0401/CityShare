@@ -46,6 +46,7 @@ public static class Endpoints
         public class Requests
         {
             public const string Index = "/api/v1/requests";
+            public const string Types = "/api/v1/requests/types";
         }
     }
 

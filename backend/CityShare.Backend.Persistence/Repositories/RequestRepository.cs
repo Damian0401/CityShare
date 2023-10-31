@@ -36,6 +36,16 @@ public class RequestRepository : IRequestRepository
         return status.Id;
     }
 
+    public async Task<IEnumerable<RequestType>> GetTypesAsync(CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Getting all types from database");
+        var types = await _context.RequestTypes
+            .AsNoTracking()
+            .ToListAsync(cancellationToken);
+
+        return types;
+    }
+
     public async Task<bool> TypeExistsAsync(int typeId, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Searching for type with id {@Id} in database", typeId);

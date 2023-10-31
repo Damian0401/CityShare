@@ -55,4 +55,5 @@ internal class Value
     public static BoundingBox BoundingBox => new BoundingBox();
     public static PointDto PointDtoAtX0Y0 => new PointDto(0, 0);
     public static CreateRequestDto CreateRequestDto => new CreateRequestDto();
+    public static IEnumerable<RequestTypeDto> RequestTypeDtos => Enumerable.Empty<RequestTypeDto>();
 }
