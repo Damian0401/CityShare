@@ -26,8 +26,26 @@ internal static class Emails
 <p>Best regards,</p>
 <p>CityShare team</p>
 <p><small>If you did not register at <a href=""{EmailPlaceholders.ClientUrl}"">CityShare</a>, please ignore this email.</small></p>"
-            }
-        };
+                },
+                new EmailTemplate
+                {
+                    Name = EmailTemplates.RequestAccepted,
+                    Subject = "Your request has been accepted!",
+                    Body = @$"<p>Hi {EmailPlaceholders.UserName},</p>
+<p>Your {EmailPlaceholders.RequestType} request for event <strong>{EmailPlaceholders.EventTitle}</strong> has been accepted.</p>
+<p>Best regards,</p>
+<p>CityShare team</p>"
+                },
+                new EmailTemplate
+                {
+                    Name = EmailTemplates.RequestRejected,
+                    Subject = "Your request has been rejected!",
+                    Body = @$"<p>Hi {EmailPlaceholders.UserName},</p>
+<p>Your {EmailPlaceholders.RequestType} request for event <strong>{EmailPlaceholders.EventTitle}</strong> has been rejected.</p>
+<p>Best regards,</p>
+<p>CityShare team</p>"
+                },
+            };
 
         foreach (var template in emailTemplates)
         {
