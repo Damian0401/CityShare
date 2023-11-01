@@ -16,3 +16,4 @@ export * from "./IEventSearchQuery";
 export * from "./IEventImage";
 export * from "./IPageWrapper";
 export * from "./IComment";
+export * from "./IImage";

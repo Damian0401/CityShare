@@ -42,8 +42,8 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
             <div className={styles.image}>
               <img
                 src={
-                  event.imageUrls.length > 0
-                    ? event.imageUrls[0] ?? Constants.Images.Urls.Processing
+                  event.images.length > 0
+                    ? event.images[0].uri ?? Constants.Images.Urls.Processing
                     : Constants.Images.Urls.Placeholder
                 }
                 alt={Constants.Images.Alts.Event}
