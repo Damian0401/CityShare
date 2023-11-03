@@ -1,5 +1,4 @@
-﻿using Castle.Core.Logging;
-using CityShare.Backend.Application.Core.Abstractions.Events;
+﻿using CityShare.Backend.Application.Core.Abstractions.Images;
 using CityShare.Backend.Application.Core.Abstractions.Requests;
 using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Requests.Commands;
@@ -15,7 +14,7 @@ namespace CityShare.Backend.Tests.UnitTests.Requests;
 public class CreateRequestCommandHandlerTests
 {
     private readonly Mock<IRequestRepository> _requestRepositoryMock;
-    private readonly Mock<IEventRepository> _eventRepositoryMock;
+    private readonly Mock<IImageRepository> _imageRepositoryMock;
     private readonly UserManagerMockHelper<ApplicationUser> _userManagerMockHelper;
     private readonly CreateRequestCommand _command;
     private readonly CreateRequestCommandHandler _systemUnderTests;
@@ -24,7 +23,7 @@ public class CreateRequestCommandHandlerTests
     {
         _requestRepositoryMock = new Mock<IRequestRepository>();
 
-        _eventRepositoryMock = new Mock<IEventRepository>();
+        _imageRepositoryMock = new Mock<IImageRepository>();
 
         var mapper = MapperHelper.GetMapper();
 
@@ -38,7 +37,7 @@ public class CreateRequestCommandHandlerTests
 
         _systemUnderTests = new CreateRequestCommandHandler(
             _requestRepositoryMock.Object,
-            _eventRepositoryMock.Object,
+            _imageRepositoryMock.Object,
             mapper,
             clock,
             _userManagerMockHelper.Object,
@@ -53,7 +52,7 @@ public class CreateRequestCommandHandlerTests
         user.EmailConfirmed = true;
         _userManagerMockHelper.SetupAsync(x => x.FindByIdAsync(Any.String), user);
 
-        _eventRepositoryMock.Setup(x => x.ExistsAsync(Any.Guid, Any.CancellationToken))
+        _imageRepositoryMock.Setup(x => x.ExistsAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(Value.True);
 
         _requestRepositoryMock.Setup(x => x.TypeExistsAsync(Any.Int, Any.CancellationToken))
@@ -74,7 +73,7 @@ public class CreateRequestCommandHandlerTests
         user.EmailConfirmed = Value.False;
         _userManagerMockHelper.SetupAsync(x => x.FindByIdAsync(Any.String), user);
 
-        _eventRepositoryMock.Setup(x => x.ExistsAsync(Any.Guid, Any.CancellationToken))
+        _imageRepositoryMock.Setup(x => x.ExistsAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(Value.True);
 
         _requestRepositoryMock.Setup(x => x.TypeExistsAsync(Any.Int, Any.CancellationToken))
@@ -95,7 +94,7 @@ public class CreateRequestCommandHandlerTests
         user.EmailConfirmed = Value.True;
         _userManagerMockHelper.SetupAsync(x => x.FindByIdAsync(Any.String), user);
 
-        _eventRepositoryMock.Setup(x => x.ExistsAsync(Any.Guid, Any.CancellationToken))
+        _imageRepositoryMock.Setup(x => x.ExistsAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(Value.False);
 
         _requestRepositoryMock.Setup(x => x.TypeExistsAsync(Any.Int, Any.CancellationToken))
@@ -105,7 +104,7 @@ public class CreateRequestCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.EventNotExists(_command.Request.EventId));
+        AssertHelper.FailureWithStatusCode(result, Errors.ImageNotExists(_command.Request.ImageId));
     }
 
     [Fact]
@@ -116,7 +115,7 @@ public class CreateRequestCommandHandlerTests
         user.EmailConfirmed = Value.True;
         _userManagerMockHelper.SetupAsync(x => x.FindByIdAsync(Any.String), user);
 
-        _eventRepositoryMock.Setup(x => x.ExistsAsync(Any.Guid, Any.CancellationToken))
+        _imageRepositoryMock.Setup(x => x.ExistsAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(Value.True);
 
         _requestRepositoryMock.Setup(x => x.TypeExistsAsync(Any.Int, Any.CancellationToken))

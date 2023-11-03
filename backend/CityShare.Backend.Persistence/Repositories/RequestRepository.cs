@@ -26,6 +26,21 @@ public class RequestRepository : IRequestRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    public Task<Request?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Getting request with id {@Id} from database", id);
+        var request = _context.Requests
+            .Include(x => x.Author)
+            .Include(x => x.Status)
+            .Include(x => x.Type)
+            .Include(x => x.Image)
+            .ThenInclude(x => x!.Event)
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
+
+        return request;
+    }
+
     public async Task<int> GetStatusIdAsync(string statusName, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Searching for status with name {@Name} in database", statusName);
@@ -53,5 +68,13 @@ public class RequestRepository : IRequestRepository
             .AnyAsync(x => x.Id.Equals(typeId), cancellationToken);
 
         return exsits;
+    }
+
+    public async Task UpdateStatusAsync(Guid requestId, int statusId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Updating status of request with id {@Id} to {@StatusId} in database", requestId, statusId);
+        await _context.Requests
+            .Where(x => x.Id.Equals(requestId))
+            .ExecuteUpdateAsync(x => x.SetProperty(s => s.StatusId, statusId), cancellationToken);
     }
 }

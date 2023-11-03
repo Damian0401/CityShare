@@ -46,9 +46,9 @@ public static class Errors
         new Error("RequestTypeNotExists", $"Type with id {typeId} does not exists")
     };  
     
-    public static IEnumerable<Error> EventNotExists(Guid eventId) => new[]
+    public static IEnumerable<Error> ImageNotExists(Guid eventId) => new[]
     {
-        new Error("EventNotExists", $"Event with id {eventId} does not exists")
+        new Error("ImageNotExists", $"Image with id {eventId} does not exists")
     };
 
     public static IEnumerable<Error> AddressOutsideCity => new[]
@@ -69,5 +69,15 @@ public static class Errors
     public static IEnumerable<Error> ImageSizeLimit => new[]
     {
         new Error("ImageSizeLimit", $"Upload image size limit is {Constants.ImageSizeLimitInMB}MB")
+    };
+
+    public static IEnumerable<Error> RequestNotPending => new[]
+    {
+        new Error("RequestNotPending", "Request is not in pending state")
+    };
+
+    public static IEnumerable<Error> RequestHasNoImage => new[]
+    {
+        new Error("RequestHasNoImage", "Request does not have an image")
     };
 }

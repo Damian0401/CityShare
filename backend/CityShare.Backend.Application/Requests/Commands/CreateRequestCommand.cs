@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CityShare.Backend.Application.Core.Abstractions.Events;
+using CityShare.Backend.Application.Core.Abstractions.Images;
 using CityShare.Backend.Application.Core.Abstractions.Requests;
 using CityShare.Backend.Application.Core.Abstractions.Utils;
 using CityShare.Backend.Application.Core.Dtos.Requests;
@@ -20,9 +20,9 @@ public class CreateRequestCommandValidator : AbstractValidator<CreateRequestComm
 {
     public CreateRequestCommandValidator()
     {
-        RuleFor(x => x.Request.EventId)
+        RuleFor(x => x.Request.ImageId)
             .NotEmpty()
-            .WithName(x => nameof(x.Request.EventId));        
+            .WithName(x => nameof(x.Request.ImageId));        
         
         RuleFor(x => x.Request.Message)
             .NotEmpty()
@@ -40,7 +40,7 @@ public class CreateRequestCommandValidator : AbstractValidator<CreateRequestComm
 public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand, Result>
 {
     private readonly IRequestRepository _requestRepository;
-    private readonly IEventRepository _eventRepository;
+    private readonly IImageRepository _imageRepository;
     private readonly IMapper _mapper;
     private readonly IClock _clock;
     private readonly UserManager<ApplicationUser> _userManager;
@@ -48,14 +48,14 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
 
     public CreateRequestCommandHandler(
         IRequestRepository requestRepository,
-        IEventRepository eventRepository,
+        IImageRepository imageRepository,
         IMapper mapper,
         IClock clock,
         UserManager<ApplicationUser> userManager,
         ILogger<CreateRequestCommandHandler> logger)
     {
         _requestRepository = requestRepository;
-        _eventRepository = eventRepository;
+        _imageRepository = imageRepository;
         _userManager = userManager;
         _mapper = mapper;
         _clock = clock;
@@ -96,7 +96,7 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
         _logger.LogInformation("Creating validation tasks");
         var validationTasks = new List<Task<IEnumerable<Error>>>
         {
-            CheckIfEventExistsAsync(request.Request.EventId, cancellationToken),
+            CheckIfImageExistsAsync(request.Request.ImageId, cancellationToken),
             CheckIfTypeExistsAsync(request.Request.TypeId, cancellationToken)
         };
 
@@ -120,14 +120,14 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
         return Enumerable.Empty<Error>();
     }
 
-    private async Task<IEnumerable<Error>> CheckIfEventExistsAsync(Guid eventId, CancellationToken cancellationToken)
+    private async Task<IEnumerable<Error>> CheckIfImageExistsAsync(Guid eventId, CancellationToken cancellationToken)
     {
-        var eventExists = await _eventRepository.ExistsAsync(eventId, cancellationToken);
+        var eventExists = await _imageRepository.ExistsAsync(eventId, cancellationToken);
 
         if (!eventExists)
         {
-            _logger.LogError("Event with id {@Id} does not exists", eventId);
-            return Errors.EventNotExists(eventId);
+            _logger.LogError("Image with id {@Id} does not exists", eventId);
+            return Errors.ImageNotExists(eventId);
         }
 
         return Enumerable.Empty<Error>();

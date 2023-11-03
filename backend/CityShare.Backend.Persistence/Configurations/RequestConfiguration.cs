@@ -22,10 +22,10 @@ internal class RequestConfiguration : IEntityTypeConfiguration<Request>
             .HasForeignKey(x => x.AuthorId)
             .OnDelete(DeleteBehavior.ClientCascade);
 
-        builder.HasOne(x => x.Event)
+        builder.HasOne(x => x.Image)
             .WithMany(x => x.Requests)
-            .HasForeignKey(x => x.EventId)
-            .OnDelete(DeleteBehavior.ClientCascade);
+            .HasForeignKey(x => x.ImageId)
+            .OnDelete(DeleteBehavior.ClientSetNull);
 
         builder.HasOne(x => x.Status)
             .WithMany(x => x.Requests)

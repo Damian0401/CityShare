@@ -2,6 +2,7 @@
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Settings;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace CityShare.Backend.Persistence.Data;

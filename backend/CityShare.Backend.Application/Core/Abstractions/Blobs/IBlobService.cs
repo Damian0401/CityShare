@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-
-namespace CityShare.Backend.Application.Core.Abstractions.Blobs;
+﻿namespace CityShare.Backend.Application.Core.Abstractions.Blobs;
 
 public interface IBlobService
 {
@@ -12,6 +10,11 @@ public interface IBlobService
         CancellationToken cancellationToken = default);
 
     Task<Stream?> ReadFileAsync(
+        string fileName,
+        string containerName,
+        CancellationToken cancellationToken = default);
+
+    Task DeleteFileAsync(
         string fileName,
         string containerName,
         CancellationToken cancellationToken = default);

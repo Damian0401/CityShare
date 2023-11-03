@@ -21,7 +21,7 @@ internal static class Emails
                 Body = @$"<p>Hi {EmailPlaceholders.UserName},</p>
 <p>Thank you for registering at <a href=""{EmailPlaceholders.ClientUrl}"">CityShare</a>.</p>
 <p>Please verify your email by clicking the link below.</p>
-<p><a href=""{EmailPlaceholders.ClientUrl}/confirm-email?id={EmailPlaceholders.Id}&token={EmailPlaceholders.Token}"">Verify email</a></p>
+<p><a href=""{EmailPlaceholders.ClientUrl}/confirm-email?id={EmailPlaceholders.EventId}&token={EmailPlaceholders.Token}"">Verify email</a></p>
 <p><strong>Important:</strong> You need to log in to your account before you can use the link above.</p>
 <p>Best regards,</p>
 <p>CityShare team</p>
@@ -32,7 +32,7 @@ internal static class Emails
                     Name = EmailTemplates.RequestAccepted,
                     Subject = "Your request has been accepted!",
                     Body = @$"<p>Hi {EmailPlaceholders.UserName},</p>
-<p>Your {EmailPlaceholders.RequestType} request for event <strong>{EmailPlaceholders.EventTitle}</strong> has been accepted.</p>
+<p>Your <strong>{EmailPlaceholders.RequestType}</strong> request for event <a href=""{EmailPlaceholders.ClientUrl}/events/{EmailPlaceholders.EventId}"">{EmailPlaceholders.EventTitle}</a> has been accepted.</p>
 <p>Best regards,</p>
 <p>CityShare team</p>"
                 },
@@ -41,7 +41,7 @@ internal static class Emails
                     Name = EmailTemplates.RequestRejected,
                     Subject = "Your request has been rejected!",
                     Body = @$"<p>Hi {EmailPlaceholders.UserName},</p>
-<p>Your {EmailPlaceholders.RequestType} request for event <strong>{EmailPlaceholders.EventTitle}</strong> has been rejected.</p>
+<p>Your <strong>{EmailPlaceholders.RequestType}</strong> request for event <a href=""{EmailPlaceholders.ClientUrl}/events/{EmailPlaceholders.EventId}"">{EmailPlaceholders.EventTitle}</a> has been rejected.</p>
 <p>Best regards,</p>
 <p>CityShare team</p>"
                 },

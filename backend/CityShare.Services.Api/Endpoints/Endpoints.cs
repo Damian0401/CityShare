@@ -47,6 +47,13 @@ public static class Endpoints
         {
             public const string Index = "/api/v1/requests";
             public const string Types = "/api/v1/requests/types";
+
+            public class Id
+            {
+                public const string Index = "/api/v1/requests/{id}";
+                public const string Accept = "/api/v1/requests/{id}/accept";
+                public const string Reject = "/api/v1/requests/{id}/reject";
+            }
         }
     }
 

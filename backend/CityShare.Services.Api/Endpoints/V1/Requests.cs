@@ -27,13 +27,27 @@ public class Requests
     }
 
     public static async Task<IResult> GetTypes(
-               IMediator mediator,
-                      CancellationToken cancellationToken)
+        IMediator mediator,
+        CancellationToken cancellationToken)
     {
         var query = new GetRequestTypesQuery();
 
         var result = await mediator.Send(
             query,
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
+
+    public static async Task<IResult> Accept(
+        [FromRoute] Guid id,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var command = new AcceptRequestCommand(id);
+
+        var result = await mediator.Send(
+            command,
             cancellationToken);
 
         return ResultResolver.Resolve(result);

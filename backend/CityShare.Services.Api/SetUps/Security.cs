@@ -50,6 +50,10 @@ public static class Security
 
         services.AddAuthorization();
 
+        services.AddAuthorizationBuilder()
+            .AddPolicy(Policies.RequireAdminRole, policy => policy.RequireRole(Roles.Admin))
+            .AddPolicy(Policies.RequireUserRole, policy => policy.RequireRole(Roles.User));
+
         return services;
     }
 }

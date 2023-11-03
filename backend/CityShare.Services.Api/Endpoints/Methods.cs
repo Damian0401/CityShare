@@ -1,4 +1,6 @@
-﻿namespace CityShare.Services.Api.Endpoints;
+﻿using CityShare.Backend.Domain.Constants;
+
+namespace CityShare.Services.Api.Endpoints;
 
 public static class Methods
 {
@@ -52,7 +54,13 @@ public static class Methods
             .RequireAuthorization();
 
         app.MapPost(Endpoints.V1.Requests.Index, V1.Requests.Create)
+            .RequireAuthorization(Policies.RequireUserRole);
+
+        app.MapGet(Endpoints.V1.Requests.Types, V1.Requests.GetTypes)
             .RequireAuthorization();
+
+        app.MapPost(Endpoints.V1.Requests.Id.Accept, V1.Requests.Accept)
+            .RequireAuthorization(Policies.RequireAdminRole);
 
         return app;
     }
