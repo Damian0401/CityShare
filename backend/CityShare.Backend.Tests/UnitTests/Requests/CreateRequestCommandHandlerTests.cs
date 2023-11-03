@@ -83,7 +83,7 @@ public class CreateRequestCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.Forbidden);
+        AssertHelper.FailureWithErrors(result, Errors.Forbidden);
     }
 
     [Fact]
@@ -104,7 +104,7 @@ public class CreateRequestCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.ImageNotExists(_command.Request.ImageId));
+        AssertHelper.FailureWithErrors(result, Errors.ImageNotExists(_command.Request.ImageId));
     }
 
     [Fact]
@@ -125,6 +125,6 @@ public class CreateRequestCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.RequestTypeNotExists(_command.Request.TypeId));
+        AssertHelper.FailureWithErrors(result, Errors.RequestTypeNotExists(_command.Request.TypeId));
     }
 }

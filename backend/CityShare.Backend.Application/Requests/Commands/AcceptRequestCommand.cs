@@ -61,9 +61,9 @@ public class AcceptRequestCommandHandler : IRequestHandler<AcceptRequestCommand,
         _logger.LogInformation("Validating request {@Request}", request);
         var errors = Validate(request.RequestId, userRequest);
 
-        if (errors.Any() || userRequest is null)
+        if (errors.Any())
         {
-            _logger.LogInformation("Request {@Request} is not valid", request);
+            _logger.LogError("Request {@Request} is not valid", request);
             return Result.Failure(errors);
         }
 
@@ -71,7 +71,7 @@ public class AcceptRequestCommandHandler : IRequestHandler<AcceptRequestCommand,
         var statusId = await _requestRepository.GetStatusIdAsync(RequestStatuses.Accepted, cancellationToken);
 
         _logger.LogInformation("Executing request with id {@Id}", request.RequestId);
-        await ExecuteRequestAsync(userRequest.Type.Name, userRequest.ImageId!.Value, cancellationToken);
+        await ExecuteRequestAsync(userRequest!.Type.Name, userRequest.ImageId!.Value, cancellationToken);
         
         _logger.LogInformation("Updating status of request with id {@Id} to {@Status}", request.RequestId, RequestStatuses.Accepted);
         await _requestRepository.UpdateStatusAsync(request.RequestId, statusId, cancellationToken);
@@ -86,19 +86,19 @@ public class AcceptRequestCommandHandler : IRequestHandler<AcceptRequestCommand,
     {
         if (request is null)
         {
-            _logger.LogWarning("Request with id {@Id} not found", requestId);
+            _logger.LogError("Request with id {@Id} not found", requestId);
             return Errors.NotFound;
         }
 
         if (!request.Status.Name.Equals(RequestStatuses.Pending))
         {
-            _logger.LogWarning("Request with id {@Id} is not in pending state", requestId);
+            _logger.LogError("Request with id {@Id} is not in pending state", requestId);
             return Errors.RequestNotPending;
         }
 
         if (request.ImageId is null)
         {
-            _logger.LogWarning("Request with id {@Id} does not have an image", requestId);
+            _logger.LogError("Request with id {@Id} does not have an image", requestId);
             return Errors.RequestHasNoImage;
         }
 

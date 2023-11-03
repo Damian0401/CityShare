@@ -13,7 +13,7 @@ internal class AssertHelper
         Assert.True(isCorrectStatusCode);
     }
 
-    public static void FailureWithStatusCode(Result result, IEnumerable<Error> errors)
+    public static void FailureWithErrors(Result result, IEnumerable<Error> errors)
     {
         var isCorrectStatusCode = result.IsFailure
             && result.Errors is not null

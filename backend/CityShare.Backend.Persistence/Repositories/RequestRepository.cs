@@ -26,10 +26,10 @@ public class RequestRepository : IRequestRepository
         await _context.SaveChangesAsync(cancellationToken);
     }
 
-    public Task<Request?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
+    public async Task<Request?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting request with id {@Id} from database", id);
-        var request = _context.Requests
+        var request = await _context.Requests
             .Include(x => x.Author)
             .Include(x => x.Status)
             .Include(x => x.Type)
