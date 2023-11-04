@@ -1,5 +1,4 @@
-﻿using CityShare.Backend.Application.Core.Abstractions.Blobs;
-using CityShare.Backend.Application.Core.Abstractions.Emails;
+﻿using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Images;
 using CityShare.Backend.Application.Core.Abstractions.Queues;
 using CityShare.Backend.Application.Core.Abstractions.Requests;
@@ -16,45 +15,42 @@ using Microsoft.Extensions.Options;
 
 namespace CityShare.Backend.Application.Requests.Commands;
 
-public record AcceptRequestCommand(Guid RequestId) : IRequest<Result>;
+public record RejectRequestCommand(Guid RequestId) : IRequest<Result>;
 
-public class AcceptRequestCommandValidator : AbstractValidator<AcceptRequestCommand>
+public class RejectRequestCommandValidator : AbstractValidator<RejectRequestCommand>
 {
-    public AcceptRequestCommandValidator()
+    public RejectRequestCommandValidator()
     {
         RuleFor(x => x.RequestId).NotEmpty();
     }
 }
 
-public class AcceptRequestCommandHandler : IRequestHandler<AcceptRequestCommand, Result>
+public class RejectRequestCommandHandler : IRequestHandler<RejectRequestCommand, Result>
 {
     private readonly IRequestRepository _requestRepository;
     private readonly IEmailRepository _emailRepository;
     private readonly IQueueService _queueService;
     private readonly IImageRepository _imageRepository;
-    private readonly IBlobService _blobService;
     private readonly CommonSettings _commonSettings;
-    private readonly ILogger<AcceptRequestCommandHandler> _logger;
+    private readonly ILogger<RejectRequestCommandHandler> _logger;
 
-    public AcceptRequestCommandHandler(
+    public RejectRequestCommandHandler(
         IRequestRepository requestRepository, 
         IEmailRepository emailRepository,
         IQueueService queueService, 
         IImageRepository imageRepository,
-        IBlobService blobService,
         IOptions<CommonSettings> options,
-        ILogger<AcceptRequestCommandHandler> logger)
+        ILogger<RejectRequestCommandHandler> logger)
     {
         _requestRepository = requestRepository;
         _emailRepository = emailRepository;
         _queueService = queueService;
         _imageRepository = imageRepository;
-        _blobService = blobService;
         _commonSettings = options.Value;
         _logger = logger;
     }
 
-    public async Task<Result> Handle(AcceptRequestCommand request, CancellationToken cancellationToken)
+    public async Task<Result> Handle(RejectRequestCommand request, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Getting request with id {@Id} from {@Type}", request.RequestId, _requestRepository.GetType());
         var userRequest = await _requestRepository.GetByIdWithDetailsAsync(request.RequestId, cancellationToken);
@@ -68,44 +64,16 @@ public class AcceptRequestCommandHandler : IRequestHandler<AcceptRequestCommand,
             return Result.Failure(errors);
         }
 
-        _logger.LogInformation("Getting status id for {@Status}", RequestStatuses.Accepted);
-        var statusId = await _requestRepository.GetStatusIdAsync(RequestStatuses.Accepted, cancellationToken);
+        _logger.LogInformation("Getting status id for {@Status}", RequestStatuses.Rejected);
+        var statusId = await _requestRepository.GetStatusIdAsync(RequestStatuses.Rejected, cancellationToken);
 
-        _logger.LogInformation("Executing request with id {@Id}", request.RequestId);
-        await ExecuteRequestAsync(userRequest!.Type.Name, userRequest.ImageId!.Value, cancellationToken);
-        
         _logger.LogInformation("Updating status of request with id {@Id} to {@Status}", request.RequestId, RequestStatuses.Accepted);
         await _requestRepository.UpdateStatusAsync(request.RequestId, statusId, cancellationToken);
 
         _logger.LogInformation("Sending confirmation email for request with id {@Id}", request.RequestId);
-        await SendConfirmationEmailAsync(userRequest, cancellationToken);
+        await SendConfirmationEmailAsync(userRequest!, cancellationToken);
 
         return Result.Success();
-    }
-
-    private IEnumerable<Error> Validate(Request? request)
-    {
-        if (request is null)
-        {
-            _logger.LogError("Request not found");
-            return Errors.NotFound;
-        }
-
-        var errors = new List<Error>();
-
-        if (!request.Status.Name.Equals(RequestStatuses.Pending))
-        {
-            _logger.LogError("Request with id {@Id} is not in pending state", request.Id);
-            errors.AddRange(Errors.RequestNotPending);
-        }
-
-        if (request.ImageId is null)
-        {
-            _logger.LogError("Request with id {@Id} does not have an image", request.Id);
-            errors.AddRange(Errors.RequestHasNoImage);
-        }
-
-        return errors;
     }
 
     private async Task SendConfirmationEmailAsync(Request request, CancellationToken cancellationToken)
@@ -113,7 +81,7 @@ public class AcceptRequestCommandHandler : IRequestHandler<AcceptRequestCommand,
         _logger.LogInformation("Creating CreateEmailDto");
         var dto = new CreateEmailDto(
             request.Author.Email ?? throw new InvalidStateException(),
-            EmailTemplates.RequestAccepted,
+            EmailTemplates.RequestRejected,
             new Dictionary<string, string>
             {
                 { EmailPlaceholders.UserName, request.Author?.UserName ?? string.Empty },
@@ -135,42 +103,28 @@ public class AcceptRequestCommandHandler : IRequestHandler<AcceptRequestCommand,
         await _queueService.SendAsync(QueueNames.EmailsToSend, emailId, options, cancellationToken);
     }
 
-    private async Task ExecuteRequestAsync(string type, Guid imageId, CancellationToken cancellationToken)
+    private IEnumerable<Error> Validate(Request? request)
     {
-        switch (type)
+        if (request is null)
         {
-            case RequestTypes.Blur:
-                await ExecuteBlurRequestAsync(imageId, cancellationToken);
-                break;
-            case RequestTypes.Delete:
-                await ExecuteDeleteRequestAsync(imageId, cancellationToken);
-                break;
-            default:
-                throw new InvalidStateException();
+            _logger.LogError("Request not found");
+            return Errors.NotFound;
         }
-    }
 
-    private async Task ExecuteBlurRequestAsync(Guid imageId, CancellationToken cancellationToken)
-    {
-        _logger.LogInformation("Setting image with id {@Id} to be blurred", imageId);
-        await _imageRepository.SetShouldBeBlurredAsync(imageId, true, cancellationToken);
+        var errors = new List<Error>();
 
-        var queueOptions = new QueueServiceSendOptions
+        if (request.Status.Name != RequestStatuses.Pending)
         {
-            CreateIfNotExists = true,
-            EncodeToBase64 = true
-        };
+            _logger.LogInformation("Request with id {@Id} is not pending", request.Id);
+            errors.AddRange(Errors.RequestNotPending);
+        }
 
-        _logger.LogInformation("Sending imageId {@Id} to queue {@Queue}", imageId, QueueNames.ImagesToBlur);
-        await _queueService.SendAsync(QueueNames.ImagesToBlur, imageId, queueOptions, cancellationToken);
-    }
+        if (request.ImageId is null)
+        {
+            _logger.LogError("Request with id {@Id} does not have an image", request.Id);
+            errors.AddRange(Errors.RequestHasNoImage);
+        }
 
-    private async Task ExecuteDeleteRequestAsync(Guid imageId, CancellationToken cancellationToken)
-    {
-        _logger.LogInformation("Deleting image with id {@Id} from blob storage", imageId);
-        await _blobService.DeleteFileAsync(imageId.ToString(), ContainerNames.EventImages, cancellationToken);
-
-        _logger.LogInformation("Deleting image with id {@Id}", imageId);
-        await _imageRepository.DeleteAsync(imageId, cancellationToken);
+        return errors;
     }
 }

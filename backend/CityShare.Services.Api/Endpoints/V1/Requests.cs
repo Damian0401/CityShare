@@ -52,4 +52,18 @@ public class Requests
 
         return ResultResolver.Resolve(result);
     }
+
+    public static async Task<IResult> Reject(
+        [FromRoute] Guid id,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var command = new RejectRequestCommand(id);
+
+        var result = await mediator.Send(
+            command,
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
 }

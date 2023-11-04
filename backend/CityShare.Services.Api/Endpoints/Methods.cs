@@ -62,6 +62,9 @@ public static class Methods
         app.MapPost(Endpoints.V1.Requests.Id.Accept, V1.Requests.Accept)
             .RequireAuthorization(Policies.RequireAdminRole);
 
+        app.MapPost(Endpoints.V1.Requests.Id.Reject, V1.Requests.Reject)
+            .RequireAuthorization(Policies.RequireAdminRole);
+
         return app;
     }
 }
