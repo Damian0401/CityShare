@@ -58,5 +58,7 @@ internal class Value
     public static RequestType RequestType => new RequestType();
     public static PointDto PointDtoAtX0Y0 => new PointDto(0, 0);
     public static CreateRequestDto CreateRequestDto => new CreateRequestDto();
+    public static GetRequestsRequestDto GetRequestsRequestDto => new GetRequestsRequestDto(Int);
     public static IEnumerable<RequestTypeDto> RequestTypeDtos => Enumerable.Empty<RequestTypeDto>();
+    public static IEnumerable<Request> Requests => Enumerable.Empty<Request>();
 }

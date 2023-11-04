@@ -1,4 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Requests;
+using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -39,6 +40,18 @@ public class RequestRepository : IRequestRepository
             .FirstOrDefaultAsync(x => x.Id.Equals(id), cancellationToken);
 
         return request;
+    }
+
+    public async Task<IEnumerable<Request>> GetPendingByCityIdAsync(int cityId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Getting pending requests for city with id {@Id} from database", cityId);
+        var requests = await _context.Requests
+            .Include(x => x.Author)
+            .AsNoTracking()
+            .Where(x => x.Status.Name.Equals(RequestStatuses.Pending) && x.Image!.Event.CityId.Equals(cityId))
+            .ToListAsync(cancellationToken);
+
+        return requests;
     }
 
     public async Task<int> GetStatusIdAsync(string statusName, CancellationToken cancellationToken = default)

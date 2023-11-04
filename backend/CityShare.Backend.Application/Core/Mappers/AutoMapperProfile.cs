@@ -109,6 +109,7 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<CreateRequestDto, Request>();
         CreateMap<RequestType, RequestTypeDto>();
+        CreateMap<Request,  RequestDto>();
     }
 
     private void MapsForImages()

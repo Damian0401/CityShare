@@ -10,4 +10,5 @@ public interface IRequestRepository
     public Task<IEnumerable<RequestType>> GetTypesAsync(CancellationToken cancellationToken = default);
     public Task<Request?> GetByIdWithDetailsAsync(Guid id, CancellationToken cancellationToken = default);
     public Task UpdateStatusAsync(Guid requestId, int statusId, CancellationToken cancellationToken = default);
+    public Task<IEnumerable<Request>> GetPendingByCityIdAsync(int cityId, CancellationToken cancellationToken = default);
 }

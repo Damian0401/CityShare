@@ -29,7 +29,7 @@ public class CreateRequestCommandValidator : AbstractValidator<CreateRequestComm
             .WithName(x => nameof(x.Request.Message));        
         
         RuleFor(x => x.Request.TypeId)
-            .GreaterThanOrEqualTo(0)
+            .NotEmpty()
             .WithName(x => nameof(x.Request.TypeId));
 
         RuleFor(x => x.UserId)

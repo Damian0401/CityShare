@@ -6,4 +6,5 @@ public interface ICityRepository
 {
     Task<IEnumerable<City>> GetAllWithDetailsAsync(CancellationToken cancellationToken = default);
     Task<City?> GeyByIdWithBoundingBoxAsync(int cityId, CancellationToken cancellationToken = default);
+    Task<bool> ExistsAsync(int cityId, CancellationToken cancellationToken = default);
 }

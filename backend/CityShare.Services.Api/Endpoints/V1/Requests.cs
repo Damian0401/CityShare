@@ -66,4 +66,18 @@ public class Requests
 
         return ResultResolver.Resolve(result);
     }
+
+    public static async Task<IResult> GetAllByCityId(
+        GetRequestsRequestDto dto,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var query = new GetPendingRequestsByCityIdQuery(dto);
+
+        var result = await mediator.Send(
+            query,
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
 }
