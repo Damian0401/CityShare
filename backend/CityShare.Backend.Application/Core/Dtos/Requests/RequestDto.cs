@@ -6,4 +6,6 @@ public class RequestDto
     public string Message { get; set; } = default!;
     public DateTime CreatedAt { get; set; }
     public string Author { get; set; } = default!;
+    public Guid ImageId { get; set; }
+    public Guid EventId { get; set; }
 }

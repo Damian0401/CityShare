@@ -57,7 +57,9 @@ const PageWrapper = observer(({ Element }: IPageWrapperProps) => {
           <>
             {Element && <Element />}
             <main>
-              {commonStore.isContentLoading && <LoadingSpinner />}
+              <div className={styles.contentSpinner}>
+                {commonStore.isContentLoading && <LoadingSpinner />}
+              </div>
               <div
                 style={{
                   visibility: commonStore.isContentLoading

@@ -1,6 +1,5 @@
 import { observer } from "mobx-react-lite";
 import styles from "./Requsts.module.scss";
-import { IRequest as IRequest } from "../../common/interfaces/IRequest";
 import {
   Select,
   Tab,
@@ -12,82 +11,43 @@ import {
 import { useStore } from "../../common/stores/store";
 import { getSelectedCityId } from "../../common/utils/helpers";
 import { StorageKeys } from "../../common/enums";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import CollapsableRequest from "./components/collapsable-request/CollapsableRequest";
+import { IRequests } from "../../common/interfaces";
 
-const requests: IRequest[] = [
-  {
-    id: "1",
-    message: "Description 1",
-    author: "Author 1",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-  {
-    id: "2",
-    message: "Description 2",
-    author: "Author 2",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-  {
-    id: "3",
-    message: "Description 3",
-    author: "Author 3",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-  {
-    id: "4",
-    message: "Description 1",
-    author: "Author 1",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-  {
-    id: "5",
-    message: "Description 2",
-    author: "Author 2",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-  {
-    id: "6",
-    message: "Description 3",
-    author: "Author 3",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-  {
-    id: "7",
-    message: "Description 1",
-    author: "Author 1",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-  {
-    id: "8",
-    message: "Description 2",
-    author: "Author 2",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-  {
-    id: "9",
-    message: "Description 3",
-    author: "Author 3",
-    createdAt: new Date(),
-    eventId: "face78f3-ac84-43d8-650a-08dbd26f5602",
-  },
-];
+const Requsts = observer(() => {
+  const { commonStore, requestStore } = useStore();
 
-const BlurRequsts = observer(() => {
-  const { commonStore } = useStore();
+  const [requests, setRequests] = useState<IRequests>();
 
-  const handleSelect = (event: ChangeEvent<HTMLSelectElement>) => {
-    console.log(event.target.value);
+  useEffect(() => {
+    commonStore.setLoading(true);
+
+    const abortController = new AbortController();
+
+    const loadRequests = async () => {
+      const requests = await requestStore.getRequests(
+        getSelectedCityId() ?? commonStore.cities[0].id,
+        abortController.signal
+      );
+      setRequests(requests);
+      commonStore.setLoading(false);
+    };
+
+    loadRequests();
+
+    return () => abortController.abort();
+  }, [commonStore, requestStore]);
+
+  const handleSelect = async (event: ChangeEvent<HTMLSelectElement>) => {
     localStorage.setItem(StorageKeys.SelectedCityId, event.target.value);
+    commonStore.setLoading(true);
+    const requests = await requestStore.getRequests(
+      parseInt(event.target.value)
+    );
+    setRequests(requests);
+    commonStore.setLoading(false);
   };
 
   return (
@@ -105,24 +65,14 @@ const BlurRequsts = observer(() => {
       </Select>
       <Tabs isFitted>
         <TabList className={styles.tab}>
-          <Tab>Blur</Tab>
-          <Tab>Delete</Tab>
+          {commonStore.requestTypes.map((requestType) => (
+            <Tab key={requestType.id}>{requestType.name}</Tab>
+          ))}
         </TabList>
         <TabPanels>
-          <TabPanel className={styles.requests}>
-            {requests.map((blurRequest) => (
-              <CollapsableRequest
-                key={blurRequest.id}
-                request={blurRequest}
-                onAccept={() => toast.success("Accepted")}
-                onReject={() => toast.error("Rejected")}
-              />
-            ))}
-          </TabPanel>
-          <TabPanel className={styles.requests}>
-            {requests
-              .filter((x) => x.message.endsWith("2"))
-              .map((blurRequest) => (
+          {commonStore.requestTypes.map((requestType) => (
+            <TabPanel key={requestType.id} className={styles.requests}>
+              {requests?.requests.get(requestType.id)?.map((blurRequest) => (
                 <CollapsableRequest
                   key={blurRequest.id}
                   request={blurRequest}
@@ -130,11 +80,12 @@ const BlurRequsts = observer(() => {
                   onReject={() => toast.error("Rejected")}
                 />
               ))}
-          </TabPanel>
+            </TabPanel>
+          ))}
         </TabPanels>
       </Tabs>
     </div>
   );
 });
 
-export default BlurRequsts;
+export default Requsts;

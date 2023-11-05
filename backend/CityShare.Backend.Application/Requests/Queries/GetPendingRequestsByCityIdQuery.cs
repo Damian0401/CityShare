@@ -10,19 +10,19 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Requests.Queries;
 
-public record GetPendingRequestsByCityIdQuery(GetRequestsRequestDto Request) : IRequest<Result<GetRequestsResponseDto>>;
+public record GetPendingRequestsByCityIdQuery(int CityId) : IRequest<Result<GetRequestsDto>>;
 
 public class GetPendingRequestsByCityIdQueryValidator : AbstractValidator<GetPendingRequestsByCityIdQuery>
 {
     public GetPendingRequestsByCityIdQueryValidator()
     {
-        RuleFor(x => x.Request.CityId)
+        RuleFor(x => x.CityId)
             .NotEmpty()
-            .WithName(x => nameof(x.Request.CityId));
+            .WithName(x => nameof(x.CityId));
     }
 }
 
-public class GetPendingRequestsByCityIdQueryHandler : IRequestHandler<GetPendingRequestsByCityIdQuery, Result<GetRequestsResponseDto>>
+public class GetPendingRequestsByCityIdQueryHandler : IRequestHandler<GetPendingRequestsByCityIdQuery, Result<GetRequestsDto>>
 {
     private readonly IRequestRepository _requestRepository;
     private readonly ICityRepository _cityRepository;
@@ -41,24 +41,24 @@ public class GetPendingRequestsByCityIdQueryHandler : IRequestHandler<GetPending
         _logger = logger;
     }
 
-    public async Task<Result<GetRequestsResponseDto>> Handle(GetPendingRequestsByCityIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<GetRequestsDto>> Handle(GetPendingRequestsByCityIdQuery request, CancellationToken cancellationToken)
     {
-        var errors = await ValidateAsync(request.Request.CityId);
+        var errors = await ValidateAsync(request.CityId);
 
         if (errors.Any())
         {
-            return Result<GetRequestsResponseDto>.Failure(errors);
+            return Result<GetRequestsDto>.Failure(errors);
         }
 
         var response = await GetResponse(request, cancellationToken);
 
-        return Result<GetRequestsResponseDto>.Success(response);
+        return Result<GetRequestsDto>.Success(response);
     }
 
-    private async Task<GetRequestsResponseDto> GetResponse(GetPendingRequestsByCityIdQuery request, CancellationToken cancellationToken)
+    private async Task<GetRequestsDto> GetResponse(GetPendingRequestsByCityIdQuery request, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Getting pending requests for city with id {@Id} from {@Type}", request.Request.CityId, _requestRepository.GetType());
-        var requests = await _requestRepository.GetPendingByCityIdAsync(request.Request.CityId, cancellationToken);
+        _logger.LogInformation("Getting pending requests for city with id {@Id} from {@Type}", request.CityId, _requestRepository.GetType());
+        var requests = await _requestRepository.GetPendingByCityIdWithDetailsAsync(request.CityId, cancellationToken);
 
         _logger.LogInformation("Grouping requests by type");
         var groups = requests.GroupBy(x => x.TypeId);
@@ -72,7 +72,7 @@ public class GetPendingRequestsByCityIdQueryHandler : IRequestHandler<GetPending
             map.Add(group.Key, dtos);
         }
 
-        var result = new GetRequestsResponseDto(map);
+        var result = new GetRequestsDto(map);
         return result;
     }
 
@@ -80,7 +80,7 @@ public class GetPendingRequestsByCityIdQueryHandler : IRequestHandler<GetPending
     {
         var errors = new List<Error>();
 
-        _logger.LogError("Checking if city with id {@Id} exists", cityId);
+        _logger.LogInformation("Checking if city with id {@Id} exists", cityId);
         var cityExists = await _cityRepository.ExistsAsync(cityId);
 
         if (!cityExists)

@@ -56,6 +56,9 @@ public static class Methods
         app.MapPost(Endpoints.V1.Requests.Index, V1.Requests.Create)
             .RequireAuthorization(Policies.RequireUserRole);
 
+        app.MapGet(Endpoints.V1.Requests.Index, V1.Requests.GetAllByCityId)
+            .RequireAuthorization();
+
         app.MapGet(Endpoints.V1.Requests.Types, V1.Requests.GetTypes)
             .RequireAuthorization();
 

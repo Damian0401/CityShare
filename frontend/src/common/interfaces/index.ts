@@ -17,3 +17,6 @@ export * from "./IEventImage";
 export * from "./IPageWrapper";
 export * from "./IComment";
 export * from "./IImage";
+export * from "./IRequest";
+export * from "./IRequests";
+export * from "./IRequestType";

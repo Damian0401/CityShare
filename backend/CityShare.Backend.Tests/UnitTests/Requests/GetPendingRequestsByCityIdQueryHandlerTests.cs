@@ -26,7 +26,7 @@ public class GetPendingRequestsByCityIdQueryHandlerTests
 
         var mapper = MapperHelper.GetMapper();
 
-        _query = new GetPendingRequestsByCityIdQuery(Value.GetRequestsRequestDto);
+        _query = new GetPendingRequestsByCityIdQuery(Value.Int);
 
         _systemUnderTests = new GetPendingRequestsByCityIdQueryHandler(
             _requestRepositoryMock.Object,
@@ -42,7 +42,7 @@ public class GetPendingRequestsByCityIdQueryHandlerTests
         _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
             .ReturnsAsync(Value.True);
 
-        _requestRepositoryMock.Setup(x => x.GetPendingByCityIdAsync(Any.Int, Any.CancellationToken))
+        _requestRepositoryMock.Setup(x => x.GetPendingByCityIdWithDetailsAsync(Any.Int, Any.CancellationToken))
             .ReturnsAsync(Value.Requests);
 
         // Act
@@ -59,13 +59,13 @@ public class GetPendingRequestsByCityIdQueryHandlerTests
         _cityRepositoryMock.Setup(x => x.ExistsAsync(Any.Int, Any.CancellationToken))
             .ReturnsAsync(Value.False);
 
-        _requestRepositoryMock.Setup(x => x.GetPendingByCityIdAsync(Any.Int, Any.CancellationToken))
+        _requestRepositoryMock.Setup(x => x.GetPendingByCityIdWithDetailsAsync(Any.Int, Any.CancellationToken))
             .ReturnsAsync(Value.Requests);
 
         // Act
         var result = await _systemUnderTests.Handle(_query, Any.CancellationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.CityNotExists(_query.Request.CityId));
+        AssertHelper.FailureWithStatusCode(result, Errors.CityNotExists(_query.CityId));
     }
 }

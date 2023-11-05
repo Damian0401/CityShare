@@ -1,6 +1,12 @@
 import { format } from "date-fns";
 import { Environments, StorageKeys } from "../enums";
-import { IBoundingBox, IComment, IEvent, IPoint } from "../interfaces";
+import {
+  IBoundingBox,
+  IComment,
+  IEvent,
+  IPoint,
+  IRequest,
+} from "../interfaces";
 
 export const getSecret = (environment: Environments) => {
   return import.meta.env[environment];
@@ -32,6 +38,12 @@ export const correctEventDates = (event: IEvent) => {
 
 export const correctCommentDate = (comment: IComment) => {
   comment.createdAt = new Date(comment.createdAt);
+};
+
+export const correctRequestDate = (requests: IRequest[]) => {
+  requests.forEach((request) => {
+    request.createdAt = new Date(request.createdAt);
+  });
 };
 
 export const importantStyle = (style: string) => {

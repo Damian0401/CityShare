@@ -3,5 +3,6 @@ export interface IRequest {
   message: string;
   createdAt: Date;
   author: string;
+  imageId: string;
   eventId: string;
 }

@@ -3,6 +3,7 @@ import {
   AccessTokenHelper,
   correctCommentDate,
   correctEventDates,
+  correctRequestDate,
   getSecret,
 } from "../utils/helpers";
 import { Environments, Routes, StatusCodes } from "../enums";
@@ -20,6 +21,9 @@ import {
   IEventCreateValues,
   IEventImage,
   IComment,
+  IRequestType,
+  IRequests,
+  IRequest,
 } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { toast } from "react-toastify";
@@ -130,7 +134,7 @@ const Auth = {
     requests.post("/auth/confirm-email", { id, token }, signal),
 };
 
-const Map = {
+const Maps = {
   search: (query: string) =>
     requests.get<IAddressDetails>(`/map/search?query=${query}`),
   reverse: (point: IPoint) =>
@@ -214,12 +218,34 @@ const Event = {
   },
 };
 
+const Requests = {
+  getTypes: () => requests.get<IRequestType[]>("/requests/types"),
+  getRequestsByCityId: async (id: number, signal?: AbortSignal) => {
+    const data = await requests.get<IRequests>(
+      `/requests?cityId=${id}`,
+      signal
+    );
+
+    const newMap = new Map<number, IRequest[]>();
+
+    for (const [key, value] of Object.entries(data.requests)) {
+      correctRequestDate(value);
+      newMap.set(+key, value);
+    }
+
+    data.requests = newMap;
+
+    return data;
+  },
+};
+
 const agent = {
   Auth,
-  Map,
+  Map: Maps,
   Category,
   City,
   Event,
+  Requests,
 };
 
 export default agent;

@@ -42,11 +42,12 @@ public class RequestRepository : IRequestRepository
         return request;
     }
 
-    public async Task<IEnumerable<Request>> GetPendingByCityIdAsync(int cityId, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<Request>> GetPendingByCityIdWithDetailsAsync(int cityId, CancellationToken cancellationToken = default)
     {
         _logger.LogInformation("Getting pending requests for city with id {@Id} from database", cityId);
         var requests = await _context.Requests
             .Include(x => x.Author)
+            .Include(x => x.Image)
             .AsNoTracking()
             .Where(x => x.Status.Name.Equals(RequestStatuses.Pending) && x.Image!.Event.CityId.Equals(cityId))
             .ToListAsync(cancellationToken);

@@ -1,4 +1,4 @@
-import { IRequest } from "../../../../common/interfaces/IRequest";
+import { IRequest } from "../../../../common/interfaces";
 
 export interface ICollapsableRequestProps {
   request: IRequest;

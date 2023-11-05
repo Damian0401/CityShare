@@ -42,7 +42,9 @@ const CollapsableRequest: React.FC<ICollapsableRequestProps> = (props) => {
             <Button
               size={ChakraSizes.Sm}
               as={Link}
-              to={Routes.Events + "/" + request.eventId}
+              to={
+                Routes.Events + `/${request.eventId}?imageId=${request.imageId}`
+              }
             >
               Go to event
             </Button>

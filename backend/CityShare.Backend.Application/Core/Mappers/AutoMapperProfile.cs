@@ -109,7 +109,8 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<CreateRequestDto, Request>();
         CreateMap<RequestType, RequestTypeDto>();
-        CreateMap<Request,  RequestDto>();
+        CreateMap<Request,  RequestDto>()
+            .ForMember(x => x.EventId, s => s.MapFrom(r => r.Image!.EventId));
     }
 
     private void MapsForImages()

@@ -68,11 +68,11 @@ public class Requests
     }
 
     public static async Task<IResult> GetAllByCityId(
-        GetRequestsRequestDto dto,
+        [FromQuery] int cityId,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
-        var query = new GetPendingRequestsByCityIdQuery(dto);
+        var query = new GetPendingRequestsByCityIdQuery(cityId);
 
         var result = await mediator.Send(
             query,
