@@ -220,9 +220,9 @@ const Event = {
 
 const Requests = {
   getTypes: () => requests.get<IRequestType[]>("/requests/types"),
-  getRequestsByCityId: async (id: number, signal?: AbortSignal) => {
+  getRequestsByCityId: async (cityId: number, signal?: AbortSignal) => {
     const data = await requests.get<IRequests>(
-      `/requests?cityId=${id}`,
+      `/requests?cityId=${cityId}`,
       signal
     );
 
@@ -237,6 +237,8 @@ const Requests = {
 
     return data;
   },
+  accept: (id: string) => requests.post(`/requests/${id}/accept`),
+  reject: (id: string) => requests.post(`/requests/${id}/reject`),
 };
 
 const agent = {

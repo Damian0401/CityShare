@@ -42,6 +42,7 @@ const Constants = {
   Strings: {
     Empty: "",
   },
+  StartingCollapseHeight: 30,
 };
 
 export default Constants;

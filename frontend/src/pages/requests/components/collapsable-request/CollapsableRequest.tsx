@@ -5,10 +5,14 @@ import { Button, Collapse, useDisclosure } from "@chakra-ui/react";
 import { ChakraSizes, Containers, Routes } from "../../../../common/enums";
 import BaseContainer from "../../../../components/base-container/BaseContainer";
 import { Link } from "react-router-dom";
+import Constants from "../../../../common/utils/constants";
+import { useState } from "react";
 
 const CollapsableRequest: React.FC<ICollapsableRequestProps> = (props) => {
   const { request, onAccept, onReject } = props;
   const { isOpen, onToggle } = useDisclosure();
+  const [isAcceptLoading, setIsAcceptLoading] = useState(false);
+  const [isRejectLoading, setIsRejectLoading] = useState(false);
 
   const handleOnClickStopPropagation = (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -17,17 +21,21 @@ const CollapsableRequest: React.FC<ICollapsableRequestProps> = (props) => {
     event.stopPropagation();
 
     if (isAccepted) {
+      setIsAcceptLoading(true);
       onAccept(request.id);
+      setIsAcceptLoading(false);
       return;
     }
 
+    setIsRejectLoading(true);
     onReject(request.id);
+    setIsRejectLoading(false);
   };
 
   return (
     <BaseContainer type={Containers.Tertiary} className={styles.container}>
       <Collapse
-        startingHeight={30}
+        startingHeight={Constants.StartingCollapseHeight}
         in={isOpen}
         className={styles.collapse}
         onClick={onToggle}
@@ -52,12 +60,14 @@ const CollapsableRequest: React.FC<ICollapsableRequestProps> = (props) => {
           <div className={styles.buttons}>
             <Button
               size={ChakraSizes.Sm}
+              isLoading={isAcceptLoading}
               onClick={(e) => handleOnClickStopPropagation(e, true)}
             >
               Accept
             </Button>
             <Button
               size={ChakraSizes.Sm}
+              isLoading={isRejectLoading}
               onClick={(e) => handleOnClickStopPropagation(e, false)}
             >
               Reject

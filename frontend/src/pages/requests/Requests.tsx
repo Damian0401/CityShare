@@ -11,7 +11,7 @@ import {
 import { useStore } from "../../common/stores/store";
 import { getSelectedCityId } from "../../common/utils/helpers";
 import { StorageKeys } from "../../common/enums";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import CollapsableRequest from "./components/collapsable-request/CollapsableRequest";
 import { IRequests } from "../../common/interfaces";
@@ -21,6 +21,11 @@ const Requsts = observer(() => {
 
   const [requests, setRequests] = useState<IRequests>();
 
+  const getCityId = useCallback(
+    () => getSelectedCityId() ?? commonStore.cities[0].id,
+    [commonStore.cities]
+  );
+
   useEffect(() => {
     commonStore.setLoading(true);
 
@@ -28,7 +33,7 @@ const Requsts = observer(() => {
 
     const loadRequests = async () => {
       const requests = await requestStore.getRequests(
-        getSelectedCityId() ?? commonStore.cities[0].id,
+        getCityId(),
         abortController.signal
       );
       setRequests(requests);
@@ -38,7 +43,7 @@ const Requsts = observer(() => {
     loadRequests();
 
     return () => abortController.abort();
-  }, [commonStore, requestStore]);
+  }, [commonStore, requestStore, getCityId]);
 
   const handleSelect = async (event: ChangeEvent<HTMLSelectElement>) => {
     localStorage.setItem(StorageKeys.SelectedCityId, event.target.value);
@@ -50,13 +55,28 @@ const Requsts = observer(() => {
     commonStore.setLoading(false);
   };
 
+  const handleOnAccept = async (id: string) => {
+    await requestStore.acceptRequest(id);
+    toast.success("Accepted");
+    await refrestRequests(id);
+  };
+
+  const handleOnReject = async (id: string) => {
+    await requestStore.rejectRequest(id);
+    toast.error("Rejected");
+    await refrestRequests(id);
+  };
+
+  const refrestRequests = async (requestId: string) => {
+    requestStore.removeRequest(getCityId(), requestId);
+    const newRequests = await requestStore.getRequests(getCityId());
+    setRequests(newRequests);
+  };
+
   return (
     <div className={styles.container}>
       <div>Requests:</div>
-      <Select
-        defaultValue={getSelectedCityId() ?? commonStore.cities[0].id}
-        onChange={handleSelect}
-      >
+      <Select defaultValue={getCityId()} onChange={handleSelect}>
         {commonStore.cities.map((city) => (
           <option key={city.id} value={city.id}>
             {city.name}
@@ -76,8 +96,8 @@ const Requsts = observer(() => {
                 <CollapsableRequest
                   key={blurRequest.id}
                   request={blurRequest}
-                  onAccept={() => toast.success("Accepted")}
-                  onReject={() => toast.error("Rejected")}
+                  onAccept={handleOnAccept}
+                  onReject={handleOnReject}
                 />
               ))}
             </TabPanel>

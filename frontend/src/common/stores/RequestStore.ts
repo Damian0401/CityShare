@@ -27,4 +27,30 @@ export default class RequestStore {
 
     return newRequests;
   };
+
+  acceptRequest = async (id: string) => {
+    await agent.Requests.accept(id);
+  };
+
+  rejectRequest = async (id: string) => {
+    await agent.Requests.reject(id);
+  };
+
+  removeRequest = (cityId: number, requestId: string) => {
+    const requests = this.loadedRequests.get(cityId);
+
+    if (!requests) return;
+
+    for (const pair of requests.requests) {
+      const index = pair[1].findIndex((r) => r.id === requestId);
+
+      if (index === -1) continue;
+
+      runInAction(() => {
+        pair[1].splice(index, 1);
+      });
+
+      break;
+    }
+  };
 }
