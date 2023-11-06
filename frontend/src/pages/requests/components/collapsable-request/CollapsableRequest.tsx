@@ -2,7 +2,12 @@ import { getFormattedDate } from "../../../../common/utils/helpers";
 import { ICollapsableRequestProps } from "./ICollapsableRequestProps";
 import styles from "./CollapsableRequest.module.scss";
 import { Button, Collapse, useDisclosure } from "@chakra-ui/react";
-import { ChakraSizes, Containers, Routes } from "../../../../common/enums";
+import {
+  ChakraSizes,
+  Containers,
+  LinkTargets,
+  Routes,
+} from "../../../../common/enums";
 import BaseContainer from "../../../../components/base-container/BaseContainer";
 import { Link } from "react-router-dom";
 import Constants from "../../../../common/utils/constants";
@@ -50,6 +55,7 @@ const CollapsableRequest: React.FC<ICollapsableRequestProps> = (props) => {
             <Button
               size={ChakraSizes.Sm}
               as={Link}
+              target={LinkTargets.Blank}
               to={
                 Routes.Events + `/${request.eventId}?imageId=${request.imageId}`
               }

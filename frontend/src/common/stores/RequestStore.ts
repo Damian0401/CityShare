@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { IRequests } from "../interfaces";
+import { IRequestCreateValue, IRequests } from "../interfaces";
 import agent from "../api/agent";
 
 export default class RequestStore {
@@ -26,6 +26,10 @@ export default class RequestStore {
     });
 
     return newRequests;
+  };
+
+  createRequest = async (values: IRequestCreateValue) => {
+    await agent.Requests.create(values);
   };
 
   acceptRequest = async (id: string) => {

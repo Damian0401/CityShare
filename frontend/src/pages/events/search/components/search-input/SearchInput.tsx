@@ -18,6 +18,7 @@ import DateTimePicker from "../../../../../components/date-time-picker/DateTimeP
 import OptionSelect from "../../../../../components/option-select/OptionSelect";
 import { EventFilters } from "../../../../../common/enums/EventFilters";
 import { getSelectedCityId } from "../../../../../common/utils/helpers";
+import Constants from "../../../../../common/utils/constants";
 
 const sortByOptions: IOption[] = [
   {
@@ -77,7 +78,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                 type={InputTypes.Text}
                 errors={errors.query}
                 touched={touched.query}
-                placeholder="Search..."
+                placeholder={Constants.Placeholders.Search}
                 rightIcon={<AiOutlineSearch />}
                 rightIconOnClick={submitForm}
                 name={nameof<IEventSearchQuery>((x) => x.query)}

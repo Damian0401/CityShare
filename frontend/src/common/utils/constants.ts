@@ -43,6 +43,10 @@ const Constants = {
     Empty: "",
   },
   StartingCollapseHeight: 30,
+  Placeholders: {
+    Search: "Search...",
+    RequestMessage: "Request message...",
+  },
 };
 
 export default Constants;

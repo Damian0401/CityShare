@@ -80,17 +80,18 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
           </DrawerHeader>
           <DrawerBody className={styles.modalBody}>
             <ToggleThemeButton buttonRef={initialRef} />
-            {isAdmin && (
+            {isAdmin ? (
               <Button
                 leftIcon={<MdOutlineAdminPanelSettings />}
                 onClick={redirectAndClose(Routes.Requsts)}
               >
                 Requsts
               </Button>
+            ) : (
+              <Button leftIcon={<CgProfile />} onClick={onClose}>
+                Profile
+              </Button>
             )}
-            <Button leftIcon={<CgProfile />} onClick={onClose}>
-              Profile
-            </Button>
             <Button
               leftIcon={<AiOutlineSearch />}
               onClick={redirectAndClose(Routes.EventsSearch)}

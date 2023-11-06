@@ -3,6 +3,7 @@
 .container {
   box-shadow: $lessBoxShadow;
   padding: 0.5rem;
+  cursor: pointer;
 
   .collapse {
     display: flex !important;

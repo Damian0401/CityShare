@@ -24,6 +24,7 @@ import {
   IRequestType,
   IRequests,
   IRequest,
+  IRequestCreateValue,
 } from "../interfaces";
 import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { toast } from "react-toastify";
@@ -237,6 +238,7 @@ const Requests = {
 
     return data;
   },
+  create: (values: IRequestCreateValue) => requests.post("/requests", values),
   accept: (id: string) => requests.post(`/requests/${id}/accept`),
   reject: (id: string) => requests.post(`/requests/${id}/reject`),
 };

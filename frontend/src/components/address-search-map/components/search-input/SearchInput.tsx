@@ -46,7 +46,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
         <Input
           ref={searchRef}
           onKeyDown={handleKeyDown}
-          placeholder="Search..."
+          placeholder={Constants.Placeholders.Search}
         />
       </InputGroup>
     </BaseContainer>

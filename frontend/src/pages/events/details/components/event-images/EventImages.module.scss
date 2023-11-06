@@ -7,17 +7,19 @@
   flex-direction: column;
   box-shadow: $boxShadow;
   border-radius: $borderRadius;
+  cursor: pointer;
 
-  .mainBig {
-    height: 100%;
+  .main {
     width: 100%;
     object-fit: cover;
-  }
 
-  .mainSmall {
-    height: 80%;
-    width: 100%;
-    object-fit: cover;
+    &Big {
+      height: 100%;
+    }
+
+    &Small {
+      height: 80%;
+    }
   }
 
   .preview {

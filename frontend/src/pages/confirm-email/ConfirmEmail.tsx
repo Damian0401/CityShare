@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import LoadingSpinner from "../../components/loading-spinner/LoadingSpinner";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Routes } from "../../common/enums";
+import { Routes, SearchParams } from "../../common/enums";
 import { useStore } from "../../common/stores/store";
 import Constants from "../../common/utils/constants";
 import { observer } from "mobx-react-lite";
@@ -14,8 +14,8 @@ const ConfirmEmail = observer(() => {
   const { authStore } = useStore();
 
   useEffect(() => {
-    const id = searchParams.get("id");
-    const token = searchParams.get("token");
+    const id = searchParams.get(SearchParams.Id);
+    const token = searchParams.get(SearchParams.Token);
 
     if (!id || !token) {
       navigate(Routes.NotFound);
