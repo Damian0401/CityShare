@@ -29,7 +29,7 @@ builder.Host.UseSerilog((context, configuration) =>
 
 var app = builder.Build();
 
-await app.Services.SeedDataAsync();
+await app.Services.SeedDataAsync(configuration);
 
 if (app.Environment.IsDevelopment())
 {

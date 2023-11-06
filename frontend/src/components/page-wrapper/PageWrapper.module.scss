@@ -7,6 +7,12 @@
 
   & > main {
     padding-bottom: 1rem;
+
+    .contentSpinner {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
   }
 
   .container {

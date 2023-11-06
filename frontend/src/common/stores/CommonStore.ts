@@ -1,10 +1,11 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { ICategory, ICity } from "../interfaces";
+import { ICategory, ICity, IRequestType } from "../interfaces";
 import agent from "../api/agent";
 
 export default class CommonStore {
   cities: ICity[] = [];
   categories: ICategory[] = [];
+  requestTypes: IRequestType[] = [];
   isContentLoading = false;
 
   constructor() {
@@ -26,7 +27,18 @@ export default class CommonStore {
       });
     };
 
-    return Promise.all([citiesPromise(), categoriesPromise()]);
+    const requestTypesPromise = async () => {
+      const requestTypes = await agent.Requests.getTypes();
+      runInAction(() => {
+        this.requestTypes = requestTypes;
+      });
+    };
+
+    return Promise.all([
+      citiesPromise(),
+      categoriesPromise(),
+      requestTypesPromise(),
+    ]);
   };
 
   setLoading = (state: boolean) => {

@@ -81,7 +81,7 @@ public class RefreshCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.InvalidCredentials));
+        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
     }
 
     [Fact]
@@ -103,7 +103,7 @@ public class RefreshCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.InvalidCredentials));
+        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
     }
 
     [Fact]
@@ -125,6 +125,6 @@ public class RefreshCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.InvalidCredentials));
+        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
     }
 }

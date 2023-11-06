@@ -8,14 +8,12 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Spacer,
-  Text,
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
 import { IUserMenuProps } from "./IUserMenuProps";
 import styles from "./UserMenu.module.scss";
-import BaseContainer from "../../../base-container/BaseContainer";
-import { Containers, DrawerPlacements, Routes } from "../../../../common/enums";
+import { DrawerPlacements, Routes } from "../../../../common/enums";
 import { BiLogOutCircle } from "react-icons/bi";
 import { CgProfile } from "react-icons/cg";
 import { IoCreateOutline } from "react-icons/io5";
@@ -27,9 +25,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRef } from "react";
 import Constants from "../../../../common/utils/constants";
 import { observer } from "mobx-react-lite";
+import ToggleThemeButton from "./components/toggle-theme-button/ToggleThemeButton";
+import { useStore } from "../../../../common/stores/store";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 
 const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
-  const { user, logout } = props;
+  const { logout } = props;
+  const {
+    authStore: { user, isAdmin },
+  } = useStore();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const initialRef = useRef<HTMLButtonElement | null>(null);
   const navigate = useNavigate();
@@ -42,14 +46,11 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
   return (
     <>
       <div className={styles.container}>
-        <BaseContainer type={Containers.Primary} className={styles.wrapper}>
-          <div onClick={onOpen} className={styles.menuButton}>
-            <div className={styles.menuText}>
-              <Text>Menu</Text>
-            </div>
-            <HamburgerIcon />
-          </div>
-        </BaseContainer>
+        <HamburgerIcon
+          _hover={{}}
+          onClick={onOpen}
+          className={styles.menuButton}
+        />
       </div>
       <Drawer
         onClose={onClose}
@@ -65,8 +66,8 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
               CityShare
             </Link>
             <Divider className={styles.divider} />
-            <div className={styles.userName}>{user.userName}</div>
-            {!user.emailConfirmed && (
+            <div className={styles.userName}>{user?.userName || ""}</div>
+            {!user?.emailConfirmed && (
               <Tooltip
                 label="Confirm your email by clicking on the link from the email we sent you."
                 aria-label={Constants.AriaLabels.ConfirmEmailTooltip}
@@ -78,9 +79,19 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             )}
           </DrawerHeader>
           <DrawerBody className={styles.modalBody}>
-            <Button leftIcon={<CgProfile />} onClick={onClose} ref={initialRef}>
-              Profile
-            </Button>
+            <ToggleThemeButton buttonRef={initialRef} />
+            {isAdmin ? (
+              <Button
+                leftIcon={<MdOutlineAdminPanelSettings />}
+                onClick={redirectAndClose(Routes.Requsts)}
+              >
+                Requsts
+              </Button>
+            ) : (
+              <Button leftIcon={<CgProfile />} onClick={onClose}>
+                Profile
+              </Button>
+            )}
             <Button
               leftIcon={<AiOutlineSearch />}
               onClick={redirectAndClose(Routes.EventsSearch)}
@@ -96,7 +107,7 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
             <Button
               leftIcon={<IoCreateOutline />}
               onClick={redirectAndClose(Routes.EventsCreate)}
-              isDisabled={!user.emailConfirmed}
+              isDisabled={!user?.emailConfirmed}
             >
               Create
             </Button>

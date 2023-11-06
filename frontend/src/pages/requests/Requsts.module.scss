@@ -1,0 +1,21 @@
+@import "../../assets/styles/variables.module.scss";
+
+.container {
+  padding: 1rem;
+  min-width: 35rem;
+  font-size: $mdFontSize;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+
+  .tab {
+    margin-bottom: 1rem;
+  }
+
+  .requests {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding: 0;
+  }
+}

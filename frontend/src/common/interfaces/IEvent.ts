@@ -1,4 +1,4 @@
-import { IAddress } from ".";
+import { IAddress, IImage } from ".";
 
 export interface IEvent {
   id: string;
@@ -7,12 +7,12 @@ export interface IEvent {
   address: IAddress;
   cityId: number;
   categoryIds: number[];
-  imageUrls: (string | null)[];
+  images: IImage[];
   startDate: Date;
   endDate: Date;
   createdAt: Date;
   likes: number;
   author: string;
-  commentNumber: number;
+  comments: number;
   isLiked: boolean;
 }

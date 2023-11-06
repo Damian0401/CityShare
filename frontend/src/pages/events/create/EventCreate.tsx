@@ -54,14 +54,13 @@ const EventCreate = observer(() => {
 
   const handleSubmit = async (values: IEventCreateValues) => {
     setIsLoading(true);
-
-    const id = await eventStore.createEvent(values);
-
-    setIsLoading(false);
-
-    toast.success("Event created successfully");
-
-    navigate(`${Routes.Events}/${id}`);
+    try {
+      const id = await eventStore.createEvent(values);
+      toast.success("Event created successfully");
+      navigate(`${Routes.Events}/${id}`);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

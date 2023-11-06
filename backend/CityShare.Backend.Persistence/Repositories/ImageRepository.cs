@@ -29,6 +29,7 @@ public class ImageRepository : IImageRepository
 
     public async Task<Image?> GetByIdAsync(Guid imageId, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Searching for image with id {@Id) in database", imageId);
         var image = await _context.Images
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id.Equals(imageId), cancellationToken);
@@ -50,5 +51,45 @@ public class ImageRepository : IImageRepository
         await _context.Images
             .Where(x => x.Id.Equals(imageId))
             .ExecuteUpdateAsync(x => x.SetProperty(i => i.IsBlurred, isBlurred), cancellationToken);
+    }
+
+    public async Task<IEnumerable<Image>> GetByEventIdAsync(Guid eventId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Searching for images with event id {@Id} in database", eventId);
+        var images = await _context.Images
+            .Where(x => x.EventId.Equals(eventId))
+            .ToListAsync();
+
+        return images;
+    }
+
+    public Task<bool> ExistsAsync(Guid imageId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Checking if image with id {@Id} exists in database", imageId);
+        var imageExists = _context.Images
+            .AnyAsync(x => x.Id.Equals(imageId), cancellationToken);
+
+        return imageExists;
+    }
+
+    public async Task SetShouldBeBlurredAsync(Guid imageId, bool shouldBeBlurred, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Setting {@Name} as {@Bool} for image with id {@Id} in database", nameof(Image.ShouldBeBlurred), shouldBeBlurred, imageId);
+        await _context.Images
+            .Where(x => x.Id.Equals(imageId))
+            .ExecuteUpdateAsync(x => x.SetProperty(i => i.ShouldBeBlurred, shouldBeBlurred), cancellationToken);
+    }
+
+    public async Task DeleteAsync(Guid imageId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Searching for image with id {@Id} in database", imageId);
+        var image = await _context.Images
+            .Include(x => x.Requests)
+            .FirstAsync(x => x.Id.Equals(imageId), cancellationToken);
+
+        _logger.LogInformation("Deleting image with id {@Id} from database", imageId);
+        _context.Images.Remove(image);
+
+        await _context.SaveChangesAsync(cancellationToken);
     }
 }

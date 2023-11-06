@@ -10,7 +10,7 @@ export enum Routes {
   EventsDetails = "/events/:id",
   NotFound = "/not-found",
   ServerError = "/server-error",
-  Map = "/map",
   ConfirmEmail = "/confirm-email",
+  Requsts = "/requsts",
   Wildcard = "*",
 }

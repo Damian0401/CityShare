@@ -4,4 +4,5 @@ public class CacheKeys
 {
     public const string Cities = "Cities";
     public const string Categories = "Categories";
+    public const string RequestTypes = "RequestTypes";
 }

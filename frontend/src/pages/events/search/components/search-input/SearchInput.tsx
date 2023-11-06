@@ -16,22 +16,25 @@ import { useStore } from "../../../../../common/stores/store";
 import { Checkbox } from "@chakra-ui/react";
 import DateTimePicker from "../../../../../components/date-time-picker/DateTimePicker";
 import OptionSelect from "../../../../../components/option-select/OptionSelect";
+import { EventFilters } from "../../../../../common/enums/EventFilters";
+import { getSelectedCityId } from "../../../../../common/utils/helpers";
+import Constants from "../../../../../common/utils/constants";
 
 const sortByOptions: IOption[] = [
   {
-    value: "CreatedAtDesc",
+    value: EventFilters.Newest,
     label: "Newest",
   },
   {
-    value: "CreatedAtAsc",
+    value: EventFilters.Oldest,
     label: "Oldest",
   },
   {
-    value: "LikesDesc",
+    value: EventFilters.MostPopular,
     label: "Most popular",
   },
   {
-    value: "LikesAsc",
+    value: EventFilters.LeastPopular,
     label: "Least popular",
   },
 ];
@@ -52,7 +55,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
       <Formik
         initialValues={{
           ...InitialValues.EventSearch,
-          cityId: commonStore.cities[0].id,
+          cityId: getSelectedCityId() ?? commonStore.cities[0].id,
           sortBy: sortByOptions[0].value as string,
         }}
         onSubmit={onSearch}
@@ -75,7 +78,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
                 type={InputTypes.Text}
                 errors={errors.query}
                 touched={touched.query}
-                placeholder="Search..."
+                placeholder={Constants.Placeholders.Search}
                 rightIcon={<AiOutlineSearch />}
                 rightIconOnClick={submitForm}
                 name={nameof<IEventSearchQuery>((x) => x.query)}

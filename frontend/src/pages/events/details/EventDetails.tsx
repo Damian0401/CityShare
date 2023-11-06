@@ -71,7 +71,7 @@ const EventDetails = observer(() => {
             className={styles.container}
           >
             <BaseContainer type={Containers.Tertiary} className={styles.event}>
-              <EventImages imageUrls={eventStore.selectedEvent.imageUrls} />
+              <EventImages images={eventStore.selectedEvent.images} />
               <EventMap address={eventStore.selectedEvent.address} />
               <EventBody
                 event={eventStore.selectedEvent}

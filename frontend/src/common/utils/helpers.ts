@@ -1,6 +1,12 @@
 import { format } from "date-fns";
 import { Environments, StorageKeys } from "../enums";
-import { IBoundingBox, IComment, IEvent, IPoint } from "../interfaces";
+import {
+  IBoundingBox,
+  IComment,
+  IEvent,
+  IPoint,
+  IRequest,
+} from "../interfaces";
 
 export const getSecret = (environment: Environments) => {
   return import.meta.env[environment];
@@ -34,6 +40,12 @@ export const correctCommentDate = (comment: IComment) => {
   comment.createdAt = new Date(comment.createdAt);
 };
 
+export const correctRequestDate = (requests: IRequest[]) => {
+  requests.forEach((request) => {
+    request.createdAt = new Date(request.createdAt);
+  });
+};
+
 export const importantStyle = (style: string) => {
   return `${style} !important`;
 };
@@ -62,5 +74,12 @@ export const isPointInsideBoundingBox = (
     point.x < boundingBox.maxX &&
     point.y > boundingBox.minY &&
     point.y < boundingBox.maxY
+  );
+};
+
+export const getSelectedCityId = () => {
+  return (
+    parseInt(localStorage.getItem(StorageKeys.SelectedCityId) || "") ||
+    undefined
   );
 };

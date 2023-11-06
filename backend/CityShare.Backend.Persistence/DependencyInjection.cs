@@ -4,6 +4,7 @@ using CityShare.Backend.Application.Core.Abstractions.Comments;
 using CityShare.Backend.Application.Core.Abstractions.Emails;
 using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Images;
+using CityShare.Backend.Application.Core.Abstractions.Requests;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ public static class DependencyInjection
         services.AddScoped<IEventRepository, EventRepository>();
         services.AddScoped<IImageRepository, ImageRepository>();
         services.AddScoped<ICommentRepository, CommentRepository>();
+        services.AddScoped<IRequestRepository, RequestRepository>();
 
         return services;
     }

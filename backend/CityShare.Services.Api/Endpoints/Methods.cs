@@ -1,4 +1,6 @@
-﻿namespace CityShare.Services.Api.Endpoints;
+﻿using CityShare.Backend.Domain.Constants;
+
+namespace CityShare.Services.Api.Endpoints;
 
 public static class Methods
 {
@@ -50,6 +52,21 @@ public static class Methods
 
         app.MapGet(Endpoints.V1.Events.Id.Comments, V1.Events.GetComments)
             .RequireAuthorization();
+
+        app.MapPost(Endpoints.V1.Requests.Index, V1.Requests.Create)
+            .RequireAuthorization(Policies.RequireUserRole);
+
+        app.MapGet(Endpoints.V1.Requests.Index, V1.Requests.GetAllByCityId)
+            .RequireAuthorization();
+
+        app.MapGet(Endpoints.V1.Requests.Types, V1.Requests.GetTypes)
+            .RequireAuthorization();
+
+        app.MapPost(Endpoints.V1.Requests.Id.Accept, V1.Requests.Accept)
+            .RequireAuthorization(Policies.RequireAdminRole);
+
+        app.MapPost(Endpoints.V1.Requests.Id.Reject, V1.Requests.Reject)
+            .RequireAuthorization(Policies.RequireAdminRole);
 
         return app;
     }

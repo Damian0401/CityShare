@@ -20,6 +20,7 @@ public class CityRepository : ICityRepository
 
     public async Task<City?> GeyByIdWithBoundingBoxAsync(int cityId, CancellationToken cancellationToken = default)
     {
+        _logger.LogInformation("Getting city with id {@Id} from database", cityId);
         var city = await _context.Cities
             .Include(x => x.BoundingBox)
             .FirstOrDefaultAsync(x => x.Id.Equals(cityId), cancellationToken);
@@ -37,5 +38,13 @@ public class CityRepository : ICityRepository
             .ToListAsync(cancellationToken);
 
         return cities;
+    }
+
+    public async Task<bool> ExistsAsync(int cityId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Checking if city with id {@Id} exists in database", cityId);
+        var exists = await _context.Cities.AnyAsync(x => x.Id.Equals(cityId), cancellationToken);
+
+        return exists;
     }
 }

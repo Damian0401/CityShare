@@ -8,6 +8,8 @@ using CityShare.Backend.Application.Core.Dtos.Categories;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Application.Core.Dtos.Comments;
+using CityShare.Backend.Application.Core.Dtos.Requests;
+using CityShare.Backend.Application.Core.Dtos.Images;
 
 namespace CityShare.Backend.Application.Core.Mappers;
 
@@ -22,8 +24,10 @@ public class AutoMapperProfile : Profile
         MapsForCities();
         MapsForCategories();
         MapsForEvents();
+        MapsForImages();
         MapsForLikes();
         MapsForComments();
+        MapsForRequests();
     }
 
     private void MapsForUser()
@@ -87,7 +91,6 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateEventDto, Event>()
             .ForMember(x => x.Address, s => s.MapFrom(e => e.Address));
         CreateMap<Event, EventDto>()
-            .ForMember(x => x.ImageUrls, s => s.MapFrom(e => e.Images.Select(c => c.IsBlurred == c.ShouldBeBlurred ? c.Uri : null)))
             .ForMember(x => x.CategoryIds, s => s.MapFrom(e => e.EventCategories.Select(c => c.CategoryId)));
     }
 
@@ -100,5 +103,19 @@ public class AutoMapperProfile : Profile
     {
         CreateMap<Comment, CommentDto>()
             .ForMember(x => x.Author, s => s.MapFrom(c => c.Author.UserName));
+    }
+
+    private void MapsForRequests()
+    {
+        CreateMap<CreateRequestDto, Request>();
+        CreateMap<RequestType, RequestTypeDto>();
+        CreateMap<Request,  RequestDto>()
+            .ForMember(x => x.EventId, s => s.MapFrom(r => r.Image!.EventId));
+    }
+
+    private void MapsForImages()
+    {
+        CreateMap<Image, ImageDto>()
+            .ForMember(x => x.Uri, s => s.MapFrom(i => i.IsBlurred == i.ShouldBeBlurred ? i.Uri : null));
     }
 }

@@ -99,7 +99,7 @@ export default class EventStore {
         return;
       }
 
-      this.selectedEvent.commentNumber = comments.length;
+      this.selectedEvent.comments = comments.length;
     });
 
     this.hubConnection = new HubConnectionBuilder()
@@ -125,7 +125,7 @@ export default class EventStore {
         if (!this.selectedEvent) {
           return;
         }
-        this.selectedEvent.commentNumber += 1;
+        this.selectedEvent.comments += 1;
       });
     });
 

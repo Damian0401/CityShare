@@ -21,6 +21,7 @@ const {
   Select,
   Checkbox,
   Textarea,
+  Tabs,
 } = chakraTheme.components;
 
 const theme = extendBaseTheme({
@@ -42,8 +43,9 @@ const theme = extendBaseTheme({
     FormError,
     Modal,
     Divider,
-    Tooltip,
     Checkbox,
+    Tooltip,
+    Tabs,
     PrimaryContainer,
     SecondaryContainer,
     TertiaryContainer,

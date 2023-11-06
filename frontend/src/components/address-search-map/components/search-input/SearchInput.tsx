@@ -33,7 +33,6 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(e.key);
     if (e.key !== Keys.ENTER) return;
     handleSearch();
   };
@@ -47,7 +46,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
         <Input
           ref={searchRef}
           onKeyDown={handleKeyDown}
-          placeholder="Search..."
+          placeholder={Constants.Placeholders.Search}
         />
       </InputGroup>
     </BaseContainer>

@@ -22,6 +22,9 @@ public class CityShareDbContext : IdentityDbContext<ApplicationUser>
     public DbSet<City> Cities { get; set; }
     public DbSet<Like> Likes { get; set; }
     public DbSet<EventCategory> EventCategories { get; set; }
+    public DbSet<Request> Requests { get; set; }
+    public DbSet<RequestStatus> RequestStatuses { get; set; }
+    public DbSet<RequestType> RequestTypes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

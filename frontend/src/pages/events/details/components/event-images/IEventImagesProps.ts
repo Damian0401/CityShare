@@ -1,3 +1,5 @@
+import { IImage } from "../../../../../common/interfaces";
+
 export interface IEventImagesProps {
-  imageUrls: (string | null)[];
+  images: IImage[];
 }

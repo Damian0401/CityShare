@@ -76,7 +76,7 @@ public class LoginCommandHandlerTests
             .Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.InvalidCredentials));
+        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
     }
 
     [Fact]
@@ -95,6 +95,6 @@ public class LoginCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.InvalidCredentials));
+        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
     }
 }

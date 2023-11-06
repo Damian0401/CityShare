@@ -10,4 +10,12 @@ public class InvalidStateException : Exception
 
     public InvalidStateException(string message)
         : base(message) { }
+
+    public static void ThrowIf(bool condition, string message)
+    {
+        if (condition)
+        {
+            throw new InvalidStateException(message);
+        }
+    }
 }

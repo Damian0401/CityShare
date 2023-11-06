@@ -128,7 +128,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
             EmailTemplates.WelcomeAndEmailConfirmLink,
             new Dictionary<string, string>
             {
-                {EmailPlaceholders.Id, user.Id },
+                {EmailPlaceholders.EventId, user.Id },
                 {EmailPlaceholders.Token, encodedToken },
                 {EmailPlaceholders.UserName, request.Request.UserName },
                 {EmailPlaceholders.ClientUrl, _commonSettings.ClientUrl },

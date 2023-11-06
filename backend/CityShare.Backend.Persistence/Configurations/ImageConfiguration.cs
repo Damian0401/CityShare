@@ -21,7 +21,7 @@ internal class ImageConfiguration : IEntityTypeConfiguration<Image>
             .IsRequired()
             .HasDefaultValue(false);
 
-        builder.HasOne<Event>()
+        builder.HasOne(x => x.Event)
             .WithMany(x => x.Images)
             .HasForeignKey(x => x.EventId)
             .OnDelete(DeleteBehavior.ClientCascade);

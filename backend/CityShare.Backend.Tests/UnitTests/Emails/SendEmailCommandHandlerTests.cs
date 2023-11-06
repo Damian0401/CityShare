@@ -72,7 +72,7 @@ public class SendEmailCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.NotFound));
+        AssertHelper.FailureWithErrors(result, Errors.NotFound);
     }    
     
     [Fact]
@@ -93,6 +93,6 @@ public class SendEmailCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        Assert.True(ResultHelper.IsFailureWithErrorCode(result, Errors.ForbiddenState));
+        AssertHelper.FailureWithErrors(result, Errors.ForbiddenState);
     }
 }
