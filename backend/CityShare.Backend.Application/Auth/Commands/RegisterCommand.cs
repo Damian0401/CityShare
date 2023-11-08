@@ -17,7 +17,7 @@ using System.Web;
 
 namespace CityShare.Backend.Application.Auth.Commands;
 
-public record RegisterCommand(RegisterRequestDto Request)
+public record RegisterCommand(RegisterDto Request)
     : IRequest<Result<AuthResponseDto>>;
 
 public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
@@ -128,7 +128,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<Au
             EmailTemplates.WelcomeAndEmailConfirmLink,
             new Dictionary<string, string>
             {
-                {EmailPlaceholders.EventId, user.Id },
+                {EmailPlaceholders.UserId, user.Id },
                 {EmailPlaceholders.Token, encodedToken },
                 {EmailPlaceholders.UserName, request.Request.UserName },
                 {EmailPlaceholders.ClientUrl, _commonSettings.ClientUrl },

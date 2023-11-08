@@ -29,7 +29,7 @@ public class RefreshCommandHandlerTests
 
         var logger = new Mock<ILogger<RefreshCommandHandler>>().Object;
 
-        var request = new RefreshRequestDto(Value.String);
+        var request = new RefreshDto(Value.String);
 
         _command = new RefreshCommand(request, Value.String);
 

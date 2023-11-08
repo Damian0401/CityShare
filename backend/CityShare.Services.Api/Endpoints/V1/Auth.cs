@@ -12,7 +12,7 @@ namespace CityShare.Services.Api.Endpoints.V1;
 public class Auth
 {
     public static async Task<IResult> Register(
-        [FromBody] RegisterRequestDto request,
+        [FromBody] RegisterDto request,
         HttpResponse response, 
         IOptions<AuthSettings> authSettings,
         IMediator mediator,
@@ -34,7 +34,7 @@ public class Auth
     }
 
     public static async Task<IResult> Login(
-        [FromBody] LoginRequestDto request, 
+        [FromBody] LoginDto request, 
         HttpResponse response,
         IOptions<AuthSettings> authSettings,
         IMediator mediator,
@@ -56,7 +56,7 @@ public class Auth
     }
 
     public static async Task<IResult> Refresh(
-        [FromBody] RefreshRequestDto refreshRequest,
+        [FromBody] RefreshDto refreshRequest,
         HttpRequest request, 
         IMediator mediator,
         CancellationToken cancellationToken)
@@ -78,7 +78,7 @@ public class Auth
     }
 
     public static async Task<IResult> ConfirmEmail(
-        [FromBody] EmailConfirmRequestDto request,
+        [FromBody] EmailConfirmDto request,
         IMediator mediator,
         CancellationToken cancellationToken)
     {

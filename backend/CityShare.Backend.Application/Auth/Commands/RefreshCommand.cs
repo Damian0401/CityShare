@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Auth.Commands;
 
-public record RefreshCommand(RefreshRequestDto Request, string RefreshToken)
+public record RefreshCommand(RefreshDto Request, string RefreshToken)
     : IRequest<Result<UserDto>>;
 
 public class RefreshCommandValidator : AbstractValidator<RefreshCommand>

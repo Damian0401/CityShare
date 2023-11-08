@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Auth.Commands;
 
-public record ConfirmEmailCommand(EmailConfirmRequestDto Request)
+public record ConfirmEmailCommand(EmailConfirmDto Request)
     : IRequest<Result>;
 
 public class ConfirmEmailCommandValidator : AbstractValidator<ConfirmEmailCommand>

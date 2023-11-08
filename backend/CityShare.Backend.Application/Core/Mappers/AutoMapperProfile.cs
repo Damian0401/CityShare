@@ -32,7 +32,7 @@ public class AutoMapperProfile : Profile
 
     private void MapsForUser()
     {
-        CreateMap<RegisterRequestDto, ApplicationUser>();
+        CreateMap<RegisterDto, ApplicationUser>();
         CreateMap<ApplicationUser, UserDto>();
     }
 

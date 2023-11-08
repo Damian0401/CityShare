@@ -29,7 +29,7 @@ public class LoginCommandHandlerTests
 
         var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
 
-        var request = new LoginRequestDto(Value.String, Value.String);
+        var request = new LoginDto(Value.String, Value.String);
 
         _command = new LoginCommand(request);
 

@@ -39,7 +39,7 @@ public class RegisterCommandHandlerTests
 
         var logger = new Mock<ILogger<RegisterCommandHandler>>().Object;
 
-        var request = new RegisterRequestDto(Value.String, Value.String, Value.String);
+        var request = new RegisterDto(Value.String, Value.String, Value.String);
 
         _command = new RegisterCommand(request);
 

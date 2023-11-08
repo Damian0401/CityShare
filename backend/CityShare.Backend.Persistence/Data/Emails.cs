@@ -21,7 +21,7 @@ internal static class Emails
                 Body = @$"<p>Hi {EmailPlaceholders.UserName},</p>
 <p>Thank you for registering at <a href=""{EmailPlaceholders.ClientUrl}"">CityShare</a>.</p>
 <p>Please verify your email by clicking the link below.</p>
-<p><a href=""{EmailPlaceholders.ClientUrl}/confirm-email?id={EmailPlaceholders.EventId}&token={EmailPlaceholders.Token}"">Verify email</a></p>
+<p><a href=""{EmailPlaceholders.ClientUrl}/confirm-email?id={EmailPlaceholders.UserId}&token={EmailPlaceholders.Token}"">Verify email</a></p>
 <p><strong>Important:</strong> You need to log in to your account before you can use the link above.</p>
 <p>Best regards,</p>
 <p>CityShare team</p>

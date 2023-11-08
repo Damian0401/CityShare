@@ -1,3 +1,3 @@
 ﻿namespace CityShare.Backend.Application.Core.Dtos.Auth;
 
-public record RefreshRequestDto(string AccessToken);
+public record RefreshDto(string AccessToken);
