@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Events;
+using CityShare.Backend.Application.Core.Abstractions.Likes;
 using CityShare.Backend.Domain.Entities;
 using CityShare.Backend.Domain.Shared;
 using FluentValidation;
@@ -25,15 +26,18 @@ public class UpdateEventLikesCommandValidator : AbstractValidator<UpdateEventLik
 public class UpdateEventLikesCommandHandler : IRequestHandler<UpdateEventLikesCommand, Result>
 {
     private readonly IEventRepository _eventRepository;
+    private readonly ILikeRepository _likeRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<UpdateEventLikesCommandHandler> _logger;
 
     public UpdateEventLikesCommandHandler(
         IEventRepository eventRepository,
+        ILikeRepository likeRepository,
         IMapper mapper,
         ILogger<UpdateEventLikesCommandHandler> logger)
     {
         _eventRepository = eventRepository;
+        _likeRepository = likeRepository;
         _mapper = mapper;
         _logger = logger;
     }
@@ -46,14 +50,14 @@ public class UpdateEventLikesCommandHandler : IRequestHandler<UpdateEventLikesCo
         if (isLiked)
         {
             _logger.LogInformation("Removing like form event with id {@EventId} from user with id {@AuthorId}", request.EventId, request.AuthorId);
-            await _eventRepository.RemoveLikeAsync(request.EventId, request.AuthorId, cancellationToken);
+            await _likeRepository.RemoveAsync(request.EventId, request.AuthorId, cancellationToken);
 
             return Result.Success();
         }
 
         _logger.LogInformation("Adding like to event with id {@EventId} from user with id {@AuthorId}", request.EventId, request.AuthorId);
         var like = _mapper.Map<Like>(request);
-        await _eventRepository.AddLikeAsync(like, cancellationToken);
+        await _likeRepository.AddAsync(like, cancellationToken);
 
         return Result.Success();
     }

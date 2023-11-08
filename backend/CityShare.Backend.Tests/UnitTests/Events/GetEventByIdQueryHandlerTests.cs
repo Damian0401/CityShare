@@ -1,4 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Events;
+using CityShare.Backend.Application.Core.Abstractions.Likes;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Application.Events.Queries;
 using CityShare.Backend.Domain.Constants;
@@ -12,12 +13,15 @@ namespace CityShare.Backend.Tests.UnitTests.Events;
 public class GetEventByIdQueryHandlerTests
 {
     private readonly Mock<IEventRepository> _eventRepositoryMock;
+    private readonly Mock<ILikeRepository> _likeRepositoryMock;
     private readonly GetEventByIdQuery _query;
     private readonly GetEventByIdQueryHandler _systemUnderTests;
 
     public GetEventByIdQueryHandlerTests()
     {
         _eventRepositoryMock = new Mock<IEventRepository>();
+
+        _likeRepositoryMock = new Mock<ILikeRepository>();
 
         var mapper = MapperHelper.GetMapper();
 
@@ -27,6 +31,7 @@ public class GetEventByIdQueryHandlerTests
 
         _systemUnderTests = new GetEventByIdQueryHandler(
             _eventRepositoryMock.Object,
+            _likeRepositoryMock.Object,
             mapper,
             logger);
     }

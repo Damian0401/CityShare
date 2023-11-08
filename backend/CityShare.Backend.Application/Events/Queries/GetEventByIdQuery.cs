@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CityShare.Backend.Application.Core.Abstractions.Events;
+using CityShare.Backend.Application.Core.Abstractions.Likes;
 using CityShare.Backend.Application.Core.Dtos.Events;
 using CityShare.Backend.Domain.Constants;
 using CityShare.Backend.Domain.Shared;
@@ -26,15 +27,18 @@ public class GetEventByIdQueryValidator : AbstractValidator<GetEventByIdQuery>
 public class GetEventByIdQueryHandler : IRequestHandler<GetEventByIdQuery, Result<EventDto>>
 {
     private readonly IEventRepository _eventRepository;
+    private readonly ILikeRepository _likeRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<GetEventByIdQueryHandler> _logger;
 
     public GetEventByIdQueryHandler(
         IEventRepository eventRepository,
+        ILikeRepository likeRepository,
         IMapper mapper,
         ILogger<GetEventByIdQueryHandler> logger)
     {
         _eventRepository = eventRepository;
+        _likeRepository = likeRepository;
         _mapper = mapper;
         _logger = logger;
     }
