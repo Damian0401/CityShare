@@ -36,4 +36,26 @@ public class CommentRepository : ICommentRepository
 
         return comments;
     }
+
+    public async Task<int> GetGivenCountAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Searching for comments created by user with id {@Id}", userId);
+        var count = await _context.Comments
+            .Where(x => x.AuthorId.Equals(userId))
+            .CountAsync();
+
+        return count;
+    }
+
+    public async Task<int> GetReceivedCountAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Searching for comments received by user with id {@Id}", userId);
+        var count = await _context.Events
+            .Where(x => x.AuthorId.Equals(userId))
+            .SelectMany(x => x.Comments)
+            .Where(x => !x.AuthorId.Equals(userId))
+            .CountAsync();
+
+        return count;
+    }
 }

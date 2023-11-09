@@ -1,4 +1,5 @@
-﻿using CityShare.Backend.Application.Core.Abstractions.Events;
+﻿using CityShare.Backend.Application.Core.Abstractions.Comments;
+using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Likes;
 using CityShare.Backend.Application.Core.Dtos.Auth;
 using CityShare.Backend.Domain.Constants;
@@ -28,16 +29,19 @@ public class ProfileQueryHandler : IRequestHandler<ProfileQuery, Result<ProfileD
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly IEventRepository _eventRepository;
     private readonly ILikeRepository _likeRepository;
+    private readonly ICommentRepository _commentRepository;
     private readonly ILogger<ProfileQueryHandler> _logger;
 
     public ProfileQueryHandler(UserManager<ApplicationUser> userManager,
         IEventRepository eventRepository,
         ILikeRepository likeRepository,
+        ICommentRepository commentRepository,
         ILogger<ProfileQueryHandler> logger)
     {
         _userManager = userManager;
         _eventRepository = eventRepository;
         _likeRepository = likeRepository;
+        _commentRepository = commentRepository;
         _logger = logger;
     }
 
@@ -61,6 +65,12 @@ public class ProfileQueryHandler : IRequestHandler<ProfileQuery, Result<ProfileD
         _logger.LogInformation("Getting number of likes received by user with id {@Id}", request.UserId);
         var receivedLikes = await _likeRepository.GetReceivedCountAsync(request.UserId, cancellationToken);
 
+        _logger.LogInformation("Getting number of comments given by user with id {@Id}", request.UserId);
+        var givenComments = await _commentRepository.GetGivenCountAsync(request.UserId, cancellationToken);
+
+        _logger.LogInformation("Getting number of comments received by user with id {@Id}", request.UserId);
+        var receivedComments = await _commentRepository.GetReceivedCountAsync(request.UserId, cancellationToken);
+
         var response = new ProfileDto
         {
             Email = user.Email ?? string.Empty,
@@ -68,6 +78,8 @@ public class ProfileQueryHandler : IRequestHandler<ProfileQuery, Result<ProfileD
             CreatedEvents = createdEvents,
             GivenLikes = givenLikes,
             ReceivedLikes = receivedLikes,
+            GivenComments = givenComments,
+            ReceivedComments = receivedComments
         };
 
         return response;

@@ -26,7 +26,7 @@ public class LikeRepository : ILikeRepository
 
     public async Task<int> GetGivenCountAsync(string userId, CancellationToken cancellationToken = default) 
     {
-        _logger.LogInformation("Searching likes created by user with id {@Id}", userId);
+        _logger.LogInformation("Searching for likes created by user with id {@Id}", userId);
         var count = await _context.Likes
             .Where(x => x.AuthorId.Equals(userId))
             .CountAsync();
@@ -36,7 +36,7 @@ public class LikeRepository : ILikeRepository
 
     public async Task<int> GetReceivedCountAsync(string userId, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Searching likes received by user with id {@Id}", userId);
+        _logger.LogInformation("Searching for likes received by user with id {@Id}", userId);
         var count = await _context.Events
             .Where(x => x.AuthorId.Equals(userId))
             .Select(x => x.Likes.Count())

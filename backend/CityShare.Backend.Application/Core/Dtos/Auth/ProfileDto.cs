@@ -7,4 +7,6 @@ public class ProfileDto
     public int CreatedEvents { get; set; }
     public int ReceivedLikes { get; set; }
     public int GivenLikes { get; set; }
+    public int ReceivedComments { get; set; }
+    public int GivenComments { get; set; }
 }

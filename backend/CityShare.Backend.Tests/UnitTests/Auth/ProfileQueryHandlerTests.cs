@@ -1,4 +1,5 @@
 ﻿using CityShare.Backend.Application.Auth.Queries;
+using CityShare.Backend.Application.Core.Abstractions.Comments;
 using CityShare.Backend.Application.Core.Abstractions.Events;
 using CityShare.Backend.Application.Core.Abstractions.Likes;
 using CityShare.Backend.Domain.Constants;
@@ -17,6 +18,7 @@ public class ProfileQueryHandlerTests
     private readonly IMockHelper<UserManager<ApplicationUser>> _userManagerMockHelper;
     private readonly Mock<IEventRepository> _eventRepositoryMock;
     private readonly Mock<ILikeRepository> _likeRepositoryMock;
+    private readonly Mock<ICommentRepository> _commentRepositoryMock;
     private readonly ProfileQuery _query;
     private readonly ProfileQueryHandler _systemUnderTests;
 
@@ -28,6 +30,8 @@ public class ProfileQueryHandlerTests
 
         _likeRepositoryMock = new Mock<ILikeRepository>();
 
+        _commentRepositoryMock = new Mock<ICommentRepository>();
+
         var logger = new Mock<ILogger<ProfileQueryHandler>>().Object;
 
         _query = new ProfileQuery(Value.String);
@@ -36,6 +40,7 @@ public class ProfileQueryHandlerTests
             _userManagerMockHelper.Object,
             _eventRepositoryMock.Object,
             _likeRepositoryMock.Object,
+            _commentRepositoryMock.Object,
             logger);
     }
 
@@ -54,6 +59,12 @@ public class ProfileQueryHandlerTests
             .ReturnsAsync(Value.Int);
 
         _likeRepositoryMock.Setup(x => x.GetReceivedCountAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(Value.Int);
+
+        _commentRepositoryMock.Setup(x => x.GetGivenCountAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(Value.Int);
+
+        _commentRepositoryMock.Setup(x => x.GetReceivedCountAsync(Any.String, Any.CancellationToken))
             .ReturnsAsync(Value.Int);
 
         // Act
@@ -78,6 +89,12 @@ public class ProfileQueryHandlerTests
             .ReturnsAsync(Value.Int);
 
         _likeRepositoryMock.Setup(x => x.GetReceivedCountAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(Value.Int);
+
+        _commentRepositoryMock.Setup(x => x.GetGivenCountAsync(Any.String, Any.CancellationToken))
+            .ReturnsAsync(Value.Int);
+
+        _commentRepositoryMock.Setup(x => x.GetReceivedCountAsync(Any.String, Any.CancellationToken))
             .ReturnsAsync(Value.Int);
 
         // Act
