@@ -61,6 +61,6 @@ public class GetEventByIdQueryHandlerTests
         var result = await _systemUnderTests.Handle(_query, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.NotFound);
+        AssertHelper.FailureWithErrors(result, Errors.NotFound);
     }
 }

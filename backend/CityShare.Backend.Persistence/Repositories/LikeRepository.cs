@@ -24,7 +24,7 @@ public class LikeRepository : ILikeRepository
         await _context.SaveChangesAsync();
     }
 
-    public async Task<int> GetGivenCountAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<int> GetGivenCountAsync(string userId, CancellationToken cancellationToken = default) 
     {
         _logger.LogInformation("Searching likes created by user with id {@Id}", userId);
         var count = await _context.Likes

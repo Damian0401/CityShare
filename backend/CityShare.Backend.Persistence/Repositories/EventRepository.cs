@@ -189,4 +189,14 @@ public class EventRepository : IEventRepository
 
         return likeExists;
     }
+
+    public async Task<int> GetCreatedCountAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        _logger.LogInformation("Getting number of created events for user with id {@Id} from database", userId);
+        var createdCount = await _context.Events
+            .Where(x => x.AuthorId.Equals(userId))
+            .CountAsync();
+
+        return createdCount;
+    }
 }

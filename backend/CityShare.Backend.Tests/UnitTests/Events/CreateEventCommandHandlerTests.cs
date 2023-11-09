@@ -116,7 +116,7 @@ public class CreateEventCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.CityNotExists(_command.Request.CityId));
+        AssertHelper.FailureWithErrors(result, Errors.CityNotExists(_command.Request.CityId));
     }
 
     [Fact]
@@ -144,7 +144,7 @@ public class CreateEventCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.Forbidden);
+        AssertHelper.FailureWithErrors(result, Errors.Forbidden);
     }
 
     [Fact]
@@ -170,7 +170,7 @@ public class CreateEventCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.Forbidden);
+        AssertHelper.FailureWithErrors(result, Errors.Forbidden);
     }
 
     [Fact]
@@ -204,6 +204,6 @@ public class CreateEventCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.CategoryNotExists(categoryId));
+        AssertHelper.FailureWithErrors(result, Errors.CategoryNotExists(categoryId));
     }
 }

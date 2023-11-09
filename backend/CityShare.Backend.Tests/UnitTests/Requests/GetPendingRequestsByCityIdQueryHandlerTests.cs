@@ -66,6 +66,6 @@ public class GetPendingRequestsByCityIdQueryHandlerTests
         var result = await _systemUnderTests.Handle(_query, Any.CancellationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.CityNotExists(_query.CityId));
+        AssertHelper.FailureWithErrors(result, Errors.CityNotExists(_query.CityId));
     }
 }
