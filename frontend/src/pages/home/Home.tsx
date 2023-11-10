@@ -1,11 +1,8 @@
-import styles from "./Home.module.scss";
+import { Navigate } from "react-router-dom";
+import { Routes } from "../../common/enums";
 
 const Home = () => {
-  return (
-    <div className={styles.title}>
-      Welcome to CityShare, a platform for sharing your city with others.
-    </div>
-  );
+  return <Navigate to={Routes.EventsMap} />;
 };
 
 export default Home;
