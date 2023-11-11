@@ -3,7 +3,7 @@ import { Containers } from "../../common/enums";
 import { IProfile } from "../../common/interfaces/IProfile";
 import BaseContainer from "../../components/base-container/BaseContainer";
 import styles from "./Profile.module.scss";
-import IncreasingNumber from "./components/increasing-number/IncreasingNumber";
+import IncreasingNumber from "../../components/increasing-number/IncreasingNumber";
 import LoadingSpinner from "../../components/loading-spinner/LoadingSpinner";
 import { observer } from "mobx-react-lite";
 import { useStore } from "../../common/stores/store";

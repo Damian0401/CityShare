@@ -10,7 +10,7 @@ import Maps from "./Map";
 import Category from "./Category";
 import City from "./City";
 import Event from "./Event";
-import Requests from "./Requests";
+import Request from "./Request";
 
 axios.defaults.baseURL = getSecret(Environments.BaseUrl) + Constants.ApiPrefix;
 
@@ -97,7 +97,7 @@ const agent = {
   Category,
   City,
   Event,
-  Requests,
+  Request,
 };
 
 export default agent;

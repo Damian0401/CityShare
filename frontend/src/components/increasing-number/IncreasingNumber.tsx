@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IIncreasingNumberProps } from "./IIncreasingNumberProps";
 import styles from "./IncreasingNumber.module.scss";
-import Constants from "../../../../common/utils/constants";
+import Constants from "../../common/utils/constants";
 
 const IncreasingNumber: React.FC<IIncreasingNumberProps> = (props) => {
   const {
