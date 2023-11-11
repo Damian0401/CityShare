@@ -11,6 +11,7 @@ public static class Endpoints
             public const string Login = "/api/v1/auth/login";
             public const string Refresh = "/api/v1/auth/refresh";
             public const string ConfirmEmail = "/api/v1/auth/confirm-email";
+            public const string Profile = "/api/v1/auth/profile";
         }
 
         public class Map

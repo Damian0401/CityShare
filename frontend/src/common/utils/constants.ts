@@ -48,6 +48,7 @@ const Constants = {
     Search: "Search...",
     RequestMessage: "Request message...",
   },
+  NetworkError: "Network Error",
 };
 
 export default Constants;

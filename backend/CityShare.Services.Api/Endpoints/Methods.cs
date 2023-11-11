@@ -20,6 +20,9 @@ public static class Methods
         app.MapPost(Endpoints.V1.Auth.ConfirmEmail, V1.Auth.ConfirmEmail)
             .RequireAuthorization();
 
+        app.MapGet(Endpoints.V1.Auth.Profile, V1.Auth.Profile)
+            .RequireAuthorization(Policies.RequireUserRole);
+
         app.MapGet(Endpoints.V1.Map.Search, V1.Map.Search)
             .RequireAuthorization();
 

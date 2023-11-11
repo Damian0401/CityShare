@@ -38,9 +38,11 @@ public class LikeRepository : ILikeRepository
     {
         _logger.LogInformation("Searching for likes received by user with id {@Id}", userId);
         var count = await _context.Events
+            .Include(x => x.Likes)
             .Where(x => x.AuthorId.Equals(userId))
-            .Select(x => x.Likes.Count())
-            .SumAsync();
+            .SelectMany(x => x.Likes)
+            .Where(x => !x.AuthorId.Equals(userId))
+            .CountAsync();
 
         return count;
     }
