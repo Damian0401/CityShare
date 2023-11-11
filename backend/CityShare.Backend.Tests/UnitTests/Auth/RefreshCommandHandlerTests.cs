@@ -29,7 +29,7 @@ public class RefreshCommandHandlerTests
 
         var logger = new Mock<ILogger<RefreshCommandHandler>>().Object;
 
-        var request = new RefreshRequestDto(Value.String);
+        var request = new RefreshDto(Value.String);
 
         _command = new RefreshCommand(request, Value.String);
 
@@ -81,7 +81,7 @@ public class RefreshCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
+        AssertHelper.FailureWithErrors(result, Errors.InvalidCredentials);
     }
 
     [Fact]
@@ -103,7 +103,7 @@ public class RefreshCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
+        AssertHelper.FailureWithErrors(result, Errors.InvalidCredentials);
     }
 
     [Fact]
@@ -125,6 +125,6 @@ public class RefreshCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
+        AssertHelper.FailureWithErrors(result, Errors.InvalidCredentials);
     }
 }

@@ -29,7 +29,7 @@ public class LoginCommandHandlerTests
 
         var logger = new Mock<ILogger<LoginCommandHandler>>().Object;
 
-        var request = new LoginRequestDto(Value.String, Value.String);
+        var request = new LoginDto(Value.String, Value.String);
 
         _command = new LoginCommand(request);
 
@@ -76,7 +76,7 @@ public class LoginCommandHandlerTests
             .Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
+        AssertHelper.FailureWithErrors(result, Errors.InvalidCredentials);
     }
 
     [Fact]
@@ -95,6 +95,6 @@ public class LoginCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        AssertHelper.FailureWithStatusCode(result, Errors.InvalidCredentials);
+        AssertHelper.FailureWithErrors(result, Errors.InvalidCredentials);
     }
 }

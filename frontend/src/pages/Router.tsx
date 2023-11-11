@@ -15,6 +15,7 @@ import EventDetails from "./events/details/EventDetails";
 import EventCreate from "./events/create/EventCreate";
 import EventSearch from "./events/search/EventSearch";
 import Requsts from "./requests/Requests";
+import Profile from "./profile/Profile";
 
 const Router = createBrowserRouter([
   {
@@ -32,6 +33,10 @@ const Router = createBrowserRouter([
       {
         path: Routes.Register,
         element: <AnonymousRoute Component={Register} />,
+      },
+      {
+        path: Routes.Profile,
+        element: <PrivateRoute Component={Profile} Roles={[Roles.User]} />,
       },
       {
         path: Routes.Events,

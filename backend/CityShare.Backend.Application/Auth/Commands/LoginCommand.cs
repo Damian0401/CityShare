@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace CityShare.Backend.Application.Auth.Commands;
 
-public record LoginCommand(LoginRequestDto Request)
+public record LoginCommand(LoginDto Request)
     : IRequest<Result<AuthResponseDto>>;
 
 public class LoginCommandValidator : AbstractValidator<LoginCommand>

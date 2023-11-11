@@ -1,4 +1,5 @@
 ﻿using CityShare.Backend.Application.Core.Abstractions.Events;
+using CityShare.Backend.Application.Core.Abstractions.Likes;
 using CityShare.Backend.Application.Events.Commands;
 using CityShare.Backend.Tests.Other.Common;
 using CityShare.Backend.Tests.Other.Helpers;
@@ -10,12 +11,15 @@ namespace CityShare.Backend.Tests.UnitTests.Events;
 public class UpdateEventLikesCommandHandlerTests
 {
     private readonly Mock<IEventRepository> _eventRepositoryMock;
+    private readonly Mock<ILikeRepository> _likeRepositoryMock;
     private readonly UpdateEventLikesCommand _command;
     private readonly UpdateEventLikesCommandHandler _systemUnderTests;
 
     public UpdateEventLikesCommandHandlerTests()
     {
         _eventRepositoryMock = new Mock<IEventRepository>();
+
+        _likeRepositoryMock = new Mock<ILikeRepository>();
 
         var mapper = MapperHelper.GetMapper();
 
@@ -27,6 +31,7 @@ public class UpdateEventLikesCommandHandlerTests
 
         _systemUnderTests = new UpdateEventLikesCommandHandler(
             _eventRepositoryMock.Object,
+            _likeRepositoryMock.Object,
             mapper,
             logger);
     }
@@ -42,8 +47,8 @@ public class UpdateEventLikesCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        _eventRepositoryMock.Verify(x => x.AddLikeAsync(Any.Like, Any.CancellationToken), Times.Once);
-        _eventRepositoryMock.Verify(x => x.RemoveLikeAsync(_command.EventId, _command.AuthorId, Any.CancellationToken), Times.Never);
+        _likeRepositoryMock.Verify(x => x.AddAsync(Any.Like, Any.CancellationToken), Times.Once);
+        _likeRepositoryMock.Verify(x => x.RemoveAsync(_command.EventId, _command.AuthorId, Any.CancellationToken), Times.Never);
     }
 
     [Fact]
@@ -57,7 +62,7 @@ public class UpdateEventLikesCommandHandlerTests
         var result = await _systemUnderTests.Handle(_command, Value.CancelationToken);
 
         // Assert
-        _eventRepositoryMock.Verify(x => x.AddLikeAsync(Any.Like, Any.CancellationToken), Times.Never);
-        _eventRepositoryMock.Verify(x => x.RemoveLikeAsync(_command.EventId, _command.AuthorId, Any.CancellationToken), Times.Once);
+        _likeRepositoryMock.Verify(x => x.AddAsync(Any.Like, Any.CancellationToken), Times.Never);
+        _likeRepositoryMock.Verify(x => x.RemoveAsync(_command.EventId, _command.AuthorId, Any.CancellationToken), Times.Once);
     }
 }

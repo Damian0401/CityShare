@@ -24,7 +24,7 @@ public class ConfirmEmailCommandHandlerTests
         var logger = new Mock<ILogger<ConfirmEmailCommandHandler>>().Object;
 
         _command = new ConfirmEmailCommand(
-            new EmailConfirmRequestDto(Value.String, Value.String));
+            new EmailConfirmDto(Value.String, Value.String));
 
         _systemUnderTests = new ConfirmEmailCommandHandler(
             _userManagerMockHelper.Object,

@@ -88,7 +88,10 @@ const UserMenu: React.FC<IUserMenuProps> = observer((props) => {
                 Requsts
               </Button>
             ) : (
-              <Button leftIcon={<CgProfile />} onClick={onClose}>
+              <Button
+                leftIcon={<CgProfile />}
+                onClick={redirectAndClose(Routes.Profile)}
+              >
                 Profile
               </Button>
             )}

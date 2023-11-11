@@ -29,6 +29,7 @@ const Constants = {
   },
   RedirectTimeout: 3000,
   ChangeImageInterval: 10000,
+  DefaultIncreaseInterval: 1000,
   CSS: {
     Inherit: "inherit",
     None: "none",
@@ -47,6 +48,7 @@ const Constants = {
     Search: "Search...",
     RequestMessage: "Request message...",
   },
+  NetworkError: "Network Error",
 };
 
 export default Constants;

@@ -1,18 +1,21 @@
 ﻿using CityShare.Backend.Application.Auth.Commands;
+using CityShare.Backend.Application.Auth.Queries;
 using CityShare.Backend.Application.Core.Dtos.Auth;
 using CityShare.Backend.Domain.Constants;
+using CityShare.Backend.Domain.Extensions;
 using CityShare.Backend.Domain.Settings;
 using CityShare.Services.Api.Common;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Security.Claims;
 
 namespace CityShare.Services.Api.Endpoints.V1;
 
 public class Auth
 {
     public static async Task<IResult> Register(
-        [FromBody] RegisterRequestDto request,
+        [FromBody] RegisterDto request,
         HttpResponse response, 
         IOptions<AuthSettings> authSettings,
         IMediator mediator,
@@ -34,7 +37,7 @@ public class Auth
     }
 
     public static async Task<IResult> Login(
-        [FromBody] LoginRequestDto request, 
+        [FromBody] LoginDto request, 
         HttpResponse response,
         IOptions<AuthSettings> authSettings,
         IMediator mediator,
@@ -56,7 +59,7 @@ public class Auth
     }
 
     public static async Task<IResult> Refresh(
-        [FromBody] RefreshRequestDto refreshRequest,
+        [FromBody] RefreshDto refreshRequest,
         HttpRequest request, 
         IMediator mediator,
         CancellationToken cancellationToken)
@@ -72,18 +75,28 @@ public class Auth
             new RefreshCommand(refreshRequest, refreshToken), 
             cancellationToken);
 
-        return result.IsSuccess
-            ? Results.Ok(result.Value) 
-            : Results.Unauthorized();
+        return ResultResolver.Resolve(result);
     }
 
     public static async Task<IResult> ConfirmEmail(
-        [FromBody] EmailConfirmRequestDto request,
+        [FromBody] EmailConfirmDto request,
         IMediator mediator,
         CancellationToken cancellationToken)
     {
         var result = await mediator.Send(
             new ConfirmEmailCommand(request), 
+            cancellationToken);
+
+        return ResultResolver.Resolve(result);
+    }
+
+    public static async Task<IResult> Profile(
+        ClaimsPrincipal claimsPrincipal,
+        IMediator mediator,
+        CancellationToken cancellationToken)
+    {
+        var result = await mediator.Send(
+            new ProfileQuery(claimsPrincipal.GetUserId()), 
             cancellationToken);
 
         return ResultResolver.Resolve(result);

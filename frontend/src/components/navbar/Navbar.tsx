@@ -29,7 +29,6 @@ const Navbar = observer(() => {
         <div className={styles.tabs}>
           {authStore.user ? (
             <>
-              <Link to={Routes.Index}>Home</Link>
               <Link to={Routes.EventsMap}>Map</Link>
               <Link to={Routes.EventsSearch}>Search</Link>
             </>

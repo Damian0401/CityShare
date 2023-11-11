@@ -57,6 +57,12 @@ export default class AuthStore {
     });
   };
 
+  getProfile = async () => {
+    const profile = await agent.Auth.profile();
+
+    return profile;
+  };
+
   get isAdmin() {
     return !!this.user?.roles.includes(Roles.Admin);
   }

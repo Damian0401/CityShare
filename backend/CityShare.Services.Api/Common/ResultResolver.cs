@@ -10,12 +10,17 @@ public class ResultResolver
     {
         if (result.IsSuccess)
         {
-            return Microsoft.AspNetCore.Http.Results.NoContent();
+            return Results.NoContent();
         }
 
         if (result.Errors is not null && result.Errors.All(e => e.Equals(Errors.NotFound.First())))
         {
             return Results.NotFound();
+        }
+
+        if (result.Errors is not null && result.Errors.Any(e => e.Equals(Errors.InvalidCredentials.First())))
+        {
+            return Results.Unauthorized();
         }
 
         if (result.Errors is not null && result.Errors.Any(e => e.Equals(Errors.EmailAlreadyConfirmed.First())))
@@ -41,6 +46,11 @@ public class ResultResolver
         if (result.Errors is not null && result.Errors.All(e => e.Equals(Errors.NotFound.First())))
         {
             return Results.NotFound();
+        }
+
+        if (result.Errors is not null && result.Errors.Any(e => e.Equals(Errors.InvalidCredentials.First())))
+        {
+            return Results.Unauthorized();
         }
 
         if (result.Errors is not null && result.Errors.Any(e => e.Equals(Errors.EmailAlreadyConfirmed.First())))

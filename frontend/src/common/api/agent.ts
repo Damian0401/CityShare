@@ -1,36 +1,16 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import {
-  AccessTokenHelper,
-  correctCommentDate,
-  correctEventDates,
-  correctRequestDate,
-  getSecret,
-} from "../utils/helpers";
+import axios, { AxiosError } from "axios";
+import { AccessTokenHelper, getSecret } from "../utils/helpers";
 import { Environments, Routes, StatusCodes } from "../enums";
-import {
-  IAddress,
-  ILoginValues,
-  IPoint,
-  IUser,
-  IAddressDetails,
-  IEventSearchQuery,
-  IPageWrapper,
-  IEvent,
-  ICategory,
-  ICity,
-  IEventCreateValues,
-  IEventImage,
-  IComment,
-  IRequestType,
-  IRequests,
-  IRequest,
-  IRequestCreateValue,
-} from "../interfaces";
-import { IRegisterValues } from "../interfaces/IRegisterValues";
 import { toast } from "react-toastify";
 import Router from "../../pages/Router";
 import { IError } from "../interfaces/IError";
 import Constants from "../utils/constants";
+import Auth from "./Auth";
+import Maps from "./Map";
+import Category from "./Category";
+import City from "./City";
+import Event from "./Event";
+import Requests from "./Requests";
 
 axios.defaults.baseURL = getSecret(Environments.BaseUrl) + Constants.ApiPrefix;
 
@@ -47,7 +27,7 @@ axios.interceptors.request.use((config) => {
 });
 
 axios.interceptors.response.use(undefined, (error: AxiosError) => {
-  if (error.message === "Network Error" && !error.response) {
+  if (error.message === Constants.NetworkError && !error.response) {
     toast.error("Network error - make sure API is running!");
   }
 
@@ -109,138 +89,6 @@ const refreshToken = async (error: AxiosError) => {
     Router.navigate(Routes.Login);
     return Promise.reject(error);
   }
-};
-
-const responseBody = <T>(response: AxiosResponse<T>) => response.data;
-
-const requests = {
-  get: <T>(url: string, signal?: AbortSignal) =>
-    axios.get<T>(url, { signal: signal }).then(responseBody),
-  post: <T>(url: string, body?: object, signal?: AbortSignal) =>
-    axios.post<T>(url, body, { signal: signal }).then(responseBody),
-  put: <T>(url: string, body: object) =>
-    axios.put<T>(url, body).then(responseBody),
-  delete: <T>(url: string) => axios.delete<T>(url).then(responseBody),
-};
-
-const Auth = {
-  login: (values: ILoginValues) => requests.post<IUser>("/auth/login", values),
-  register: (values: IRegisterValues) =>
-    requests.post<IUser>("/auth/register", values),
-  refresh: (signal?: AbortSignal) => {
-    const accessToken = AccessTokenHelper.getAccessToken();
-    return requests.post<IUser>("/auth/refresh", { accessToken }, signal);
-  },
-  confirmEmail: (id: string, token: string, signal: AbortSignal) =>
-    requests.post("/auth/confirm-email", { id, token }, signal),
-};
-
-const Maps = {
-  search: (query: string) =>
-    requests.get<IAddressDetails>(`/map/search?query=${query}`),
-  reverse: (point: IPoint) =>
-    requests.get<IAddress>(`/map/reverse?x=${point.x}&y=${point.y}`),
-};
-
-const Category = {
-  get: () => requests.get<ICategory[]>("/categories"),
-};
-
-const City = {
-  get: () => requests.get<ICity[]>("/cities"),
-};
-
-const Event = {
-  get: async (query: IEventSearchQuery, signal?: AbortSignal) => {
-    let url = `/events?`;
-
-    for (const [key, value] of Object.entries(query)) {
-      if (!value) {
-        continue;
-      }
-
-      if (Array.isArray(value) && value.length === 0) {
-        continue;
-      }
-
-      if (Array.isArray(value) && value.length > 0) {
-        url += `${key}=${value.join(",")}&`;
-        continue;
-      }
-
-      if (value instanceof Date) {
-        url += `${key}=${value.toISOString()}&`;
-        continue;
-      }
-
-      url += `${key}=${value}&`;
-    }
-
-    const response = await requests.get<IPageWrapper<IEvent>>(url, signal);
-
-    for (const event of response.content) {
-      correctEventDates(event);
-    }
-
-    return response;
-  },
-  getById: async (id: string, signal?: AbortSignal) => {
-    const event = await requests.get<IEvent>(`/events/${id}`, signal);
-
-    correctEventDates(event);
-
-    return event;
-  },
-  create: (values: IEventCreateValues) =>
-    requests.post<string>("/events", values),
-  uploadImage: (id: string, image: IEventImage) => {
-    let url = `/events/${id}/images`;
-
-    if (image.shouldBeBlurred) {
-      url += "?shouldBeBlurred=true";
-    }
-
-    const formData = new FormData();
-    formData.append("image", image.file);
-
-    return requests.post(url, formData);
-  },
-  updateLikes: (id: string) => requests.post(`/events/${id}/likes`),
-  addComment: (id: string, comment: string) =>
-    requests.post(`/events/${id}/comments`, { message: comment }),
-  getComments: async (id: string) => {
-    const comments = await requests.get<IComment[]>(`/events/${id}/comments`);
-
-    for (const comment of comments) {
-      correctCommentDate(comment);
-    }
-
-    return comments;
-  },
-};
-
-const Requests = {
-  getTypes: () => requests.get<IRequestType[]>("/requests/types"),
-  getRequestsByCityId: async (cityId: number, signal?: AbortSignal) => {
-    const data = await requests.get<IRequests>(
-      `/requests?cityId=${cityId}`,
-      signal
-    );
-
-    const newMap = new Map<number, IRequest[]>();
-
-    for (const [key, value] of Object.entries(data.requests)) {
-      correctRequestDate(value);
-      newMap.set(+key, value);
-    }
-
-    data.requests = newMap;
-
-    return data;
-  },
-  create: (values: IRequestCreateValue) => requests.post("/requests", values),
-  accept: (id: string) => requests.post(`/requests/${id}/accept`),
-  reject: (id: string) => requests.post(`/requests/${id}/reject`),
 };
 
 const agent = {
