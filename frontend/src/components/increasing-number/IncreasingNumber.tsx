@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { IIncreasingNumberProps } from "./IIncreasingNumberProps";
 import styles from "./IncreasingNumber.module.scss";
-import Constants from "../../../../common/utils/constants";
+import Constants from "../../common/utils/constants";
 
 const IncreasingNumber: React.FC<IIncreasingNumberProps> = (props) => {
   const {
@@ -12,6 +12,11 @@ const IncreasingNumber: React.FC<IIncreasingNumberProps> = (props) => {
   const [currentNumber, setCurrentNumber] = useState(start);
 
   useEffect(() => {
+    if (start >= number || number <= 1) {
+      setCurrentNumber(number);
+      return;
+    }
+
     const delay = duration / (number - start);
     const interval = setInterval(() => {
       setCurrentNumber((prevNumber) => {
@@ -22,6 +27,7 @@ const IncreasingNumber: React.FC<IIncreasingNumberProps> = (props) => {
         return prevNumber + 1;
       });
     }, delay);
+
     return () => clearInterval(interval);
   }, [start, number, duration]);
 

@@ -7,7 +7,7 @@ import {
 import { correctRequestDate } from "../utils/helpers";
 import requests from "../utils/requests";
 
-const Requests = {
+const Request = {
   getTypes: () => requests.get<IRequestType[]>("/requests/types"),
   getRequestsByCityId: async (cityId: number, signal?: AbortSignal) => {
     const data = await requests.get<IRequests>(
@@ -31,4 +31,4 @@ const Requests = {
   reject: (id: string) => requests.post(`/requests/${id}/reject`),
 };
 
-export default Requests;
+export default Request;

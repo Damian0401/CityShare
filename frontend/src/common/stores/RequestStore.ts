@@ -16,10 +16,7 @@ export default class RequestStore {
       return requests;
     }
 
-    const newRequests = await agent.Requests.getRequestsByCityId(
-      cityId,
-      signal
-    );
+    const newRequests = await agent.Request.getRequestsByCityId(cityId, signal);
 
     runInAction(() => {
       this.loadedRequests.set(cityId, newRequests);
@@ -29,15 +26,15 @@ export default class RequestStore {
   };
 
   createRequest = async (values: IRequestCreateValue) => {
-    await agent.Requests.create(values);
+    await agent.Request.create(values);
   };
 
   acceptRequest = async (id: string) => {
-    await agent.Requests.accept(id);
+    await agent.Request.accept(id);
   };
 
   rejectRequest = async (id: string) => {
-    await agent.Requests.reject(id);
+    await agent.Request.reject(id);
   };
 
   removeRequest = (cityId: number, requestId: string) => {

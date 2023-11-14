@@ -57,6 +57,7 @@ const SearchInput: React.FC<ISearchInputProps> = observer((props) => {
           ...InitialValues.EventSearch,
           cityId: getSelectedCityId() ?? commonStore.cities[0].id,
           sortBy: sortByOptions[0].value as string,
+          pageSize: Constants.EventPageSize,
         }}
         onSubmit={onSearch}
         validationSchema={searchInputSchema}

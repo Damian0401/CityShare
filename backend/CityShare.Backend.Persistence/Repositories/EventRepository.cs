@@ -163,11 +163,11 @@ public class EventRepository : IEventRepository
         if (eventQuery.PageNumber is not null)
         {
             _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.PageNumber));
-            query = query.Skip(pageSize * eventQuery.PageNumber.Value - 1);
+            query = query.Skip(pageSize * (eventQuery.PageNumber.Value - 1));
         }
 
         _logger.LogInformation("Adding {@Name} to query", nameof(eventQuery.PageSize));
-        query.Take(pageSize);
+        query = query.Take(pageSize);
         return query;
     }
 

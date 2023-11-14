@@ -28,7 +28,7 @@ export default class CommonStore {
     };
 
     const requestTypesPromise = async () => {
-      const requestTypes = await agent.Requests.getTypes();
+      const requestTypes = await agent.Request.getTypes();
       runInAction(() => {
         this.requestTypes = requestTypes;
       });

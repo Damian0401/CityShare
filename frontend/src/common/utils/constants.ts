@@ -17,6 +17,7 @@ const Constants = {
     ToggleThemeButton: "toggle theme",
     ConfirmEmailTooltip: "confirm email",
     RemoveImage: "remove image",
+    LoadMore: "load more",
   },
   Leaflet: {
     Attribution:
@@ -49,6 +50,7 @@ const Constants = {
     RequestMessage: "Request message...",
   },
   NetworkError: "Network Error",
+  EventPageSize: 5,
 };
 
 export default Constants;
