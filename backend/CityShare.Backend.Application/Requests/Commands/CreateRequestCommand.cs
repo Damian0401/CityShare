@@ -26,6 +26,7 @@ public class CreateRequestCommandValidator : AbstractValidator<CreateRequestComm
         
         RuleFor(x => x.Request.Message)
             .NotEmpty()
+            .MaximumLength(500)
             .WithName(x => nameof(x.Request.Message));        
         
         RuleFor(x => x.Request.TypeId)

@@ -51,6 +51,7 @@ const Constants = {
   },
   NetworkError: "Network Error",
   EventPageSize: 5,
+  MaxRequestMessageLength: 500,
 };
 
 export default Constants;

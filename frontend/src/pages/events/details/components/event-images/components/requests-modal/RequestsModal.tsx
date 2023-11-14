@@ -13,6 +13,7 @@ import styles from "./RequestsModal.module.scss";
 import Constants from "../../../../../../../common/utils/constants";
 import { useRef, useState } from "react";
 import { IRequestCreateValue } from "../../../../../../../common/interfaces";
+import { toast } from "react-toastify";
 
 const RequestsModal: React.FC<IRequestsModalProps> = (props) => {
   const {
@@ -75,6 +76,11 @@ const RequestsModal: React.FC<IRequestsModalProps> = (props) => {
     const message = messageRef.current.value;
 
     if (!message) return;
+
+    if (message.length > Constants.MaxRequestMessageLength) {
+      toast.error("Message length should be less than 500 characters");
+      return;
+    }
 
     const values: IRequestCreateValue = {
       imageId: imageId,
