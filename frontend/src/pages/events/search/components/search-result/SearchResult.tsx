@@ -29,9 +29,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
 
   return (
     <div className={styles.container}>
-      {events.length === 0 ? (
-        <p>No events found</p>
-      ) : (
+      {events.length !== 0 &&
         events.map((event) => (
           <BaseContainer
             type={Containers.Tertiary}
@@ -75,8 +73,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
               <div>{event.author}</div>
             </div>
           </BaseContainer>
-        ))
-      )}
+        ))}
     </div>
   );
 });
