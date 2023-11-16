@@ -18,6 +18,10 @@
       "Images Map"
       "Body Body";
 
+    @media only screen and (max-width: 768px) {
+      width: 95vw;
+    }
+
     .map {
       grid-area: Map;
       box-shadow: $boxShadow;
