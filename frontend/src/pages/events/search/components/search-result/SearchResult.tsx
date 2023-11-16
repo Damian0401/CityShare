@@ -49,7 +49,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
             </div>
             <div className={styles.header}>
               <div>
-                <span className={styles.title}>{event.title}</span>
+                <div className={styles.title}>{event.title}</div>
                 <Categories categoryIds={event.categoryIds} />
               </div>
               <LikeButton
@@ -64,7 +64,7 @@ const SearchResult: React.FC<ISearchResultProps> = observer((props) => {
                 {getFormattedDate(event.startDate)} -{" "}
                 {getFormattedDate(event.endDate)}
               </div>
-              <div>{event.description}</div>
+              <div className={styles.description}>{event.description}</div>
             </div>
             <div className={styles.footer}>
               <div>

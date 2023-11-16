@@ -25,11 +25,18 @@
     .title {
       font-weight: bold;
       font-size: $mdFontSize;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 12rem;
+      min-height: 1.5rem;
     }
 
     .description {
       font-size: $smFontSize;
       overflow-wrap: break-word;
+      max-width: 12rem;
+      overflow-y: auto;
     }
   }
 }

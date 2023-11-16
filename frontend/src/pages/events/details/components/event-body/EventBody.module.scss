@@ -8,8 +8,13 @@
   padding: 0.5rem;
   row-gap: 0.5rem;
 
+  div:last-of-type {
+    margin-top: auto;
+  }
+
   .header {
     display: flex;
+    row-gap: 0.2rem;
     flex-direction: column;
 
     .title {
@@ -20,15 +25,12 @@
       width: 100%;
 
       .text {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-
-        & > span:first-of-type {
-          font-size: $lgFontSize;
-          font-weight: bold;
-          padding-right: 0.5rem;
-        }
+        font-size: $lgFontSize;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 40;
       }
 
       .buttons {
@@ -64,7 +66,7 @@
       font-size: $smFontSize;
       & > span {
         cursor: pointer;
-        font-weight: 550;
+        font-weight: bold;
         &:hover {
           opacity: $hoverOpacity;
         }
@@ -74,12 +76,12 @@
 
   .content {
     font-size: $mdFontSize;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    overflow-wrap: break-word;
+    overflow-y: auto;
+    max-height: 10vh;
   }
 
-  .dates {
+  .footer {
     min-width: max-content;
     font-size: $smFontSize;
   }

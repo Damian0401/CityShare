@@ -49,6 +49,10 @@
 
       .title {
         font-size: $mdFontSize;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 25vw;
       }
 
       .category {
@@ -61,6 +65,13 @@
     .body {
       grid-area: Body;
       padding: 0.3rem;
+
+      .description {
+        font-size: $smFontSize;
+        overflow-wrap: break-word;
+        overflow-y: auto;
+        max-height: 3rem;
+      }
     }
     .footer {
       grid-area: Footer;

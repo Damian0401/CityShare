@@ -14,10 +14,7 @@ const EventBody: React.FC<IEventBodyProps> = observer((props) => {
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.title}>
-          <div className={styles.text}>
-            <span>{event.title}</span>
-            <Categories categoryIds={event.categoryIds} />
-          </div>
+          <div className={styles.text}>{event.title}</div>
           <div className={styles.buttons}>
             <LikeButton
               likes={event.likes}
@@ -34,13 +31,16 @@ const EventBody: React.FC<IEventBodyProps> = observer((props) => {
             </div>
           </div>
         </div>
+        <div>
+          <Categories categoryIds={event.categoryIds} />
+        </div>
         <div className={styles.info}>
           Published {formatDistanceToNow(event.createdAt)} ago by{" "}
           <span>{event.author}</span>
         </div>
       </div>
       <div className={styles.content}>{event.description}</div>
-      <div className={styles.dates}>
+      <div className={styles.footer}>
         <div>Start date: {getFormattedDate(event.startDate)}</div>
         <div>End date: {getFormattedDate(event.endDate)}</div>
       </div>
