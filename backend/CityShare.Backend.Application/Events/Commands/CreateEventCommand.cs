@@ -24,10 +24,12 @@ public class CreateEventCommandValidator : AbstractValidator<CreateEventCommand>
     {
         RuleFor(x => x.Request.Title)
             .NotEmpty()
+            .MaximumLength(256)
             .WithName(x => nameof(x.Request.Title));
 
         RuleFor(x => x.Request.Description)
             .NotEmpty()
+            .MaximumLength(3000)
             .WithName(x => x.Request.Description);
 
         RuleFor(x => x.Request.CityId)
