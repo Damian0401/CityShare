@@ -6,6 +6,7 @@ import NavbarLogo from "../../assets/images/navbar-logo.svg";
 import { useStore } from "../../common/stores/store";
 import { observer } from "mobx-react-lite";
 import UserMenu from "./components/user-menu/UserMenu";
+import ToggleThemeButton from "./components/user-menu/components/toggle-theme-button/ToggleThemeButton";
 
 const Navbar = observer(() => {
   const { authStore } = useStore();
@@ -36,6 +37,7 @@ const Navbar = observer(() => {
             <>
               <Link to={Routes.Login}>Login</Link>
               <Link to={Routes.Register}>Register</Link>
+              <ToggleThemeButton displayText={false} />
             </>
           )}
           {authStore.user && <UserMenu logout={handleLogout} />}

@@ -38,7 +38,6 @@ const EventCreate = observer(() => {
 
   useEffect(() => {
     if (!user?.emailConfirmed) {
-      toast.info("Please confirm your email address first");
       navigate(Routes.Profile);
     }
   }, [user, navigate]);
