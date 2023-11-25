@@ -72,11 +72,11 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Res
             return Result.Failure(errors);
         }
 
-        _logger.LogInformation("Creating image");
-        var imageId = await CreateImageAsync(request);
-
         _logger.LogInformation("Uploading image to blob");
-        var uri = await UploadImageAsync(request.Image, imageId, cancellationToken);
+        var uri = await UploadImageAsync(request.Image, cancellationToken);
+
+        _logger.LogInformation("Creating image");
+        var imageId = await CreateImageAsync(request, uri);
 
         if (request.ShouldBeBlurred ?? false)
         {
@@ -101,11 +101,12 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Res
         await _queueService.SendAsync(QueueNames.ImagesToBlur, imageId, queueOptions, cancellationToken);
     }
 
-    private async Task<Guid> CreateImageAsync(UploadImageCommand request)
+    private async Task<Guid> CreateImageAsync(UploadImageCommand request, string uri)
     {
         var image = new Image
         {
             EventId = request.EventId,
+            Uri = uri,
             ShouldBeBlurred = request.ShouldBeBlurred ?? false,
         };
 
@@ -113,7 +114,7 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Res
         return imageId;
     }
 
-    private async Task<string> UploadImageAsync(IFormFile image, Guid imageId, CancellationToken cancellationToken)
+    private async Task<string> UploadImageAsync(IFormFile image, CancellationToken cancellationToken)
     {
         var uploadOptions = new BlobServiceUploadOptions
         {
@@ -121,7 +122,9 @@ public class UploadImageCommandHandler : IRequestHandler<UploadImageCommand, Res
             CreateIfNotExists = true,
         };
 
-        var uri = await _blobService.UploadFileAsync(image.OpenReadStream(), imageId.ToString(), ContainerNames.EventImages, uploadOptions, cancellationToken);
+        var fileName = Guid.NewGuid().ToString();
+
+        var uri = await _blobService.UploadFileAsync(image.OpenReadStream(), fileName, ContainerNames.EventImages, uploadOptions, cancellationToken);
         return uri;
     }
 
