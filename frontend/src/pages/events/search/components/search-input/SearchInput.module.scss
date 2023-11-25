@@ -50,6 +50,10 @@
         flex-direction: row;
         gap: 0.5rem;
         width: 100%;
+
+        @media only screen and (max-width: 768px) {
+          flex-direction: column;
+        }
       }
     }
   }
