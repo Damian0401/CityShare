@@ -42,6 +42,8 @@ public class BlurFacesCommandHandlerTests
     {
         // Arrange
         var image = Value.Image;
+        image.Id = Value.Guid;
+        image.Uri = Value.String;
         image.ShouldBeBlurred = Value.True;
         _imageRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(image);
@@ -62,6 +64,8 @@ public class BlurFacesCommandHandlerTests
     {
         // Arrange
         var image = Value.Image;
+        image.Id = Value.Guid;
+        image.Uri = Value.String;
         image.ShouldBeBlurred = Value.True;
         _imageRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(image);
@@ -75,7 +79,7 @@ public class BlurFacesCommandHandlerTests
 
         // Assert
         _imageRepositoryMock.Verify(
-            x => x.SetIsBlurredAsync(_command.ImageId, Value.True, Value.CancelationToken),
+            x => x.SetIsBlurredAsync(image.Id, Value.True, Value.CancelationToken),
             Times.Once);
     }
 
@@ -102,6 +106,8 @@ public class BlurFacesCommandHandlerTests
     {
         // Arrange
         var image = Value.Image;
+        image.Id = Value.Guid;
+        image.Uri = Value.String;
         image.ShouldBeBlurred = Value.False;
         _imageRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(image);
@@ -122,6 +128,8 @@ public class BlurFacesCommandHandlerTests
     {
         // Arrange
         var image = Value.Image;
+        image.Id = Value.Guid;
+        image.Uri = Value.String;
         image.ShouldBeBlurred = Value.True;
         _imageRepositoryMock.Setup(x => x.GetByIdAsync(Any.Guid, Any.CancellationToken))
             .ReturnsAsync(image);

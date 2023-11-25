@@ -55,7 +55,7 @@ public class BlurFacesCommandHandler : IRequestHandler<BlurFacesCommand, Result>
             return Result.Failure(Errors.ForbiddenState);
         }
 
-        using var stream = await GetImageBlobAsync(request, cancellationToken);
+        using var stream = await GetImageBlobAsync(image.Uri, cancellationToken);
 
         if (stream is null)
         {
@@ -67,7 +67,7 @@ public class BlurFacesCommandHandler : IRequestHandler<BlurFacesCommand, Result>
 
         using var blurredStream = await BlurImageAsync(request, stream, cancellationToken);
 
-        await UpdateImageAsync(request, blurredStream, cancellationToken);
+        await UpdateImageAsync(image, blurredStream, cancellationToken);
 
         return Result.Success();
     }
@@ -84,13 +84,15 @@ public class BlurFacesCommandHandler : IRequestHandler<BlurFacesCommand, Result>
         return image;
     }
 
-    private async Task<Stream?> GetImageBlobAsync(BlurFacesCommand request, CancellationToken cancellationToken)
+    private async Task<Stream?> GetImageBlobAsync(string uri, CancellationToken cancellationToken)
     {
-        _logger.LogInformation("Getting image blob with id {@Id} in {@Container} using {@Type}",
-                    request.ImageId, ContainerNames.EventImages, _blobService.GetType());
+        _logger.LogInformation("Getting image blob from {@Uri} using {@Type}",
+                    uri, _blobService.GetType());
+
+        var fileName = uri.Split('/').Last();
 
         var stream = await _blobService.ReadFileAsync(
-                    request.ImageId.ToString(),
+                    fileName,
                     ContainerNames.EventImages,
                     cancellationToken);
 
@@ -109,26 +111,28 @@ public class BlurFacesCommandHandler : IRequestHandler<BlurFacesCommand, Result>
         return blurredStream;
     }
 
-    private async Task UpdateImageAsync(BlurFacesCommand request, Stream blurredStream, CancellationToken cancellationToken)
+    private async Task UpdateImageAsync(Image image, Stream blurredStream, CancellationToken cancellationToken)
     {
         _logger.LogInformation("Overriding image with id {@Id} using {@Type} after blurring",
-                    request.ImageId, _blobService.GetType());
+                    image.Id, _blobService.GetType());
 
         var options = new BlobServiceUploadOptions
         {
             Overwrite = true,
         };
 
+        var fileName = image.Uri.Split('/').Last();
+
         await _blobService.UploadFileAsync(
             blurredStream,
-            request.ImageId.ToString(),
+            fileName,
             ContainerNames.EventImages,
             options,
             cancellationToken);
 
         _logger.LogInformation("Setting image with id {@Id} as blurred using {@Type} after overriding",
-            request.ImageId, _imageRepository.GetType());
+            image.Id, _imageRepository.GetType());
 
-        await _imageRepository.SetIsBlurredAsync(request.ImageId, true, cancellationToken);
+        await _imageRepository.SetIsBlurredAsync(image.Id, true, cancellationToken);
     }
 }
