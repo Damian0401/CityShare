@@ -4,6 +4,10 @@
   padding: 1rem;
   width: 40vw;
 
+  @media only screen and (max-width: 768px) {
+    width: 95vw;
+  }
+
   .title {
     font-size: $lgFontSize;
     font-weight: bold;
