@@ -41,5 +41,16 @@
         }
       }
     }
+
+    @media only screen and (max-width: 768px) {
+      align-items: center;
+      row-gap: 0.5rem;
+
+      .tabs a {
+        font-size: $mdFontSize;
+        display: flex;
+        align-items: center;
+      }
+    }
   }
 }
