@@ -29,7 +29,7 @@ public class ImageRepository : IImageRepository
 
     public async Task<Image?> GetByIdAsync(Guid imageId, CancellationToken cancellationToken = default)
     {
-        _logger.LogInformation("Searching for image with id {@Id) in database", imageId);
+        _logger.LogInformation("Searching for image with id {@Id} in database", imageId);
         var image = await _context.Images
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id.Equals(imageId), cancellationToken);
